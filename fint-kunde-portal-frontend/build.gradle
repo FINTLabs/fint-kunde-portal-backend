@@ -1,0 +1,59 @@
+// frontend build.gradle
+plugins {
+  id "com.moowork.node" version "0.14"
+}
+apply plugin: 'java'
+apply plugin: 'maven'
+
+defaultTasks 'clean', 'webpack_build', 'webjar'
+
+// configure gradle-node-plugin
+node {
+  version = '6.9.2'
+  npmVersion = '3.10.8'
+  download = false
+  workDir = file("${project.projectDir}/node")
+  nodeModulesDir = file("${project.projectDir}/")
+}
+
+// Workaround for https://issues.gradle.org/browse/GRADLE-1843
+task removeDanglingSymlinks(type:Exec) {
+  commandLine 'find', '-L', file("${project.projectDir}").absolutePath, '-type', 'l', '-delete'
+}
+if (!System.properties['os.name'].toLowerCase().contains('windows')) {
+  npmInstall.dependsOn removeDanglingSymlinks
+}
+
+// clean task for npm
+task npmClean(type: Delete) {
+  final def webDir = "${rootDir}/fint-kunde-portal-frontend"
+  //delete "${webDir}/node"
+  //delete "${webDir}/node_modules"
+  delete "${webDir}/dist"
+  delete "${webDir}/coverage"
+}
+clean.dependsOn(npmClean)
+
+task npmBuild() {}
+npmBuild.dependsOn(npm_run_build)
+
+// build task for npm
+task webpack_build {
+  dependsOn 'npm_install'
+  dependsOn 'npmBuild'
+}
+assemble.dependsOn(webpack_build)
+
+task webjar(type: Jar, dependsOn: "jar") {
+  from(fileTree('dist')) {
+    into 'META-INF/resources'
+  }
+}
+
+// check task for npm
+check {}
+//check.dependsOn(npm_run_test)
+
+// run all task
+//task runAll{}
+//runAll.dependsOn(npm_run_start)

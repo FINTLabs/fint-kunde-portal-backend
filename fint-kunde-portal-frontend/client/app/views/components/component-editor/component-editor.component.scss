@@ -1,0 +1,51 @@
+@import '../../../../variables';
+
+:host {
+  &.edit {
+    background-color: #efefef;
+    >tr {
+      cursor: inherit;
+      >td {
+        padding-top: 15px;
+        padding-bottom: 15px;
+      }
+    }
+  }
+  > tr {
+    cursor: pointer;
+  }
+  td {
+    &:last-child {
+      vertical-align: top;
+      padding: 10px 0;
+      padding-top: 10px !important;
+    }
+  }
+}
+
+md-input {
+  width: 90%;
+  margin: 0 auto;
+  display: block;
+}
+
+fint-flip-card {
+  .front {
+    width: 99%;
+    margin: 0 auto;
+  }
+  .back {
+    height: 99%;
+    width: 99%;
+    margin: 0 auto;
+  }
+}
+
+md-list-item {
+  cursor: pointer;
+  button {
+    position: absolute;
+    right: 24px;
+  }
+}
+

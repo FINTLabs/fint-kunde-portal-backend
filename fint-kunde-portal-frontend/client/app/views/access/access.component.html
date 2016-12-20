@@ -1,0 +1,39 @@
+<h2>Personer med tilgang i systemet</h2>
+
+<div>
+  Følgende personer har tillatelse til å gjøre endringer.
+</div>
+
+<md-card>
+  <md-card-content class="table-container">
+    <table>
+      <thead>
+        <tr>
+          <th>Fødselsnummer</th>
+          <th>Navn</th>
+          <th>E-post</th>
+          <th>Tlf</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let person of persons;" (click)="edit(person)">
+          <td>{{ person.id }}</td>
+          <td>{{ person.firstName }} {{ person.lastName }}</td>
+          <td>{{ person.email }}</td>
+          <td>{{ person.phone }}</td>
+          <td>
+            <button md-icon-button (click)="edit(person)" title="Rediger"><fint-fa name="edit"></fint-fa></button>
+            <button md-icon-button (click)="revoke(person)" title="Slett tilgang"><fint-fa name="ban"></fint-fa></button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </md-card-content>
+  <md-card-actions>
+    <button md-raised-button md-ripple (click)="grant()">
+      <fint-fa name="key"></fint-fa>
+      Gi tilgang
+    </button>
+  </md-card-actions>
+</md-card>

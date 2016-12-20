@@ -1,0 +1,3 @@
+rootProject.name = 'fint-kunde-portal'
+
+include 'fint-kunde-portal-frontend', 'fint-kunde-portal-backend'

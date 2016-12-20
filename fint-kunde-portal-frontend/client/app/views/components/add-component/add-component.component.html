@@ -1,0 +1,85 @@
+<h2>Konfigurere ny felleskomponent</h2>
+
+<div>
+  Dette er felleskomponenter fylket du administrerer har tilgjengelig for konfigurasjon. Velg komponent du ønsker å konfigurere
+  for ditt fylke.
+</div>
+
+<div class="row">
+  <div class="col-5 from">
+    <md-card>
+      <md-card-title>Tilgjengelige komponenter</md-card-title>
+      <md-card-content class="table-container" *ngIf="components.length">
+        <table>
+          <thead>
+            <tr>
+              <th>Navn</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+
+          <!-- Editor -->
+          <tbody>
+            <tr *ngFor="let component of componentsNotConfigured;">
+              <td>
+                <md-checkbox [(ngModel)]="component.isSelected">
+                  {{ component.name }}
+                </md-checkbox>
+              </td>
+              <td class="status">
+                <fint-fa name="circle" [className]="component.status ? 'success' : 'warning'"></fint-fa>
+              </td>
+            </tr>
+          </tbody>
+
+        </table>
+      </md-card-content>
+    </md-card>
+  </div>
+
+  <div class="col-2 transfer">
+    <div class="row">
+      <button md-fab md-icon-button class="icon" (click)="transferRight()"><fint-fa name="arrow-right" size="2"></fint-fa></button>
+    </div>
+    <div class="row">
+      <button md-fab md-icon-button class="icon" (click)="transferLeft()"><fint-fa name="arrow-left" size="2"></fint-fa></button>
+    </div>
+  </div>
+
+  <div class="col-5 to">
+    <md-card>
+      <md-card-title>Konfigurerte komponenter</md-card-title>
+      <md-card-content class="table-container" *ngIf="configuredComponents.length">
+        <table>
+          <thead>
+            <tr>
+              <th>Navn</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+
+          <!-- Editor -->
+          <tbody>
+            <tr *ngFor="let component of configuredComponents;">
+              <td>
+                <md-checkbox [(ngModel)]="component.isSelected">
+                  {{ component.name }}
+                </md-checkbox>
+              </td>
+              <td class="status">
+                <fint-fa name="circle" [className]="component.status ? 'success' : 'warning'"></fint-fa>
+              </td>
+            </tr>
+          </tbody>
+
+        </table>
+      </md-card-content>
+    </md-card>
+  </div>
+</div>
+
+<button md-raised-button md-ripple type="button" (click)="save()" color="primary"><fint-fa name="save"></fint-fa>Lagre</button>
+<button md-raised-button md-ripple [routerLink]="['/components']" type="button">
+  <fint-fa name="arrow-left"></fint-fa>
+  Avbryt
+</button>

@@ -1,0 +1,11 @@
+// NOTE: Theming is currently experimental and not yet publically released!
+@import "variables";
+@import '~@angular/material/core/theming/all-theme';
+
+@include md-core();
+
+$localPrimary: md-palette($md-indigo);
+$localAccent:  md-palette($md-amber, A200, A100, A400);
+$theme: md-light-theme($localPrimary, $localAccent);
+
+@include angular-material-theme($theme);

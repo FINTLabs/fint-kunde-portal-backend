@@ -1,0 +1,80 @@
+@import "../variables";
+
+:host {
+  overflow-x: hidden;
+  max-width: 100vw;
+  width: 100%;
+  height: 100vh;
+  display: block;
+}
+nav {
+  display: block;
+  background: $navbar-color;
+  height: $navbar-height;
+  padding: 0 1rem;
+  border-color: $navbar-border-color;
+  border-style: solid;
+  border-width: 0;
+  border-bottom-width: 1px;
+  text-align: left;
+  //transition-duration: 0.2s;
+  //transition-timing-function: ease-out;
+  //transition-property: height, margin, text-align;
+  .container {
+    height: $navbar-height;
+  }
+  svg {
+    fill: $accent;
+    fill-opacity:1;
+    fill-rule:nonzero;
+    stroke:none;
+    width: 7rem;
+    //transition: width 0.2s ease-out;
+  }
+  /*
+  &.homepage {
+    height: 8rem;
+    text-align: center;
+    margin: 0 auto;
+    padding-top: 1rem;
+    svg {
+      width: 20%;
+    }
+  }
+*/
+  a {
+    color: $text-color;
+    text-transform: uppercase;
+  }
+  ul {
+    list-style: none;
+    padding-left: 0;
+    float: right;
+    margin: 0;
+  }
+  li {
+    float: left;
+    position: relative;
+    display: block;
+    a {
+      padding: 15px;
+      line-height: 20px;
+      display: block;
+      text-decoration: none;
+      span {
+        display: none;
+        @media (min-width: 800px) {
+          display: inline;
+        }
+      }
+    }
+    &.active a {
+      background-color: $navbar-border-color;
+    }
+  }
+}
+
+
+section {
+  padding: 0 1rem;
+}

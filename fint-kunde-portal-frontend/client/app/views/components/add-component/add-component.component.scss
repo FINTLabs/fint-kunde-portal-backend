@@ -1,0 +1,18 @@
+.transfer {
+  text-align: center;
+  button {
+    width: 50px;
+    height: 50px;
+    line-height: 50px;
+  }
+}
+table {
+  table-layout: fixed;
+  th:last-child, td:last-child {
+    width: 100px;
+  }
+}
+md-checkbox {
+  display: block;
+  width: 100%;
+}

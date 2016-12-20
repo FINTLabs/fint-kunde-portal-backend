@@ -1,0 +1,86 @@
+<tr (click)="toggleEditComponent()" *ngIf="!component.isEdit">
+  <td>{{ component.name }}</td>
+  <td class="status">
+    <span class="fa-stack fa-sm {{ component.status ? 'success' : 'warning' }}">
+      <i class="fa fa-circle-o fa-stack-2x"></i>
+      <i class="fa fa-circle fa-stack-1x"></i>
+    </span>
+  </td>
+  <td>
+    <span *ngIf="component.adapters">{{ component.adapters.name }}</span>
+    <b *ngIf="!component.adapters" class="warning">Ingen</b>
+  </td>
+  <td>{{ getClientNames(component).join(', ') }}</td>
+  <td>
+    <button md-icon-button (click)="toggleEditComponent()"><fint-fa name="edit"></fint-fa></button>
+  </td>
+</tr>
+
+<tr *ngIf="component.isEdit">
+  <td colspan="4">
+    <form>
+      <div class="row">
+        <div class="col-4">
+          <fint-flip-card>
+            <md-card class="front">
+              <md-card-title>{{ updated.adapters ? 'Adapter' : 'Adapter er ikke konfigurert' }}</md-card-title>
+              <md-card-content>
+                <md-list dense>
+                  <md-list-item *ngIf="updated.adapters">
+                    {{ updated.adapters.name }}
+                  </md-list-item>
+                </md-list>
+              </md-card-content>
+              <md-card-actions>
+                <button md-raised-button md-ripple (click)="configureAdapter(updated.adapters)" type="button"><fint-fa name="edit"></fint-fa>Konfigurer</button>
+                <button md-raised-button md-ripple (click)="removeAdapter(updated.adapters)" type="button" color="warn"><fint-fa name="ban"></fint-fa>Nullstill</button>
+              </md-card-actions>
+            </md-card>
+            <md-card class="back">
+              <md-card-title>Hva er en adapter?</md-card-title>
+              <md-card-content>
+                En adapter leverer data til vår komponent.
+              </md-card-content>
+            </md-card>
+          </fint-flip-card>
+        </div>
+
+        <div class="col-4">
+          <md-input placeholder="Komponentnavn" [value]="updated.name" (valueChange)="componentChanged('name', $event)"></md-input>
+        </div>
+
+        <div class="col-4">
+          <fint-flip-card>
+            <md-card class="front">
+              <md-card-title>{{ updated.clients.length ? 'Klienter' : 'Ingen klienter' }}</md-card-title>
+              <md-card-content>
+                <md-list dense>
+                  <md-list-item *ngFor="let client of updated.clients" (click)="configureClient(client)">
+                    <span>{{ client.name }}</span>
+                    <button md-icon-button (click)="removeClient(client)" color="warn"><fint-fa name="ban"></fint-fa></button>
+                  </md-list-item>
+                </md-list>
+              </md-card-content>
+              <md-card-actions>
+                <button md-raised-button md-ripple (click)="configureClient()" type="button"><fint-fa name="plus"></fint-fa>Registrer ny klient</button>
+              </md-card-actions>
+            </md-card>
+            <md-card class="back">
+              <md-card-title>Hva er en klient?</md-card-title>
+              <md-card-content>
+                En klient konsumerer data fra vår komponent.
+              </md-card-content>
+            </md-card>
+          </fint-flip-card>
+        </div>
+      </div>
+      <footer>
+        <button md-raised-button md-ripple (click)="saveComponent()" type="button" color="primary"><fint-fa name="save"></fint-fa>Lagre</button>
+        <button md-raised-button md-ripple (click)="toggleEditComponent()" type="button"><fint-fa name="ban"></fint-fa>Avbryt</button>
+      </footer>
+    </form>
+  </td>
+  <td>
+    <button md-icon-button (click)="toggleEditComponent()"><fint-fa name="times"></fint-fa></button>
+  </td>
+</tr>

@@ -1,0 +1,14 @@
+@import "../../../../variables";
+
+md-card {
+  max-width: 30em;
+  margin: 0 auto;
+
+  app-input {
+    margin: 20px 0;
+    display: block;
+  }
+  footer {
+    margin-top: 20px;
+  }
+}

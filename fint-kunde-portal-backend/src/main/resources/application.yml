@@ -1,0 +1,11 @@
+springfox:
+ title: 'FINT Kunde Portal API'
+ version: '@version@'
+
+fint:
+  ldap:
+    url: "${url}"
+    user: "${user}"
+    password: "${password}"
+    component-base: "ou=felleskomponenter,o=fint"
+    organisation-base: "ou=organisasjoner,o=fint"

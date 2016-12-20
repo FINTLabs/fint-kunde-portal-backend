@@ -1,0 +1,12 @@
+version: '2'
+
+services:
+  backend:
+    build: .
+    image: fint/kundeportal
+    container_name: ${DOCKER_CONTAINER}
+    restart: unless-stopped
+    environment:
+      - PARAMS=${runParams}
+    ports:
+      - "${DOCKER_PORT}:8080"
