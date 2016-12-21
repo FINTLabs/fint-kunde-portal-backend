@@ -28,7 +28,7 @@ import { AddAdapterComponent } from './add-adapter/add-adapter.component';
     FormsModule,
     ReactiveFormsModule,
     MaterialModule,
-    LibSharedModule,
+    LibSharedModule.forRoot(),
     RouterModule.forChild([...ComponentRoutes])
   ]
 })

@@ -22,7 +22,7 @@ import { GrantComponent } from './grant/grant.component';
     FormsModule,
     ReactiveFormsModule,
     MaterialModule,
-    LibSharedModule,
+    LibSharedModule.forRoot(),
     RouterModule.forChild([...AccessRoutes])
   ]
 })

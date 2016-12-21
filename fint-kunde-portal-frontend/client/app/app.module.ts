@@ -28,7 +28,7 @@ import { AppComponent } from './app.component';
     MaterialModule.forRoot(),
 
     AppRoutingModule,
-    LibSharedModule,
+    LibSharedModule.forRoot(),
   ],
   providers: [PersonService, CommonComponentService, EventService],
   bootstrap: [AppComponent]
