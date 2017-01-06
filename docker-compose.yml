@@ -3,7 +3,7 @@ version: '2'
 services:
   backend:
     build: .
-    image: fint/kundeportal
+    image: fint/portal
     container_name: ${DOCKER_CONTAINER}
     restart: unless-stopped
     environment:

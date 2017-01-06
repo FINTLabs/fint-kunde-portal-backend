@@ -1,6 +1,6 @@
 import { FintKundeportalMockupsPage } from './app.po';
 
-describe('fint-kundeportal-mockups App', function() {
+describe('fint-portal-mockups App', function() {
   let page: FintKundeportalMockupsPage;
 
   beforeEach(() => {

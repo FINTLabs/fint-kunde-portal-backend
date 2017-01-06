@@ -1,4 +1,4 @@
-package no.fint.kundeportal.controller;
+package no.fint.portal.customer.controller;
 
 import org.springframework.boot.autoconfigure.web.ErrorController;
 import org.springframework.stereotype.Controller;
