@@ -40,18 +40,11 @@ public class ContactController {
   @RequestMapping(method = RequestMethod.POST,
     consumes = MediaType.APPLICATION_JSON_UTF8_VALUE
   )
-  public ResponseEntity createContact(@RequestBody final Contact contact,  @RequestHeader("x-org-id") final String orgId) {
+  public ResponseEntity createContact(@RequestBody final Contact contact, @RequestHeader("x-org-id") final String orgId) {
     log.info("Contact: {}", contact);
 
     String orgUuid = verifyOrganisation(orgId);
-    //Optional<Organisation> organisation = organisationService.getOrganisationByUUID(orgUuid);
-    /*
-    if (!organisation.isPresent()) {
-      throw new CreateEntityMismatchException(
-        String.format("The organisation with uuid %s in the endpoint does not exist.", orgUuid)
-      );
-    }
-    */
+
     if (!organisationService.addContact(contact, orgUuid)) {
       throw new EntityFoundException(
         ServletUriComponentsBuilder
@@ -68,15 +61,8 @@ public class ContactController {
     value = "/{nin}"
   )
   public ResponseEntity updateContact(@RequestBody final Contact contact, @PathVariable final String nin,
-                                                  @RequestHeader("x-org-id") final String orgId) {
+                                      @RequestHeader("x-org-id") final String orgId) {
     log.info("Contact: {}", contact);
-
-    //Optional<Organisation> organisation = organisationService.getOrganisationByUUID(uuid);
-    /*
-    if (!organisation.isPresent()) {
-      throw new UpdateEntityMismatchException("The organisation uuid in the endpoint does not exist.");
-    }
-    */
 
     verifyOrganisation(orgId);
 

@@ -9,15 +9,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
  */
 @Controller
 class AngularController implements ErrorController {
-    private static final String ERROR_PATH = "/error";
+  private static final String ERROR_PATH = "/error";
 
-    @RequestMapping(value=ERROR_PATH)
-    public String handleError() {
-        return "forward:/index.html";
-    }
+  @RequestMapping(value = ERROR_PATH)
+  public String handleError() {
+    return "forward:/index.html";
+  }
 
-    @Override
-    public String getErrorPath() {
-        return ERROR_PATH;
-    }
+  @Override
+  public String getErrorPath() {
+    return ERROR_PATH;
+  }
 }
