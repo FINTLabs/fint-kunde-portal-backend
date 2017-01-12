@@ -14,6 +14,8 @@ import no.fint.portal.exceptions.UpdateEntityMismatchException;
 import no.fint.portal.model.ErrorResponse;
 import no.fint.portal.organisation.Organisation;
 import no.fint.portal.organisation.OrganisationService;
+import no.rogfk.hateoas.extension.HalPagedResources;
+import no.rogfk.hateoas.extension.annotations.HalResource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -23,6 +25,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.UnknownHostException;
+import java.util.List;
 import java.util.Optional;
 
 @Slf4j
@@ -38,11 +41,32 @@ public class ComponentController {
   @Autowired
   private OrganisationService organisationService;
 
+  @ApiOperation("Get all components")
+  @HalResource(pageSize = 10)
+  @RequestMapping(method = RequestMethod.GET)
+  public HalPagedResources<Component> getComponents(@RequestParam(required = false) Integer page) {
+    // TODO: Return DTO with boolean flag exposing if this component is configured for the organisation or not
+    return new HalPagedResources<>(componentService.getComponents(), page);
+  }
+
+  @ApiOperation("Get component by uuid")
+  @RequestMapping(method = RequestMethod.GET, value = "/{compUuid}")
+  public ResponseEntity getComponent(@PathVariable String uuid) {
+    Optional<Component> component = componentService.getComponentByUUID(uuid);
+
+    if (component.isPresent()) {
+      return ResponseEntity.ok(component.get());
+    }
+
+    throw new EntityNotFoundException(
+      String.format("Component with uuid %s could not be found", uuid)
+    );
+  }
+
   @ApiOperation("Add organisation to component")
   @RequestMapping(method = RequestMethod.POST,
     consumes = MediaType.APPLICATION_JSON_UTF8_VALUE,
     value = "/{compUuid}/organisations"
-
   )
   public ResponseEntity addOrganisationToComponent(@PathVariable final String compUuid, @RequestHeader("x-org-id") final String orgId) {
 
@@ -138,10 +162,22 @@ public class ComponentController {
     throw new EntityNotFoundException(String.format("Could not find client: %s", client));
   }
 
+  @ApiOperation("Get all clients.")
+  @RequestMapping(method = RequestMethod.GET,
+    value = "/{compUuid}/organisations/clients"
+  )
+  public ResponseEntity getAllClients(@PathVariable final String compUuid,
+                                      @RequestHeader("x-org-id") final String orgId) {
+    String orgUuid = verifyOrganisation(orgId);
+    verifyComponent(compUuid);
+
+    List<Client> list = componentService.getClients(compUuid, orgUuid);
+    return ResponseEntity.ok().body(list);
+  }
+
   @ApiOperation("Get client.")
   @RequestMapping(method = RequestMethod.GET,
     value = "/{compUuid}/organisations/clients/{clientUuid}"
-
   )
   public ResponseEntity getClient(@PathVariable final String clientUuid, @PathVariable final String compUuid,
                                   @RequestHeader("x-org-id") final String orgId) {
@@ -232,7 +268,7 @@ public class ComponentController {
 
   @ApiOperation("Reset adapter password.")
   @RequestMapping(method = RequestMethod.PUT,
-    value = "/{compUuid}/organisations/adpater/{adaptertUuid}/password"
+    value = "/{compUuid}/organisations/adapters/{adaptertUuid}/password"
   )
   public ResponseEntity resetAdapterPassword(@PathVariable final String adapterUuid,
                                              @PathVariable final String compUuid,
@@ -248,6 +284,20 @@ public class ComponentController {
     }
 
     throw new EntityNotFoundException(String.format("Could not find client: %s", adapter));
+  }
+
+  @ApiOperation("Get all adapters.")
+  @RequestMapping(
+    method = RequestMethod.GET,
+    value = "/{compUuid}/organisations/adapters"
+  )
+  public ResponseEntity getAllAdapters(@PathVariable final String compUuid,
+                                       @RequestHeader("x-org-id") final String orgId) {
+    String orgUuid = verifyOrganisation(orgId);
+    verifyComponent(compUuid);
+
+    List<Adapter> list = componentService.getAdapters(compUuid, orgUuid);
+    return ResponseEntity.ok().body(list);
   }
 
   @ApiOperation("Get adapter.")
