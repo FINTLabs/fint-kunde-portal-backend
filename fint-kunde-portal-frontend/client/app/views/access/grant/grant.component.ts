@@ -2,7 +2,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
-import { IPerson, PersonService } from '../../../api/person.service';
+import { ContactService } from '../contacts.service';
+import { IContact } from 'app/api/IContact';
 
 @Component({
   selector: 'app-grant',
@@ -11,35 +12,47 @@ import { IPerson, PersonService } from '../../../api/person.service';
 })
 export class GrantComponent implements OnInit {
   userForm: FormGroup;
-  personData: IPerson;
+  contactData: IContact = <IContact>{};
 
-  constructor(private fb: FormBuilder, private router: Router, private route: ActivatedRoute, private Persons: PersonService) {
-    this.route.params.subscribe(params => {
-      var persons = this.Persons.all();
-      if (params['id']) {
-        let index = persons.findIndex(person => person.id === +params['id']);
-        if (index > -1) {
-          this.personData = persons[index];
-        }
-      }
-    });
-    this.personData = this.personData || <IPerson>{};
-
-    var EMAIL_REGEXP = "/^[a-z0-9!#$%&'*+\/=?^_`{|}~.-]+@[a-z0-9]([a-z0-9-]*[a-z0-9])?(\.[a-z0-9]([a-z0-9-]*[a-z0-9])?)*$/i";
-    this.userForm = fb.group({
-      id: [this.personData.id, [Validators.required/*, Validators.minLength(11), Validators.maxLength(11)*/]],
-      firstName: [this.personData.firstName, [Validators.required/*, Validators.minLength(2)*/]],
-      lastName: [this.personData.lastName, [Validators.required/*, Validators.minLength(2)*/]],
-      email: [this.personData.email, [Validators.required]],
-      phone: [this.personData.phone, [Validators.required/*, Validators.minLength(8)*/]]
-    });
+  constructor(
+    private fb: FormBuilder,
+    private router: Router,
+    private route: ActivatedRoute,
+    private Contacts: ContactService
+  ) {
+    this.createForm();
   }
 
   ngOnInit() {
+    this.route.params.subscribe(params => {
+      if (params['id']) {
+        this.Contacts.getById(params['id']).subscribe(
+          result => {
+            this.contactData = result;
+            this.userForm.setValue(this.contactData);
+          }
+        );
+      }
+    });
   }
 
-  save(model: IPerson) {
-    this.Persons.save(model);
+  createForm() {
+    var EMAIL_REGEXP = "/^[a-z0-9!#$%&'*+\/=?^_`{|}~.-]+@[a-z0-9]([a-z0-9-]*[a-z0-9])?(\.[a-z0-9]([a-z0-9-]*[a-z0-9])?)*$/i";
+    this.userForm = this.fb.group({
+      dn: [this.contactData.dn],
+      nin: [ this.contactData.nin, [ Validators.required/*, Validators.minLength(11), Validators.maxLength(11)*/]],
+      firstName: [ this.contactData.firstName, [ Validators.required/*, Validators.minLength(2)*/]],
+      lastName: [ this.contactData.lastName, [ Validators.required/*, Validators.minLength(2)*/]],
+      mail: [ this.contactData.mail, [ Validators.required]],
+      mobile: [ this.contactData.mobile, [ Validators.required/*, Validators.minLength(8)*/]],
+      orgId: [this.contactData.orgId],
+      primaryLegal: [this.contactData.primaryLegal],
+      primaryTechnical: [this.contactData.primaryTechnical],
+    });
+  }
+
+  save(model: IContact) {
+    this.Contacts.save(model);
     this.router.navigate(['/access']);
   }
 

@@ -5,7 +5,7 @@
   for ditt fylke.
 </div>
 
-<div class="row">
+<section class="row">
   <div class="col-5 from">
     <md-card>
       <md-card-title>Tilgjengelige komponenter</md-card-title>
@@ -23,7 +23,7 @@
             <tr *ngFor="let component of componentsNotConfigured;">
               <td>
                 <md-checkbox [(ngModel)]="component.isSelected">
-                  {{ component.name }}
+                  {{ component.technicalName }}
                 </md-checkbox>
               </td>
               <td class="status">
@@ -38,12 +38,8 @@
   </div>
 
   <div class="col-2 transfer">
-    <div class="row">
-      <button md-fab md-icon-button class="icon" (click)="transferRight()"><fint-fa name="arrow-right" size="2"></fint-fa></button>
-    </div>
-    <div class="row">
-      <button md-fab md-icon-button class="icon" (click)="transferLeft()"><fint-fa name="arrow-left" size="2"></fint-fa></button>
-    </div>
+    <div><button md-fab md-icon-button class="icon" (click)="transferRight()"><fint-fa name="arrow-right" size="2"></fint-fa></button></div>
+    <div><button md-fab md-icon-button class="icon" (click)="transferLeft()"><fint-fa name="arrow-left" size="2"></fint-fa></button></div>
   </div>
 
   <div class="col-5 to">
@@ -63,7 +59,7 @@
             <tr *ngFor="let component of configuredComponents;">
               <td>
                 <md-checkbox [(ngModel)]="component.isSelected">
-                  {{ component.name }}
+                  {{ component.technicalName }}
                 </md-checkbox>
               </td>
               <td class="status">
@@ -76,10 +72,12 @@
       </md-card-content>
     </md-card>
   </div>
-</div>
+</section>
 
-<button md-raised-button md-ripple type="button" (click)="save()" color="primary"><fint-fa name="save"></fint-fa>Lagre</button>
-<button md-raised-button md-ripple [routerLink]="['/components']" type="button">
-  <fint-fa name="arrow-left"></fint-fa>
-  Avbryt
-</button>
+<footer class="row">
+  <button md-raised-button md-ripple type="button" (click)="save()" color="primary"><fint-fa name="save"></fint-fa>Lagre</button>
+  <button md-raised-button md-ripple [routerLink]="['../']" type="button">
+    <fint-fa name="arrow-left"></fint-fa>
+    Avbryt
+  </button>
+</footer>

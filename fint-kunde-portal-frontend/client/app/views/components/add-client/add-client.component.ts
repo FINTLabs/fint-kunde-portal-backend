@@ -1,8 +1,9 @@
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Component, OnInit } from '@angular/core';
-
-import { CommonComponentService, ICommonComponent, IComponentClient } from '../../../api/common-component.service';
+import { ICommonComponent } from 'app/api/ICommonComponent';
+import { IComponentClient } from 'app/api/IComponentClient';
+import { CommonComponentService } from 'app/views/components/common-component.service';
 
 @Component({
   selector: 'app-add-client',
@@ -28,10 +29,8 @@ export class AddClientComponent implements OnInit {
     private CommonComponent: CommonComponentService
   ) {
     this.route.params.subscribe(params => {
-      this.componentId = +params['id'];
-      this.clientId = +params['clientId'];
-      this.component = CommonComponent.get(this.componentId);
-      this.client = CommonComponent.getClient(this.clientId);
+      CommonComponent.getById(params['id']).subscribe(component => this.component = component);
+      CommonComponent.getClient(params['id'], params['clientId']).subscribe(client => this.client = client);
     });
 
     if (!this.client) {
@@ -46,10 +45,10 @@ export class AddClientComponent implements OnInit {
     }
 
     this.clientForm = fb.group({
-      name: [this.client.name, [Validators.required]],
-      confirmation: [this.client.isConfirmed, [Validators.required]],
-      username: new FormControl({ value: this.component.adapters.apiKey, disabled: true }, Validators.required),
-      password: new FormControl({ value: this.component.adapters.apiSecret, disabled: true }, Validators.required)
+      name: ['', [Validators.required]],
+      confirmation: ['', [Validators.required]],
+      username: new FormControl({ value: '', disabled: true }, Validators.required),
+      password: new FormControl({ value: '', disabled: true }, Validators.required)
     });
 
     this.arbeidstaker = {

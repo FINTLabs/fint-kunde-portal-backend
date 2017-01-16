@@ -5,11 +5,11 @@
     <md-card-content>
       <div class="row">
         <div class="col-xs-4">
-          <md-input placeholder="Fødselsnummer" type="tel" formControlName="id" style="width: 99%" #personid required>
-            <md-hint [hidden]="userForm.controls['id'].valid || userForm.controls['id'].pristine" align="end" style="color: red">
+          <md-input placeholder="Fødselsnummer" type="tel" formControlName="nin" style="width: 99%" #personid required>
+            <md-hint [hidden]="userForm.controls['nin'].valid || userForm.controls['nin'].pristine" align="end" style="color: red">
               <fint-fa name="warning"></fint-fa>
-              <span *ngIf="userForm.controls['id'].hasError('required')">Påkrevd</span>
-              <span *ngIf="userForm.controls['id'].hasError('minlength') || userForm.controls['id'].hasError('maxlength')">
+              <span *ngIf="userForm.controls['nin'].hasError('required')">Påkrevd</span>
+              <span *ngIf="userForm.controls['nin'].hasError('minlength') || userForm.controls['nin'].hasError('maxlength')">
                 {{ personid.characterCount }} / 11 tegn
               </span>
             </md-hint>
@@ -42,22 +42,22 @@
       </div>
       <div class="row">
         <div class="col-xs-8">
-          <md-input placeholder="Epost" type="email" formControlName="email" style="width: 99%" required>
-            <md-hint [hidden]="userForm.controls['email'].valid || userForm.controls['email'].pristine" align="end" style="color: red">
+          <md-input placeholder="Epost" type="email" formControlName="mail" style="width: 99%" required>
+            <md-hint [hidden]="userForm.controls['mail'].valid || userForm.controls['mail'].pristine" align="end" style="color: red">
               <fint-fa name="warning"></fint-fa>
-              <span *ngIf="userForm.controls['email'].hasError('required')">Påkrevd</span>
-              <span *ngIf="userForm.controls['email'].hasError('minlength') || userForm.controls['email'].hasError('maxlength')">
+              <span *ngIf="userForm.controls['mail'].hasError('required')">Påkrevd</span>
+              <span *ngIf="userForm.controls['mail'].hasError('minlength') || userForm.controls['mail'].hasError('maxlength')">
                 {{ personid.characterCount }} / 11 tegn
               </span>
             </md-hint>
           </md-input>
         </div>
         <div class="col-xs-4">
-          <md-input placeholder="Mobil" type="tel" formControlName="phone" required>
-            <md-hint [hidden]="userForm.controls['phone'].valid || userForm.controls['phone'].pristine" align="end" style="color: red">
+          <md-input placeholder="Mobil" type="tel" formControlName="mobile" required>
+            <md-hint [hidden]="userForm.controls['mobile'].valid || userForm.controls['mobile'].pristine" align="end" style="color: red">
               <fint-fa name="warning"></fint-fa>
-              <span *ngIf="userForm.controls['phone'].hasError('required')">Påkrevd</span>
-              <span *ngIf="userForm.controls['phone'].hasError('minlength') || userForm.controls['phone'].hasError('maxlength')">
+              <span *ngIf="userForm.controls['mobile'].hasError('required')">Påkrevd</span>
+              <span *ngIf="userForm.controls['mobile'].hasError('minlength') || userForm.controls['mobile'].hasError('maxlength')">
                 {{ personid.characterCount }} / 11 tegn
               </span>
             </md-hint>

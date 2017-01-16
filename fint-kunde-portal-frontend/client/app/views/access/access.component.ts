@@ -1,7 +1,9 @@
 import { Title } from '@angular/platform-browser';
-import { IPerson, PersonService } from '../../api/person.service';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+
+import { ContactService } from './contacts.service';
+import { IContact } from 'app/api/IContact';
 
 @Component({
   selector: 'app-access',
@@ -9,26 +11,40 @@ import { Router } from '@angular/router';
   styleUrls: ['./access.component.scss']
 })
 export class AccessComponent implements OnInit {
-  persons: IPerson[];
+  total: number;
+  page: number;
+  pages: number;
+  pageSize: number;
+  contacts: IContact[];
 
-  constructor(private router: Router, private Person: PersonService, private titleService: Title) {
+  constructor(
+    private router: Router,
+    private Contacts: ContactService,
+    private titleService: Title
+  ) {
     this.titleService.setTitle('Fint | Access');
-    this.persons = Person.allWithAccess();
   }
 
   ngOnInit() {
+    this.loadContacts();
   }
 
-  grant() {
-    this.router.navigate(['/access/grant']);
+  loadContacts() {
+    this.Contacts.all().subscribe(
+      result => {
+        this.page = result.page;
+        this.total = result.total_items;
+        this.pages = result.page_count;
+        this.pageSize = result.page_size;
+        if (result._embedded) {
+          this.contacts = result._embedded.contactList;
+        }
+      }
+    );
   }
 
   revoke(person) {
-    this.Person.revokeAccess(person);
-    this.persons = this.Person.allWithAccess();
-  }
-
-  edit(person) {
-    this.router.navigate(['/access/' + person.id]);
+    this.Contacts.revokeAccess(person);
+    this.loadContacts();
   }
 }

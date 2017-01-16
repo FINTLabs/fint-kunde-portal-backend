@@ -1,8 +1,9 @@
 import { ActivatedRoute, Router } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
-
-import { CommonComponentService, ICommonComponent, IComponentAdapter } from '../../../api/common-component.service';
+import { ICommonComponent } from 'app/api/ICommonComponent';
+import { CommonComponentService } from 'app/views/components/common-component.service';
+import { IComponentAdapter } from 'app/api/IComponentAdapter';
 
 @Component({
   selector: 'app-add-adapter',
@@ -11,7 +12,7 @@ import { CommonComponentService, ICommonComponent, IComponentAdapter } from '../
 })
 export class AddAdapterComponent implements OnInit {
   adapterForm: FormGroup;
-  componentId: number;
+  componentId: string;
   component: ICommonComponent;
   userPassType: string = 'password';
 
@@ -22,30 +23,19 @@ export class AddAdapterComponent implements OnInit {
     private CommonComponent: CommonComponentService
   ) {
     this.route.params.subscribe(params => {
-      this.componentId = +params['id'];
-      this.component = CommonComponent.get(this.componentId);
+      this.componentId = params['id'];
+      CommonComponent.getById(this.componentId).subscribe(component => this.component = component);
     });
 
     if (!this.component) {
       this.router.navigate(['components/', this.componentId]);
     }
 
-    if (!this.component.adapters) {
-      this.component.adapters = <IComponentAdapter>{
-        id: null,
-        componentId: this.componentId,
-        name: null,
-        apiKey: this.CommonComponent.generateUUID(),
-        apiSecret: this.CommonComponent.generateSecret(),
-        isConfirmed: false
-      }
-    }
-
     this.adapterForm = fb.group({
-      name: [this.component.adapters.name, [Validators.required]],
-      confirmation: [this.component.adapters.isConfirmed, [Validators.required]],
-      username: new FormControl({ value: this.component.adapters.apiKey, disabled: true }, Validators.required),
-      password: new FormControl({ value: this.component.adapters.apiSecret, disabled: true }, Validators.required)
+      name: ['', [Validators.required]],
+      confirmation: ['', [Validators.required]],
+      username: new FormControl({ value: '', disabled: true }, Validators.required),
+      password: new FormControl({ value: '', disabled: true }, Validators.required)
     });
   }
 
@@ -70,7 +60,7 @@ export class AddAdapterComponent implements OnInit {
 
   save(model: IComponentAdapter, isValid: boolean) {
     if (isValid) {
-      if (!model.componentId) { model.componentId = this.componentId; }
+      // if (!model.componentId) { model.componentId = this.componentId; }
       this.CommonComponent.saveAdapter(model);
     }
     this.router.navigate(['components/', this.componentId]);

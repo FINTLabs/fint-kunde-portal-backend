@@ -1,5 +1,6 @@
 <tr (click)="toggleEditComponent()" *ngIf="!component.isEdit">
-  <td>{{ component.name }}</td>
+  <td>{{ component.displayName }}</td>
+  <td>{{ component.technicalName }}</td>
   <td class="status">
     <span class="fa-stack fa-sm {{ component.status ? 'success' : 'warning' }}">
       <i class="fa fa-circle-o fa-stack-2x"></i>

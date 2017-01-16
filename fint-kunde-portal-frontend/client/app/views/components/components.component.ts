@@ -3,8 +3,9 @@ import { Location } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
 
-import { CommonComponentService, IEditableComponent } from '../../api/common-component.service';
+import { CommonComponentService } from './common-component.service';
 import { ComponentUpdatedEvent } from './component-editor/component-editor.component';
+import { ICommonComponent } from 'app/api/ICommonComponent';
 
 @Component({
   selector: 'app-components',
@@ -12,7 +13,7 @@ import { ComponentUpdatedEvent } from './component-editor/component-editor.compo
   styleUrls: ['./components.component.scss']
 })
 export class ComponentsComponent implements OnInit {
-  components: IEditableComponent[];
+  components: ICommonComponent[];
   currentEditor;
   currentEditorId: number;
 
@@ -21,21 +22,27 @@ export class ComponentsComponent implements OnInit {
     private location: Location,
     private route: ActivatedRoute,
     private CommonComponent: CommonComponentService,
-    private titleService: Title) {
-
+    private titleService: Title
+  ) {
     this.titleService.setTitle('Fint | Components');
-    this.components = <IEditableComponent[]>CommonComponent.allConfigured();
+    this.loadComponents();
 
     // Set editor from route parameter
     this.removeEditor();
     this.route.params.subscribe(params => {
       if (params['id']) {
-        this.setEditor(CommonComponent.get(+params['id']));
+        this.setEditor(CommonComponent.getById(params['id']));
       }
     });
   }
 
   ngOnInit() {
+  }
+
+  loadComponents() {
+    this.CommonComponent.all().subscribe(result => {
+      this.components = result._embedded.componentList;
+    });
   }
 
   onEdit(event: ComponentUpdatedEvent) {
@@ -55,7 +62,7 @@ export class ComponentsComponent implements OnInit {
 
   onComponentSaved(event: ComponentUpdatedEvent) {
     this.removeEditor();
-    this.components = <IEditableComponent[]>this.CommonComponent.allConfigured();
+    this.loadComponents();
     this.redirect();
   }
 
@@ -77,7 +84,6 @@ export class ComponentsComponent implements OnInit {
       delete this.currentEditor.isEdit;
     }
     this.currentEditor = null;
-    this.components.forEach(comp => delete comp.isEdit);  // Close all others
   }
 
   addComponent() {

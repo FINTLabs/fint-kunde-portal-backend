@@ -9,9 +9,8 @@ import { AppRoutingModule } from './app-routing.module';
 import { LibSharedModule } from 'fint-shared-components';
 
 // Services
-import { CommonComponentService } from './api/common-component.service';
-import { PersonService } from './api/person.service';
 import { EventService } from 'fint-shared-components';
+import { CommonComponentService } from './views/components/common-component.service';
 
 // Components
 import { AppComponent } from './app.component';
@@ -28,9 +27,9 @@ import { AppComponent } from './app.component';
     MaterialModule.forRoot(),
 
     AppRoutingModule,
-    LibSharedModule.forRoot(),
+    LibSharedModule.forRoot()
   ],
-  providers: [PersonService, CommonComponentService, EventService],
+  providers: [ CommonComponentService, EventService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

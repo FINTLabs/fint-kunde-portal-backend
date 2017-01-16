@@ -1,7 +1,7 @@
 import { Router } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
-
-import { CommonComponentService, IEditableComponent } from '../../../api/common-component.service';
+import { CommonComponentService } from '../common-component.service';
+import { ICommonComponent } from 'app/api/ICommonComponent';
 
 @Component({
   selector: 'app-add-component',
@@ -9,16 +9,18 @@ import { CommonComponentService, IEditableComponent } from '../../../api/common-
   styleUrls: ['./add-component.component.scss']
 })
 export class AddComponentComponent implements OnInit {
-  components: IEditableComponent[];
-  get componentsNotConfigured(): IEditableComponent[] {
-    return this.components.filter(comp => this.configuredComponents.findIndex(confComp => confComp.id === comp.id) === -1);
+  components: ICommonComponent[] = [];
+  get componentsNotConfigured(): ICommonComponent[] {
+    return this.components;
   }
-  get configuredComponents(): IEditableComponent[] {
-    return <IEditableComponent[]>this.CommonComponent.allConfigured();
+  get configuredComponents(): ICommonComponent[] {
+    return this.components;
   }
 
   constructor(private CommonComponent: CommonComponentService, private router: Router) {
-    this.components = <IEditableComponent[]>CommonComponent.all();
+    CommonComponent.all().subscribe(result => {
+      this.components = result._embedded.componentList;
+    });
   }
 
   ngOnInit() {
@@ -29,12 +31,10 @@ export class AddComponentComponent implements OnInit {
   }
 
   transferLeft() {
-    let selected = this.configuredComponents.filter(comp => comp.isSelected);
-    selected.forEach(comp => comp.isConfigured = false);
+    // TODO: set flag for configured on component
   }
 
   transferRight() {
-    let selected = this.componentsNotConfigured.filter(comp => comp.isSelected);
-    selected.forEach(comp => comp.isConfigured = true);
+    // TODO: Remove flag for configured on component
   }
 }

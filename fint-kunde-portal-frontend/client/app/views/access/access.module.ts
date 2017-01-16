@@ -7,6 +7,7 @@ import { MaterialModule } from '@angular/material';
 
 import { LibSharedModule } from 'fint-shared-components';
 import { AccessRoutes } from './access.routes';
+import { ContactService } from './contacts.service';
 
 // Components
 import { AccessComponent } from './access.component';
@@ -24,6 +25,7 @@ import { GrantComponent } from './grant/grant.component';
     MaterialModule,
     LibSharedModule.forRoot(),
     RouterModule.forChild([...AccessRoutes])
-  ]
+  ],
+  providers: [ ContactService ]
 })
 export class AccessModule { }

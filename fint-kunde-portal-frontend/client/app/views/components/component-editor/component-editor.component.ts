@@ -1,16 +1,12 @@
 import { Router } from '@angular/router';
 import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
-
-import {
-  CommonComponentService,
-  ICommonComponent,
-  IComponentAdapter,
-  IComponentClient,
-  IEditableComponent
-} from '../../../api/common-component.service';
+import { ICommonComponent } from 'app/api/ICommonComponent';
+import { CommonComponentService } from '../common-component.service';
+import { IComponentClient } from 'app/api/IComponentClient';
+import { IComponentAdapter } from 'app/api/IComponentAdapter';
 
 export interface ComponentUpdatedEvent {
-  component: IEditableComponent;
+  component: ICommonComponent;
   updated: ICommonComponent;
 }
 @Component({
@@ -27,7 +23,6 @@ export class ComponentEditorComponent implements OnInit {
   get updated() {
     if (!this._updated) {
       this._updated = JSON.parse(JSON.stringify(this.component));
-      delete (<IEditableComponent>this._updated).isEdit;
     }
     return this._updated;
   }
@@ -54,7 +49,7 @@ export class ComponentEditorComponent implements OnInit {
   }
 
   getClientNames(component) {
-    return component.clients.map(client => client.name);
+    return [];
   }
 
   configureClient(client?: IComponentClient) {
@@ -63,9 +58,7 @@ export class ComponentEditorComponent implements OnInit {
   }
 
   removeClient(client) {
-    let index = this.updated.clients.findIndex(c => c === client);
-    this.updated.clients.splice(index, 1);
-    this.component.isUpdated = true;
+    // TODO: Remove client
   }
 
   configureAdapter(adapter?: IComponentAdapter) {
@@ -73,8 +66,7 @@ export class ComponentEditorComponent implements OnInit {
   }
 
   removeAdapter(adapter: IComponentAdapter) {
-    this.updated.adapters = null;
-    this.component.isUpdated = true;
+    // TODO: Remove adapter
   }
 
   saveComponent() {

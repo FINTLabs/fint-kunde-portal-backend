@@ -88,7 +88,7 @@ public class ContactController {
   @ApiOperation("Get the organisation contacts")
   @HalResource(pageSize = 10)
   @RequestMapping(method = RequestMethod.GET)
-  public HalPagedResources<Contact> getConcats(@RequestHeader("x-org-id") final String orgId, @RequestParam(required = false) Integer page) {
+  public HalPagedResources<Contact> getContacts(@RequestHeader("x-org-id") final String orgId, @RequestParam(required = false) Integer page) {
     String orgUuid = verifyOrganisation(orgId);
     Optional<List<Contact>> contacts = Optional.ofNullable(organisationService.getContacts(orgUuid));
 
@@ -104,7 +104,7 @@ public class ContactController {
 
   @ApiOperation("Get the organisation contact by nin")
   @RequestMapping(method = RequestMethod.GET, value = "/{nin}")
-  public ResponseEntity getConcat(@RequestHeader("x-org-id") final String orgId, @PathVariable final String nin) {
+  public ResponseEntity getContact(@RequestHeader("x-org-id") final String orgId, @PathVariable final String nin) {
 
     String orgUuid = verifyOrganisation(orgId);
     Optional<Contact> contact = organisationService.getContact(orgUuid, nin);
