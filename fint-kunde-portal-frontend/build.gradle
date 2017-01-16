@@ -1,7 +1,15 @@
-// frontend build.gradle
-plugins {
-  id "com.moowork.node" version "0.14"
+buildscript {
+  repositories {
+    maven {
+      url "https://plugins.gradle.org/m2/"
+    }
+  }
+  dependencies {
+    classpath "com.moowork.gradle:gradle-node-plugin:1.0.1"
+  }
 }
+
+apply plugin: 'com.moowork.node'
 apply plugin: 'java'
 apply plugin: 'maven'
 
@@ -10,7 +18,6 @@ defaultTasks 'clean', 'webpack_build', 'webjar'
 // configure gradle-node-plugin
 node {
   version = '6.9.2'
-  npmVersion = '3.10.8'
   download = false
   workDir = file("${project.projectDir}/node")
   nodeModulesDir = file("${project.projectDir}/")
