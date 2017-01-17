@@ -1,4 +1,4 @@
-<nav [class.homepage]="router.url==('/')">
+<md-toolbar [class.homepage]="router.url==('/')">
   <div class="container">
     <a routerLink="/" title="FINT">
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 230.3125 98.333374" version="1.1">
@@ -28,14 +28,14 @@
 
     <ul>
       <li [routerLinkActive]="['active']" *ngFor="let route of routes">
-        <a [routerLink]="[route.path]">
+        <a [routerLink]="[route.path]" *ngIf="route.label">
           <fint-fa *ngIf="route.icon" [name]="route.icon"></fint-fa>
           <span>{{ route.label }}</span>
         </a>
       </li>
     </ul>
   </div>
-</nav>
+</md-toolbar>
 
 <!-- Main app outlet -->
 <section class="container">

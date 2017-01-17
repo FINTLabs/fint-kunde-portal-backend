@@ -6,42 +6,35 @@
   width: 100%;
   height: 100vh;
   display: block;
+  /deep/ md-toolbar {
+    display: block;
+    background: $navbar-color;
+    height: $navbar-height;
+    min-height: 0;
+    max-height: ($navbar-height - 3);
+    padding: 0 1rem;
+    border-color: $navbar-border-color;
+    border-style: solid;
+    border-width: 0;
+    border-bottom-width: 1px;
+    font-size: 16px;
+    md-toolbar-row {
+      max-height: $navbar-height;
+    }
+  }
 }
-nav {
-  display: block;
-  background: $navbar-color;
-  height: $navbar-height;
-  padding: 0 1rem;
-  border-color: $navbar-border-color;
-  border-style: solid;
-  border-width: 0;
-  border-bottom-width: 1px;
-  text-align: left;
-  //transition-duration: 0.2s;
-  //transition-timing-function: ease-out;
-  //transition-property: height, margin, text-align;
+md-toolbar {
   .container {
     height: $navbar-height;
+    flex: 1;
   }
   svg {
     fill: $accent;
     fill-opacity:1;
     fill-rule:nonzero;
     stroke:none;
-    width: 7rem;
-    //transition: width 0.2s ease-out;
+    width: ($navbar-height * 2.24);
   }
-  /*
-  &.homepage {
-    height: 8rem;
-    text-align: center;
-    margin: 0 auto;
-    padding-top: 1rem;
-    svg {
-      width: 20%;
-    }
-  }
-*/
   a {
     color: $text-color;
     text-transform: uppercase;
@@ -57,8 +50,8 @@ nav {
     position: relative;
     display: block;
     a {
-      padding: 15px;
-      line-height: 20px;
+      padding: ($navbar-height / 4.5);
+      line-height: ($navbar-height / 2);
       display: block;
       text-decoration: none;
       span {
