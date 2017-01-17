@@ -24,7 +24,7 @@ export class ComponentsComponent implements OnInit {
     private CommonComponent: CommonComponentService,
     private titleService: Title
   ) {
-    this.titleService.setTitle('Fint | Components');
+    this.titleService.setTitle('Komponenter | Fint');
     this.loadComponents();
 
     // Set editor from route parameter

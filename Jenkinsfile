@@ -16,7 +16,7 @@ node {
 
     stage('build') {
       if (env.RUN_TYPE != 'default') {
-        sh 'cd fint-kunde-portal-frontend && npm i github:fintprosjektet/fint-shared-components' + (env.BRANCH_NAME != 'master' ? '#' + env.BRANCH_NAME : '') + ' -S'
+        sh 'cd fint-kunde-portal-frontend && npm i github:fintprosjektet/fint-shared-components' + (env.BRANCH_NAME != 'master' ? '#' + env.BRANCH_NAME : '')
       }
       sh 'chmod +x gradlew'
       sh "./gradlew"

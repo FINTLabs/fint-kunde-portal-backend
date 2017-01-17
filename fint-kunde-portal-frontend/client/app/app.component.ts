@@ -10,7 +10,7 @@ import { Component, OnInit } from '@angular/core';
 export class AppComponent implements OnInit {
   routes = [];
   constructor(private router: Router, private titleService: Title) {
-    this.titleService.setTitle('Fint | Kundeportal Mockups');
+    this.titleService.setTitle('Fint');
   }
 
   ngOnInit() {

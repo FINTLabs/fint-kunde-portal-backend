@@ -22,7 +22,7 @@ export class AccessComponent implements OnInit {
     private Contacts: ContactService,
     private titleService: Title
   ) {
-    this.titleService.setTitle('Fint | Access');
+    this.titleService.setTitle('Tilgang | Fint');
   }
 
   ngOnInit() {

@@ -19,8 +19,8 @@ const routes: Routes = [
   ],
   imports: [
     MaterialModule,
-    AccessModule,     // Including routes
     ComponentModule,  // Including routes
+    AccessModule,     // Including routes
     EventModule.forRoot(), // Including routes for events
     RouterModule.forRoot(routes)
   ],
