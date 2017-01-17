@@ -22,16 +22,11 @@ export class AddAdapterComponent implements OnInit {
     private route: ActivatedRoute,
     private CommonComponent: CommonComponentService
   ) {
-    this.route.params.subscribe(params => {
-      this.componentId = params['id'];
-      CommonComponent.getById(this.componentId).subscribe(component => this.component = component);
-    });
+    this.createForm();
+  }
 
-    if (!this.component) {
-      this.router.navigate(['components/', this.componentId]);
-    }
-
-    this.adapterForm = fb.group({
+  createForm() {
+    this.adapterForm = this.fb.group({
       name: ['', [Validators.required]],
       confirmation: ['', [Validators.required]],
       username: new FormControl({ value: '', disabled: true }, Validators.required),
@@ -40,6 +35,10 @@ export class AddAdapterComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.route.params.subscribe(params => {
+      this.componentId = params['id'];
+      this.CommonComponent.getById(this.componentId).subscribe(component => this.component = component);
+    });
   }
 
   onCancel() {
@@ -51,11 +50,11 @@ export class AddAdapterComponent implements OnInit {
   }
 
   generateUserPass() {
-    let userNameCtrl = this.adapterForm.controls['username'];
-    userNameCtrl.setValue(this.CommonComponent.generateUUID(), { onlySelf: true });
+    //let userNameCtrl = this.adapterForm.controls['username'];
+    //userNameCtrl.setValue(this.CommonComponent.generateUUID(), { onlySelf: true });
 
-    let passwordCtrl = this.adapterForm.controls['password'];
-    passwordCtrl.setValue(this.CommonComponent.generateSecret(), { onlySelf: true });
+    //let passwordCtrl = this.adapterForm.controls['password'];
+    //passwordCtrl.setValue(this.CommonComponent.generateSecret(), { onlySelf: true });
   }
 
   save(model: IComponentAdapter, isValid: boolean) {

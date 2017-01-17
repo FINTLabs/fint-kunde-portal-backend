@@ -8,6 +8,7 @@ import no.fint.portal.component.Adapter;
 import no.fint.portal.component.Client;
 import no.fint.portal.component.Component;
 import no.fint.portal.component.ComponentService;
+import no.fint.portal.customer.dto.ComponentDto;
 import no.fint.portal.exceptions.EntityFoundException;
 import no.fint.portal.exceptions.EntityNotFoundException;
 import no.fint.portal.exceptions.UpdateEntityMismatchException;
@@ -25,6 +26,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.UnknownHostException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -44,22 +46,37 @@ public class ComponentController {
   @ApiOperation("Get all components")
   @HalResource(pageSize = 10)
   @RequestMapping(method = RequestMethod.GET)
-  public HalPagedResources<Component> getComponents(@RequestParam(required = false) Integer page) {
-    // TODO: Return DTO with boolean flag exposing if this component is configured for the organisation or not
-    return new HalPagedResources<>(componentService.getComponents(), page);
+  public HalPagedResources<ComponentDto> getComponents(@RequestHeader("x-org-id") final String orgId, @RequestParam(required = false) Integer page) {
+    String orgUuid = verifyOrganisation(orgId);
+
+    List<Component> allComponents = componentService.getComponents();
+    List<Component> configured = componentService.getComponentsByOrgUUID(orgUuid);
+
+    List<ComponentDto> returnedComponents = new ArrayList<>();
+    allComponents.forEach((component) -> {
+      ComponentDto comp = new ComponentDto(component);
+      comp.setConfigured(configured.indexOf(component) > -1);
+      comp.setClients(componentService.getClients(comp.getUuid(), orgUuid));
+      List<Adapter> adapters = componentService.getAdapters(comp.getUuid(), orgUuid);
+      if (adapters != null && adapters.size() > 0) {
+        comp.setAdapter(adapters.get(0));
+      }
+      returnedComponents.add(comp);
+    });
+    return new HalPagedResources<>(returnedComponents, page);
   }
 
   @ApiOperation("Get component by uuid")
   @RequestMapping(method = RequestMethod.GET, value = "/{compUuid}")
-  public ResponseEntity getComponent(@PathVariable String uuid) {
-    Optional<Component> component = componentService.getComponentByUUID(uuid);
+  public ResponseEntity getComponent(@PathVariable String compUuid) {
+    Optional<Component> component = componentService.getComponentByUUID(compUuid);
 
     if (component.isPresent()) {
       return ResponseEntity.ok(component.get());
     }
 
     throw new EntityNotFoundException(
-      String.format("Component with uuid %s could not be found", uuid)
+      String.format("Component with uuid %s could not be found", compUuid)
     );
   }
 

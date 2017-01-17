@@ -5,11 +5,11 @@
     <md-card-content>
       <div class="row">
         <div class="col-xs-4">
-          <md-input placeholder="Navn" type="text" formControlName="name">
-            <md-hint [hidden]="clientForm.controls['name'].valid || clientForm.controls['name'].pristine" align="end" style="color: red">
+          <md-input placeholder="Navn" type="text" formControlName="note">
+            <md-hint [hidden]="clientForm.controls['note'].valid || clientForm.controls['note'].pristine" align="end" style="color: red">
               <fint-fa name="warning"></fint-fa>
-              <span *ngIf="clientForm.controls['name'].hasError('required')">Påkrevd</span>
-              <span *ngIf="clientForm.controls['name'].hasError('minlength') || clientForm.controls['name'].hasError('maxlength')">
+              <span *ngIf="clientForm.controls['note'].hasError('required')">Påkrevd</span>
+              <span *ngIf="clientForm.controls['note'].hasError('minlength') || clientForm.controls['note'].hasError('maxlength')">
                 {{ personid.characterCount }} / 11 tegn
               </span>
             </md-hint>
@@ -18,7 +18,7 @@
       </div>
       <div class="row">
         <div class="col-xs-5">
-          <md-input placeholder="API Nøkkel" [type]="userPassType" formControlName="username" disabled></md-input>
+          <md-input placeholder="API Nøkkel" [type]="userPassType" formControlName="uuid" disabled></md-input>
         </div>
         <div class="col-xs-5">
           <md-input placeholder="API Hemmelighet" [type]="userPassType" formControlName="password" disabled></md-input>
@@ -41,56 +41,11 @@
         </div>
       </div>
 
-      <!-- Stupid dummy list-->
-      <div class="center api-list" *ngIf="component.name === 'Arbeidstaker'">
-        <ul class="unstyled">
-          <li>
-            <fint-fa name="plus" (click)="showArbeidstaker = !showArbeidstaker"></fint-fa>
-            <md-checkbox [checked]="arbeidstaker.enabled">Arbeidstaker</md-checkbox>
-            <ul class="unstyled" *ngIf="showArbeidstaker">
-              <li>
-                <md-checkbox [checked]="arbeidstaker.firstname">Fornavn</md-checkbox>
-              </li>
-              <li>
-                <md-checkbox [checked]="arbeidstaker.lastname">Etternavn</md-checkbox>
-              </li>
-              <li>
-                <md-checkbox [checked]="arbeidstaker.email">Epost</md-checkbox>
-              </li>
-              <li>
-                <md-checkbox [checked]="arbeidstaker.phone">Mobil</md-checkbox>
-              </li>
-              <li>
-                <fint-fa name="plus" (click)="showStilling = !showStilling"></fint-fa>
-                <md-checkbox [checked]="arbeidstaker.stilling.enabled">Stilling</md-checkbox>
-                <ul class="unstyled" *ngIf="showStilling">
-                  <li>
-                    <md-checkbox [checked]="arbeidstaker.stilling.avdeling">Avdeling</md-checkbox>
-                  </li>
-                  <li>
-                    <md-checkbox [checked]="arbeidstaker.stilling.grunnlonn">Grunnlønn</md-checkbox>
-                  </li>
-                  <li>
-                    <md-checkbox [checked]="arbeidstaker.stilling.stillingskode">Stillingskode</md-checkbox>
-                  </li>
-                </ul>
-              </li>
-              <li>
-                <md-checkbox [checked]="arbeidstaker.ansattnr">Ansattnummer</md-checkbox>
-              </li>
-              <li>
-                <md-checkbox [checked]="arbeidstaker.birthnumber">Fødselsnummer</md-checkbox>
-              </li>
-            </ul>
-          </li>
-        </ul>
-      </div>
-
     </md-card-content>
     <md-card-actions>
       <button md-raised-button md-ripple [disabled]="!clientForm.valid || clientForm.value.confirmation !== true" type="submit"
         color="primary"><fint-fa name="save"></fint-fa>Lagre</button>
-      <button md-raised-button md-ripple type="button" (click)="onCancel()"><fint-fa name="ban"></fint-fa>Avbryt</button>
+      <button md-raised-button md-ripple type="button" [routerLink]="['../']"><fint-fa name="ban"></fint-fa>Avbryt</button>
     </md-card-actions>
   </md-card>
 </form>

@@ -1,4 +1,6 @@
 import { IHAL } from './IHAL';
+import { IComponentClient } from 'app/api/IComponentClient';
+import { IComponentAdapter } from 'app/api/IComponentAdapter';
 
 export interface ICommonComponent {
   dn: string;
@@ -6,11 +8,17 @@ export interface ICommonComponent {
   displayName: string;    // Displayname of the component.
   technicalName: string;  // Technical name of the component.
   description?: string;    // A description of what the component does.
-  icon?: string;
+
+  isConfigured: boolean;
+  clients: IComponentClient[];
+  adapter: IComponentAdapter;
+
+  // Frontend only, not transmitted to/from server
+  isEdit?: boolean;
 }
 export interface IComponentHALPage extends IHAL {
   _embedded: {
-    componentList: ICommonComponent[]
+    componentDtoList: ICommonComponent[]
   }
 }
 

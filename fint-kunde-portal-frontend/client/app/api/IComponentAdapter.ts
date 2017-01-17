@@ -1,8 +1,8 @@
 export interface IComponentAdapter {
-  id: number;
-  componentId: number;
-  name: string;
-  apiKey: string;
-  apiSecret: string;
-  isConfirmed: boolean;
+  dn: string;
+  uuid: string;
+  shortDescription: string;
+  orgId: string;
+  note: string;
+  password: string;
 }

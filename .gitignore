@@ -5,3 +5,5 @@ classes
 schema
 out
 *.log*
+/.settings/
+*.project

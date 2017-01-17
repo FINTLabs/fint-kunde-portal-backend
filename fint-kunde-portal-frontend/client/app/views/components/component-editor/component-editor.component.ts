@@ -1,5 +1,5 @@
-import { Router } from '@angular/router';
-import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
+import { Router, ActivatedRoute } from '@angular/router';
+import { ChangeDetectionStrategy, Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { ICommonComponent } from 'app/api/ICommonComponent';
 import { CommonComponentService } from '../common-component.service';
 import { IComponentClient } from 'app/api/IComponentClient';
@@ -15,46 +15,65 @@ export interface ComponentUpdatedEvent {
   styleUrls: ['./component-editor.component.scss']
 })
 export class ComponentEditorComponent implements OnInit {
-  @Input('appComponentEditor') component;
+  @Input('appComponentEditor') component: ICommonComponent;
   @Output() componentChange: EventEmitter<ComponentUpdatedEvent> = new EventEmitter<ComponentUpdatedEvent>();
-  @Output() onEdit: EventEmitter<ComponentUpdatedEvent> = new EventEmitter<ComponentUpdatedEvent>();
+  @Output() onEdit: EventEmitter<ComponentEditorComponent> = new EventEmitter<ComponentEditorComponent>();
 
-  _updated: ICommonComponent;
-  get updated() {
-    if (!this._updated) {
-      this._updated = JSON.parse(JSON.stringify(this.component));
+  get componentUuid() { return this.component.uuid; }
+
+  /**
+   * @return true if component is currently in edit mode
+   */
+  _active: boolean = false;
+  get isActive() { return this._active; }
+  set isActive(flag) {
+    if (flag !== this._active) {
+      delete this._componentCopy; // Reset component data clone
+      this._active = flag;
     }
-    return this._updated;
   }
 
-
-  constructor(private router: Router, private CommonComponent: CommonComponentService) {
+  /**
+   * Create a copy. Do not work on original item,
+   * because we want to be able to rollback changes without reload.
+   *
+   * @return a copy of the given ICommonComponent
+   */
+  _componentCopy: ICommonComponent;
+  get updated() {
+    if (!this._componentCopy) {
+      this._componentCopy = JSON.parse(JSON.stringify(this.component));
+    }
+    return this._componentCopy;
   }
+
+  /**
+   * @return true if
+   */
+  get isUpdated() {
+    return JSON.stringify(this.component) != JSON.stringify(this.updated);
+  }
+
+  constructor(private router: Router,
+    private CommonComponent: CommonComponentService,
+    private route: ActivatedRoute) { }
 
   ngOnInit() { }
 
-  toggleEditComponent() {
-    if (!this.component.isEdit) { // Opening editor.
-      this._updated = null;       // Reset component data clone
-    }
-    this.onEdit.emit({ component: this.component, updated: this.updated }); // Notify parent
+  toggleEditComponent(flag?: boolean) {
+    this.isActive = (flag != null ? flag : !this.isActive);
+    this.onEdit.emit(this); // Notify parent
   }
 
-  componentChanged(key, value) {
-    // Does not notify parent until user clicks "Save". This allows undoing changes
-    if (this.component[key] !== value) {
-      this.component.isUpdated = true;
-      this.updated[key] = value;
-    }
-  }
+  componentChanged(key, value) { }
 
   getClientNames(component) {
-    return [];
+    return [].concat(component.clients).map(client => client ? client.note : '');
   }
 
   configureClient(client?: IComponentClient) {
     //this.toggleEditComponent();
-    this.router.navigate(['/components/' + this.component.id + '/client/' + (client ? client.id : '')]);
+    this.router.navigate(['./client/', (client ? client.uuid : '')], { relativeTo: this.route });
   }
 
   removeClient(client) {
@@ -62,7 +81,7 @@ export class ComponentEditorComponent implements OnInit {
   }
 
   configureAdapter(adapter?: IComponentAdapter) {
-    this.router.navigate(['/components/' + this.component.id + '/adapter/']);
+    this.router.navigate(['./adapter/'], { relativeTo: this.route });
   }
 
   removeAdapter(adapter: IComponentAdapter) {

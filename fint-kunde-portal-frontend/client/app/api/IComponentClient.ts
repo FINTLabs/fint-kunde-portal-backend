@@ -1,8 +1,17 @@
 export interface IComponentClient {
-  id: number;
-  componentId: number;
-  name: string;
-  apiKey: string;
-  apiSecret: string;
-  isConfirmed: boolean;
+  dn: string;
+  uuid: string;
+  shortDescription: string;
+  orgId: string;
+  note: string;
+  password: string;
+}
+
+export class EmptyClient implements IComponentClient {
+  dn = null;
+  uuid = null;
+  shortDescription = null;
+  orgId = null;
+  note = null;
+  password = null;
 }

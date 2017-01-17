@@ -19,7 +19,7 @@ export class AddComponentComponent implements OnInit {
 
   constructor(private CommonComponent: CommonComponentService, private router: Router) {
     CommonComponent.all().subscribe(result => {
-      this.components = result._embedded.componentList;
+      this.components = result._embedded.componentDtoList;
     });
   }
 

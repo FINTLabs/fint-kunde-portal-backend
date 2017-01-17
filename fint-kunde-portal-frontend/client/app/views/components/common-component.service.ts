@@ -1,6 +1,11 @@
 import { Injectable } from '@angular/core';
 import { Http } from '@angular/http';
 import { Observable } from 'rxjs';
+import 'rxjs/add/operator/map';
+import 'rxjs/add/operator/share';
+import 'rxjs/add/operator/catch';
+import 'rxjs/add/observable/throw';
+import 'rxjs/observable/of';
 
 import { FintDialogService } from 'fint-shared-components';
 
@@ -13,34 +18,25 @@ import { IComponentAdapter } from 'app/api/IComponentAdapter';
 export class CommonComponentService {
   base: string = '/api/components';
 
+  _allCompObservable: Observable<IComponentHALPage>;
+
   constructor(private http: Http, private fintDialog: FintDialogService) {}
-
-  generateUUID() {
-    function s(n) { return h((Math.random() * (1 << (n << 2))) ^ Date.now()).slice(-n); }
-    function h(n) { return (n | 0).toString(16); }
-    return [
-      s(4) + s(4), s(4),
-      '4' + s(3),                    // UUID version 4
-      h(8 | (Math.random() * 4)) + s(3), // {8|9|A|B}xxx
-      // s(4) + s(4) + s(4),
-      Date.now().toString(16).slice(-10) + s(2) // Use timestamp to avoid collisions
-    ].join('-');
-  }
-
-  generateSecret() {
-    let cc = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890-=!@#$%^&*()_+:<>{}[]".split('');
-    let key = '';
-    for (let i = 0; i < 50; i++) key += cc[Math.floor(Math.random() * cc.length)];
-    return key;
-  }
 
   // ---------------------------------
   // -- Components
   // ---------------------------------
   all(): Observable<IComponentHALPage> {
-    return this.http.get(this.base)
-      .map(result => result.json())
-      .catch(error => this.handleError(error));
+    if (!this._allCompObservable) {
+      this._allCompObservable = this.http.get(this.base)
+        .map(result => {
+          let allComponents       = result.json();
+          this._allCompObservable = Observable.of(allComponents);
+          return allComponents;
+        })
+        .share()
+        .catch(error => this.handleError(error));
+    }
+    return this._allCompObservable;
   }
 
   getById(compUuid: string) {
@@ -50,9 +46,11 @@ export class CommonComponentService {
   }
 
   revokeAccess(component: ICommonComponent) {
+    delete this._allCompObservable;
   }
 
   save(component: ICommonComponent) {
+    delete this._allCompObservable;
   }
 
   // ---------------------------------
@@ -71,6 +69,7 @@ export class CommonComponentService {
   }
 
   saveClient(client: IComponentClient) {
+    delete this._allCompObservable;
   }
 
   // ---------------------------------
@@ -89,9 +88,11 @@ export class CommonComponentService {
   }
 
   removeAdapter(adapter: IComponentAdapter) {
+    delete this._allCompObservable;
   }
 
   saveAdapter(adapter: IComponentAdapter) {
+    delete this._allCompObservable;
   }
 
   handleError(error) {

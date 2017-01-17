@@ -20,7 +20,7 @@
 
       <!-- Editor -->
       <tbody *ngFor="let component of components;" [appComponentEditor]="component" (componentChange)="onComponentSaved($event)"
-        (onEdit)="onEdit($event)" [class.edit]="component.isEdit">
+        (onEdit)="onEdit($event)" [class.edit]="currentEditor && currentEditor.componentUuid == component.uuid">
       </tbody>
 
     </table>

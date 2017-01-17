@@ -1,99 +1,126 @@
 import { Title } from '@angular/platform-browser';
 import { Location } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChildren, QueryList, AfterViewInit, ChangeDetectorRef } from '@angular/core';
 
 import { CommonComponentService } from './common-component.service';
-import { ComponentUpdatedEvent } from './component-editor/component-editor.component';
+import { ComponentUpdatedEvent, ComponentEditorComponent } from './component-editor/component-editor.component';
 import { ICommonComponent } from 'app/api/ICommonComponent';
+
+import { each } from 'lodash';
 
 @Component({
   selector: 'app-components',
   templateUrl: './components.component.html',
   styleUrls: ['./components.component.scss']
 })
-export class ComponentsComponent implements OnInit {
+export class ComponentsComponent implements OnInit, AfterViewInit {
   components: ICommonComponent[];
-  currentEditor;
-  currentEditorId: number;
+  page: number;
+  pages: number;
+  pageSize: number;
+  totalItems: number;
+
+  componentUuid: string;
+
+  @ViewChildren(ComponentEditorComponent) editors: QueryList<ComponentEditorComponent>;
+
+  // Currently active editor
+  _currentEditor: ComponentEditorComponent;
+  get currentEditor(): ComponentEditorComponent {
+    if (this.editors) {
+      return this.editors.find(editor => editor.isActive);
+    }
+    return null;
+  }
+  set currentEditor(e) {
+    if (this._currentEditor != e) {
+      if (this.editors) {
+        this.editors.forEach(editor => {
+          if (editor !== e) { editor.isActive = false; }
+        });
+      }
+      if (e) {
+        if (e.componentUuid !== this.componentUuid) {
+          this.router.navigate(['/components', e.componentUuid]);
+        }
+      } else {
+        this.router.navigate(['/components']);
+      }
+      this._currentEditor = e;
+    }
+  }
 
   constructor(
     private router: Router,
-    private location: Location,
     private route: ActivatedRoute,
     private CommonComponent: CommonComponentService,
-    private titleService: Title
+    private titleService: Title,
+    private change: ChangeDetectorRef
   ) {
-    this.titleService.setTitle('Komponenter | Fint');
     this.loadComponents();
+  }
 
-    // Set editor from route parameter
-    this.removeEditor();
-    this.route.params.subscribe(params => {
-      if (params['id']) {
-        this.setEditor(CommonComponent.getById(params['id']));
-      }
+  private loadComponents() {
+    this.CommonComponent.all().subscribe(result => {
+      this.page = result.page;
+      this.pages = result.page_count;
+      this.pageSize = result.page_size;
+      this.totalItems = result.total_items;
+      this.components = result._embedded.componentDtoList;
     });
   }
 
   ngOnInit() {
+    this.titleService.setTitle('Komponenter | Fint');
   }
 
-  loadComponents() {
-    this.CommonComponent.all().subscribe(result => {
-      this.components = result._embedded.componentList;
+  ngAfterViewInit() {
+    // Set editor from route parameter
+    this.route.params.subscribe(params => {
+      if (params['id']) {
+        this.componentUuid = params['id'];
+        // Set active editor
+        if (!this.editors.toArray().length) {
+          this.editors.changes.subscribe(editors => this.detectEditor());
+        } else {
+          this.detectEditor();
+        }
+      }
     });
   }
 
-  onEdit(event: ComponentUpdatedEvent) {
-    if (!this.hasChanges()) {
-      this.setEditor(event.component);
+  /**
+   * Editor set in url
+   */
+  private detectEditor() {
+    let editor = this.editors.find(editor => editor.componentUuid == this.componentUuid);
+    if (editor && !editor.isActive) {
+      editor.toggleEditComponent();
+      this.change.detectChanges();
     }
   }
 
-  private hasChanges(noNotify?: boolean) {
-    if (this.currentEditor && this.currentEditor.isUpdated) {
-      // Has changes.
-      if (noNotify) { return true; }
-      return !(confirm('Data er endret. Ønsker du å forkaste endringer?'));
-    }
-    return false;
-  }
-
-  onComponentSaved(event: ComponentUpdatedEvent) {
-    this.removeEditor();
-    this.loadComponents();
-    this.redirect();
-  }
-
-  private setEditor(component, forceOpen?: boolean) {
-    let newState = (forceOpen === true ? true : !component.isEdit);
-    this.removeEditor();
-    if (newState) {
-      this.redirect(component.id);
-      this.currentEditor = component; // Set editor
-      component.isEdit = newState;    // Set state
+  /**
+   * Editor event emitted from ViewChild
+   */
+  onEdit(editor: ComponentEditorComponent) {
+    if (editor.isActive) {
+      this.currentEditor = editor;
     } else {
-      this.redirect();
+      this.currentEditor = null;
     }
   }
 
-  private removeEditor() {
-    if (this.currentEditor) {
-      delete this.currentEditor.isUpdated;
-      delete this.currentEditor.isEdit;
-    }
+  /**
+   * Component saved event emitted from ViewChild
+   */
+  onComponentSaved(event: ComponentUpdatedEvent) {
     this.currentEditor = null;
+    this.loadComponents();
   }
 
   addComponent() {
     this.router.navigate(['/components/add']);
-  }
-
-  private redirect(componentId?: number) {
-    if (this.currentEditorId != componentId) {
-      this.location.go('/components/' + (!isNaN(componentId) ? componentId : ''));
-      this.currentEditorId = componentId;
-    }
   }
 }
