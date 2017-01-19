@@ -58,6 +58,7 @@ export class AddAdapterComponent implements OnInit {
 
   onAdapterReceived(adapter) {
     this.adapter = adapter;
+    this.adapter.confirmation = true; // Since it was persisted, someone has had to check this.
     this.adapterForm.setValue(this.adapter);
   }
 

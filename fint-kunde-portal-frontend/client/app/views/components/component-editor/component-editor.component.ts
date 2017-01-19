@@ -76,6 +76,9 @@ export class ComponentEditorComponent {
   }
 
   saveComponent() {
+    if (this.isUpdated) {
+      
+    }
     this.CommonComponent.assignToOrganisation(this.updated);
     this.componentChange.emit(this.updated); // Notify parent
   }

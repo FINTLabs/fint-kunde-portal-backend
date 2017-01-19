@@ -90,7 +90,7 @@ public class ComponentController {
 
   @ApiOperation("Add organisation to component")
   @RequestMapping(method = RequestMethod.POST,
-    consumes = MediaType.APPLICATION_JSON_UTF8_VALUE,
+    consumes = MediaType.APPLICATION_JSON_VALUE,
     value = "/{compUuid}/organisations"
   )
   public ResponseEntity addOrganisationToComponent(@PathVariable final String compUuid, @RequestHeader("x-org-id") final String orgId) {
@@ -104,7 +104,6 @@ public class ComponentController {
 
   @ApiOperation("Remove organisation to component")
   @RequestMapping(method = RequestMethod.DELETE,
-    consumes = MediaType.APPLICATION_JSON_UTF8_VALUE,
     value = "/{compUuid}/organisations"
   )
   public ResponseEntity removeOrganisationFromComponent(@PathVariable final String compUuid, @RequestHeader("x-org-id") final String orgId) {
@@ -119,7 +118,7 @@ public class ComponentController {
 
   @ApiOperation("Add client.")
   @RequestMapping(method = RequestMethod.POST,
-    consumes = MediaType.APPLICATION_JSON_UTF8_VALUE,
+    consumes = MediaType.APPLICATION_JSON_VALUE,
     value = "/{compUuid}/organisations/clients"
 
   )
@@ -131,7 +130,7 @@ public class ComponentController {
     verifyComponent(compUuid);
 
     if (componentService.addClient(client, compUuid, orgUuid)) {
-      return ResponseEntity.ok().build();
+      return ResponseEntity.ok().body(client);
     }
 
     throw new EntityFoundException(
@@ -181,7 +180,7 @@ public class ComponentController {
     Optional<Client> client = componentService.getClient(clientUuid, compUuid, orgUuid);
     if (client.isPresent()) {
       componentService.resetClientPassword(client.get());
-      return ResponseEntity.ok().body(client);
+      return ResponseEntity.ok().body(client.get());
     }
 
     throw new EntityNotFoundException(String.format("Could not find client: %s", client));
@@ -211,7 +210,7 @@ public class ComponentController {
 
     Optional client = componentService.getClient(clientUuid, compUuid, orgUuid);
     if (client.isPresent()) {
-      return ResponseEntity.ok().body(client);
+      return ResponseEntity.ok().body(client.get());
     }
 
     throw new EntityNotFoundException(
@@ -244,7 +243,7 @@ public class ComponentController {
   @ApiOperation("Add adapter.")
   @RequestMapping(
     method = RequestMethod.POST,
-    consumes = MediaType.APPLICATION_JSON_UTF8_VALUE,
+    consumes = MediaType.APPLICATION_JSON_VALUE,
     value = "/{compUuid}/organisations/adapters"
 
   )
@@ -255,7 +254,7 @@ public class ComponentController {
     verifyComponent(compUuid);
 
     if (componentService.addAdapter(adapter, compUuid, orgUuid)) {
-      return ResponseEntity.ok().build();
+      return ResponseEntity.ok().body(adapter);
     }
 
     throw new EntityFoundException(
@@ -269,7 +268,7 @@ public class ComponentController {
   @RequestMapping(method = RequestMethod.PUT,
     value = "/{compUuid}/organisations/adapters/{adapterUuid}"
   )
-  public ResponseEntity updateClient(@RequestBody final Adapter adapter, @PathVariable final String adapterUuid,
+  public ResponseEntity updateAdapter(@RequestBody final Adapter adapter, @PathVariable final String adapterUuid,
                                      @PathVariable final String compUuid,
                                      @RequestHeader("x-org-id") final String orgId) {
 
@@ -305,7 +304,7 @@ public class ComponentController {
     Optional<Adapter> adapter = componentService.getAdapter(adapterUuid, compUuid, orgUuid);
     if (adapter.isPresent()) {
       componentService.resetAdapterPassword(adapter.get());
-      return ResponseEntity.ok().body(adapter);
+      return ResponseEntity.ok().body(adapter.get());
     }
 
     throw new EntityNotFoundException(String.format("Could not find client: %s", adapter));
@@ -337,7 +336,7 @@ public class ComponentController {
 
     Optional adapter = componentService.getAdapter(adapterUuid, compUuid, orgUuid);
     if (adapter.isPresent()) {
-      return ResponseEntity.ok().body(adapter);
+      return ResponseEntity.ok().body(adapter.get());
     }
 
     throw new EntityNotFoundException(

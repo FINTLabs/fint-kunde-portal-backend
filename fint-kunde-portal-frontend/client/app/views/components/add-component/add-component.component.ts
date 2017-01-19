@@ -33,10 +33,14 @@ export class AddComponentComponent implements OnInit {
   ngOnInit() {  }
 
   loadComponents() {
+    const me = this;
     this.CommonComponent.all().subscribe(result => {
       if (result._embedded.componentDtoList) {
-        this.components = result._embedded.componentDtoList;
-        each(this.components, comp => comp.wasConfigured = comp.configured);
+        me.components = result._embedded.componentDtoList
+          .map(comp => {
+            comp.wasConfigured = comp.configured;
+            return comp;
+          });
       }
     });
   }
@@ -45,12 +49,12 @@ export class AddComponentComponent implements OnInit {
     Promise.all([
       // Assign all components set
       Promise.all(this.components
-        .filter(comp => comp.wasConfigured != comp.configured && comp.configured == true)
+        .filter(comp => (comp.wasConfigured != comp.configured && comp.configured == true))
         .map(comp => this.CommonComponent.assignToOrganisation(comp).toPromise())),
 
       // Remove all components unset
       Promise.all(this.components
-        .filter(comp => comp.wasConfigured != comp.configured && comp.configured == false)
+        .filter(comp => (comp.wasConfigured != comp.configured && comp.configured == false))
         .map(comp => this.CommonComponent.removeFromOrganisation(comp).toPromise()))
     ]).then(
       result => this.router.navigate(['/components']),

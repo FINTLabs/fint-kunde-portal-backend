@@ -28,6 +28,13 @@ export class CommonComponentService {
     this._compObservableCache = <[string, Observable<ICommonComponent>]>[];
   }
 
+  generateSecret() {
+    let cc = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890-=!@#$%^&*()_+:<>{}[]".split('');
+    let key = '';
+    for (let i = 0; i < 50; i++) key += cc[Math.floor(Math.random() * cc.length)];
+    return key;
+  }
+
   // ---------------------------------
   // -- Components
   // ---------------------------------
@@ -61,14 +68,12 @@ export class CommonComponentService {
 
   removeFromOrganisation(component: ICommonComponent) {
     return this.http.delete(`${this.base}/${component.uuid}/organisations`)
-      .map(result => result.json())
       .finally(() => this.invalidateCache())
       .catch(error => this.handleError(error));
   }
 
   assignToOrganisation(component: ICommonComponent) {
     return this.http.post(`${this.base}/${component.uuid}/organisations`, {})
-      .map(result => result.json())
       .finally(() => this.invalidateCache())
       .catch(error => this.handleError(error));
   }
@@ -91,7 +96,6 @@ export class CommonComponentService {
   removeClient(compUuid: string, client: IComponentClient) {
     let url = `${this.base}/${compUuid}/organisations/clients/${client.uuid}`;
     return this.http.delete(url)
-      .map(result => result.json())
       .finally(() => this.invalidateCache())
       .catch(error => this.handleError(error));
   }
@@ -126,7 +130,6 @@ export class CommonComponentService {
   removeAdapter(compUuid: string, adapter: IComponentAdapter) {
     let url = `${this.base}/${compUuid}/organisations/adapters/${adapter.uuid}`;
     return this.http.delete(url)
-      .map(result => result.json())
       .finally(() => this.invalidateCache())
       .catch(error => this.handleError(error));
   }
@@ -144,6 +147,7 @@ export class CommonComponentService {
   }
 
   handleError(error) {
+    console.log(error);
     this.fintDialog.displayHttpError(error);
     return Observable.throw(error);
   }
