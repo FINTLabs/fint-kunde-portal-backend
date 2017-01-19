@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/share';
 import 'rxjs/add/operator/catch';
+import 'rxjs/add/operator/finally';
 import 'rxjs/add/observable/throw';
 import 'rxjs/observable/of';
 
@@ -18,9 +19,14 @@ import { IComponentAdapter } from 'app/api/IComponentAdapter';
 export class CommonComponentService {
   base: string = '/api/components';
 
-  _allCompObservable: Observable<IComponentHALPage>;
-
   constructor(private http: Http, private fintDialog: FintDialogService) {}
+
+  _allCompObservable: Observable<IComponentHALPage>; // Cache of all components
+  _compObservableCache: [string, Observable<ICommonComponent>] = <[string, Observable<ICommonComponent>]>[];
+  invalidateCache() {
+    delete this._allCompObservable;
+    this._compObservableCache = <[string, Observable<ICommonComponent>]>[];
+  }
 
   // ---------------------------------
   // -- Components
@@ -40,23 +46,37 @@ export class CommonComponentService {
   }
 
   getById(compUuid: string) {
-    return this.http.get(`${this.base}/${compUuid}`)
+    if (!this._compObservableCache[compUuid]) {
+      this._compObservableCache[compUuid] = this.http.get(`${this.base}/${compUuid}`)
+        .map(result => {
+          let component = result.json();
+          this._compObservableCache[compUuid] = Observable.of(component);
+          return component;
+        })
+        .share()
+        .catch(error => this.handleError(error));
+    }
+    return this._compObservableCache[compUuid];
+  }
+
+  removeFromOrganisation(component: ICommonComponent) {
+    return this.http.delete(`${this.base}/${component.uuid}/organisations`)
       .map(result => result.json())
+      .finally(() => this.invalidateCache())
       .catch(error => this.handleError(error));
   }
 
-  revokeAccess(component: ICommonComponent) {
-    delete this._allCompObservable;
-  }
-
-  save(component: ICommonComponent) {
-    delete this._allCompObservable;
+  assignToOrganisation(component: ICommonComponent) {
+    return this.http.post(`${this.base}/${component.uuid}/organisations`, {})
+      .map(result => result.json())
+      .finally(() => this.invalidateCache())
+      .catch(error => this.handleError(error));
   }
 
   // ---------------------------------
   // -- Clients
   // ---------------------------------
-  allClients(compUuid: string) {
+  allClients(compUuid: string): Observable<IComponentClient[]> {
     return this.http.get(`${this.base}/${compUuid}/organisations/clients`)
       .map(result => result.json())
       .catch(error => this.handleError(error));
@@ -68,31 +88,59 @@ export class CommonComponentService {
       .catch(error => this.handleError(error));
   }
 
-  saveClient(client: IComponentClient) {
-    delete this._allCompObservable;
+  removeClient(compUuid: string, client: IComponentClient) {
+    let url = `${this.base}/${compUuid}/organisations/clients/${client.uuid}`;
+    return this.http.delete(url)
+      .map(result => result.json())
+      .finally(() => this.invalidateCache())
+      .catch(error => this.handleError(error));
+  }
+
+  saveClient(compUuid: string, client: IComponentClient): Observable<IComponentClient> {
+    let url = `${this.base}/${compUuid}/organisations/clients`;
+    if (!client.uuid) { delete client.dn; delete client.uuid; }
+    if (!client.orgId) { delete client.orgId; }
+    if (!client.password) { delete client.password; }
+    delete client.confirmation;
+    return (client.uuid ? this.http.put(url, client) : this.http.post(url, client))
+      .map(result => result.json())
+      .finally(() => this.invalidateCache())
+      .catch(error => this.handleError(error));
   }
 
   // ---------------------------------
   // -- Adapters
   // ---------------------------------
-  allAdapters(compUuid: string) {
+  allAdapters(compUuid: string): Observable<IComponentAdapter[]> {
     return this.http.get(`${this.base}/${compUuid}/organisations/adapters`)
       .map(result => result.json())
       .catch(error => this.handleError(error));
   }
 
-  getAdapter(compUuid: string, adapterUuid: string) {
+  getAdapter(compUuid: string, adapterUuid: string): Observable<IComponentAdapter> {
     return this.http.get(`${this.base}/${compUuid}/organisations/adapters/${adapterUuid}`)
       .map(result => result.json())
       .catch(error => this.handleError(error));
   }
 
-  removeAdapter(adapter: IComponentAdapter) {
-    delete this._allCompObservable;
+  removeAdapter(compUuid: string, adapter: IComponentAdapter) {
+    let url = `${this.base}/${compUuid}/organisations/adapters/${adapter.uuid}`;
+    return this.http.delete(url)
+      .map(result => result.json())
+      .finally(() => this.invalidateCache())
+      .catch(error => this.handleError(error));
   }
 
-  saveAdapter(adapter: IComponentAdapter) {
-    delete this._allCompObservable;
+  saveAdapter(compUuid: string, adapter: IComponentAdapter): Observable<IComponentAdapter> {
+    let url = `${this.base}/${compUuid}/organisations/adapters`;
+    if (!adapter.uuid) { delete adapter.dn; delete adapter.uuid; }
+    if (!adapter.orgId) { delete adapter.orgId; }
+    if (!adapter.password) { delete adapter.password; }
+    delete adapter.confirmation;
+    return (adapter.uuid ? this.http.put(url, adapter) : this.http.post(url, adapter))
+      .map(result => result.json())
+      .finally(() => this.invalidateCache())
+      .catch(error => this.handleError(error));
   }
 
   handleError(error) {

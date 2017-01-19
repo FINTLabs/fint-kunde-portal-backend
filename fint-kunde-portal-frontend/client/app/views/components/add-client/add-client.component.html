@@ -1,11 +1,22 @@
 <h2>Registrere klient</h2>
 
-<form [formGroup]="clientForm" novalidate (ngSubmit)="save(clientForm.checked, clientForm.valid)">
+<form [formGroup]="clientForm" novalidate (ngSubmit)="save(clientForm.value, clientForm.valid)">
   <md-card>
     <md-card-content>
       <div class="row">
-        <div class="col-xs-4">
-          <md-input placeholder="Navn" type="text" formControlName="note">
+        <div class="col-4">
+          <md-input placeholder="Kort beskrivelse" type="text" formControlName="shortDescription" required>
+            <md-hint [hidden]="clientForm.controls['shortDescription'].valid || clientForm.controls['shortDescription'].pristine" align="end" style="color: red">
+              <fint-fa name="warning"></fint-fa>
+              <span *ngIf="clientForm.controls['shortDescription'].hasError('required')">Påkrevd</span>
+              <span *ngIf="clientForm.controls['shortDescription'].hasError('minlength') || clientForm.controls['shortDescription'].hasError('maxlength')">
+                {{ personid.characterCount }} / 11 tegn
+              </span>
+            </md-hint>
+          </md-input>
+        </div>
+        <div class="col-4">
+          <md-input placeholder="Notat" type="text" formControlName="note" required>
             <md-hint [hidden]="clientForm.controls['note'].valid || clientForm.controls['note'].pristine" align="end" style="color: red">
               <fint-fa name="warning"></fint-fa>
               <span *ngIf="clientForm.controls['note'].hasError('required')">Påkrevd</span>
@@ -45,7 +56,7 @@
     <md-card-actions>
       <button md-raised-button md-ripple [disabled]="!clientForm.valid || clientForm.value.confirmation !== true" type="submit"
         color="primary"><fint-fa name="save"></fint-fa>Lagre</button>
-      <button md-raised-button md-ripple type="button" [routerLink]="['../']"><fint-fa name="ban"></fint-fa>Avbryt</button>
+      <button md-raised-button md-ripple type="button" [routerLink]="['/components', componentId]"><fint-fa name="ban"></fint-fa>Lukk</button>
     </md-card-actions>
   </md-card>
 </form>

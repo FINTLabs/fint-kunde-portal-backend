@@ -1,9 +1,9 @@
 import { ActivatedRoute, Router } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ICommonComponent } from 'app/api/ICommonComponent';
-import { CommonComponentService } from 'app/views/components/common-component.service';
 import { IComponentAdapter } from 'app/api/IComponentAdapter';
+import { CommonComponentService } from 'app/views/components/common-component.service';
 
 @Component({
   selector: 'app-add-adapter',
@@ -16,6 +16,8 @@ export class AddAdapterComponent implements OnInit {
   component: ICommonComponent;
   userPassType: string = 'password';
 
+  adapter: IComponentAdapter;
+
   constructor(
     private fb: FormBuilder,
     private router: Router,
@@ -25,24 +27,38 @@ export class AddAdapterComponent implements OnInit {
     this.createForm();
   }
 
-  createForm() {
-    this.adapterForm = this.fb.group({
-      name: ['', [Validators.required]],
-      confirmation: ['', [Validators.required]],
-      username: new FormControl({ value: '', disabled: true }, Validators.required),
-      password: new FormControl({ value: '', disabled: true }, Validators.required)
-    });
-  }
-
   ngOnInit() {
     this.route.params.subscribe(params => {
-      this.componentId = params['id'];
-      this.CommonComponent.getById(this.componentId).subscribe(component => this.component = component);
+      if (params['id']) {
+        this.componentId = params[ 'id' ];
+        this.CommonComponent.getById(this.componentId).subscribe(component => {
+          this.component = component;
+          if (this.component.adapter) {
+            this.CommonComponent.getAdapter(this.componentId, this.component.adapter.uuid)
+              .subscribe(adapter => this.onAdapterReceived(adapter));
+          }
+        });
+      } else {
+        this.router.navigate(['/components']);
+      }
     });
   }
 
-  onCancel() {
-    this.router.navigate(['components/', this.componentId]);
+  createForm() {
+    this.adapterForm = this.fb.group({
+      dn: [''],
+      uuid: [''],
+      shortDescription: ['', [Validators.required]],
+      orgId: [''],
+      note: [''],
+      password: [''],
+      confirmation: ['', [Validators.required]]
+    });
+  }
+
+  onAdapterReceived(adapter) {
+    this.adapter = adapter;
+    this.adapterForm.setValue(this.adapter);
   }
 
   toggleUserPassType() {
@@ -59,9 +75,8 @@ export class AddAdapterComponent implements OnInit {
 
   save(model: IComponentAdapter, isValid: boolean) {
     if (isValid) {
-      // if (!model.componentId) { model.componentId = this.componentId; }
-      this.CommonComponent.saveAdapter(model);
+      this.CommonComponent.saveAdapter(this.componentId, model)
+        .subscribe(adapter => this.onAdapterReceived(adapter));
     }
-    this.router.navigate(['components/', this.componentId]);
   }
 }

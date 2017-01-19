@@ -14,7 +14,6 @@ export const ComponentRoutes: Routes = [
       { path: ':id/client', component: AddClientComponent },
       { path: ':id/client/:clientId', component: AddClientComponent },
       { path: ':id/adapter', component: AddAdapterComponent },
-      { path: ':id/adapter/:adapterId', component: AddAdapterComponent }
     ]
   }
 ];

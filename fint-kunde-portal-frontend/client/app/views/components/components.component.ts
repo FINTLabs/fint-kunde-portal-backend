@@ -1,5 +1,4 @@
 import { Title } from '@angular/platform-browser';
-import { Location } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Component, OnInit, ViewChildren, QueryList, AfterViewInit, ChangeDetectorRef } from '@angular/core';
 
@@ -35,13 +34,11 @@ export class ComponentsComponent implements OnInit, AfterViewInit {
   }
   set currentEditor(e) {
     if (this._currentEditor != e) {
-      if (this.editors) {
-        this.editors.forEach(editor => {
-          if (editor !== e) { editor.isActive = false; }
-        });
-      }
+      each(this.editors, editor => {
+        if (editor && editor !== e) { editor.isActive = false; }
+      });
       if (e) {
-        if (e.componentUuid !== this.componentUuid) {
+        if (e && e.componentUuid !== this.componentUuid) {
           this.router.navigate(['/components', e.componentUuid]);
         }
       } else {
@@ -67,7 +64,9 @@ export class ComponentsComponent implements OnInit, AfterViewInit {
       this.pages = result.page_count;
       this.pageSize = result.page_size;
       this.totalItems = result.total_items;
-      this.components = result._embedded.componentDtoList;
+      if (result._embedded.componentDtoList) {
+        this.components = result._embedded.componentDtoList.filter(comp => comp.configured);
+      }
     });
   }
 
@@ -115,7 +114,7 @@ export class ComponentsComponent implements OnInit, AfterViewInit {
   /**
    * Component saved event emitted from ViewChild
    */
-  onComponentSaved(event: ComponentUpdatedEvent) {
+  onComponentSaved(updated: ICommonComponent) {
     this.currentEditor = null;
     this.loadComponents();
   }

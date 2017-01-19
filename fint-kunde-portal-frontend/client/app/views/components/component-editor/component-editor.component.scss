@@ -1,25 +1,34 @@
 @import '../../../../variables';
 
 :host {
+  transition: height 0.5s ease-in;
   &.edit {
     background-color: #efefef;
-    >tr {
+    > tr:first-child {
+      cursor: pointer;
+    }
+    > tr {
       cursor: inherit;
-      >td {
-        padding-top: 15px;
-        padding-bottom: 15px;
+      > td {
+        border: 0;
+        padding: 2px 24px 0 24px;
       }
     }
   }
   > tr {
     cursor: pointer;
-  }
-  td {
-    &:last-child {
-      vertical-align: top;
-      padding: 10px 0;
-      padding-top: 10px !important;
+    > td {
+      &:last-child {
+        vertical-align: top;
+        padding: 10px 0 !important;
+      }
+      &[colspan] {
+        padding: 0 10px !important;
+      }
     }
+  }
+  form footer {
+    padding: 0 14px 10px 14px;
   }
 }
 
@@ -42,7 +51,18 @@ fint-flip-card {
 }
 
 md-list-item {
-  cursor: pointer;
+  margin: 0 -24px;
+  padding: 0 24px;
+  &:hover {
+    background-color: #eee;
+  }
+  span {
+    cursor: pointer;
+    display: block;
+    width: 95%;
+    height: 97%;
+    line-height: 35px;
+  }
   button {
     position: absolute;
     right: 24px;

@@ -1,40 +1,43 @@
-<tr (click)="toggleEditComponent()" *ngIf="!isActive">
-  <td>{{ component.displayName }}</td>
-  <td>{{ component.technicalName }}</td>
+<tr (click)="toggleEditComponent()">
+  <td>{{ updated.displayName }}</td>
+  <td>{{ updated.technicalName }}</td>
   <td class="status">
-    <span class="fa-stack fa-sm {{ component.status ? 'success' : 'warning' }}">
+    <span class="fa-stack fa-sm {{ updated.status ? 'success' : 'warning' }}">
       <i class="fa fa-circle-o fa-stack-2x"></i>
       <i class="fa fa-circle fa-stack-1x"></i>
     </span>
   </td>
   <td>
-    <span *ngIf="component.adapters">{{ component.adapters.name }}</span>
-    <b *ngIf="!component.adapters" class="warning">Ingen</b>
+    <span *ngIf="updated.adapter">{{ updated.adapter.shortDescription }}</span>
+    <b *ngIf="!updated.adapter" class="warning">Ingen</b>
   </td>
-  <td>{{ getClientNames(component).join(', ') }}</td>
+  <td>{{ clientNames }}</td>
   <td>
-    <button md-icon-button (click)="toggleEditComponent()"><fint-fa name="edit"></fint-fa></button>
+    <button md-icon-button (click)="toggleEditComponent(!isActive)">
+      <fint-fa name="edit" *ngIf="!isActive"></fint-fa>
+      <fint-fa name="times" *ngIf="isActive"></fint-fa>
+    </button>
   </td>
 </tr>
 
 <tr *ngIf="isActive">
-  <td colspan="5">
+  <td colspan="6">
     <form>
       <div class="row">
-        <div class="col-4">
+        <div class="col-6">
           <fint-flip-card>
             <md-card class="front">
-              <md-card-title>{{ updated.adapters ? 'Adapter' : 'Adapter er ikke konfigurert' }}</md-card-title>
+              <md-card-title>{{ updated.adapter ? 'Adapter' : 'Adapter er ikke konfigurert' }}</md-card-title>
               <md-card-content>
                 <md-list dense>
                   <md-list-item *ngIf="updated.adapter">
-                    {{ updated.adapter.note }}
+                    <span [routerLink]="['./adapter']">{{ updated.adapter.shortDescription }}</span>
                   </md-list-item>
                 </md-list>
               </md-card-content>
               <md-card-actions>
-                <button md-raised-button md-ripple (click)="configureAdapter(updated.adapter)" type="button"><fint-fa name="edit"></fint-fa>Konfigurer</button>
-                <button md-raised-button md-ripple (click)="removeAdapter(updated.adapter)" type="button" color="warn"><fint-fa name="ban"></fint-fa>Nullstill</button>
+                <button md-raised-button md-ripple [routerLink]="['./adapter']" type="button"><fint-fa name="edit"></fint-fa>Konfigurer</button>
+                <button md-raised-button md-ripple (click)="removeAdapter()" type="button" color="warn"><fint-fa name="ban"></fint-fa>Nullstill</button>
               </md-card-actions>
             </md-card>
             <md-card class="back">
@@ -46,18 +49,14 @@
           </fint-flip-card>
         </div>
 
-        <div class="col-4">
-          <md-input placeholder="Komponentnavn" [value]="updated.technicalName" (valueChange)="componentChanged('name', $event)"></md-input>
-        </div>
-
-        <div class="col-4">
+        <div class="col-6">
           <fint-flip-card>
             <md-card class="front">
               <md-card-title>{{ updated.clients ? 'Klienter' : 'Ingen klienter' }}</md-card-title>
               <md-card-content>
                 <md-list dense>
-                  <md-list-item *ngFor="let client of updated.clients" (click)="configureClient(client)">
-                    <span>{{ client.name }}</span>
+                  <md-list-item *ngFor="let client of updated.clients">
+                    <span [routerLink]="['./client', client.uuid]">{{ client.shortDescription }}</span>
                     <button md-icon-button (click)="removeClient(client)" color="warn"><fint-fa name="ban"></fint-fa></button>
                   </md-list-item>
                 </md-list>
@@ -76,12 +75,10 @@
         </div>
       </div>
       <footer>
-        <button md-raised-button md-ripple (click)="saveComponent()" type="button" color="primary"><fint-fa name="save"></fint-fa>Lagre</button>
-        <button md-raised-button md-ripple (click)="toggleEditComponent(false)" type="button"><fint-fa name="ban"></fint-fa>Avbryt</button>
+        <button md-raised-button md-ripple (click)="saveComponent()" [disabled]="!isUpdated" type="button" color="primary"><fint-fa name="save"></fint-fa>Lagre</button>
+        <button md-raised-button md-ripple (click)="toggleEditComponent(false)" type="button" *ngIf="isUpdated"><fint-fa name="trash"></fint-fa>Avbryt</button>
+        <button md-raised-button md-ripple (click)="removeComponent()" color="warn" class="pull-right"><fint-fa name="ban"></fint-fa>Fjern komponent</button>
       </footer>
     </form>
-  </td>
-  <td>
-    <button md-icon-button (click)="toggleEditComponent(false)"><fint-fa name="times"></fint-fa></button>
   </td>
 </tr>

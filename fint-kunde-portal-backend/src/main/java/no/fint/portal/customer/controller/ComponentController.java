@@ -68,11 +68,19 @@ public class ComponentController {
 
   @ApiOperation("Get component by uuid")
   @RequestMapping(method = RequestMethod.GET, value = "/{compUuid}")
-  public ResponseEntity getComponent(@PathVariable String compUuid) {
+  public ResponseEntity getComponent(@RequestHeader("x-org-id") final String orgId, @PathVariable String compUuid) {
+    String orgUuid = verifyOrganisation(orgId);
+
     Optional<Component> component = componentService.getComponentByUUID(compUuid);
 
     if (component.isPresent()) {
-      return ResponseEntity.ok(component.get());
+      ComponentDto dto = new ComponentDto(component.get());
+      dto.setClients(componentService.getClients(dto.getUuid(), orgUuid));
+      List<Adapter> adapters = componentService.getAdapters(dto.getUuid(), orgUuid);
+      if (adapters != null && adapters.size() > 0) {
+        dto.setAdapter(adapters.get(0));
+      }
+      return ResponseEntity.ok(dto);
     }
 
     throw new EntityNotFoundException(

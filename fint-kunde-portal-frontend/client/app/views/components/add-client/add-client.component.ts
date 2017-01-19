@@ -1,8 +1,8 @@
 import { ActivatedRoute, Router } from '@angular/router';
-import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ICommonComponent } from 'app/api/ICommonComponent';
-import { IComponentClient, EmptyClient } from 'app/api/IComponentClient';
+import { IComponentClient } from 'app/api/IComponentClient';
 import { CommonComponentService } from 'app/views/components/common-component.service';
 
 @Component({
@@ -12,14 +12,11 @@ import { CommonComponentService } from 'app/views/components/common-component.se
 })
 export class AddClientComponent implements OnInit {
   clientForm: FormGroup;
+  componentId: string;
   component: ICommonComponent;
-  clientId: number;
-
-  _client: IComponentClient = new EmptyClient();
-  get client() { return this._client; }
-  set client(c) { this._client = c; this.clientForm.setValue(c); }
-
   userPassType: string = 'password';
+
+  client: IComponentClient;
 
   constructor(
     private fb: FormBuilder,
@@ -33,13 +30,13 @@ export class AddClientComponent implements OnInit {
   ngOnInit() {
     this.route.params.subscribe(params => {
       if (params['id']) {
-        this.CommonComponent.getById(params[ 'id' ]).subscribe(component => this.component = component);
+        this.componentId = params[ 'id' ];
+        this.CommonComponent.getById(this.componentId).subscribe(component => this.component = component);
         if (params['clientId']) {
-          this.CommonComponent.getClient(params[ 'id' ], params[ 'clientId' ]).subscribe(client => {
-            this.client = client;
-            this.clientForm.setValue(this.client);
-          });
+          this.CommonComponent.getClient(this.componentId, params[ 'clientId' ]).subscribe(client => this.onClientReceived(client));
         }
+      } else {
+        this.router.navigate(['/components']);
       }
     });
   }
@@ -48,16 +45,21 @@ export class AddClientComponent implements OnInit {
     this.clientForm = this.fb.group({
       dn: [''],
       uuid: [''],
-      shortDescription: [''],
+      shortDescription: ['', [Validators.required]],
       orgId: [''],
-      note: ['', [Validators.required]],
+      note: [''],
       password: [''],
-      confirmation: [false]
+      confirmation: ['', [Validators.required]]
     });
   }
 
+  onClientReceived(client) {
+    this.client = client;
+    this.clientForm.setValue(this.client);
+  }
+
   toggleUserPassType() {
-    //this.userPassType = (this.userPassType === 'password') ? 'text' : 'password';
+    this.userPassType = (this.userPassType === 'password') ? 'text' : 'password';
   }
 
   generateUserPass() {
@@ -70,9 +72,8 @@ export class AddClientComponent implements OnInit {
 
   save(model: IComponentClient, isValid: boolean) {
     if (isValid) {
-      if (!model.uuid) { delete model.dn; }
-      this.CommonComponent.saveClient(model);
+      this.CommonComponent.saveClient(this.componentId, model)
+        .subscribe(client => this.onClientReceived(client));
     }
-    this.router.navigate(['../', { relativeTo: this.route }]);
   }
 }

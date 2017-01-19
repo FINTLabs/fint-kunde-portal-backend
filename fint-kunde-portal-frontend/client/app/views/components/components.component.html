@@ -1,7 +1,10 @@
 <h2>Tilgjengelige felleskomponenter</h2>
 
-<div>
+<div *ngIf="components && components.length">
   Dette er felleskomponenter fylket du administrerer har satt opp.
+</div>
+<div *ngIf="!components || !components.length">
+  Det er ingen felleskomponenter satt opp enda.
 </div>
 
 <md-card>
