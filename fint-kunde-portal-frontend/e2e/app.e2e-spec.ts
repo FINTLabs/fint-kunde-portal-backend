@@ -1,10 +1,10 @@
-import { FintKundeportalMockupsPage } from './app.po';
+import { FintKundeportalPage } from './app.po';
 
-describe('fint-portal-mockups App', function() {
-  let page: FintKundeportalMockupsPage;
+describe('fint-kundeportal App', function() {
+  let page: FintKundeportalPage;
 
   beforeEach(() => {
-    page = new FintKundeportalMockupsPage();
+    page = new FintKundeportalPage();
   });
 
   it('should display message saying app works', () => {
