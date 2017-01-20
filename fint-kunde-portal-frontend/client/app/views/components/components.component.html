@@ -1,9 +1,9 @@
 <h2>Tilgjengelige felleskomponenter</h2>
 
-<div *ngIf="components && components.length">
+<div *ngIf="!isLoading && hasComponents">
   Dette er felleskomponenter fylket du administrerer har satt opp.
 </div>
-<div *ngIf="!components || !components.length">
+<div *ngIf="!isLoading && !hasComponents">
   Det er ingen felleskomponenter satt opp enda.
 </div>
 
@@ -22,16 +22,20 @@
       </thead>
 
       <!-- Editor -->
-      <tbody *ngFor="let component of components;" [appComponentEditor]="component" (componentChange)="onComponentSaved($event)"
-        (onEdit)="onEdit($event)" [class.edit]="currentEditor && currentEditor.componentUuid == component.uuid">
+      <tbody *ngFor="let component of components;"
+             [appComponentEditor]="component"
+             (componentChange)="onComponentSaved($event)"
+             (onEdit)="onEdit($event)"
+             [class.edit]="currentEditor && currentEditor.componentUuid == component.uuid">
       </tbody>
 
     </table>
   </md-card-content>
   <md-card-actions>
-    <button md-raised-button md-ripple (click)="addComponent()" type="button">
+    <button md-raised-button md-ripple (click)="addComponent()" type="button" *ngIf="!isLoading">
       <fint-fa name="plus"></fint-fa>
-      Konfigurer ny komponent
+      <span *ngIf="!hasComponents">Konfigurer ny komponent</span>
+      <span *ngIf="hasComponents">Rediger tilgjengelige komponenter</span>
     </button>
   </md-card-actions>
 </md-card>

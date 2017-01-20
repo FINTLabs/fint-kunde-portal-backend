@@ -4,7 +4,7 @@ export interface IComponentClient {
   shortDescription: string; // (sn) Short description of the client
   orgId: string;            // (company) OrgId of the organisation the client is connected to. This is automatically set.
   note: string;             // (description) A note of the client.
-  password: string;         // (userPassword) Client password.
+  secret: string;         // (userPassword) Client secret.
 
   confirmation?: boolean;   // Only for frontend. Do not transmit this to server
 }
@@ -15,5 +15,5 @@ export class EmptyClient implements IComponentClient {
   shortDescription = null;
   orgId = null;
   note = null;
-  password = null;
+  secret = null;
 }

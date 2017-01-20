@@ -46,13 +46,13 @@ export class AddAdapterComponent implements OnInit {
 
   createForm() {
     this.adapterForm = this.fb.group({
-      dn: [''],
-      uuid: [''],
+      dn              : [''],
+      uuid            : [''],
       shortDescription: ['', [Validators.required]],
-      orgId: [''],
-      note: [''],
-      password: [''],
-      confirmation: ['', [Validators.required]]
+      orgId           : [''],
+      note            : [''],
+      secret          : [''],
+      confirmation    : ['', [Validators.required]]
     });
   }
 
@@ -70,7 +70,7 @@ export class AddAdapterComponent implements OnInit {
     //let userNameCtrl = this.adapterForm.controls['username'];
     //userNameCtrl.setValue(this.CommonComponent.generateUUID(), { onlySelf: true });
 
-    //let passwordCtrl = this.adapterForm.controls['password'];
+    //let passwordCtrl = this.adapterForm.controls['secret'];
     //passwordCtrl.setValue(this.CommonComponent.generateSecret(), { onlySelf: true });
   }
 

@@ -36,8 +36,7 @@ export class ContactService {
 
   save(contact: IContact): Observable<IContact> {
     if (!contact.dn) { delete contact.dn; }
-    let url = this.base + '/' + contact.nin;
-    let call = (contact.dn) ? this.http.put(url + '/' + contact.nin, contact) : this.http.post(url, contact); // If exists, put - else post
+    let call = (contact.dn) ? this.http.put(`${this.base}/${contact.nin}`, contact) : this.http.post(this.base, contact); // If exists, put - else post
     return call
       .map(result => result.json())
       .catch(error => this.handleError(error));

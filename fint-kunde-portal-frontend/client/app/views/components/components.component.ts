@@ -15,10 +15,13 @@ import { each } from 'lodash';
 })
 export class ComponentsComponent implements OnInit, AfterViewInit {
   components: ICommonComponent[];
+  get hasComponents() { return this.components && this.components.length; }
   page: number;
   pages: number;
   pageSize: number;
   totalItems: number;
+
+  isLoading: boolean = false;
 
   componentUuid: string;
 
@@ -59,14 +62,17 @@ export class ComponentsComponent implements OnInit, AfterViewInit {
   }
 
   private loadComponents() {
+    const me = this;
+    this.isLoading = true;
     this.CommonComponent.all().subscribe(result => {
-      this.page = result.page;
-      this.pages = result.page_count;
-      this.pageSize = result.page_size;
-      this.totalItems = result.total_items;
+      me.page = result.page;
+      me.pages = result.page_count;
+      me.pageSize = result.page_size;
+      me.totalItems = result.total_items;
       if (result._embedded.componentDtoList) {
-        this.components = result._embedded.componentDtoList.filter(comp => comp.configured);
+        me.components = result._embedded.componentDtoList.filter(comp => comp.configured);
       }
+      me.isLoading = false;
     });
   }
 

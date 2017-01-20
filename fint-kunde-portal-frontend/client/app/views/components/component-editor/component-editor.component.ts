@@ -77,9 +77,24 @@ export class ComponentEditorComponent {
 
   saveComponent() {
     if (this.isUpdated) {
-      
+      let promises = [];
+      if (this.component.adapter != null && this.updated.adapter == null) { // Adapter is deleted.
+        promises.push(this.CommonComponent.removeAdapter(this.componentUuid, this.component.adapter).toPromise());
+      }
+
+      if (this.component.clients.length > this.updated.clients.length) {
+        // Clients are removed
+        promises.push(this.component.clients
+          .filter(c => this.updated.clients.findIndex(uc => uc.uuid === c.uuid) === -1)
+          .map(c => this.CommonComponent.removeClient(this.componentUuid, c).toPromise())
+        );
+      }
+
+      let me = this;
+      Promise.all(promises).then(
+        result => me.componentChange.emit(me.updated), // Notify parent
+        error => delete me._componentCopy
+      );
     }
-    this.CommonComponent.assignToOrganisation(this.updated);
-    this.componentChange.emit(this.updated); // Notify parent
   }
 }

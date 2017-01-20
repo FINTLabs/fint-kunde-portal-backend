@@ -43,18 +43,19 @@ export class AddClientComponent implements OnInit {
 
   createForm() {
     this.clientForm = this.fb.group({
-      dn: [''],
-      uuid: [''],
+      dn              : [''],
+      uuid            : [''],
       shortDescription: ['', [Validators.required]],
-      orgId: [''],
-      note: [''],
-      password: [''],
-      confirmation: ['', [Validators.required]]
+      orgId           : [''],
+      note            : [''],
+      secret          : [''],
+      confirmation    : ['', [Validators.required]]
     });
   }
 
   onClientReceived(client) {
     this.client = client;
+    this.client.confirmation = true; // Since it was persisted, someone has had to check this.
     this.clientForm.setValue(this.client);
   }
 
@@ -66,7 +67,7 @@ export class AddClientComponent implements OnInit {
     //let userNameCtrl = this.clientForm.controls['username'];
     //userNameCtrl.setValue(this.CommonComponent.generateUUID(), { onlySelf: true });
 
-    //let passwordCtrl = this.clientForm.controls['password'];
+    //let passwordCtrl = this.clientForm.controls['secret'];
     //passwordCtrl.setValue(this.CommonComponent.generateSecret(), { onlySelf: true });
   }
 

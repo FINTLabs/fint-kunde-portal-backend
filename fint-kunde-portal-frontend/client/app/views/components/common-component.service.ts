@@ -28,13 +28,6 @@ export class CommonComponentService {
     this._compObservableCache = <[string, Observable<ICommonComponent>]>[];
   }
 
-  generateSecret() {
-    let cc = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890-=!@#$%^&*()_+:<>{}[]".split('');
-    let key = '';
-    for (let i = 0; i < 50; i++) key += cc[Math.floor(Math.random() * cc.length)];
-    return key;
-  }
-
   // ---------------------------------
   // -- Components
   // ---------------------------------
@@ -104,9 +97,9 @@ export class CommonComponentService {
     let url = `${this.base}/${compUuid}/organisations/clients`;
     if (!client.uuid) { delete client.dn; delete client.uuid; }
     if (!client.orgId) { delete client.orgId; }
-    if (!client.password) { delete client.password; }
+    if (!client.secret) { delete client.secret; }
     delete client.confirmation;
-    return (client.uuid ? this.http.put(url, client) : this.http.post(url, client))
+    return (client.uuid ? this.http.put(`${url}/${client.uuid}`, client) : this.http.post(url, client))
       .map(result => result.json())
       .finally(() => this.invalidateCache())
       .catch(error => this.handleError(error));
@@ -138,9 +131,9 @@ export class CommonComponentService {
     let url = `${this.base}/${compUuid}/organisations/adapters`;
     if (!adapter.uuid) { delete adapter.dn; delete adapter.uuid; }
     if (!adapter.orgId) { delete adapter.orgId; }
-    if (!adapter.password) { delete adapter.password; }
+    if (!adapter.secret) { delete adapter.secret; }
     delete adapter.confirmation;
-    return (adapter.uuid ? this.http.put(url, adapter) : this.http.post(url, adapter))
+    return (adapter.uuid ? this.http.put(`${url}/${adapter.uuid}`, adapter) : this.http.post(url, adapter))
       .map(result => result.json())
       .finally(() => this.invalidateCache())
       .catch(error => this.handleError(error));

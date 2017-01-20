@@ -47,17 +47,17 @@ public class ComponentController {
   @HalResource(pageSize = 10)
   @RequestMapping(method = RequestMethod.GET)
   public HalPagedResources<ComponentDto> getComponents(@RequestHeader("x-org-id") final String orgId, @RequestParam(required = false) Integer page) {
-    String orgUuid = verifyOrganisation(orgId);
+    Organisation organisation = verifyOrganisation(orgId);
 
     List<Component> allComponents = componentService.getComponents();
-    List<Component> configured = componentService.getComponentsByOrgUUID(orgUuid);
+    List<Component> configured = componentService.getComponentsByOrgUUID(organisation.getUuid());
 
     List<ComponentDto> returnedComponents = new ArrayList<>();
     allComponents.forEach((component) -> {
       ComponentDto comp = new ComponentDto(component);
       comp.setConfigured(configured.indexOf(component) > -1);
-      comp.setClients(componentService.getClients(comp.getUuid(), orgUuid));
-      List<Adapter> adapters = componentService.getAdapters(comp.getUuid(), orgUuid);
+      comp.setClients(componentService.getClients(comp.getUuid(), organisation.getUuid()));
+      List<Adapter> adapters = componentService.getAdapters(comp.getUuid(), organisation.getUuid());
       if (adapters != null && adapters.size() > 0) {
         comp.setAdapter(adapters.get(0));
       }
@@ -69,14 +69,14 @@ public class ComponentController {
   @ApiOperation("Get component by uuid")
   @RequestMapping(method = RequestMethod.GET, value = "/{compUuid}")
   public ResponseEntity getComponent(@RequestHeader("x-org-id") final String orgId, @PathVariable String compUuid) {
-    String orgUuid = verifyOrganisation(orgId);
+    Organisation organisation = verifyOrganisation(orgId);
 
     Optional<Component> component = componentService.getComponentByUUID(compUuid);
 
     if (component.isPresent()) {
       ComponentDto dto = new ComponentDto(component.get());
-      dto.setClients(componentService.getClients(dto.getUuid(), orgUuid));
-      List<Adapter> adapters = componentService.getAdapters(dto.getUuid(), orgUuid);
+      dto.setClients(componentService.getClients(dto.getUuid(), organisation.getUuid()));
+      List<Adapter> adapters = componentService.getAdapters(dto.getUuid(), organisation.getUuid());
       if (adapters != null && adapters.size() > 0) {
         dto.setAdapter(adapters.get(0));
       }
@@ -95,10 +95,10 @@ public class ComponentController {
   )
   public ResponseEntity addOrganisationToComponent(@PathVariable final String compUuid, @RequestHeader("x-org-id") final String orgId) {
 
-    String orgUuid = verifyOrganisation(orgId);
+    Organisation organisation = verifyOrganisation(orgId);
     verifyComponent(compUuid);
 
-    componentService.addOrganisationToComponent(compUuid, orgUuid);
+    componentService.addOrganisationToComponent(compUuid, organisation.getUuid());
     return ResponseEntity.ok().build();
   }
 
@@ -108,10 +108,10 @@ public class ComponentController {
   )
   public ResponseEntity removeOrganisationFromComponent(@PathVariable final String compUuid, @RequestHeader("x-org-id") final String orgId) {
 
-    String orgUuid = verifyOrganisation(orgId);
+    Organisation organisation = verifyOrganisation(orgId);
     verifyComponent(compUuid);
 
-    componentService.removeOrganisationFromComponent(compUuid, orgUuid);
+    componentService.removeOrganisationFromComponent(compUuid, organisation.getUuid());
     return ResponseEntity.accepted().build();
 
   }
@@ -126,10 +126,10 @@ public class ComponentController {
                                                          @PathVariable final String compUuid,
                                                          @RequestHeader("x-org-id") final String orgId) {
 
-    String orgUuid = verifyOrganisation(orgId);
+    Organisation organisation = verifyOrganisation(orgId);
     verifyComponent(compUuid);
 
-    if (componentService.addClient(client, compUuid, orgUuid)) {
+    if (componentService.addClient(client, compUuid, organisation)) {
       return ResponseEntity.ok().body(client);
     }
 
@@ -174,10 +174,10 @@ public class ComponentController {
                                             @PathVariable final String compUuid,
                                             @RequestHeader("x-org-id") final String orgId) {
 
-    String orgUuid = verifyOrganisation(orgId);
+    Organisation organisation = verifyOrganisation(orgId);
     verifyComponent(compUuid);
 
-    Optional<Client> client = componentService.getClient(clientUuid, compUuid, orgUuid);
+    Optional<Client> client = componentService.getClient(clientUuid, compUuid, organisation.getUuid());
     if (client.isPresent()) {
       componentService.resetClientPassword(client.get());
       return ResponseEntity.ok().body(client.get());
@@ -192,10 +192,10 @@ public class ComponentController {
   )
   public ResponseEntity getAllClients(@PathVariable final String compUuid,
                                       @RequestHeader("x-org-id") final String orgId) {
-    String orgUuid = verifyOrganisation(orgId);
+    Organisation organisation = verifyOrganisation(orgId);
     verifyComponent(compUuid);
 
-    List<Client> list = componentService.getClients(compUuid, orgUuid);
+    List<Client> list = componentService.getClients(compUuid, organisation.getUuid());
     return ResponseEntity.ok().body(list);
   }
 
@@ -205,10 +205,10 @@ public class ComponentController {
   )
   public ResponseEntity getClient(@PathVariable final String clientUuid, @PathVariable final String compUuid,
                                   @RequestHeader("x-org-id") final String orgId) {
-    String orgUuid = verifyOrganisation(orgId);
+    Organisation organisation = verifyOrganisation(orgId);
     verifyComponent(compUuid);
 
-    Optional client = componentService.getClient(clientUuid, compUuid, orgUuid);
+    Optional client = componentService.getClient(clientUuid, compUuid, organisation.getUuid());
     if (client.isPresent()) {
       return ResponseEntity.ok().body(client.get());
     }
@@ -225,10 +225,10 @@ public class ComponentController {
   public ResponseEntity deleteClient(@PathVariable final String clientUuid, @PathVariable final String compUuid,
                                      @RequestHeader("x-org-id") final String orgId) {
 
-    String orgUuid = verifyOrganisation(orgId);
+    Organisation organisation = verifyOrganisation(orgId);
     verifyComponent(compUuid);
 
-    Optional<Client> client = componentService.getClient(clientUuid, compUuid, orgUuid);
+    Optional<Client> client = componentService.getClient(clientUuid, compUuid, organisation.getUuid());
 
     if (client.isPresent()) {
       componentService.deleteClient(client.get());
@@ -250,10 +250,10 @@ public class ComponentController {
   public ResponseEntity addAdapterToOrganisationComponent(@RequestBody final Adapter adapter, @PathVariable final String compUuid,
                                                           @RequestHeader("x-org-id") final String orgId) {
 
-    String orgUuid = verifyOrganisation(orgId);
+    Organisation organisation = verifyOrganisation(orgId);
     verifyComponent(compUuid);
 
-    if (componentService.addAdapter(adapter, compUuid, orgUuid)) {
+    if (componentService.addAdapter(adapter, compUuid, organisation)) {
       return ResponseEntity.ok().body(adapter);
     }
 
@@ -298,10 +298,10 @@ public class ComponentController {
                                              @PathVariable final String compUuid,
                                              @RequestHeader("x-org-id") final String orgId) {
 
-    String orgUuid = verifyOrganisation(orgId);
+    Organisation organisation = verifyOrganisation(orgId);
     verifyComponent(compUuid);
 
-    Optional<Adapter> adapter = componentService.getAdapter(adapterUuid, compUuid, orgUuid);
+    Optional<Adapter> adapter = componentService.getAdapter(adapterUuid, compUuid, organisation.getUuid());
     if (adapter.isPresent()) {
       componentService.resetAdapterPassword(adapter.get());
       return ResponseEntity.ok().body(adapter.get());
@@ -317,10 +317,10 @@ public class ComponentController {
   )
   public ResponseEntity getAllAdapters(@PathVariable final String compUuid,
                                        @RequestHeader("x-org-id") final String orgId) {
-    String orgUuid = verifyOrganisation(orgId);
+    Organisation organisation = verifyOrganisation(orgId);
     verifyComponent(compUuid);
 
-    List<Adapter> list = componentService.getAdapters(compUuid, orgUuid);
+    List<Adapter> list = componentService.getAdapters(compUuid, organisation.getUuid());
     return ResponseEntity.ok().body(list);
   }
 
@@ -331,10 +331,10 @@ public class ComponentController {
   )
   public ResponseEntity getAdapter(@PathVariable final String adapterUuid, @PathVariable final String compUuid,
                                    @RequestHeader("x-org-id") final String orgId) {
-    String orgUuid = verifyOrganisation(orgId);
+    Organisation organisation = verifyOrganisation(orgId);
     verifyComponent(compUuid);
 
-    Optional adapter = componentService.getAdapter(adapterUuid, compUuid, orgUuid);
+    Optional adapter = componentService.getAdapter(adapterUuid, compUuid, organisation.getUuid());
     if (adapter.isPresent()) {
       return ResponseEntity.ok().body(adapter.get());
     }
@@ -351,10 +351,10 @@ public class ComponentController {
   public ResponseEntity deleteAdapter(@PathVariable final String adapterUuid, @PathVariable final String compUuid,
                                       @RequestHeader("x-org-id") final String orgId) {
 
-    String orgUuid = verifyOrganisation(orgId);
+    Organisation organisation = verifyOrganisation(orgId);
     verifyComponent(compUuid);
 
-    Optional<Adapter> adapter = componentService.getAdapter(adapterUuid, compUuid, orgUuid);
+    Optional<Adapter> adapter = componentService.getAdapter(adapterUuid, compUuid, organisation.getUuid());
 
     if (adapter.isPresent()) {
       componentService.deleteAdapter(adapter.get());
@@ -366,10 +366,10 @@ public class ComponentController {
     );
   }
 
-  private String verifyOrganisation(String orgId) {
+  private Organisation verifyOrganisation(String orgId) {
     Optional<Organisation> organisation = organisationService.getOrganisationByOrgId(orgId);
     if (organisation.isPresent()) {
-      return organisation.get().getUuid();
+      return organisation.get();
     }
 
     throw new EntityNotFoundException(
