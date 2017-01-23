@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { MaterialModule } from '@angular/material';
+import { ClipboardModule } from 'ngx-clipboard';
 import { LibSharedModule } from 'fint-shared-components';
 
 import { ComponentRoutes } from './component.routes';
@@ -29,6 +30,7 @@ import { AddAdapterComponent } from './add-adapter/add-adapter.component';
     ReactiveFormsModule,
     MaterialModule,
     LibSharedModule.forRoot(),
+    ClipboardModule,
     RouterModule.forChild([...ComponentRoutes])
   ]
 })

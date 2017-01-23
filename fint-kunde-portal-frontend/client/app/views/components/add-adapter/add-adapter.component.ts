@@ -14,7 +14,6 @@ export class AddAdapterComponent implements OnInit {
   adapterForm: FormGroup;
   componentId: string;
   component: ICommonComponent;
-  userPassType: string = 'password';
 
   adapter: IComponentAdapter;
 
@@ -62,16 +61,15 @@ export class AddAdapterComponent implements OnInit {
     this.adapterForm.setValue(this.adapter);
   }
 
-  toggleUserPassType() {
-    this.userPassType = (this.userPassType === 'password') ? 'text' : 'password';
-  }
-
   generateUserPass() {
-    //let userNameCtrl = this.adapterForm.controls['username'];
-    //userNameCtrl.setValue(this.CommonComponent.generateUUID(), { onlySelf: true });
-
-    //let passwordCtrl = this.adapterForm.controls['secret'];
-    //passwordCtrl.setValue(this.CommonComponent.generateSecret(), { onlySelf: true });
+    if (!this.adapterForm.value['uuid']) {
+      return this.save(this.adapterForm.value, this.adapterForm.valid);
+    }
+    this.CommonComponent.resetAdapterPassword(this.componentId, this.adapterForm.value)
+      .subscribe(result => {
+        result.confirmation = this.adapterForm.value.confirmation;
+        this.adapterForm.setValue(result);
+      });
   }
 
   save(model: IComponentAdapter, isValid: boolean) {

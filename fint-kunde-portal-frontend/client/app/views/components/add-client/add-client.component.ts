@@ -14,7 +14,6 @@ export class AddClientComponent implements OnInit {
   clientForm: FormGroup;
   componentId: string;
   component: ICommonComponent;
-  userPassType: string = 'password';
 
   client: IComponentClient;
 
@@ -59,16 +58,15 @@ export class AddClientComponent implements OnInit {
     this.clientForm.setValue(this.client);
   }
 
-  toggleUserPassType() {
-    this.userPassType = (this.userPassType === 'password') ? 'text' : 'password';
-  }
-
   generateUserPass() {
-    //let userNameCtrl = this.clientForm.controls['username'];
-    //userNameCtrl.setValue(this.CommonComponent.generateUUID(), { onlySelf: true });
-
-    //let passwordCtrl = this.clientForm.controls['secret'];
-    //passwordCtrl.setValue(this.CommonComponent.generateSecret(), { onlySelf: true });
+    if (!this.clientForm.value['uuid']) {
+      return this.save(this.clientForm.value, this.clientForm.valid);
+    }
+    this.CommonComponent.resetClientPassword(this.componentId, this.clientForm.value)
+      .subscribe(result => {
+        result.confirmation = this.clientForm.value.confirmation;
+        this.clientForm.setValue(result);
+      });
   }
 
   save(model: IComponentClient, isValid: boolean) {

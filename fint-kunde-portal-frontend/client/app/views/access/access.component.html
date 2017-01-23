@@ -17,14 +17,14 @@
         </tr>
       </thead>
       <tbody>
-        <tr *ngFor="let contact of contacts;" [routerLink]="['./', contact.nin]">
-          <td>{{ contact.id }}</td>
-          <td>{{ contact.firstName }} {{ contact.lastName }}</td>
-          <td>{{ contact.email }}</td>
-          <td>{{ contact.phone }}</td>
+        <tr *ngFor="let contact of contacts;">
+          <td [routerLink]="['./', contact.nin]">{{ contact.nin }}</td>
+          <td [routerLink]="['./', contact.nin]">{{ contact.firstName }} {{ contact.lastName }}</td>
+          <td [routerLink]="['./', contact.nin]">{{ contact.mail }}</td>
+          <td [routerLink]="['./', contact.nin]">{{ contact.mobile }}</td>
           <td>
             <button md-icon-button [routerLink]="['./', contact.nin]" title="Rediger"><fint-fa name="edit"></fint-fa></button>
-            <button md-icon-button (click)="revoke(contact)" title="Slett tilgang"><fint-fa name="ban"></fint-fa></button>
+            <button md-icon-button color="warn" (click)="revoke(contact)" title="Slett tilgang"><fint-fa name="ban"></fint-fa></button>
           </td>
         </tr>
       </tbody>

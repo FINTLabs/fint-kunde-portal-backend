@@ -1,18 +1,10 @@
-app-input {
-  display: block;
-}
-md-input {
-  width: 99%;
-}
-
-.api-list {
-  max-width: 300px;
-  fint-fa {
-    float: left;
-    margin-left: -26px;
-    cursor: pointer;
+md-input-container {
+  .md-input-wrapper {
+    width: 99%;
   }
-  ul {
-    padding-left: 26px;
+  button {
+    margin: -9px 0;
+    padding: 7px;
+    line-height: normal;
   }
 }

@@ -105,6 +105,12 @@ export class CommonComponentService {
       .catch(error => this.handleError(error));
   }
 
+  resetClientPassword(compUuid: string, client: IComponentClient) {
+    return this.http.put(`${this.base}/${compUuid}/organisations/clients/${client.uuid}/password`, {})
+      .map(result => result.json())
+      .catch(error => this.handleError(error));
+  }
+
   // ---------------------------------
   // -- Adapters
   // ---------------------------------
@@ -136,6 +142,12 @@ export class CommonComponentService {
     return (adapter.uuid ? this.http.put(`${url}/${adapter.uuid}`, adapter) : this.http.post(url, adapter))
       .map(result => result.json())
       .finally(() => this.invalidateCache())
+      .catch(error => this.handleError(error));
+  }
+
+  resetAdapterPassword(compUuid: string, adapter: IComponentAdapter) {
+    return this.http.put(`${this.base}/${compUuid}/organisations/adapters/${adapter.uuid}/password`, {})
+      .map(result => result.json())
       .catch(error => this.handleError(error));
   }
 

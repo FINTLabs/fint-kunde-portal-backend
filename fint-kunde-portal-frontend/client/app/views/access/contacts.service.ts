@@ -30,7 +30,6 @@ export class ContactService {
 
   revokeAccess(contact: IContact): Observable<any> {
     return this.http.delete(this.base + '/' + contact.nin)
-      .map(result => result.json())
       .catch(error => this.handleError(error));
   }
 

@@ -37,11 +37,11 @@ export class GrantComponent implements OnInit {
     var EMAIL_REGEXP = "/^[a-z0-9!#$%&'*+\/=?^_`{|}~.-]+@[a-z0-9]([a-z0-9-]*[a-z0-9])?(\.[a-z0-9]([a-z0-9-]*[a-z0-9])?)*$/i";
     this.userForm    = this.fb.group({
       dn              : [ this.contactData.dn ],
-      nin             : [ this.contactData.nin, [ Validators.required/*, Validators.minLength(11), Validators.maxLength(11)*/ ] ],
-      firstName       : [ this.contactData.firstName, [ Validators.required/*, Validators.minLength(2)*/ ] ],
-      lastName        : [ this.contactData.lastName, [ Validators.required/*, Validators.minLength(2)*/ ] ],
-      mail            : [ this.contactData.mail, [ Validators.required ] ],
-      mobile          : [ this.contactData.mobile, [ Validators.required/*, Validators.minLength(8)*/ ] ],
+      nin             : [ this.contactData.nin,       [ Validators.required, Validators.minLength(11), Validators.maxLength(11) ] ],
+      firstName       : [ this.contactData.firstName, [ Validators.required, Validators.minLength(2) ] ],
+      lastName        : [ this.contactData.lastName,  [ Validators.required, Validators.minLength(2) ] ],
+      mail            : [ this.contactData.mail,      [ Validators.required ] ],
+      mobile          : [ this.contactData.mobile,    [ Validators.required, Validators.minLength(8) ] ],
       orgId           : [ this.contactData.orgId ],
       primaryLegal    : [ this.contactData.primaryLegal ],
       primaryTechnical: [ this.contactData.primaryTechnical ],

@@ -1,6 +1,10 @@
-app-input {
-  display: block;
-}
-md-input {
-  width: 99%;
+md-input-container {
+  .md-input-wrapper {
+    width: 99%;
+  }
+  button {
+    margin: -9px 0;
+    padding: 7px;
+    line-height: normal;
+  }
 }

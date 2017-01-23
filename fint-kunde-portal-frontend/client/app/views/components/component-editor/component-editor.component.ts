@@ -1,9 +1,10 @@
-import { Router, ActivatedRoute } from '@angular/router';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
+
+import { FintDialogService } from 'fint-shared-components';
+
 import { ICommonComponent } from 'app/api/ICommonComponent';
 import { CommonComponentService } from '../common-component.service';
 import { IComponentClient } from 'app/api/IComponentClient';
-import { IComponentAdapter } from 'app/api/IComponentAdapter';
 
 export interface ComponentUpdatedEvent {
   component: ICommonComponent;
@@ -55,7 +56,7 @@ export class ComponentEditorComponent {
     return JSON.stringify(this.component) != JSON.stringify(this.updated);
   }
 
-  constructor(private router: Router, private CommonComponent: CommonComponentService, private route: ActivatedRoute) { }
+  constructor(private CommonComponent: CommonComponentService, private FintDialog: FintDialogService) { }
 
   toggleEditComponent(flag?: boolean) {
     this.isActive = (flag != null ? flag : !this.isActive);
@@ -71,8 +72,12 @@ export class ComponentEditorComponent {
   }
 
   removeComponent() {
-    this.CommonComponent.removeFromOrganisation(this.component)
-      .subscribe(result => this.toggleEditComponent(false));
+    this.FintDialog.confirmDelete().afterClosed().subscribe(result => {
+      if (result === 'yes') {
+        this.CommonComponent.removeFromOrganisation(this.component)
+          .subscribe(result => this.toggleEditComponent(false));
+      }
+    });
   }
 
   saveComponent() {

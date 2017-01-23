@@ -1,6 +1,7 @@
 import { Title } from '@angular/platform-browser';
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+
+import { FintDialogService } from 'fint-shared-components';
 
 import { ContactService } from './contacts.service';
 import { IContact } from 'app/api/IContact';
@@ -18,8 +19,8 @@ export class AccessComponent implements OnInit {
   contacts: IContact[];
 
   constructor(
-    private router: Router,
     private Contacts: ContactService,
+    private FintDialog: FintDialogService,
     private titleService: Title
   ) {
     this.titleService.setTitle('Tilgang | Fint');
@@ -44,7 +45,12 @@ export class AccessComponent implements OnInit {
   }
 
   revoke(person) {
-    this.Contacts.revokeAccess(person);
-    this.loadContacts();
+    this.FintDialog.confirmDelete().afterClosed().subscribe(result => {
+      if (result === 'yes') {
+        this.Contacts.revokeAccess(person).subscribe(() => {
+          this.loadContacts();
+        });
+      }
+    });
   }
 }

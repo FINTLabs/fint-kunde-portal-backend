@@ -4,41 +4,37 @@
   <md-card>
     <md-card-content>
       <div class="row">
-        <div class="col-4">
-          <md-input placeholder="Kort beskrivelse" type="text" formControlName="shortDescription" required>
-            <md-hint [hidden]="clientForm.controls['shortDescription'].valid || clientForm.controls['shortDescription'].pristine" align="end" style="color: red">
-              <fint-fa name="warning"></fint-fa>
-              <span *ngIf="clientForm.controls['shortDescription'].hasError('required')">Påkrevd</span>
-              <span *ngIf="clientForm.controls['shortDescription'].hasError('minlength') || clientForm.controls['shortDescription'].hasError('maxlength')">
-                {{ personid.characterCount }} / 11 tegn
-              </span>
-            </md-hint>
-          </md-input>
-        </div>
-        <div class="col-4">
-          <md-input placeholder="Notat" type="text" formControlName="note" required>
-            <md-hint [hidden]="clientForm.controls['note'].valid || clientForm.controls['note'].pristine" align="end" style="color: red">
-              <fint-fa name="warning"></fint-fa>
-              <span *ngIf="clientForm.controls['note'].hasError('required')">Påkrevd</span>
-              <span *ngIf="clientForm.controls['note'].hasError('minlength') || clientForm.controls['note'].hasError('maxlength')">
-                {{ personid.characterCount }} / 11 tegn
-              </span>
-            </md-hint>
-          </md-input>
-        </div>
+        <md-input-container class="col-4">
+          <input md-input placeholder="Kort beskrivelse" type="text" formControlName="shortDescription" required>
+          <md-hint [hidden]="clientForm.controls['shortDescription'].valid || clientForm.controls['shortDescription'].pristine" align="end" style="color: red">
+            <fint-fa name="warning"></fint-fa>
+            <span *ngIf="clientForm.controls['shortDescription'].hasError('required')">Påkrevd</span>
+            <span *ngIf="clientForm.controls['shortDescription'].hasError('minlength') || clientForm.controls['shortDescription'].hasError('maxlength')">
+              {{ personid.characterCount }} / 11 tegn
+            </span>
+          </md-hint>
+        </md-input-container>
+        <md-input-container class="col-4">
+          <input md-input placeholder="Notat" type="text" formControlName="note" required>
+          <md-hint [hidden]="clientForm.controls['note'].valid || clientForm.controls['note'].pristine" align="end" style="color: red">
+            <fint-fa name="warning"></fint-fa>
+            <span *ngIf="clientForm.controls['note'].hasError('required')">Påkrevd</span>
+            <span *ngIf="clientForm.controls['note'].hasError('minlength') || clientForm.controls['note'].hasError('maxlength')">
+              {{ personid.characterCount }} / 11 tegn
+            </span>
+          </md-hint>
+        </md-input-container>
       </div>
       <div class="row">
-        <div class="col-xs-5">
-          <md-input placeholder="API Nøkkel" [type]="userPassType" formControlName="uuid" disabled></md-input>
-        </div>
-        <div class="col-xs-5">
-          <md-input placeholder="API Hemmelighet" [type]="userPassType" formControlName="secret" disabled></md-input>
-        </div>
-        <div class="col-xs-2">
-          <button type="button" md-icon-button title="Se nåværende verdier" (click)="toggleUserPassType()"><fint-fa name="eye"></fint-fa></button>
-          <button type="button" md-icon-button title="Generer nye verdier" (click)="generateUserPass()"><fint-fa name="key"></fint-fa></button>
-          <button type="button" md-icon-button title="Kopier nøkkel"><fint-fa name="copy"></fint-fa></button>
-        </div>
+        <md-input-container class="col-xs-6">
+          <input md-input placeholder="API Nøkkel" type="text" formControlName="uuid" readonly #uuid>
+          <button md-suffix md-icon-button type="button" title="Kopier nøkkel" [ngxClipboard]="uuid" [disabled]="!clientForm.value['uuid']"><fint-fa name="copy"></fint-fa></button>
+        </md-input-container>
+        <md-input-container class="col-xs-6">
+          <input md-input placeholder="API Hemmelighet" type="text" formControlName="secret" readonly #secret>
+          <button md-suffix md-icon-button type="button" title="Generer nye hemmelighet" (click)="generateUserPass()" [disabled]="!clientForm.value['shortDescription']"><fint-fa name="key"></fint-fa></button>
+          <button md-suffix md-icon-button type="button" title="Kopier hemmelighet" [ngxClipboard]="secret" [disabled]="!clientForm.value['secret']"><fint-fa name="copy"></fint-fa></button>
+        </md-input-container>
       </div>
       <div class="row">
         <div class="col-xs-8">
