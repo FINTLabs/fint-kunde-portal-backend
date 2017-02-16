@@ -2,10 +2,10 @@
 @import "variables";
 @import '~@angular/material/core/theming/all-theme';
 
-@include md-core();
+@include mat-core();
 
-$localPrimary: md-palette($md-indigo);
-$localAccent:  md-palette($md-amber, A200, A100, A400);
-$theme: md-light-theme($localPrimary, $localAccent);
+$localPrimary: mat-palette($mat-indigo);
+$localAccent:  mat-palette($mat-amber, A200, A100, A400);
+$theme: mat-light-theme($localPrimary, $localAccent);
 
 @include angular-material-theme($theme);
