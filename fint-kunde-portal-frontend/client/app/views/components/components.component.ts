@@ -62,16 +62,19 @@ export class ComponentsComponent implements OnInit, AfterViewInit {
   private loadComponents() {
     const me = this;
     this.isLoading = true;
-    this.CommonComponent.all().subscribe(result => {
-      me.page = result.page;
-      me.pages = result.page_count;
-      me.pageSize = result.page_size;
-      me.totalItems = result.total_items;
-      if (result._embedded.componentDtoList) {
-        me.components = result._embedded.componentDtoList.filter(comp => comp.configured);
-      }
-      me.isLoading = false;
-    });
+    this.CommonComponent.all().subscribe(
+      result => {
+        me.page = result.page;
+        me.pages = result.page_count;
+        me.pageSize = result.page_size;
+        me.totalItems = result.total_items;
+        if (result._embedded.componentDtoList) {
+          me.components = result._embedded.componentDtoList.filter(comp => comp.configured);
+        }
+        me.isLoading = false;
+      },
+      error => this.isLoading = false
+    );
   }
 
   ngOnInit() {

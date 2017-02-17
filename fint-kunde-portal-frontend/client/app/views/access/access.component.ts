@@ -17,6 +17,7 @@ export class AccessComponent implements OnInit {
   pages: number;
   pageSize: number;
   contacts: IContact[];
+  isLoading: boolean = false;
 
   constructor(
     private Contacts: ContactService,
@@ -31,8 +32,10 @@ export class AccessComponent implements OnInit {
   }
 
   loadContacts() {
+    this.isLoading = true;
     this.Contacts.all().subscribe(
       result => {
+        this.isLoading = false;
         this.page = result.page;
         this.total = result.total_items;
         this.pages = result.page_count;
@@ -40,7 +43,8 @@ export class AccessComponent implements OnInit {
         if (result._embedded) {
           this.contacts = result._embedded.contactList;
         }
-      }
+      },
+      error => this.isLoading = false
     );
   }
 

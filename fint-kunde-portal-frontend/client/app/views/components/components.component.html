@@ -8,6 +8,10 @@
 </div>
 
 <md-card>
+  <div class="md-spinner-container" *ngIf="isLoading">
+    <md-spinner class="center"></md-spinner>
+  </div>
+
   <md-card-content class="table-container" *ngIf="components">
     <table>
       <thead>
@@ -22,11 +26,7 @@
       </thead>
 
       <!-- Editor -->
-      <tbody *ngFor="let component of components;"
-             [appComponentEditor]="component"
-             (componentChange)="onComponentSaved($event)"
-             (onEdit)="onEdit($event)"
-             [class.edit]="currentEditor && currentEditor.componentUuid == component.uuid">
+      <tbody *ngFor="let component of components;" [appComponentEditor]="component" (componentChange)="onComponentSaved($event)" (onEdit)="onEdit($event)" [class.edit]="currentEditor && currentEditor.componentUuid == component.uuid">
       </tbody>
 
     </table>
