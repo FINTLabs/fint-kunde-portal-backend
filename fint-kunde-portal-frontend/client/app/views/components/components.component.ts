@@ -6,8 +6,6 @@ import { CommonComponentService } from './common-component.service';
 import { ComponentUpdatedEvent, ComponentEditorComponent } from './component-editor/component-editor.component';
 import { ICommonComponent } from 'app/api/ICommonComponent';
 
-import { each } from 'lodash';
-
 @Component({
   selector: 'app-components',
   templateUrl: './components.component.html',
@@ -37,7 +35,7 @@ export class ComponentsComponent implements OnInit, AfterViewInit {
   }
   set currentEditor(e) {
     if (this._currentEditor != e) {
-      each(this.editors, editor => {
+      this.editors.forEach(editor => {
         if (editor && editor !== e) { editor.isActive = false; }
       });
       if (e) {

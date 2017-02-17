@@ -3,7 +3,6 @@ import { Component, OnInit } from '@angular/core';
 
 import { CommonComponentService } from '../common-component.service';
 import { ICommonComponent } from 'app/api/ICommonComponent';
-import { each } from 'lodash';
 
 @Component({
   selector: 'app-add-component',
@@ -30,7 +29,7 @@ export class AddComponentComponent implements OnInit {
     this.loadComponents();
   }
 
-  ngOnInit() {  }
+  ngOnInit() { }
 
   loadComponents() {
     const me = this;
@@ -59,18 +58,18 @@ export class AddComponentComponent implements OnInit {
     ]).then(
       result => this.router.navigate(['/components']),
       error => this.loadComponents()
-    );
+      );
   }
 
   transferLeft() {
-    each(this.components.filter(comp => comp.isSelected), comp => {
+    this.components.filter(comp => comp.isSelected).forEach(comp => {
       comp.configured = false;
       delete comp.isSelected;
     });
   }
 
   transferRight() {
-    each(this.components.filter(comp => comp.isSelected), comp => {
+    this.components.filter(comp => comp.isSelected).forEach(comp => {
       comp.configured = true;
       delete comp.isSelected;
     });
