@@ -5,7 +5,7 @@
     <md-card-content>
       <div class="row">
         <md-input-container class="col-xs-4" [dividerColor]="userForm.controls['nin'].invalid ? 'warn' : 'primary'">
-          <input md-input placeholder="Fødselsnummer" type="tel" formControlName="nin" #personid required>
+          <input md-input mdInput placeholder="Fødselsnummer" type="tel" formControlName="nin" #personid required>
           <md-hint [hidden]="userForm.controls['nin'].valid || userForm.controls['nin'].pristine" align="end" style="color: red">
             <fint-fa name="warning"></fint-fa>
             <span *ngIf="userForm.controls['nin'].hasError('required')">Påkrevd</span>
@@ -17,7 +17,7 @@
       </div>
       <div class="row">
         <md-input-container class="col-xs-6" [dividerColor]="userForm.controls['firstName'].invalid ? 'warn' : 'primary'">
-          <input md-input placeholder="Fornavn" type="text" formControlName="firstName" #firstName required>
+          <input md-input mdInput placeholder="Fornavn" type="text" formControlName="firstName" #firstName required>
           <md-hint [hidden]="userForm.controls['firstName'].valid || userForm.controls['firstName'].pristine" align="end" style="color: red">
             <fint-fa name="warning"></fint-fa>
             <span *ngIf="userForm.controls['firstName'].hasError('required')">Påkrevd</span>
@@ -25,7 +25,7 @@
           </md-hint>
         </md-input-container>
         <md-input-container class="col-xs-6" [dividerColor]="userForm.controls['lastName'].invalid ? 'warn' : 'primary'">
-          <input md-input placeholder="Etternavn" type="text" formControlName="lastName" required>
+          <input md-input mdInput placeholder="Etternavn" type="text" formControlName="lastName" required>
           <md-hint [hidden]="userForm.controls['lastName'].valid || userForm.controls['lastName'].pristine" align="end" style="color: red">
             <fint-fa name="warning"></fint-fa>
             <span *ngIf="userForm.controls['lastName'].hasError('required')">Påkrevd</span>
@@ -35,14 +35,14 @@
       </div>
       <div class="row">
         <md-input-container class="col-xs-8" [dividerColor]="userForm.controls['mail'].invalid ? 'warn' : 'primary'">
-          <input md-input placeholder="Epost" type="email" formControlName="mail" required>
+          <input md-input mdInput placeholder="Epost" type="email" formControlName="mail" required>
           <md-hint [hidden]="userForm.controls['mail'].valid || userForm.controls['mail'].pristine" align="end" style="color: red">
             <fint-fa name="warning"></fint-fa>
             <span *ngIf="userForm.controls['mail'].hasError('required')">Påkrevd</span>
           </md-hint>
         </md-input-container>
         <md-input-container class="col-xs-4" [dividerColor]="userForm.controls['mobile'].invalid ? 'warn' : 'primary'">
-          <input md-input placeholder="Mobil" type="tel" formControlName="mobile" required>
+          <input md-input mdInput placeholder="Mobil" type="tel" formControlName="mobile" required>
           <md-hint [hidden]="userForm.controls['mobile'].valid || userForm.controls['mobile'].pristine" align="end" style="color: red">
             <fint-fa name="warning"></fint-fa>
             <span *ngIf="userForm.controls['mobile'].hasError('required')">Påkrevd</span>

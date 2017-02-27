@@ -29,10 +29,10 @@ export class AddClientComponent implements OnInit {
   ngOnInit() {
     this.route.params.subscribe(params => {
       if (params['id']) {
-        this.componentId = params[ 'id' ];
+        this.componentId = params['id'];
         this.CommonComponent.getById(this.componentId).subscribe(component => this.component = component);
         if (params['clientId']) {
-          this.CommonComponent.getClient(this.componentId, params[ 'clientId' ]).subscribe(client => this.onClientReceived(client));
+          this.CommonComponent.getClient(this.componentId, params['clientId']).subscribe(client => this.onClientReceived(client));
         }
       } else {
         this.router.navigate(['/components']);
@@ -42,13 +42,15 @@ export class AddClientComponent implements OnInit {
 
   createForm() {
     this.clientForm = this.fb.group({
-      dn              : [''],
-      uuid            : [''],
+      dn: [''],
+      uuid: [''],
       shortDescription: ['', [Validators.required]],
-      orgId           : [''],
-      note            : [''],
-      secret          : [''],
-      confirmation    : ['', [Validators.required]]
+      orgId: [''],
+      note: [''],
+      secret: [''],
+      confirmation: ['', [Validators.required]]/*,
+      clientId        : [''],
+      clientSecret    : [''],*/
     });
   }
 
