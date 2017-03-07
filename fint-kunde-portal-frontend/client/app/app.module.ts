@@ -24,10 +24,10 @@ import { AppComponent } from './app.component';
     FormsModule,
     ReactiveFormsModule,
     HttpModule,
-    MaterialModule.forRoot(),
+    MaterialModule,
 
     AppRoutingModule,
-    LibSharedModule.forRoot()
+    LibSharedModule
   ],
   providers: [ CommonComponentService, EventService],
   bootstrap: [AppComponent]

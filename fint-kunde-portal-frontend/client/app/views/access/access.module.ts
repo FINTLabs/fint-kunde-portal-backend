@@ -23,7 +23,7 @@ import { GrantComponent } from './grant/grant.component';
     FormsModule,
     ReactiveFormsModule,
     MaterialModule,
-    LibSharedModule.forRoot(),
+    LibSharedModule,
     RouterModule.forChild([...AccessRoutes])
   ],
   providers: [ ContactService ]
