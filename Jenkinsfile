@@ -17,7 +17,7 @@ node {
     stage('build') {
       if (env.RUN_TYPE != 'default') {
         // Remove entire node_modules folder and reinstall everything if RUN_TYPE is anything but 'default'
-        sh 'rm -rf fint-kunde-portal-frontend/node_modules'
+        sh 'rm -rf ./fint-kunde-portal-frontend/node_modules'
       }
       sh 'chmod +x gradlew'
       sh "./gradlew"
