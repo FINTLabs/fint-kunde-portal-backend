@@ -6,10 +6,9 @@ import { HttpModule } from '@angular/http';
 import { MaterialModule } from '@angular/material';
 
 import { AppRoutingModule } from './app-routing.module';
-import { LibSharedModule } from 'fint-shared-components';
+import { LibSharedModule, EventService } from 'fint-shared-components';
 
 // Services
-import { EventService } from 'fint-shared-components';
 import { CommonComponentService } from './views/components/common-component.service';
 
 // Components
@@ -26,8 +25,8 @@ import { AppComponent } from './app.component';
     HttpModule,
     MaterialModule,
 
-    AppRoutingModule,
-    LibSharedModule
+    LibSharedModule,
+    AppRoutingModule
   ],
   providers: [ CommonComponentService, EventService],
   bootstrap: [AppComponent]
