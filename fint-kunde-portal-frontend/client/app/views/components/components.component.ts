@@ -13,7 +13,7 @@ import { ICommonComponent } from 'app/api/ICommonComponent';
 })
 export class ComponentsComponent implements OnInit, AfterViewInit {
   components: ICommonComponent[];
-  get hasComponents() { return this.components && this.components.length; }
+  get hasComponents(): boolean { return this.components && this.components.length > 0; }
   page: number;
   pages: number;
   pageSize: number;
