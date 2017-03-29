@@ -9,7 +9,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AppComponent implements OnInit {
   routes = [];
-  constructor(private router: Router, private titleService: Title) {
+  constructor(public router: Router, private titleService: Title) {
     this.titleService.setTitle('Fint');
   }
 
