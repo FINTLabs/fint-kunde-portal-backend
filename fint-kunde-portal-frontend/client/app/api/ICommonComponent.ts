@@ -8,6 +8,7 @@ export interface ICommonComponent {
   technicalName: string;  // (fintCompTechnicalName) Technical name of the component.
   displayName: string;    // (fintCompDisplayName) Displayname of the component.
   description?: string;   // (description) A description of what the component does.
+  status?: string;
 
   // Extra properties
   configured: boolean;
