@@ -24,6 +24,8 @@
     "@angular/router": "^4.0.0",
     "core-js": "^2.4.1",
     "cssuseragent": "~2.1.31",
+    "d3": "~4.7.4",
+    "d3-selection-multi": "~1.0.1",
     "fint-shared-components": "github:fintprosjektet/fint-shared-components",
     "font-awesome": "~4.7.0",
     "ngx-clipboard": "~5.0.9",
