@@ -16,7 +16,8 @@ node {
 
     stage('build') {
       if (env.RUN_TYPE != 'default') {
-        sh 'cd fint-kunde-portal-frontend && npm i github:fintprosjektet/fint-shared-components' + (env.BRANCH_NAME != 'master' ? '#' + env.BRANCH_NAME : '')
+        // Remove entire node_modules folder and reinstall everything if RUN_TYPE is anything but 'default'
+        sh 'rm -rf fint-kunde-portal-frontend/node_modules'
       }
       sh 'chmod +x gradlew'
       sh "./gradlew"
