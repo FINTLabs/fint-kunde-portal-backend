@@ -3,6 +3,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MaterialModule } from '@angular/material';
 import { ClipboardModule } from 'ngx-clipboard';
 import { LibSharedModule } from 'fint-shared-components';
@@ -28,6 +29,7 @@ import { AddAdapterComponent } from './add-adapter/add-adapter.component';
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
+    BrowserAnimationsModule,
     MaterialModule,
     LibSharedModule,
     ClipboardModule,
