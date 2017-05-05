@@ -40,11 +40,13 @@
         <div class="col-8">
           <md-checkbox formControlName="confirmation" style="position: relative;">
             Bekreft at databehandleravtale er inngått med leverandør
-            <md-hint [hidden]="adapterForm.value.confirmation === true" align="start" style="color: red; bottom: -2em;">
-              <fint-fa name="warning"></fint-fa>
-              <span>Må være bekreftet</span>
-            </md-hint>
           </md-checkbox>
+          <div>
+            <md-hint [hidden]="adapterForm.value.confirmation === true" align="start" style="color: red;">
+              <fint-fa name="warning"></fint-fa>
+              <span>Må bekreftes</span>
+            </md-hint>
+          </div>
         </div>
       </div>
     </md-card-content>

@@ -1,0 +1,41 @@
+<h2>Tilgjengelige klienter</h2>
+
+<div *ngIf="!isLoading && hasClients">
+  Dette er klienter fylket du administrerer har satt opp.
+</div>
+<div *ngIf="!isLoading && !hasClients">
+  Det er ingen klienter satt opp enda.
+</div>
+
+<md-card>
+  <div class="md-spinner-container" *ngIf="isLoading">
+    <md-spinner class="center"></md-spinner>
+  </div>
+
+  <md-card-content class="table-container" *ngIf="clients">
+    <table>
+      <thead>
+        <tr>
+          <th>Navn</th>
+          <!--<th>Teknisk Navn</th>-->
+          <!--<th>Status</th>-->
+          <!--<th>Adapter</th>-->
+          <!--<th>Klienter</th>-->
+          <th class="buttons"></th>
+        </tr>
+      </thead>
+
+      <!-- Editor -->
+      <!--<tbody *ngFor="let component of components;" [appComponentEditor]="component" (componentChange)="onComponentSaved($event)" (onEdit)="onEdit($event)" [class.edit]="currentEditor && currentEditor.componentUuid == component.uuid">
+      </tbody>-->
+
+    </table>
+  </md-card-content>
+  <md-card-actions>
+    <button md-raised-button md-ripple (click)="addClient()" type="button" *ngIf="!isLoading">
+      <fint-fa name="plus"></fint-fa>
+      <span *ngIf="!hasClients">Konfigurer ny klient</span>
+      <span *ngIf="hasClients">Rediger tilgjengelige klienter</span>
+    </button>
+  </md-card-actions>
+</md-card>

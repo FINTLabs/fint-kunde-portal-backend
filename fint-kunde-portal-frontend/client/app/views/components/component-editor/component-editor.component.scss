@@ -18,29 +18,38 @@
   > tr {
     cursor: pointer;
     > td {
-      &:last-child {
-        vertical-align: top;
-        padding: 10px 0 !important;
-      }
       &[colspan] {
         padding: 0 14px !important;
       }
     }
   }
   form footer {
-    padding: 0 10px 10px 10px;
+    padding: 10px;
   }
 }
 
-fint-flip-card {
+fint-flip-card /deep/{
   .front {
     width: 99%;
     margin: 0 auto;
+    height: 99%;
   }
   .back {
     height: 99%;
     width: 99%;
     margin: 0 auto;
+  }
+  md-card-content {
+    margin-bottom: 3rem;
+    &:after {
+      content: '';
+      display: table;
+      clear: both;
+    }
+  }
+  md-card-actions {
+    position: absolute;
+    bottom: 26px;
   }
 }
 

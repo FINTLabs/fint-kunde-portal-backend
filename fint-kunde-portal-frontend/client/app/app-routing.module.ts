@@ -7,6 +7,7 @@ import { ComponentModule } from './views/components/component.module';
 import { EventModule } from 'fint-shared-components';
 
 import { HomeComponent } from './views/home/home.component';
+import { ClientsModule } from './views/clients/clients.module';
 
 const routes: Routes = [
   { path: '', component: HomeComponent, pathMatch: 'full', data: { label: 'Home' } },
@@ -19,6 +20,7 @@ const routes: Routes = [
   ],
   imports: [
     MaterialModule,
+    ClientsModule,
     ComponentModule,  // Including routes
     AccessModule,     // Including routes
     EventModule.forRoot(), // Including routes for events

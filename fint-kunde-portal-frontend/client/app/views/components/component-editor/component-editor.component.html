@@ -1,18 +1,18 @@
 <tr (click)="toggleEditComponent()">
   <td>{{ updated.displayName }}</td>
   <td>{{ updated.technicalName }}</td>
-  <td class="status">
+  <!--<td class="status">
     <span class="fa-stack fa-sm {{ updated.status ? 'success' : 'warning' }}">
       <i class="fa fa-circle-o fa-stack-2x"></i>
       <i class="fa fa-circle fa-stack-1x"></i>
     </span>
-  </td>
+  </td>-->
   <td>
     <span *ngIf="updated.adapter">{{ updated.adapter.shortDescription }}</span>
     <b *ngIf="!updated.adapter" class="warning">Ingen</b>
   </td>
   <td>{{ clientNames }}</td>
-  <td>
+  <td class="buttons">
     <button md-icon-button (click)="toggleEditComponent(!isActive)">
       <fint-fa name="edit" *ngIf="!isActive"></fint-fa>
       <fint-fa name="times" *ngIf="isActive"></fint-fa>
@@ -21,7 +21,7 @@
 </tr>
 
 <tr *ngIf="isActive">
-  <td colspan="6">
+  <td colspan="5">
     <form>
       <div class="row">
         <div class="col-6">
@@ -56,13 +56,13 @@
               <md-card-content>
                 <md-list dense>
                   <md-list-item *ngFor="let client of updated.clients">
-                    <span [routerLink]="['./client', client.uuid]">{{ client.shortDescription }}</span>
+                    <span [routerLink]="['./client']">{{ client.shortDescription }}</span>
                     <button md-icon-button (click)="removeClient(client)" color="warn"><fint-fa name="ban"></fint-fa></button>
                   </md-list-item>
                 </md-list>
               </md-card-content>
               <md-card-actions>
-                <button md-raised-button md-ripple [routerLink]="['./client']" type="button"><fint-fa name="plus"></fint-fa>Registrer ny klient</button>
+                <button md-raised-button md-ripple [routerLink]="['./client']" type="button"><fint-fa name="plus"></fint-fa>Knytte til klienter</button>
               </md-card-actions>
             </md-card>
             <md-card class="back">

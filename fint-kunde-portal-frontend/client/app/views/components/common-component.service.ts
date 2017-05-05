@@ -11,7 +11,7 @@ import 'rxjs/observable/of';
 import { FintDialogService } from 'fint-shared-components';
 
 import { ICommonComponent, IComponentHALPage } from 'app/api/ICommonComponent';
-import { IComponentClient } from 'app/api/IComponentClient';
+import { IClient } from 'app/api/IClient';
 import { IComponentAdapter } from 'app/api/IComponentAdapter';
 
 
@@ -74,26 +74,26 @@ export class CommonComponentService {
   // ---------------------------------
   // -- Clients
   // ---------------------------------
-  allClients(compUuid: string): Observable<IComponentClient[]> {
+  allClients(compUuid: string): Observable<IClient[]> {
     return this.http.get(`${this.base}/${compUuid}/organisations/clients`)
       .map(result => result.json())
       .catch(error => this.handleError(error));
   }
 
-  getClient(compUuid: string, clientUuid: string): Observable<IComponentClient> {
+  getClient(compUuid: string, clientUuid: string): Observable<IClient> {
     return this.http.get(`${this.base}/${compUuid}/organisations/clients/${clientUuid}`)
       .map(result => result.json())
       .catch(error => this.handleError(error));
   }
 
-  removeClient(compUuid: string, client: IComponentClient) {
+  removeClient(compUuid: string, client: IClient) {
     let url = `${this.base}/${compUuid}/organisations/clients/${client.uuid}`;
     return this.http.delete(url)
       .finally(() => this.invalidateCache())
       .catch(error => this.handleError(error));
   }
 
-  saveClient(compUuid: string, client: IComponentClient): Observable<IComponentClient> {
+  saveClient(compUuid: string, client: IClient): Observable<IClient> {
     let url = `${this.base}/${compUuid}/organisations/clients`;
     if (!client.uuid) { delete client.dn; delete client.uuid; }
     if (!client.orgId) { delete client.orgId; }
@@ -105,7 +105,7 @@ export class CommonComponentService {
       .catch(error => this.handleError(error));
   }
 
-  resetClientPassword(compUuid: string, client: IComponentClient) {
+  resetClientPassword(compUuid: string, client: IClient) {
     return this.http.put(`${this.base}/${compUuid}/organisations/clients/${client.uuid}/password`, {})
       .map(result => result.json())
       .catch(error => this.handleError(error));

@@ -1,5 +1,5 @@
 import { IHAL } from './IHAL';
-import { IComponentClient } from 'app/api/IComponentClient';
+import { IClient } from 'app/api/IClient';
 import { IComponentAdapter } from 'app/api/IComponentAdapter';
 
 export interface ICommonComponent {
@@ -12,7 +12,7 @@ export interface ICommonComponent {
 
   // Extra properties
   configured: boolean;
-  clients: IComponentClient[];
+  clients: IClient[];
   adapter: IComponentAdapter;
 
   // Frontend only, not transmitted to/from server

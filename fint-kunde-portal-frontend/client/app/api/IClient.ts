@@ -1,4 +1,4 @@
-export interface IComponentClient {
+export interface IClient {
   dn: string;               // DN of the client. This is automatically set.
   uuid: string;             // (cn) Username for the client. This is automatically set.
   shortDescription: string; // (sn) Short description of the client
@@ -9,7 +9,7 @@ export interface IComponentClient {
   confirmation?: boolean;   // Only for frontend. Do not transmit this to server
 }
 
-export class EmptyClient implements IComponentClient {
+export class EmptyClient implements IClient {
   dn = null;
   uuid = null;
   shortDescription = null;

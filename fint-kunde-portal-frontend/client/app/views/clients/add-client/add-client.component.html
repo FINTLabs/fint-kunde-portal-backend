@@ -1,0 +1,70 @@
+<h2>Registrere klient</h2>
+
+<form [formGroup]="clientForm" novalidate (ngSubmit)="save(clientForm.value, clientForm.valid)">
+  <md-card>
+    <md-card-content>
+      <div class="row">
+        <md-input-container class="col-4">
+          <input md-input mdInput placeholder="Kort beskrivelse" type="text" formControlName="shortDescription" required>
+          <md-hint [hidden]="clientForm.controls['shortDescription'].valid || clientForm.controls['shortDescription'].pristine" align="end" style="color: red">
+            <fint-fa name="warning"></fint-fa>
+            <span *ngIf="clientForm.controls['shortDescription'].hasError('required')">Påkrevd</span>
+            <span *ngIf="clientForm.controls['shortDescription'].hasError('minlength') || clientForm.controls['shortDescription'].hasError('maxlength')">
+              {{ personid.characterCount }} / 11 tegn
+            </span>
+          </md-hint>
+        </md-input-container>
+        <md-input-container class="col-4">
+          <input md-input mdInput placeholder="Notat" type="text" formControlName="note" required>
+          <md-hint [hidden]="clientForm.controls['note'].valid || clientForm.controls['note'].pristine" align="end" style="color: red">
+            <fint-fa name="warning"></fint-fa>
+            <span *ngIf="clientForm.controls['note'].hasError('required')">Påkrevd</span>
+            <span *ngIf="clientForm.controls['note'].hasError('minlength') || clientForm.controls['note'].hasError('maxlength')">
+              {{ personid.characterCount }} / 11 tegn
+            </span>
+          </md-hint>
+        </md-input-container>
+      </div>
+      <div class="row">
+        <md-input-container class="col-xs-6">
+          <input md-input mdInput placeholder="API Nøkkel" type="text" formControlName="uuid" readonly #uuid>
+          <button md-suffix md-icon-button type="button" title="Kopier nøkkel" [ngxClipboard]="uuid" [disabled]="!clientForm.value['uuid']"><fint-fa name="copy"></fint-fa></button>
+        </md-input-container>
+        <md-input-container class="col-xs-6">
+          <input md-input mdInput placeholder="API Hemmelighet" type="text" formControlName="secret" readonly #secret>
+          <button md-suffix md-icon-button type="button" title="Generer nye hemmelighet" (click)="generateUserPass()" [disabled]="!clientForm.value['shortDescription']"><fint-fa name="key"></fint-fa></button>
+          <button md-suffix md-icon-button type="button" title="Kopier hemmelighet" [ngxClipboard]="secret" [disabled]="!clientForm.value['secret']"><fint-fa name="copy"></fint-fa></button>
+        </md-input-container>
+      </div>
+      <!--<div class="row">
+        <md-input-container class="col-xs-6">
+          <input md-input mdInput placeholder="Klient Id" type="text" formControlName="clientId" readonly #clientId>
+          <button md-suffix md-icon-button type="button" title="Kopier nøkkel" [ngxClipboard]="clientId" [disabled]="!clientForm.value['clientId']"><fint-fa name="copy"></fint-fa></button>
+        </md-input-container>
+        <md-input-container class="col-xs-6">
+          <input md-input mdInput placeholder="Klient hemmelighet" type="text" formControlName="clientSecret" readonly #clientSecret>
+          <button md-suffix md-icon-button type="button" title="Generer nye hemmelighet" (click)="generateUserPass()" [disabled]="!clientForm.value['shortDescription']"><fint-fa name="key"></fint-fa></button>
+          <button md-suffix md-icon-button type="button" title="Kopier hemmelighet" [ngxClipboard]="clientSecret" [disabled]="!clientForm.value['clientSecret']"><fint-fa name="copy"></fint-fa></button>
+        </md-input-container>
+      </div>-->
+      <div class="row">
+        <div class="col-xs-8">
+          <md-checkbox formControlName="confirmation" style="position: relative;">
+            Bekreft at databehandleravtale er inngått med klienten
+          </md-checkbox>
+          <div>
+            <md-hint [hidden]="clientForm.value.confirmation === true" align="start" style="color: red; bottom: -2em;">
+              <fint-fa name="warning"></fint-fa>
+              <span>Må være bekreftet</span>
+            </md-hint>
+          </div>
+        </div>
+      </div>
+
+    </md-card-content>
+    <md-card-actions>
+      <button md-raised-button md-ripple [disabled]="!clientForm.valid || clientForm.value.confirmation !== true" type="submit" color="primary"><fint-fa name="save"></fint-fa>Lagre</button>
+      <button md-raised-button md-ripple type="button" [routerLink]="['../']"><fint-fa name="ban"></fint-fa>Lukk</button>
+    </md-card-actions>
+  </md-card>
+</form>

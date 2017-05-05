@@ -1,10 +1,10 @@
 table {
   table-layout: fixed;
   th {
-    &:nth-child(3) {
-      width: 70px;
-    }
-    &:nth-child(6) {
+    // &:nth-child(3) {
+    //   width: 70px;
+    // }
+    &.buttons {
       $width: 65px;
       width: $width;
       min-width: $width;

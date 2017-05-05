@@ -1,10 +1,10 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import {AfterViewInit, Component, EventEmitter, Input, Output, QueryList, ViewChildren} from '@angular/core';
 
-import { FintDialogService } from 'fint-shared-components';
+import { FintDialogService, FlipCardComponent } from 'fint-shared-components';
 
 import { ICommonComponent } from 'app/api/ICommonComponent';
 import { CommonComponentService } from '../common-component.service';
-import { IComponentClient } from 'app/api/IComponentClient';
+import { IClient } from 'app/api/IClient';
 
 export interface ComponentUpdatedEvent {
   component: ICommonComponent;
@@ -15,13 +15,14 @@ export interface ComponentUpdatedEvent {
   templateUrl: './component-editor.component.html',
   styleUrls: ['./component-editor.component.scss']
 })
-export class ComponentEditorComponent {
+export class ComponentEditorComponent implements AfterViewInit {
   @Input('appComponentEditor') component: ICommonComponent;
   @Output() componentChange: EventEmitter<ICommonComponent> = new EventEmitter<ICommonComponent>();
   @Output() onEdit: EventEmitter<ComponentEditorComponent> = new EventEmitter<ComponentEditorComponent>();
+  @ViewChildren(FlipCardComponent) cards: QueryList<FlipCardComponent[]>;
 
   get componentUuid() { return this.updated.uuid; }
-  get clientNames() { return [].concat(this.updated.clients).map(client => client ? client.note : '').join(', '); }
+  get clientNames() { return [].concat(this.updated.clients).map(client => client ? client.shortDescription : '').join(', '); }
 
   /**
    * @return true if component is currently in edit mode
@@ -58,14 +59,23 @@ export class ComponentEditorComponent {
 
   constructor(private CommonComponent: CommonComponentService, private FintDialog: FintDialogService) { }
 
+  ngAfterViewInit() {
+    // Set cards to equal height
+    let cardHeight;
+    this.cards.changes.subscribe(cards => {
+      cards.forEach(c => { cardHeight = (!cardHeight || c.height > cardHeight ? c.height : cardHeight); });
+      cards.forEach(c => c.height = cardHeight);
+    });
+  }
+
   toggleEditComponent(flag?: boolean) {
     this.isActive = (flag != null ? flag : !this.isActive);
     this.onEdit.emit(this); // Notify parent
   }
 
-  removeClient(client: IComponentClient) {
-    this.updated.clients = this.updated.clients.filter(c => c.uuid !== client.uuid);
-  }
+  // removeClient(client: IClient) {
+  //   this.updated.clients = this.updated.clients.filter(c => c.uuid !== client.uuid);
+  // }
 
   removeAdapter() {
     this.updated.adapter = null;
