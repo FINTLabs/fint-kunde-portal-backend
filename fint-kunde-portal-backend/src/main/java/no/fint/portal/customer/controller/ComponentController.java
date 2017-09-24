@@ -4,8 +4,6 @@ package no.fint.portal.customer.controller;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
-import no.fint.portal.component.Adapter;
-import no.fint.portal.component.Client;
 import no.fint.portal.component.Component;
 import no.fint.portal.component.ComponentService;
 import no.fint.portal.customer.dto.ComponentDto;
@@ -23,7 +21,6 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.ldap.NameNotFoundException;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.UnknownHostException;
 import java.util.ArrayList;
@@ -56,11 +53,11 @@ public class ComponentController {
     allComponents.forEach((component) -> {
       ComponentDto comp = new ComponentDto(component);
       comp.setConfigured(configured.indexOf(component) > -1);
-      comp.setClients(componentService.getClients(comp.getUuid(), organisation.getUuid()));
-      List<Adapter> adapters = componentService.getAdapters(comp.getUuid(), organisation.getUuid());
-      if (adapters != null && adapters.size() > 0) {
-        comp.setAdapter(adapters.get(0));
-      }
+      //comp.setClients(componentService.getClients(comp.getUuid(), organisation.getUuid()));
+      //List<Adapter> adapters = componentService.getAdapters(comp.getUuid(), organisation.getUuid());
+      //if (adapters != null && adapters.size() > 0) {
+      //  comp.setAdapter(adapters.get(0));
+      //}
       returnedComponents.add(comp);
     });
     return new HalPagedResources<>(returnedComponents, page);
@@ -75,11 +72,11 @@ public class ComponentController {
 
     if (component.isPresent()) {
       ComponentDto dto = new ComponentDto(component.get());
-      dto.setClients(componentService.getClients(dto.getUuid(), organisation.getUuid()));
-      List<Adapter> adapters = componentService.getAdapters(dto.getUuid(), organisation.getUuid());
-      if (adapters != null && adapters.size() > 0) {
-        dto.setAdapter(adapters.get(0));
-      }
+      //dto.setClients(componentService.getClients(dto.getUuid(), organisation.getUuid()));
+      //List<Adapter> adapters = componentService.getAdapters(dto.getUuid(), organisation.getUuid());
+      //if (adapters != null && adapters.size() > 0) {
+      //  dto.setAdapter(adapters.get(0));
+      //}
       return ResponseEntity.ok(dto);
     }
 
@@ -96,9 +93,10 @@ public class ComponentController {
   public ResponseEntity addOrganisationToComponent(@PathVariable final String compUuid, @RequestHeader("x-org-id") final String orgId) {
 
     Organisation organisation = verifyOrganisation(orgId);
-    verifyComponent(compUuid);
+    Component component = verifyComponent(compUuid);
 
-    componentService.addOrganisationToComponent(compUuid, organisation.getUuid());
+    //componentService.addOrganisationToComponent(compUuid, organisation.getUuid());
+    organisationService.linkComponent(organisation, component);
     return ResponseEntity.ok().build();
   }
 
@@ -109,262 +107,14 @@ public class ComponentController {
   public ResponseEntity removeOrganisationFromComponent(@PathVariable final String compUuid, @RequestHeader("x-org-id") final String orgId) {
 
     Organisation organisation = verifyOrganisation(orgId);
-    verifyComponent(compUuid);
+    Component component = verifyComponent(compUuid);
 
-    componentService.removeOrganisationFromComponent(compUuid, organisation.getUuid());
+    organisationService.unLinkComponent(organisation, component);
+
     return ResponseEntity.accepted().build();
 
   }
 
-  @ApiOperation("Add client.")
-  @RequestMapping(method = RequestMethod.POST,
-    consumes = MediaType.APPLICATION_JSON_VALUE,
-    value = "/{compUuid}/organisations/clients"
-
-  )
-  public ResponseEntity addClientToOrganisationComponent(@RequestBody final Client client,
-                                                         @PathVariable final String compUuid,
-                                                         @RequestHeader("x-org-id") final String orgId) {
-
-    Organisation organisation = verifyOrganisation(orgId);
-    verifyComponent(compUuid);
-
-    if (componentService.addClient(client, compUuid, organisation)) {
-      return ResponseEntity.ok().body(client);
-    }
-
-    throw new EntityFoundException(
-      ServletUriComponentsBuilder
-        .fromCurrentRequest().path("/{uuid}")
-        .buildAndExpand(client.getUuid()).toUri().toString()
-    );
-  }
-
-  @ApiOperation("Update client.")
-  @RequestMapping(method = RequestMethod.PUT,
-    value = "/{compUuid}/organisations/clients/{clientUuid}"
-  )
-  public ResponseEntity updateClient(@RequestBody final Client client, @PathVariable final String clientUuid,
-                                     @PathVariable final String compUuid,
-                                     @RequestHeader("x-org-id") final String orgId) {
-
-    verifyOrganisation(orgId);
-    verifyComponent(compUuid);
-
-    if (!client.getUuid().equals(clientUuid)) {
-      throw new UpdateEntityMismatchException(
-        String.format("Client requested for update (%s) is not the same client in endpoint (%s).",
-          client.getUuid(),
-          clientUuid)
-      );
-    }
-    if (!componentService.updateClient(client)) {
-      throw new EntityNotFoundException(String.format("Could not find client: %s", client));
-    }
-
-    return ResponseEntity.ok().body(client);
-
-  }
-
-  @ApiOperation("Reset client password.")
-  @RequestMapping(method = RequestMethod.PUT,
-    value = "/{compUuid}/organisations/clients/{clientUuid}/password"
-  )
-  public ResponseEntity resetClientPassword(@PathVariable final String clientUuid,
-                                            @PathVariable final String compUuid,
-                                            @RequestHeader("x-org-id") final String orgId) {
-
-    Organisation organisation = verifyOrganisation(orgId);
-    verifyComponent(compUuid);
-
-    Optional<Client> client = componentService.getClient(clientUuid, compUuid, organisation.getUuid());
-    if (client.isPresent()) {
-      componentService.resetClientPassword(client.get());
-      return ResponseEntity.ok().body(client.get());
-    }
-
-    throw new EntityNotFoundException(String.format("Could not find client: %s", client));
-  }
-
-  @ApiOperation("Get all clients.")
-  @RequestMapping(method = RequestMethod.GET,
-    value = "/{compUuid}/organisations/clients"
-  )
-  public ResponseEntity getAllClients(@PathVariable final String compUuid,
-                                      @RequestHeader("x-org-id") final String orgId) {
-    Organisation organisation = verifyOrganisation(orgId);
-    verifyComponent(compUuid);
-
-    List<Client> list = componentService.getClients(compUuid, organisation.getUuid());
-    return ResponseEntity.ok().body(list);
-  }
-
-  @ApiOperation("Get client.")
-  @RequestMapping(method = RequestMethod.GET,
-    value = "/{compUuid}/organisations/clients/{clientUuid}"
-  )
-  public ResponseEntity getClient(@PathVariable final String clientUuid, @PathVariable final String compUuid,
-                                  @RequestHeader("x-org-id") final String orgId) {
-    Organisation organisation = verifyOrganisation(orgId);
-    verifyComponent(compUuid);
-
-    Optional client = componentService.getClient(clientUuid, compUuid, organisation.getUuid());
-    if (client.isPresent()) {
-      return ResponseEntity.ok().body(client.get());
-    }
-
-    throw new EntityNotFoundException(
-      String.format("Client %s could not be found", clientUuid)
-    );
-  }
-
-  @ApiOperation("Delete client.")
-  @RequestMapping(method = RequestMethod.DELETE,
-    value = "/{compUuid}/organisations/clients/{clientUuid}"
-  )
-  public ResponseEntity deleteClient(@PathVariable final String clientUuid, @PathVariable final String compUuid,
-                                     @RequestHeader("x-org-id") final String orgId) {
-
-    Organisation organisation = verifyOrganisation(orgId);
-    verifyComponent(compUuid);
-
-    Optional<Client> client = componentService.getClient(clientUuid, compUuid, organisation.getUuid());
-
-    if (client.isPresent()) {
-      componentService.deleteClient(client.get());
-      return ResponseEntity.accepted().build();
-    }
-
-    throw new EntityNotFoundException(
-      String.format("Client %s could not be found.", client)
-    );
-  }
-
-  @ApiOperation("Add adapter.")
-  @RequestMapping(
-    method = RequestMethod.POST,
-    consumes = MediaType.APPLICATION_JSON_VALUE,
-    value = "/{compUuid}/organisations/adapters"
-
-  )
-  public ResponseEntity addAdapterToOrganisationComponent(@RequestBody final Adapter adapter, @PathVariable final String compUuid,
-                                                          @RequestHeader("x-org-id") final String orgId) {
-
-    Organisation organisation = verifyOrganisation(orgId);
-    verifyComponent(compUuid);
-
-    if (componentService.addAdapter(adapter, compUuid, organisation)) {
-      return ResponseEntity.ok().body(adapter);
-    }
-
-    throw new EntityFoundException(
-      ServletUriComponentsBuilder
-        .fromCurrentRequest().path("/{uuid}")
-        .buildAndExpand(adapter.getUuid()).toUri().toString()
-    );
-  }
-
-  @ApiOperation("Update adapter.")
-  @RequestMapping(method = RequestMethod.PUT,
-    value = "/{compUuid}/organisations/adapters/{adapterUuid}"
-  )
-  public ResponseEntity updateAdapter(@RequestBody final Adapter adapter, @PathVariable final String adapterUuid,
-                                     @PathVariable final String compUuid,
-                                     @RequestHeader("x-org-id") final String orgId) {
-
-    verifyOrganisation(orgId);
-    verifyComponent(compUuid);
-
-    if (!adapter.getUuid().equals(adapterUuid)) {
-      throw new UpdateEntityMismatchException(
-        String.format("Adapter requested for update (%s) is not the same adapter in endpoint (%s).",
-          adapter.getUuid(),
-          adapterUuid)
-      );
-    }
-    if (!componentService.updateAdapter(adapter)) {
-      throw new EntityNotFoundException(String.format("Could not find adapter: %s", adapter));
-    }
-
-    return ResponseEntity.ok().body(adapter);
-
-  }
-
-  @ApiOperation("Reset adapter password.")
-  @RequestMapping(method = RequestMethod.PUT,
-    value = "/{compUuid}/organisations/adapters/{adaptertUuid}/password"
-  )
-  public ResponseEntity resetAdapterPassword(@PathVariable final String adapterUuid,
-                                             @PathVariable final String compUuid,
-                                             @RequestHeader("x-org-id") final String orgId) {
-
-    Organisation organisation = verifyOrganisation(orgId);
-    verifyComponent(compUuid);
-
-    Optional<Adapter> adapter = componentService.getAdapter(adapterUuid, compUuid, organisation.getUuid());
-    if (adapter.isPresent()) {
-      componentService.resetAdapterPassword(adapter.get());
-      return ResponseEntity.ok().body(adapter.get());
-    }
-
-    throw new EntityNotFoundException(String.format("Could not find client: %s", adapter));
-  }
-
-  @ApiOperation("Get all adapters.")
-  @RequestMapping(
-    method = RequestMethod.GET,
-    value = "/{compUuid}/organisations/adapters"
-  )
-  public ResponseEntity getAllAdapters(@PathVariable final String compUuid,
-                                       @RequestHeader("x-org-id") final String orgId) {
-    Organisation organisation = verifyOrganisation(orgId);
-    verifyComponent(compUuid);
-
-    List<Adapter> list = componentService.getAdapters(compUuid, organisation.getUuid());
-    return ResponseEntity.ok().body(list);
-  }
-
-  @ApiOperation("Get adapter.")
-  @RequestMapping(
-    method = RequestMethod.GET,
-    value = "/{compUuid}/organisations/adapters/{adapterUuid}"
-  )
-  public ResponseEntity getAdapter(@PathVariable final String adapterUuid, @PathVariable final String compUuid,
-                                   @RequestHeader("x-org-id") final String orgId) {
-    Organisation organisation = verifyOrganisation(orgId);
-    verifyComponent(compUuid);
-
-    Optional adapter = componentService.getAdapter(adapterUuid, compUuid, organisation.getUuid());
-    if (adapter.isPresent()) {
-      return ResponseEntity.ok().body(adapter.get());
-    }
-
-    throw new EntityNotFoundException(
-      String.format("Adapter %s could not be found", adapterUuid)
-    );
-  }
-
-  @ApiOperation("Delete adapter.")
-  @RequestMapping(method = RequestMethod.DELETE,
-    value = "/{compUuid}/organisations/adapters/{adapterUuid}"
-  )
-  public ResponseEntity deleteAdapter(@PathVariable final String adapterUuid, @PathVariable final String compUuid,
-                                      @RequestHeader("x-org-id") final String orgId) {
-
-    Organisation organisation = verifyOrganisation(orgId);
-    verifyComponent(compUuid);
-
-    Optional<Adapter> adapter = componentService.getAdapter(adapterUuid, compUuid, organisation.getUuid());
-
-    if (adapter.isPresent()) {
-      componentService.deleteAdapter(adapter.get());
-      return ResponseEntity.accepted().build();
-    }
-
-    throw new EntityNotFoundException(
-      String.format("Client %s could not be found.", adapter)
-    );
-  }
 
   private Organisation verifyOrganisation(String orgId) {
     Optional<Organisation> organisation = organisationService.getOrganisationByOrgId(orgId);
@@ -377,13 +127,14 @@ public class ComponentController {
     );
   }
 
-  private void verifyComponent(String compUuid) {
+  private Component verifyComponent(String compUuid) {
     Optional<Component> component = componentService.getComponentByUUID(compUuid);
-    if (!component.isPresent()) {
-      throw new EntityNotFoundException(
-        String.format("Component %s could not be found", compUuid)
-      );
+    if (component.isPresent()) {
+      return component.get();
     }
+    throw new EntityNotFoundException(
+      String.format("Component %s could not be found", compUuid)
+    );
   }
 
   //

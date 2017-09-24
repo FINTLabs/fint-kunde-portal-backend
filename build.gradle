@@ -1,7 +1,12 @@
+/*
 defaultTasks 'fint-kunde-portal-frontend:clean',
              'fint-kunde-portal-backend:clean',
              'fint-kunde-portal-frontend:webpack_build',
              'fint-kunde-portal-frontend:webjar',
              'fint-kunde-portal-backend:build'
+*/
+
+defaultTasks 'fint-kunde-portal-backend:clean',
+  'fint-kunde-portal-backend:build'
 group 'no.fint'
 version '0.0.1-SNAPSHOT'

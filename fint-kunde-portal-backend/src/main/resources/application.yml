@@ -9,3 +9,7 @@ fint:
     password: "${password}"
     component-base: "ou=felleskomponenter,o=fint"
     organisation-base: "ou=organisasjoner,o=fint"
+
+security:
+  basic:
+    enabled: false

@@ -3,7 +3,6 @@ package no.fint.portal;
 import com.github.springfox.loader.EnableSpringfox;
 import no.rogfk.hateoas.extension.annotations.EnableHalHypermediaSupport;
 import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.embedded.EmbeddedServletContainerCustomizer;
 import org.springframework.boot.web.servlet.ErrorPage;
@@ -15,13 +14,12 @@ import java.util.Properties;
 @EnableHalHypermediaSupport
 @EnableSpringfox
 @SpringBootApplication
-@EnableAutoConfiguration
-public class Application  {
+public class Application {
   public static void main(String[] args) {
     SpringApplication app = new SpringApplication(Application.class);
 
     // Modify default properties
-    Properties        properties = new Properties();
+    Properties properties = new Properties();
     properties.put("spring.mvc.throw-exception-if-no-handler-found", true);
     app.setDefaultProperties(properties);
 

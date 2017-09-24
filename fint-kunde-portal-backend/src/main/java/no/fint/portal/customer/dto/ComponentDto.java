@@ -1,10 +1,9 @@
 package no.fint.portal.customer.dto;
 
-import no.fint.portal.component.Adapter;
-import no.fint.portal.component.Client;
+import no.fint.portal.adapter.Adapter;
+import no.fint.portal.client.Client;
 import no.fint.portal.component.Component;
 
-import javax.naming.Name;
 import java.util.List;
 
 /**

@@ -25,6 +25,7 @@ targetCompatibility = 1.8
 
 repositories {
   mavenCentral()
+  mavenLocal()
   jcenter()
   repositories {
     maven {
@@ -37,18 +38,18 @@ repositories {
     }
   }
   mavenLocal()
-  flatDir { dirs '../fint-kunde-portal-frontend/build/libs' }
+  ////flatDir { dirs '../fint-kunde-portal-frontend/build/libs' }
 }
 
 
 dependencies {
-  compile name: 'fint-kunde-portal-frontend'
+  //compile name: 'fint-kunde-portal-frontend'
   compile('org.springframework.boot:spring-boot-starter-web')
   //compile('org.springframework.ldap:spring-ldap-core:2.2.0.RELEASE')
 
   compile("com.github.springfox.loader:springfox-loader:${springfoxLoaderVersion}")
   compile('no.rogfk:spring-hateoas-hal-extension:0.0.6')
-  compile('no.fint:fint-portal-api:0.0.8')
+  compile('no.fint:fint-portal-api:0.0.51-SNAPSHOT')
 
   runtime('org.springframework.boot:spring-boot-devtools')
 
