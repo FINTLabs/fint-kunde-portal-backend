@@ -6,7 +6,7 @@
   width: 100%;
   height: 100vh;
   display: block;
-  /deep/ md-toolbar {
+  /deep/ mat-toolbar {
     display: block;
     background: $navbar-color;
     height: $navbar-height;
@@ -18,12 +18,12 @@
     border-width: 0;
     border-bottom-width: 1px;
     font-size: 16px;
-    md-toolbar-row {
+    mat-toolbar-row {
       max-height: $navbar-height;
     }
   }
 }
-md-toolbar {
+mat-toolbar {
   .container {
     height: $navbar-height;
     flex: 1;

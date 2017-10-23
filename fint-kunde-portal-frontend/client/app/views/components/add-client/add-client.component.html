@@ -6,12 +6,12 @@
 
 <section class="row">
   <div class="col-5 from">
-    <md-card>
-      <md-card-title>
+    <mat-card>
+      <mat-card-title>
         Tilgjengelige klienter
-        <button md-raised-button md-ripple [routerLink]="['/clients/add']" type="button" class="pull-right"><fint-fa name="handshake-o"></fint-fa>Registrer ny klient</button>
-      </md-card-title>
-      <md-card-content class="table-container" *ngIf="clients.length">
+        <button mat-raised-button [routerLink]="['/clients/add']" type="button" class="pull-right"><fa name="handshake-o"></fa>Registrer ny klient</button>
+      </mat-card-title>
+      <mat-card-content class="table-container" *ngIf="clients.length">
         <table>
           <thead>
           <tr>
@@ -23,27 +23,27 @@
           <tbody>
           <tr *ngFor="let client of clientsNotConfigured;">
             <td>
-              <md-checkbox [(ngModel)]="client.isSelected">
+              <mat-checkbox [(ngModel)]="client.isSelected">
                 {{ client.shortDescription }}
-              </md-checkbox>
+              </mat-checkbox>
             </td>
           </tr>
           </tbody>
 
         </table>
-      </md-card-content>
-    </md-card>
+      </mat-card-content>
+    </mat-card>
   </div>
 
   <div class="col-2 transfer">
-    <div><button md-fab md-icon-button class="icon" (click)="transferRight()"><fint-fa name="arrow-right" size="2"></fint-fa></button></div>
-    <div><button md-fab md-icon-button class="icon" (click)="transferLeft()"><fint-fa name="arrow-left" size="2"></fint-fa></button></div>
+    <div><button mat-fab mat-icon-button class="icon" (click)="transferRight()"><fa name="arrow-right" size="2"></fa></button></div>
+    <div><button mat-fab mat-icon-button class="icon" (click)="transferLeft()"><fa name="arrow-left" size="2"></fa></button></div>
   </div>
 
   <div class="col-5 to">
-    <md-card>
-      <md-card-title>Tilknyttede klienter</md-card-title>
-      <md-card-content class="table-container" *ngIf="configuredClients.length">
+    <mat-card>
+      <mat-card-title>Tilknyttede klienter</mat-card-title>
+      <mat-card-content class="table-container" *ngIf="configuredClients.length">
         <table>
           <thead>
           <tr>
@@ -55,20 +55,20 @@
           <tbody>
           <tr *ngFor="let client of configuredClients;">
             <td>
-              <md-checkbox [(ngModel)]="client.isSelected">
+              <mat-checkbox [(ngModel)]="client.isSelected">
                 {{ component.shortDescription }}
-              </md-checkbox>
+              </mat-checkbox>
             </td>
           </tr>
           </tbody>
 
         </table>
-      </md-card-content>
-    </md-card>
+      </mat-card-content>
+    </mat-card>
   </div>
 </section>
 
 <footer class="row">
-  <button md-raised-button md-ripple type="button" (click)="save()" color="primary"><fint-fa name="save"></fint-fa>Lagre</button>
-  <button md-raised-button md-ripple [routerLink]="['../']" type="button"><fint-fa name="ban"></fint-fa>Avbryt</button>
+  <button mat-raised-button type="button" (click)="save()" color="primary"><fa name="save"></fa>Lagre</button>
+  <button mat-raised-button [routerLink]="['../']" type="button"><fa name="ban"></fa>Avbryt</button>
 </footer>

@@ -1,58 +1,58 @@
 <h2>Registrere adapter</h2>
 
 <form [formGroup]="adapterForm" novalidate (ngSubmit)="save(adapterForm.value, adapterForm.valid)">
-  <md-card>
-    <md-card-content>
+  <mat-card>
+    <mat-card-content>
       <div class="row">
-        <md-input-container class="col-4">
-          <input md-input mdInput placeholder="Kort beskrivelse" type="text" formControlName="shortDescription" required>
-          <md-hint [hidden]="adapterForm.controls['shortDescription'].valid || adapterForm.controls['shortDescription'].pristine" align="end" style="color: red">
-            <fint-fa name="warning"></fint-fa>
+        <mat-form-field class="col-4">
+          <input matInput placeholder="Kort beskrivelse" type="text" formControlName="shortDescription" required>
+          <mat-hint [hidden]="adapterForm.controls['shortDescription'].valid || adapterForm.controls['shortDescription'].pristine" align="end" style="color: red">
+            <fa name="warning"></fa>
             <span *ngIf="adapterForm.controls['shortDescription'].hasError('required')">Påkrevd</span>
             <span *ngIf="adapterForm.controls['shortDescription'].hasError('minlength') || adapterForm.controls['shortDescription'].hasError('maxlength')">
               {{ personid.characterCount }} / 11 tegn
             </span>
-          </md-hint>
-        </md-input-container>
-        <md-input-container class="col-4">
-          <input md-input mdInput placeholder="Notat" type="text" formControlName="note" required>
-          <md-hint [hidden]="adapterForm.controls['note'].valid || adapterForm.controls['note'].pristine" align="end" style="color: red">
-            <fint-fa name="warning"></fint-fa>
+          </mat-hint>
+        </mat-form-field>
+        <mat-form-field class="col-4">
+          <input matInput placeholder="Notat" type="text" formControlName="note" required>
+          <mat-hint [hidden]="adapterForm.controls['note'].valid || adapterForm.controls['note'].pristine" align="end" style="color: red">
+            <fa name="warning"></fa>
             <span *ngIf="adapterForm.controls['note'].hasError('required')">Påkrevd</span>
             <span *ngIf="adapterForm.controls['note'].hasError('minlength') || adapterForm.controls['note'].hasError('maxlength')">
               {{ personid.characterCount }} / 11 tegn
             </span>
-          </md-hint>
-        </md-input-container>
+          </mat-hint>
+        </mat-form-field>
       </div>
       <div class="row">
-        <md-input-container class="col-xs-6">
-          <input md-input mdInput placeholder="API Nøkkel" type="text" formControlName="uuid" readonly #uuid>
-          <button md-suffix md-icon-button type="button" title="Kopier nøkkel" [ngxClipboard]="uuid" [disabled]="!adapterForm.value['uuid']"><fint-fa name="copy"></fint-fa></button>
-        </md-input-container>
-        <md-input-container class="col-xs-6">
-          <input md-input mdInput placeholder="API Hemmelighet" type="text" formControlName="secret" readonly #secret>
-          <button md-suffix md-icon-button type="button" title="Generer nye hemmelighet" (click)="generateUserPass()" [disabled]="!adapterForm.value['shortDescription']"><fint-fa name="key"></fint-fa></button>
-          <button md-suffix md-icon-button type="button" title="Kopier hemmelighet" [ngxClipboard]="secret" [disabled]="!adapterForm.value['secret']"><fint-fa name="copy"></fint-fa></button>
-        </md-input-container>
+        <mat-form-field class="col-xs-6">
+          <input matInput placeholder="API Nøkkel" type="text" formControlName="uuid" readonly #uuid>
+          <button mat-suffix mat-icon-button type="button" title="Kopier nøkkel" [ngxClipboard]="uuid" [disabled]="!adapterForm.value['uuid']"><fa name="copy"></fa></button>
+        </mat-form-field>
+        <mat-form-field class="col-xs-6">
+          <input matInput placeholder="API Hemmelighet" type="text" formControlName="secret" readonly #secret>
+          <button mat-suffix mat-icon-button type="button" title="Generer nye hemmelighet" (click)="generateUserPass()" [disabled]="!adapterForm.value['shortDescription']"><fa name="key"></fa></button>
+          <button mat-suffix mat-icon-button type="button" title="Kopier hemmelighet" [ngxClipboard]="secret" [disabled]="!adapterForm.value['secret']"><fa name="copy"></fa></button>
+        </mat-form-field>
       </div>
       <div class="row">
         <div class="col-8">
-          <md-checkbox formControlName="confirmation" style="position: relative;">
+          <mat-checkbox formControlName="confirmation" style="position: relative;">
             Bekreft at databehandleravtale er inngått med leverandør
-          </md-checkbox>
+          </mat-checkbox>
           <div>
-            <md-hint [hidden]="adapterForm.value.confirmation === true" align="start" style="color: red;">
-              <fint-fa name="warning"></fint-fa>
+            <mat-hint [hidden]="adapterForm.value.confirmation === true" align="start" style="color: red;">
+              <fa name="warning"></fa>
               <span>Må bekreftes</span>
-            </md-hint>
+            </mat-hint>
           </div>
         </div>
       </div>
-    </md-card-content>
-    <md-card-actions>
-      <button md-raised-button md-ripple type="submit" [disabled]="!adapterForm.valid || adapterForm.value.confirmation !== true" color="primary"><fint-fa name="save"></fint-fa>Lagre</button>
-      <button md-raised-button md-ripple type="button" [routerLink]="['/components', componentId]"><fint-fa name="ban"></fint-fa>Lukk</button>
-    </md-card-actions>
-  </md-card>
+    </mat-card-content>
+    <mat-card-actions>
+      <button mat-raised-button type="submit" [disabled]="!adapterForm.valid || adapterForm.value.confirmation !== true" color="primary"><fa name="save"></fa>Lagre</button>
+      <button mat-raised-button type="button" [routerLink]="['/components', componentId]"><fa name="ban"></fa>Lukk</button>
+    </mat-card-actions>
+  </mat-card>
 </form>

@@ -4,10 +4,11 @@ import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MaterialModule } from '@angular/material';
+import { MatCardModule, MatButtonModule, MatListModule, MatCheckboxModule, MatFormFieldModule, MatInputModule } from '@angular/material';
+import { AngularFontAwesomeModule } from 'angular-font-awesome/angular-font-awesome';
 import { ClipboardModule } from 'ngx-clipboard';
-import { LibSharedModule } from 'fint-shared-components';
 
+import { LibSharedModule } from 'fint-shared-components';
 import { ComponentRoutes } from './component.routes';
 
 // Components
@@ -30,7 +31,16 @@ import { AddAdapterComponent } from './add-adapter/add-adapter.component';
     FormsModule,
     ReactiveFormsModule,
     BrowserAnimationsModule,
-    MaterialModule,
+
+    MatCardModule,
+    MatButtonModule,
+    MatListModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatCheckboxModule,
+
+    AngularFontAwesomeModule,
+
     LibSharedModule,
     ClipboardModule,
     RouterModule.forChild([...ComponentRoutes])

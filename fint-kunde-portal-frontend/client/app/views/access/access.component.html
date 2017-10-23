@@ -4,12 +4,12 @@
   Følgende personer har tillatelse til å gjøre endringer.
 </div>
 
-<md-card>
-  <div class="md-spinner-container" *ngIf="isLoading">
-    <md-spinner class="center"></md-spinner>
+<mat-card>
+  <div class="mat-spinner-container" *ngIf="isLoading">
+    <mat-spinner class="center"></mat-spinner>
   </div>
 
-  <md-card-content class="table-container">
+  <mat-card-content class="table-container">
     <table>
       <thead>
         <tr>
@@ -27,17 +27,17 @@
           <td [routerLink]="['./', contact.nin]">{{ contact.mail }}</td>
           <td [routerLink]="['./', contact.nin]">{{ contact.mobile }}</td>
           <td>
-            <button md-icon-button [routerLink]="['./', contact.nin]" title="Rediger"><fint-fa name="edit"></fint-fa></button>
-            <button md-icon-button color="warn" (click)="revoke(contact)" title="Slett tilgang"><fint-fa name="ban"></fint-fa></button>
+            <button mat-icon-button [routerLink]="['./', contact.nin]" title="Rediger"><fa name="edit"></fa></button>
+            <button mat-icon-button color="warn" (click)="revoke(contact)" title="Slett tilgang"><fa name="ban"></fa></button>
           </td>
         </tr>
       </tbody>
     </table>
-  </md-card-content>
-  <md-card-actions>
-    <button md-raised-button md-ripple [routerLink]="['./', 'grant']">
-      <fint-fa name="key"></fint-fa>
+  </mat-card-content>
+  <mat-card-actions>
+    <button mat-raised-button [routerLink]="['./', 'grant']">
+      <fa name="key"></fa>
       Gi tilgang
     </button>
-  </md-card-actions>
-</md-card>
+  </mat-card-actions>
+</mat-card>

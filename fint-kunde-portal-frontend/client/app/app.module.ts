@@ -3,7 +3,8 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
-import { MaterialModule } from '@angular/material';
+import { MatToolbarModule } from '@angular/material';
+import { AngularFontAwesomeModule } from 'angular-font-awesome/angular-font-awesome';
 
 import { AppRoutingModule } from './app-routing.module';
 import { LibSharedModule, EventService } from 'fint-shared-components';
@@ -23,7 +24,9 @@ import { AppComponent } from './app.component';
     FormsModule,
     ReactiveFormsModule,
     HttpModule,
-    MaterialModule,
+
+    MatToolbarModule,
+    AngularFontAwesomeModule,
 
     LibSharedModule,
     AppRoutingModule

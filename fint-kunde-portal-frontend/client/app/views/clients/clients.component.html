@@ -7,12 +7,12 @@
   Det er ingen klienter satt opp enda.
 </div>
 
-<md-card>
-  <div class="md-spinner-container" *ngIf="isLoading">
-    <md-spinner class="center"></md-spinner>
+<mat-card>
+  <div class="mat-spinner-container" *ngIf="isLoading">
+    <mat-spinner class="center"></mat-spinner>
   </div>
 
-  <md-card-content class="table-container" *ngIf="clients">
+  <mat-card-content class="table-container" *ngIf="clients">
     <table>
       <thead>
         <tr>
@@ -30,12 +30,12 @@
       </tbody>-->
 
     </table>
-  </md-card-content>
-  <md-card-actions>
-    <button md-raised-button md-ripple (click)="addClient()" type="button" *ngIf="!isLoading">
-      <fint-fa name="plus"></fint-fa>
+  </mat-card-content>
+  <mat-card-actions>
+    <button mat-raised-button (click)="addClient()" type="button" *ngIf="!isLoading">
+      <fa name="plus"></fa>
       <span *ngIf="!hasClients">Konfigurer ny klient</span>
       <span *ngIf="hasClients">Rediger tilgjengelige klienter</span>
     </button>
-  </md-card-actions>
-</md-card>
+  </mat-card-actions>
+</mat-card>

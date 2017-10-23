@@ -3,7 +3,8 @@ import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MaterialModule } from '@angular/material';
+import { MatCardModule, MatButtonModule, MatFormFieldModule, MatInputModule, MatCheckboxModule } from '@angular/material';
+import { AngularFontAwesomeModule } from 'angular-font-awesome/angular-font-awesome';
 import { ClipboardModule } from 'ngx-clipboard';
 
 import { LibSharedModule } from 'fint-shared-components';
@@ -18,7 +19,15 @@ import { AddClientComponent } from './add-client/add-client.component';
     FormsModule,
     ReactiveFormsModule,
     BrowserAnimationsModule,
-    MaterialModule,
+
+    MatCardModule,
+    MatButtonModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatCheckboxModule,
+
+    AngularFontAwesomeModule,
+
     LibSharedModule,
     ClipboardModule,
     RouterModule.forChild([...ClientsRoutes])

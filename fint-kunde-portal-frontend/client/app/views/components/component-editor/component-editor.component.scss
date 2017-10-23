@@ -39,7 +39,7 @@ fint-flip-card /deep/{
     width: 99%;
     margin: 0 auto;
   }
-  md-card-content {
+  mat-card-content {
     margin-bottom: 3rem;
     &:after {
       content: '';
@@ -47,13 +47,13 @@ fint-flip-card /deep/{
       clear: both;
     }
   }
-  md-card-actions {
+  mat-card-actions {
     position: absolute;
     bottom: 26px;
   }
 }
 
-md-list-item {
+mat-list-item {
   margin: 0 -24px;
   padding: 0 24px;
   &:hover {

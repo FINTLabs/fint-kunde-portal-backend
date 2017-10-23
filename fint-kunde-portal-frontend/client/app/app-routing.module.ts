@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { MaterialModule } from '@angular/material';
 
 import { AccessModule } from './views/access/access.module';
 import { ComponentModule } from './views/components/component.module';
@@ -19,7 +18,6 @@ const routes: Routes = [
     HomeComponent
   ],
   imports: [
-    MaterialModule,
     ClientsModule,
     ComponentModule,  // Including routes
     AccessModule,     // Including routes

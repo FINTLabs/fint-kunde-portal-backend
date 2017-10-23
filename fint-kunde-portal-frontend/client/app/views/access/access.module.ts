@@ -3,7 +3,10 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
-import { MaterialModule } from '@angular/material';
+import {
+  MatCardModule, MatButtonModule, MatProgressSpinnerModule, MatFormFieldModule, MatInputModule, MatCheckboxModule
+} from '@angular/material';
+import { AngularFontAwesomeModule } from 'angular-font-awesome/angular-font-awesome';
 
 import { LibSharedModule } from 'fint-shared-components';
 import { AccessRoutes } from './access.routes';
@@ -22,7 +25,16 @@ import { GrantComponent } from './grant/grant.component';
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
-    MaterialModule,
+
+    MatCardModule,
+    MatButtonModule,
+    MatProgressSpinnerModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatCheckboxModule,
+
+    AngularFontAwesomeModule,
+
     LibSharedModule,
     RouterModule.forChild([...AccessRoutes])
   ],
