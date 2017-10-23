@@ -59,7 +59,7 @@ public class AdaperController {
     throw new EntityFoundException(
       ServletUriComponentsBuilder
         .fromCurrentRequest().path("/{uuid}")
-        .buildAndExpand(adapter.getUuid()).toUri().toString()
+        .buildAndExpand(adapter.getName()).toUri().toString()
     );
   }
 
@@ -72,10 +72,10 @@ public class AdaperController {
 
     verifyOrganisation(orgId);
 
-    if (!adapter.getUuid().equals(adapterUuid)) {
+    if (!adapter.getName().equals(adapterUuid)) {
       throw new UpdateEntityMismatchException(
         String.format("Adapter requested for update (%s) is not the same adapter in endpoint (%s).",
-          adapter.getUuid(),
+          adapter.getName(),
           adapterUuid)
       );
     }
@@ -96,7 +96,7 @@ public class AdaperController {
 
     Organisation organisation = verifyOrganisation(orgId);
 
-    Optional<Adapter> adapter = adapterService.getAdapter(adapterUuid, organisation.getUuid());
+    Optional<Adapter> adapter = adapterService.getAdapter(adapterUuid, organisation.getName());
     if (adapter.isPresent()) {
       adapterService.resetAdapterPassword(adapter.get());
       return ResponseEntity.ok().body(adapter.get());
@@ -112,7 +112,7 @@ public class AdaperController {
   public ResponseEntity getAllAdapters(@RequestHeader("x-org-id") final String orgId) {
     Organisation organisation = verifyOrganisation(orgId);
 
-    List<Adapter> list = adapterService.getAdapters(organisation.getUuid());
+    List<Adapter> list = adapterService.getAdapters(organisation.getName());
     return ResponseEntity.ok().body(list);
   }
 
@@ -124,7 +124,7 @@ public class AdaperController {
   public ResponseEntity getAdapter(@PathVariable final String adapterUuid, @RequestHeader("x-org-id") final String orgId) {
     Organisation organisation = verifyOrganisation(orgId);
 
-    Optional adapter = adapterService.getAdapter(adapterUuid, organisation.getUuid());
+    Optional adapter = adapterService.getAdapter(adapterUuid, organisation.getName());
     if (adapter.isPresent()) {
       return ResponseEntity.ok().body(adapter.get());
     }
@@ -142,7 +142,7 @@ public class AdaperController {
 
     Organisation organisation = verifyOrganisation(orgId);
 
-    Optional<Adapter> adapter = adapterService.getAdapter(adapterUuid, organisation.getUuid());
+    Optional<Adapter> adapter = adapterService.getAdapter(adapterUuid, organisation.getName());
 
     if (adapter.isPresent()) {
       adapterService.deleteAdapter(adapter.get());
@@ -150,21 +150,21 @@ public class AdaperController {
     }
 
     throw new EntityNotFoundException(
-      String.format("Client %s could not be found.", adapter)
+      String.format("Adapter %s could not be found.", adapter)
     );
   }
 
   @ApiOperation("Add adapter to component")
   @RequestMapping(method = RequestMethod.POST,
     consumes = MediaType.APPLICATION_JSON_VALUE,
-    value = "/{adapterUuid}/component/{compUuid}/"
+    value = "/{adapterUuid}/component/{compUuid}"
   )
   public ResponseEntity addClientToComponent(@PathVariable final String adapterUuid, @PathVariable final String compUuid, @RequestHeader("x-org-id") final String orgId) {
 
     Organisation organisation = verifyOrganisation(orgId);
     Component component = verifyComponent(compUuid);
 
-    Optional<Adapter> adapter = adapterService.getAdapter(adapterUuid, organisation.getUuid());
+    Optional<Adapter> adapter = adapterService.getAdapter(adapterUuid, organisation.getName());
     adapterService.linkComponent(adapter.get(), component);
 
     return ResponseEntity.ok().build();
@@ -172,14 +172,14 @@ public class AdaperController {
 
   @ApiOperation("Remove adapter from component")
   @RequestMapping(method = RequestMethod.DELETE,
-    value = "/{adapterUuid}/component/{compUuid}/"
+    value = "/{adapterUuid}/component/{compUuid}"
   )
   public ResponseEntity removeOrganisationFromComponent(@PathVariable final String adapterUuid, @PathVariable final String compUuid, @RequestHeader("x-org-id") final String orgId) {
 
     Organisation organisation = verifyOrganisation(orgId);
     Component component = verifyComponent(compUuid);
 
-    Optional<Adapter> adapter = adapterService.getAdapter(adapterUuid, organisation.getUuid());
+    Optional<Adapter> adapter = adapterService.getAdapter(adapterUuid, organisation.getName());
     adapterService.unLinkComponent(adapter.get(), component);
 
     return ResponseEntity.accepted().build();
@@ -194,7 +194,7 @@ public class AdaperController {
     }
 
     throw new EntityNotFoundException(
-      String.format("Organisation %s (%s) could not be found", orgId, organisation.get().getUuid())
+      String.format("Organisation %s (%s) could not be found", orgId)
     );
   }
 

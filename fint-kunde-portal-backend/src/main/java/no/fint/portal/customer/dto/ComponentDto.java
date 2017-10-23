@@ -11,7 +11,6 @@ import java.util.List;
  */
 public class ComponentDto {
   private String dn;
-  private String uuid;
   private String technicalName;
   private String displayName;
   private String description;
@@ -23,8 +22,7 @@ public class ComponentDto {
 
   public ComponentDto(Component component) {
     this.setDn(component.getDn());
-    this.setUuid(component.getUuid());
-    this.setTechnicalName(component.getTechnicalName());
+    this.setTechnicalName(component.getName());
     this.setDisplayName(component.getDisplayName());
     this.setDescription(component.getDescription());
   }
@@ -35,14 +33,6 @@ public class ComponentDto {
 
   public void setDn(String dn) {
     this.dn = dn;
-  }
-
-  public String getUuid() {
-    return uuid;
-  }
-
-  public void setUuid(String uuid) {
-    this.uuid = uuid;
   }
 
   public String getTechnicalName() {

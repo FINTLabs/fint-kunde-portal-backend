@@ -59,7 +59,7 @@ public class ClientController {
     throw new EntityFoundException(
       ServletUriComponentsBuilder
         .fromCurrentRequest().path("/{uuid}")
-        .buildAndExpand(client.getUuid()).toUri().toString()
+        .buildAndExpand(client.getName()).toUri().toString()
     );
   }
 
@@ -72,10 +72,10 @@ public class ClientController {
 
     verifyOrganisation(orgId);
 
-    if (!client.getUuid().equals(clientUuid)) {
+    if (!client.getName().equals(clientUuid)) {
       throw new UpdateEntityMismatchException(
         String.format("Client requested for update (%s) is not the same client in endpoint (%s).",
-          client.getUuid(),
+          client.getName(),
           clientUuid)
       );
     }
@@ -98,7 +98,7 @@ public class ClientController {
 
     Organisation organisation = verifyOrganisation(orgId);
 
-    Optional<Client> client = clientService.getClient(clientUuid, organisation.getUuid());
+    Optional<Client> client = clientService.getClient(clientUuid, organisation.getName());
     if (client.isPresent()) {
       clientService.resetClientPassword(client.get());
       return ResponseEntity.ok().body(client.get());
@@ -112,7 +112,7 @@ public class ClientController {
   public ResponseEntity getAllClients(@RequestHeader("x-org-id") final String orgId) {
     Organisation organisation = verifyOrganisation(orgId);
 
-    List<Client> list = clientService.getClients(organisation.getUuid());
+    List<Client> list = clientService.getClients(organisation.getName());
     return ResponseEntity.ok().body(list);
   }
 
@@ -123,7 +123,7 @@ public class ClientController {
   public ResponseEntity getClient(@PathVariable final String clientUuid, @RequestHeader("x-org-id") final String orgId) {
     Organisation organisation = verifyOrganisation(orgId);
 
-    Optional client = clientService.getClient(clientUuid, organisation.getUuid());
+    Optional client = clientService.getClient(clientUuid, organisation.getName());
     if (client.isPresent()) {
       return ResponseEntity.ok().body(client.get());
     }
@@ -141,7 +141,7 @@ public class ClientController {
 
     Organisation organisation = verifyOrganisation(orgId);
 
-    Optional<Client> client = clientService.getClient(clientUuid, organisation.getUuid());
+    Optional<Client> client = clientService.getClient(clientUuid, organisation.getName());
 
     if (client.isPresent()) {
       clientService.deleteClient(client.get());
@@ -156,14 +156,14 @@ public class ClientController {
   @ApiOperation("Add client to component")
   @RequestMapping(method = RequestMethod.POST,
     consumes = MediaType.APPLICATION_JSON_VALUE,
-    value = "/{clientUuid}/component/{compUuid}/"
+    value = "/{clientUuid}/component/{compUuid}"
   )
   public ResponseEntity addClientToComponent(@PathVariable final String clientUuid, @PathVariable final String compUuid, @RequestHeader("x-org-id") final String orgId) {
 
     Organisation organisation = verifyOrganisation(orgId);
     Component component = verifyComponent(compUuid);
 
-    Optional<Client> client = clientService.getClient(clientUuid, organisation.getUuid());
+    Optional<Client> client = clientService.getClient(clientUuid, organisation.getName());
     clientService.linkComponent(client.get(), component);
 
     return ResponseEntity.ok().build();
@@ -178,7 +178,7 @@ public class ClientController {
     Organisation organisation = verifyOrganisation(orgId);
     Component component = verifyComponent(compUuid);
 
-    Optional<Client> client = clientService.getClient(clientUuid, organisation.getUuid());
+    Optional<Client> client = clientService.getClient(clientUuid, organisation.getName());
     clientService.unLinkComponent(client.get(), component);
 
     return ResponseEntity.accepted().build();
@@ -195,7 +195,7 @@ public class ClientController {
     }
 
     throw new EntityNotFoundException(
-      String.format("Organisation %s (%s) could not be found", orgId, organisation.get().getUuid())
+      String.format("Organisation %s (%s) could not be found", orgId, organisation.get().getName())
     );
   }
 

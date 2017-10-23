@@ -93,14 +93,14 @@ public class ContactController {
   @RequestMapping(method = RequestMethod.GET)
   public HalPagedResources<Contact> getContacts(@RequestHeader("x-org-id") final String orgId, @RequestParam(required = false) Integer page) {
     Organisation organisation = verifyOrganisation(orgId);
-    Optional<List<Contact>> contacts = Optional.ofNullable(contactService.getContacts(organisation.getUuid()));
+    Optional<List<Contact>> contacts = Optional.ofNullable(contactService.getContacts(organisation.getName()));
 
     if (contacts.isPresent()) {
       return new HalPagedResources<>(contacts.get(), page);
     }
 
     throw new EntityNotFoundException(
-      String.format("No contacts found for %s.", organisation.getUuid())
+      String.format("No contacts found for %s.", organisation.getName())
     );
 
   }
@@ -110,7 +110,7 @@ public class ContactController {
   public ResponseEntity getContact(@RequestHeader("x-org-id") final String orgId, @PathVariable final String nin) {
 
     Organisation organisation = verifyOrganisation(orgId);
-    Optional<Contact> contact = contactService.getContact(organisation.getUuid(), nin);
+    Optional<Contact> contact = contactService.getContact(organisation.getName(), nin);
 
     if (contact.isPresent()) {
       return ResponseEntity.ok(contact.get());
@@ -126,7 +126,7 @@ public class ContactController {
   @RequestMapping(method = RequestMethod.DELETE, value = "/{nin}")
   public ResponseEntity deleteContacts(@RequestHeader("x-org-id") final String orgId, @PathVariable final String nin) {
     Organisation organisation = verifyOrganisation(orgId);
-    Optional<Contact> contact = contactService.getContact(organisation.getUuid(), nin);
+    Optional<Contact> contact = contactService.getContact(organisation.getName(), nin);
 
     if (contact.isPresent()) {
       contactService.deleteContact(contact.get());
@@ -146,7 +146,7 @@ public class ContactController {
     }
 
     throw new EntityNotFoundException(
-      String.format("Organisation %s (%s) could not be found", orgId, organisation.get().getUuid())
+      String.format("Organisation %s could not be found", orgId)
     );
   }
 

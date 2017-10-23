@@ -47,7 +47,7 @@ public class ComponentController {
     Organisation organisation = verifyOrganisation(orgId);
 
     List<Component> allComponents = componentService.getComponents();
-    List<Component> configured = componentService.getComponentsByOrgUUID(organisation.getUuid());
+    List<Component> configured = componentService.getComponentsByOrgUUID(organisation.getName());
 
     List<ComponentDto> returnedComponents = new ArrayList<>();
     allComponents.forEach((component) -> {
@@ -123,7 +123,7 @@ public class ComponentController {
     }
 
     throw new EntityNotFoundException(
-      String.format("Organisation %s (%s) could not be found", orgId, organisation.get().getUuid())
+      String.format("Organisation %s could not be found", orgId)
     );
   }
 
