@@ -4,67 +4,117 @@
   <mat-card>
     <mat-card-content>
       <div class="row">
-        <mat-form-field class="col-4">
-          <input matInput placeholder="Kort beskrivelse" type="text" formControlName="shortDescription" required>
-          <mat-hint [hidden]="clientForm.controls['shortDescription'].valid || clientForm.controls['shortDescription'].pristine" align="end" style="color: red">
+        <mat-form-field class="col-12">
+          <input matInput placeholder="Visningsnavn" type="text" formControlName="shortDescription" required>
+          <mat-hint
+            [hidden]="clientForm.controls['shortDescription'].valid || clientForm.controls['shortDescription'].pristine"
+            align="end" style="color: red">
             <fa name="warning"></fa>
             <span *ngIf="clientForm.controls['shortDescription'].hasError('required')">Påkrevd</span>
-            <span *ngIf="clientForm.controls['shortDescription'].hasError('minlength') || clientForm.controls['shortDescription'].hasError('maxlength')">
-              {{ personid.characterCount }} / 11 tegn
+            <span
+              *ngIf="clientForm.controls['shortDescription'].hasError('minlength') || clientForm.controls['shortDescription'].hasError('maxlength')">
             </span>
           </mat-hint>
         </mat-form-field>
-        <mat-form-field class="col-4">
+      </div>
+      <div class="row">
+        <mat-form-field class="col-12">
           <input matInput placeholder="Notat" type="text" formControlName="note" required>
-          <mat-hint [hidden]="clientForm.controls['note'].valid || clientForm.controls['note'].pristine" align="end" style="color: red">
+          <mat-hint [hidden]="clientForm.controls['note'].valid || clientForm.controls['note'].pristine" align="end"
+                    style="color: red">
             <fa name="warning"></fa>
             <span *ngIf="clientForm.controls['note'].hasError('required')">Påkrevd</span>
-            <span *ngIf="clientForm.controls['note'].hasError('minlength') || clientForm.controls['note'].hasError('maxlength')">
+            <span
+              *ngIf="clientForm.controls['note'].hasError('minlength') || clientForm.controls['note'].hasError('maxlength')">
               {{ personid.characterCount }} / 11 tegn
             </span>
           </mat-hint>
         </mat-form-field>
       </div>
+      <br/>
+      <mat-card>
+        <mat-card-title>Autentisering</mat-card-title>
+        <mat-card-content>
+          <div class="row">
+            <mat-form-field class="col-12">
+              <input matInput placeholder="Brukernavn (Gyldige tegn: 'A-Z', 'a-z', '0-9', '-'. Minimum lengde: 6, maximum lengde: 20)" type="text"
+                     formControlName="name"
+                     [readonly]="isEdit()"
+              >
+              <mat-hint [hidden]="clientForm.controls['name'].valid || clientForm.controls['name'].pristine"
+                        align="end"
+                        style="color: red">
+                <fa name="warning"></fa>
+                <span *ngIf="clientForm.controls['name'].hasError('required')">Påkrevd</span>
+                <span
+                  *ngIf="clientForm.controls['name'].hasError('minlength') || clientForm.controls['name'].hasError('maxlength')">
+            </span>
+              </mat-hint>
+            </mat-form-field>
+          </div>
+          <div class="row">
+            <mat-form-field class="col-xs-12">
+              <input matInput placeholder="Passord" type="text" formControlName="secret" readonly #secret>
+              <button mat-suffix mat-icon-button type="button" title="Generer nytt passord"
+                      (click)="generateUserPass()"
+                      [disabled]="!isEdit()">
+                <fa name="key"></fa>
+              </button>
+              <button mat-suffix mat-icon-button type="button" title="Kopier passord" [ngxClipboard]="secret"
+                      [disabled]="!isEdit()">
+                <fa name="copy"></fa>
+              </button>
+            </mat-form-field>
+          </div>
+
+          <div class="row">
+            <mat-form-field class="col-xs-12">
+              <input matInput placeholder="OAuth ClientId" type="text" formControlName="clientId" readonly #clientId>
+              <button mat-suffix mat-icon-button type="button" title="Kopier clientid" [ngxClipboard]="clientId"
+                      [disabled]="!isEdit()">
+                <fa name="copy"></fa>
+              </button>
+            </mat-form-field>
+          </div>
+          <div class="row">
+            <mat-form-field class="col-xs-12">
+              <input matInput placeholder="OAuth Client Secret" type="text" formControlName="clientSecret" readonly
+                     #clientSecret>
+              <button mat-suffix mat-icon-button type="button" title="Kopier client secret" [ngxClipboard]="clientSecret"
+                      [disabled]="!isEdit()">
+                <fa name="copy"></fa>
+              </button>
+            </mat-form-field>
+          </div>
+        </mat-card-content>
+      </mat-card>
+
+      <br/>
       <div class="row">
-        <mat-form-field class="col-xs-6">
-          <input matInput placeholder="API Nøkkel" type="text" formControlName="uuid" readonly #uuid>
-          <button mat-suffix mat-icon-button type="button" title="Kopier nøkkel" [ngxClipboard]="uuid" [disabled]="!clientForm.value['uuid']"><fa name="copy"></fa></button>
-        </mat-form-field>
-        <mat-form-field class="col-xs-6">
-          <input matInput placeholder="API Hemmelighet" type="text" formControlName="secret" readonly #secret>
-          <button mat-suffix mat-icon-button type="button" title="Generer nye hemmelighet" (click)="generateUserPass()" [disabled]="!clientForm.value['shortDescription']"><fa name="key"></fa></button>
-          <button mat-suffix mat-icon-button type="button" title="Kopier hemmelighet" [ngxClipboard]="secret" [disabled]="!clientForm.value['secret']"><fa name="copy"></fa></button>
-        </mat-form-field>
-      </div>
-      <!--<div class="row">
-        <mat-form-field class="col-xs-6">
-          <input matInput placeholder="Klient Id" type="text" formControlName="clientId" readonly #clientId>
-          <button mat-suffix mat-icon-button type="button" title="Kopier nøkkel" [ngxClipboard]="clientId" [disabled]="!clientForm.value['clientId']"><fa name="copy"></fa></button>
-        </mat-form-field>
-        <mat-form-field class="col-xs-6">
-          <input matInput placeholder="Klient hemmelighet" type="text" formControlName="clientSecret" readonly #clientSecret>
-          <button mat-suffix mat-icon-button type="button" title="Generer nye hemmelighet" (click)="generateUserPass()" [disabled]="!clientForm.value['shortDescription']"><fa name="key"></fa></button>
-          <button mat-suffix mat-icon-button type="button" title="Kopier hemmelighet" [ngxClipboard]="clientSecret" [disabled]="!clientForm.value['clientSecret']"><fa name="copy"></fa></button>
-        </mat-form-field>
-      </div>-->
-      <div class="row">
-        <div class="col-xs-8">
+        <div class="col-xs-8" >
           <mat-checkbox formControlName="confirmation" style="position: relative;">
             Bekreft at databehandleravtale er inngått med klienten
           </mat-checkbox>
           <div>
-            <mat-hint [hidden]="clientForm.value.confirmation === true" align="start" style="color: red; bottom: -2em;">
+            <mat-hint [hidden]="clientForm.value.confirmation === true" align="start"
+                      style="color: red; bottom: -2em;">
               <fa name="warning"></fa>
               <span>Må være bekreftet</span>
             </mat-hint>
           </div>
         </div>
       </div>
-
     </mat-card-content>
     <mat-card-actions>
-      <button mat-raised-button [disabled]="!clientForm.valid || clientForm.value.confirmation !== true" type="submit" color="primary"><fa name="save"></fa>Lagre</button>
-      <button mat-raised-button type="button" [routerLink]="['../']"><fa name="ban"></fa>Lukk</button>
+      <button mat-raised-button [disabled]="!clientForm.valid || clientForm.value.confirmation !== true" type="submit"
+              color="primary">
+        <fa name="save"></fa>
+        Lagre
+      </button>
+      <button mat-raised-button type="button" [routerLink]="['../']">
+        <fa name="ban"></fa>
+        Lukk
+      </button>
     </mat-card-actions>
   </mat-card>
 </form>

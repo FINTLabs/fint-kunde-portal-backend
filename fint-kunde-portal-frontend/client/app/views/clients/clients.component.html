@@ -15,27 +15,36 @@
   <mat-card-content class="table-container" *ngIf="clients">
     <table>
       <thead>
-        <tr>
-          <th>Navn</th>
-          <!--<th>Teknisk Navn</th>-->
-          <!--<th>Status</th>-->
-          <!--<th>Adapter</th>-->
-          <!--<th>Klienter</th>-->
-          <th class="buttons"></th>
-        </tr>
+      <tr>
+        <th>Navn</th>
+        <!--<th>Teknisk Navn</th>-->
+        <!--<th>Status</th>-->
+        <!--<th>Adapter</th>-->
+        <!--<th>Klienter</th>-->
+        <th class="buttons"></th>
+      </tr>
       </thead>
 
-      <!-- Editor -->
-      <!--<tbody *ngFor="let component of components;" [appComponentEditor]="component" (componentChange)="onComponentSaved($event)" (onEdit)="onEdit($event)" [class.edit]="currentEditor && currentEditor.componentUuid == component.uuid">
-      </tbody>-->
+      <tbody>
+      <tr *ngFor="let client of clients;">
+        <td [routerLink]="['./', client.name]">{{ client.shortDescription }}</td>
+        <td>
+          <button mat-icon-button [routerLink]="['./', client.name]" title="Rediger klient"><fa name="edit"></fa></button>
+          <button mat-icon-button color="warn" (click)="removeClient(client)" title="Slett klient"><fa name="ban"></fa></button>
+        </td>
+      </tr>
+      </tbody>
 
     </table>
   </mat-card-content>
   <mat-card-actions>
     <button mat-raised-button (click)="addClient()" type="button" *ngIf="!isLoading">
       <fa name="plus"></fa>
+      <span>Konfigurer ny klient</span>
+      <!--
       <span *ngIf="!hasClients">Konfigurer ny klient</span>
       <span *ngIf="hasClients">Rediger tilgjengelige klienter</span>
+      -->
     </button>
   </mat-card-actions>
 </mat-card>

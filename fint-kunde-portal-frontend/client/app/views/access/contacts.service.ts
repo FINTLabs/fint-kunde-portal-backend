@@ -12,7 +12,7 @@ import { IContactHALPage, IContact } from 'app/api/IContact';
 
 @Injectable()
 export class ContactService {
-  base: string = '/api/organisations/contacts';
+  base: string = '/api/contacts';
 
   constructor(private http: Http, private fintDialog: FintDialogService) {}
 

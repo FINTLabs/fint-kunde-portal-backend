@@ -12,7 +12,6 @@ import { CommonComponentService } from 'app/views/components/common-component.se
 })
 export class AddClientComponent implements OnInit {
   clientForm: FormGroup;
-  componentId: string;
   component: ICommonComponent;
 
   client: IClient;
@@ -29,10 +28,8 @@ export class AddClientComponent implements OnInit {
   ngOnInit() {
     this.route.params.subscribe(params => {
       if (params['id']) {
-        this.componentId = params['id'];
-        this.CommonComponent.getById(this.componentId).subscribe(component => this.component = component);
-        if (params['clientId']) {
-          this.CommonComponent.getClient(this.componentId, params['clientId']).subscribe(client => this.onClientReceived(client));
+        if (params['id']) {
+          this.CommonComponent.getClient(params['id']).subscribe(client => this.onClientReceived(client));
         }
       }
     });
@@ -41,14 +38,14 @@ export class AddClientComponent implements OnInit {
   createForm() {
     this.clientForm = this.fb.group({
       dn: [''],
-      uuid: [''],
-      shortDescription: ['', [Validators.required]],
+      name: ['', [Validators.required, Validators.pattern('[A-Za-z0-9\-\]{6,20}')]],
+      shortDescription: ['', Validators.required],
       orgId: [''],
       note: [''],
       secret: [''],
-      confirmation: ['', [Validators.required]]/*,
+      confirmation: ['', [Validators.required]],
       clientId        : [''],
-      clientSecret    : [''],*/
+      clientSecret    : ['']
     });
   }
 
@@ -58,11 +55,23 @@ export class AddClientComponent implements OnInit {
     this.clientForm.setValue(this.client);
   }
 
+  isEdit() {
+    if (this.client == undefined) {
+      return false;
+    }
+    if (this.client.name == null) {
+      return false;
+    }
+    return true;
+  }
+
   generateUserPass() {
-    if (!this.clientForm.value['uuid']) {
+    /*
+    if (!this.clientForm.value['secret']) {
       return this.save(this.clientForm.value, this.clientForm.valid);
     }
-    this.CommonComponent.resetClientPassword(this.componentId, this.clientForm.value)
+    */
+    this.CommonComponent.resetClientPassword(this.client /*this.clientForm.value*/)
       .subscribe((result:any) => {
         result.confirmation = this.clientForm.value.confirmation;
         this.clientForm.setValue(result);
@@ -71,7 +80,7 @@ export class AddClientComponent implements OnInit {
 
   save(model: IClient, isValid: boolean) {
     if (isValid) {
-      this.CommonComponent.saveClient(this.componentId, model)
+      this.CommonComponent.saveClient(model)
         .subscribe(client => this.onClientReceived(client));
     }
   }

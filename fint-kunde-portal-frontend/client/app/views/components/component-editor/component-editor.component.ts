@@ -100,8 +100,8 @@ export class ComponentEditorComponent implements AfterViewInit {
       if (this.component.clients.length > this.updated.clients.length) {
         // Clients are removed
         promises.push(this.component.clients
-          .filter(c => this.updated.clients.findIndex(uc => uc.uuid === c.uuid) === -1)
-          .map(c => this.CommonComponent.removeClient(this.componentUuid, c).toPromise())
+          .filter(c => this.updated.clients.findIndex(uc => uc.name === c.name) === -1)
+          .map(c => this.CommonComponent.removeClient(c).toPromise())
         );
       }
 

@@ -18,6 +18,7 @@ import { IComponentAdapter } from 'app/api/IComponentAdapter';
 @Injectable()
 export class CommonComponentService {
   base: string = '/api/components';
+  clientBase: string = '/api/clients'
 
   constructor(private http: Http, private fintDialog: FintDialogService) {}
 
@@ -74,39 +75,39 @@ export class CommonComponentService {
   // ---------------------------------
   // -- Clients
   // ---------------------------------
-  allClients(compUuid: string): Observable<IClient[]> {
-    return this.http.get(`${this.base}/${compUuid}/organisations/clients`)
+  allClients(): Observable<IClient[]> {
+    return this.http.get(`${this.clientBase}`)
       .map(result => result.json())
       .catch(error => this.handleError(error));
   }
 
-  getClient(compUuid: string, clientUuid: string): Observable<IClient> {
-    return this.http.get(`${this.base}/${compUuid}/organisations/clients/${clientUuid}`)
+  getClient(clientUuid: string): Observable<IClient> {
+    return this.http.get(`${this.clientBase}/${clientUuid}`)
       .map(result => result.json())
       .catch(error => this.handleError(error));
   }
 
-  removeClient(compUuid: string, client: IClient) {
-    let url = `${this.base}/${compUuid}/organisations/clients/${client.uuid}`;
+  removeClient(client: IClient) {
+    let url = `${this.clientBase}/${client.name}`;
     return this.http.delete(url)
       .finally(() => this.invalidateCache())
       .catch(error => this.handleError(error));
   }
 
-  saveClient(compUuid: string, client: IClient): Observable<IClient> {
-    let url = `${this.base}/${compUuid}/organisations/clients`;
-    if (!client.uuid) { delete client.dn; delete client.uuid; }
+  saveClient(client: IClient): Observable<IClient> {
+    let url = `${this.clientBase}`;
+    if (!client.name) { delete client.dn; delete client.name; }
     if (!client.orgId) { delete client.orgId; }
     if (!client.secret) { delete client.secret; }
     delete client.confirmation;
-    return (client.uuid ? this.http.put(`${url}/${client.uuid}`, client) : this.http.post(url, client))
+    return (client.dn ? this.http.put(`${url}/${client.name}`, client) : this.http.post(url, client))
       .map(result => result.json())
       .finally(() => this.invalidateCache())
       .catch(error => this.handleError(error));
   }
 
-  resetClientPassword(compUuid: string, client: IClient) {
-    return this.http.put(`${this.base}/${compUuid}/organisations/clients/${client.uuid}/password`, {})
+  resetClientPassword(client: IClient) {
+    return this.http.put(`${this.clientBase}/${client.name}/password`, {})
       .map(result => result.json())
       .catch(error => this.handleError(error));
   }
