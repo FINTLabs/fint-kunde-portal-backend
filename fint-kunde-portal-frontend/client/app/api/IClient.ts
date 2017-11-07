@@ -7,8 +7,6 @@ export interface IClient {
   secret: string;         // (userPassword) Client secret.
   clientId: string;
   clientSecret: string;
-
-  confirmation?: boolean;   // Only for frontend. Do not transmit this to server
 }
 
 export class EmptyClient implements IClient {

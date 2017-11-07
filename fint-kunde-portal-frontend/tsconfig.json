@@ -3,15 +3,30 @@
   "compilerOptions": {
     "baseUrl": "./client",
     "outDir": "./dist/out-tsc",
+    "mapRoot": "./client",
     "sourceMap": true,
     "declaration": false,
     "moduleResolution": "node",
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "target": "es5",
+    "typeRoots": [
+      "node_modules/@types"
+    ],
     "lib": [
       "es2016",
       "dom"
-    ]
-  }
+    ],
+    "paths": {
+      "@angular/*": ["./node_modules/@angular/*"],
+      "rxjs/*": ["./node_modules/rxjs/*"]
+    }
+  },
+  "include": [
+    "./client/**/*.ts",
+    "./node_modules/fint-shared-components/*.ts"
+  ],
+  "exclude": [
+    "./node_modules/fint-shared-components/node_modules/**/*.ts"
+  ]
 }

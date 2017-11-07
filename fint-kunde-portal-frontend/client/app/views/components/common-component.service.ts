@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Http } from '@angular/http';
-import { Observable } from 'rxjs';
+import { Observable } from 'rxjs/Rx';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/share';
 import 'rxjs/add/operator/catch';
@@ -17,13 +17,13 @@ import { IComponentAdapter } from 'app/api/IComponentAdapter';
 
 @Injectable()
 export class CommonComponentService {
-  base: string = '/api/components';
-  clientBase: string = '/api/clients'
+  base = '/api/components';
+  clientBase = '/api/clients'
+  _allCompObservable: Observable<IComponentHALPage>; // Cache of all components
+  _compObservableCache: [string, Observable<ICommonComponent>] = <[string, Observable<ICommonComponent>]>[];
 
   constructor(private http: Http, private fintDialog: FintDialogService) {}
 
-  _allCompObservable: Observable<IComponentHALPage>; // Cache of all components
-  _compObservableCache: [string, Observable<ICommonComponent>] = <[string, Observable<ICommonComponent>]>[];
   invalidateCache() {
     delete this._allCompObservable;
     this._compObservableCache = <[string, Observable<ICommonComponent>]>[];
@@ -36,7 +36,7 @@ export class CommonComponentService {
     if (!this._allCompObservable) {
       this._allCompObservable = this.http.get(this.base)
         .map(result => {
-          let allComponents       = result.json();
+          const allComponents       = result.json();
           this._allCompObservable = Observable.of(allComponents);
           return allComponents;
         })
@@ -50,7 +50,7 @@ export class CommonComponentService {
     if (!this._compObservableCache[compUuid]) {
       this._compObservableCache[compUuid] = this.http.get(`${this.base}/${compUuid}`)
         .map(result => {
-          let component = result.json();
+          const component = result.json();
           this._compObservableCache[compUuid] = Observable.of(component);
           return component;
         })
@@ -88,14 +88,14 @@ export class CommonComponentService {
   }
 
   removeClient(client: IClient) {
-    let url = `${this.clientBase}/${client.name}`;
+    const url = `${this.clientBase}/${client.name}`;
     return this.http.delete(url)
       .finally(() => this.invalidateCache())
       .catch(error => this.handleError(error));
   }
 
   saveClient(client: IClient): Observable<IClient> {
-    let url = `${this.clientBase}`;
+    const url = `${this.clientBase}`;
     if (!client.name) { delete client.dn; delete client.name; }
     if (!client.orgId) { delete client.orgId; }
     if (!client.secret) { delete client.secret; }
@@ -128,14 +128,14 @@ export class CommonComponentService {
   }
 
   removeAdapter(compUuid: string, adapter: IComponentAdapter) {
-    let url = `${this.base}/${compUuid}/organisations/adapters/${adapter.uuid}`;
+    const url = `${this.base}/${compUuid}/organisations/adapters/${adapter.uuid}`;
     return this.http.delete(url)
       .finally(() => this.invalidateCache())
       .catch(error => this.handleError(error));
   }
 
   saveAdapter(compUuid: string, adapter: IComponentAdapter): Observable<IComponentAdapter> {
-    let url = `${this.base}/${compUuid}/organisations/adapters`;
+    const url = `${this.base}/${compUuid}/organisations/adapters`;
     if (!adapter.uuid) { delete adapter.dn; delete adapter.uuid; }
     if (!adapter.orgId) { delete adapter.orgId; }
     if (!adapter.secret) { delete adapter.secret; }

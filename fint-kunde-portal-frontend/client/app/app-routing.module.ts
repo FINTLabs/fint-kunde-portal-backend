@@ -21,7 +21,7 @@ const routes: Routes = [
     ClientsModule,
     ComponentModule,  // Including routes
     AccessModule,     // Including routes
-    EventModule.forRoot(), // Including routes for events
+    // EventModule.forRoot(), // Including routes for events
     RouterModule.forRoot(routes)
   ],
   exports: [RouterModule],

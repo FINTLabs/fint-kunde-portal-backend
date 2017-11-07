@@ -29,7 +29,7 @@
     <ul>
       <li [routerLinkActive]="['active']" *ngFor="let route of routes">
         <a [routerLink]="[route.path]" *ngIf="route.label">
-          <fa *ngIf="route.icon" [name]="route.icon"></fa>
+          <fa *ngIf="route.icon" [name]="route.icon" fixed="true"></fa>
           <span>{{ route.label }}</span>
         </a>
       </li>

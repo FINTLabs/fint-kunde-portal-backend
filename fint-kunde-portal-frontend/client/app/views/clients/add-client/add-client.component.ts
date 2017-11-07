@@ -16,6 +16,8 @@ export class AddClientComponent implements OnInit {
 
   client: IClient;
 
+  isNew = true;
+
   constructor(
     private fb: FormBuilder,
     private router: Router,
@@ -27,36 +29,33 @@ export class AddClientComponent implements OnInit {
 
   ngOnInit() {
     this.route.params.subscribe(params => {
-      if (params['id']) {
-        if (params['id']) {
-          this.CommonComponent.getClient(params['id']).subscribe(client => this.onClientReceived(client));
-        }
+      if (params.id) {
+        this.CommonComponent.getClient(params.id).subscribe(client => this.onClientReceived(client));
       }
     });
   }
 
   createForm() {
     this.clientForm = this.fb.group({
-      dn: [''],
-      name: ['', [Validators.required, Validators.pattern('[A-Za-z0-9\-\]{6,20}')]],
-      shortDescription: ['', Validators.required],
-      orgId: [''],
-      note: [''],
-      secret: [''],
-      confirmation: ['', [Validators.required]],
-      clientId        : [''],
-      clientSecret    : ['']
+      dn               : [''],
+      name             : ['', [Validators.required, Validators.pattern('[A-Za-z0-9\-\]{6,20}')]],
+      shortDescription : ['', [Validators.required]],
+      orgId            : [''],
+      note             : [''],
+      secret           : [''],
+      clientId         : [''],
+      clientSecret     : ['']
     });
   }
 
   onClientReceived(client) {
     this.client = client;
-    this.client.confirmation = true; // Since it was persisted, someone has had to check this.
     this.clientForm.setValue(this.client);
+    this.isNew = false;
   }
 
   isEdit() {
-    if (this.client == undefined) {
+    if (this.client === undefined) {
       return false;
     }
     if (this.client.name == null) {
@@ -72,7 +71,7 @@ export class AddClientComponent implements OnInit {
     }
     */
     this.CommonComponent.resetClientPassword(this.client /*this.clientForm.value*/)
-      .subscribe((result:any) => {
+      .subscribe((result: any) => {
         result.confirmation = this.clientForm.value.confirmation;
         this.clientForm.setValue(result);
       });
