@@ -1,6 +1,6 @@
 import { IHAL } from './IHAL';
-import { IClient } from 'app/api/IClient';
-import { IComponentAdapter } from 'app/api/IComponentAdapter';
+import { IClient } from './IClient';
+import { IComponentAdapter } from './IComponentAdapter';
 
 export interface ICommonComponent {
   dn: string;             //

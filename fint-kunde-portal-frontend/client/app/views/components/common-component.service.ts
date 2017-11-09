@@ -99,7 +99,6 @@ export class CommonComponentService {
     if (!client.name) { delete client.dn; delete client.name; }
     if (!client.orgId) { delete client.orgId; }
     if (!client.secret) { delete client.secret; }
-    delete client.confirmation;
     return (client.dn ? this.http.put(`${url}/${client.name}`, client) : this.http.post(url, client))
       .map(result => result.json())
       .finally(() => this.invalidateCache())
