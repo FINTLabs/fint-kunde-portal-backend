@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Http } from '@angular/http';
+import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs/Rx';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/share';
@@ -22,7 +22,7 @@ export class CommonComponentService {
   _allCompObservable: Observable<IComponentHALPage>; // Cache of all components
   _compObservableCache: [string, Observable<ICommonComponent>] = <[string, Observable<ICommonComponent>]>[];
 
-  constructor(private http: Http, private fintDialog: FintDialogService) {}
+  constructor(private http: HttpClient, private fintDialog: FintDialogService) {}
 
   invalidateCache() {
     delete this._allCompObservable;
@@ -34,9 +34,9 @@ export class CommonComponentService {
   // ---------------------------------
   all(): Observable<IComponentHALPage> {
     if (!this._allCompObservable) {
-      this._allCompObservable = this.http.get(this.base)
+      this._allCompObservable = this.http.get<IComponentHALPage>(this.base)
         .map(result => {
-          const allComponents       = result.json();
+          const allComponents     = result;
           this._allCompObservable = Observable.of(allComponents);
           return allComponents;
         })
@@ -50,7 +50,7 @@ export class CommonComponentService {
     if (!this._compObservableCache[compUuid]) {
       this._compObservableCache[compUuid] = this.http.get(`${this.base}/${compUuid}`)
         .map(result => {
-          const component = result.json();
+          const component = result;
           this._compObservableCache[compUuid] = Observable.of(component);
           return component;
         })
@@ -77,13 +77,11 @@ export class CommonComponentService {
   // ---------------------------------
   allClients(): Observable<IClient[]> {
     return this.http.get(`${this.clientBase}`)
-      .map(result => result.json())
       .catch(error => this.handleError(error));
   }
 
   getClient(clientUuid: string): Observable<IClient> {
     return this.http.get(`${this.clientBase}/${clientUuid}`)
-      .map(result => result.json())
       .catch(error => this.handleError(error));
   }
 
@@ -100,14 +98,12 @@ export class CommonComponentService {
     if (!client.orgId) { delete client.orgId; }
     if (!client.secret) { delete client.secret; }
     return (client.dn ? this.http.put(`${url}/${client.name}`, client) : this.http.post(url, client))
-      .map(result => result.json())
       .finally(() => this.invalidateCache())
       .catch(error => this.handleError(error));
   }
 
   resetClientPassword(client: IClient) {
     return this.http.put(`${this.clientBase}/${client.name}/password`, {})
-      .map(result => result.json())
       .catch(error => this.handleError(error));
   }
 
@@ -116,13 +112,11 @@ export class CommonComponentService {
   // ---------------------------------
   allAdapters(compUuid: string): Observable<IComponentAdapter[]> {
     return this.http.get(`${this.base}/${compUuid}/organisations/adapters`)
-      .map(result => result.json())
       .catch(error => this.handleError(error));
   }
 
   getAdapter(compUuid: string, adapterUuid: string): Observable<IComponentAdapter> {
     return this.http.get(`${this.base}/${compUuid}/organisations/adapters/${adapterUuid}`)
-      .map(result => result.json())
       .catch(error => this.handleError(error));
   }
 
@@ -140,14 +134,12 @@ export class CommonComponentService {
     if (!adapter.secret) { delete adapter.secret; }
     delete adapter.confirmation;
     return (adapter.uuid ? this.http.put(`${url}/${adapter.uuid}`, adapter) : this.http.post(url, adapter))
-      .map(result => result.json())
       .finally(() => this.invalidateCache())
       .catch(error => this.handleError(error));
   }
 
   resetAdapterPassword(compUuid: string, adapter: IComponentAdapter) {
     return this.http.put(`${this.base}/${compUuid}/organisations/adapters/${adapter.uuid}/password`, {})
-      .map(result => result.json())
       .catch(error => this.handleError(error));
   }
 
