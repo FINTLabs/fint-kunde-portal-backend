@@ -1,6 +1,6 @@
 import { Http } from '@angular/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable } from 'rxjs/Rx';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/observable/throw';
@@ -12,7 +12,7 @@ import { IContactHALPage, IContact } from 'app/api/IContact';
 
 @Injectable()
 export class ContactService {
-  base: string = '/api/contacts';
+  base = '/api/contacts';
 
   constructor(private http: Http, private fintDialog: FintDialogService) {}
 
@@ -35,7 +35,7 @@ export class ContactService {
 
   save(contact: IContact): Observable<IContact> {
     if (!contact.dn) { delete contact.dn; }
-    let call = (contact.dn) ? this.http.put(`${this.base}/${contact.nin}`, contact) : this.http.post(this.base, contact); // If exists, put - else post
+    const call = (contact.dn) ? this.http.put(`${this.base}/${contact.nin}`, contact) : this.http.post(this.base, contact); // If exists, put - else post
     return call
       .map(result => result.json())
       .catch(error => this.handleError(error));
