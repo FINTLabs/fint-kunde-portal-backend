@@ -17,6 +17,9 @@ export class AddClientComponent implements OnInit {
   client: IClient;
 
   isNew = true;
+  showPassword = false;
+  showClientId = false;
+  showSecret = false;
 
   constructor(
     private fb: FormBuilder,

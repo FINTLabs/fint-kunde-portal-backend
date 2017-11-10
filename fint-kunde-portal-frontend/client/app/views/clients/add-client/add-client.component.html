@@ -18,9 +18,9 @@
         </mat-form-field>
       </div>
       <br/>
-      <mat-card>
-        <mat-card-title>Autentisering</mat-card-title>
-        <mat-card-content>
+      <div class="mat-elevation-z2 internal-panel">
+        <h3>Autentisering</h3>
+        <section>
           <div class="row">
             <mat-form-field class="col-12">
               <input matInput placeholder="Brukernavn" type="text" formControlName="name" [readonly]="isEdit()">
@@ -68,8 +68,8 @@
               </button>
             </mat-form-field>
           </div>
-        </mat-card-content>
-      </mat-card>
+        </section>
+      </div>
     </mat-card-content>
 
     <mat-card-actions>

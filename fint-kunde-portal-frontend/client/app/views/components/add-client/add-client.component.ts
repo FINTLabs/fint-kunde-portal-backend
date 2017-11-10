@@ -51,6 +51,6 @@ export class AddClientComponent implements OnInit {
     });
   }
 
-  save(model: IClient, isValid: boolean) {
+  save(model?: IClient, isValid?: boolean) {
   }
 }
