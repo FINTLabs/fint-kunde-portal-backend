@@ -17,7 +17,7 @@ export class AccessComponent implements OnInit {
   pages: number;
   pageSize: number;
   contacts: IContact[];
-  isLoading: boolean = false;
+  isLoading = false;
 
   constructor(
     private Contacts: ContactService,

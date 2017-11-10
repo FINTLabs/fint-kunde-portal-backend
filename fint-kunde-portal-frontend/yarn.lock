@@ -2515,9 +2515,9 @@ find-up@^2.0.0, find-up@^2.1.0:
   dependencies:
     locate-path "^2.0.0"
 
-fint-shared-components@fintprosjektet/fint-shared-components#1.0.4:
-  version "1.0.4"
-  resolved "https://codeload.github.com/fintprosjektet/fint-shared-components/tar.gz/b3de1c89f50a9de74bef3fbce35a2b117ee918bd"
+fint-shared-components@fintprosjektet/fint-shared-components#1.0.5:
+  version "1.0.5"
+  resolved "https://codeload.github.com/fintprosjektet/fint-shared-components/tar.gz/411a81d6fe4c5922848dc2fb8be5e057642abe6a"
 
 flatten@^1.0.2:
   version "1.0.2"

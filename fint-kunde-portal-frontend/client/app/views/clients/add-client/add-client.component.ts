@@ -50,7 +50,16 @@ export class AddClientComponent implements OnInit {
 
   onClientReceived(client) {
     this.client = client;
-    this.clientForm.setValue(this.client);
+    this.clientForm.setValue({
+      dn               : this.client.dn,
+      name             : this.client.name,
+      shortDescription : this.client.shortDescription,
+      orgId            : this.client.orgId,
+      note             : this.client.note,
+      secret           : this.client.secret,
+      clientId         : this.client.clientId,
+      clientSecret     : this.client.clientSecret,
+    });
     this.isNew = false;
   }
 

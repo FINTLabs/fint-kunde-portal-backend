@@ -14,7 +14,7 @@ import {IClient} from 'app/api/IClient';
 export class ClientsComponent implements OnInit {
 
   clients: IClient[];
-  isLoading: boolean = false;
+  isLoading = false;
 
   get hasClients(): boolean {
     return this.clients && this.clients.length > 0;
@@ -22,7 +22,7 @@ export class ClientsComponent implements OnInit {
 
   constructor(private router: Router,
               private Clients: CommonComponentService,
-              private FintDialog: FintDialogService,) {
+              private FintDialog: FintDialogService) {
   }
 
   ngOnInit() {

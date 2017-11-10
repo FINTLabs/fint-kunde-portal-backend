@@ -24,7 +24,7 @@
       <tbody>
         <tr *ngFor="let client of clients;">
           <td [routerLink]="['./', client.name]">{{ client.shortDescription }}</td>
-          <td>
+          <td class="buttons">
             <button mat-icon-button [routerLink]="['./', client.name]" title="Rediger klient"><fa name="edit"></fa></button>
             <button mat-icon-button color="warn" (click)="removeClient(client)" title="Slett klient"><fa name="ban"></fa></button>
           </td>
