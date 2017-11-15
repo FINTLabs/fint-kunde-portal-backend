@@ -40,34 +40,32 @@ export class CommonComponentService {
           this._allCompObservable = Observable.of(allComponents);
           return allComponents;
         })
-        .share()
-        .catch(error => this.handleError(error));
+        .share();
     }
     return this._allCompObservable;
   }
 
-  getById(compUuid: string) {
+  getById(compUuid: string): Observable<ICommonComponent> {
     if (!this._compObservableCache[compUuid]) {
-      this._compObservableCache[compUuid] = this.http.get(`${this.base}/${compUuid}`)
+      this._compObservableCache[compUuid] = this.http.get<ICommonComponent>(`${this.base}/${compUuid}`)
         .map(result => {
           const component = result;
           this._compObservableCache[compUuid] = Observable.of(component);
           return component;
         })
-        .share()
-        .catch(error => this.handleError(error));
+        .share();
     }
     return this._compObservableCache[compUuid];
   }
 
   removeFromOrganisation(component: ICommonComponent) {
-    return this.http.delete(`${this.base}/${component.uuid}/organisations`)
+    return this.http.delete<ICommonComponent>(`${this.base}/${component.uuid}/organisations`)
       .finally(() => this.invalidateCache())
       .catch(error => this.handleError(error));
   }
 
   assignToOrganisation(component: ICommonComponent) {
-    return this.http.post(`${this.base}/${component.uuid}/organisations`, {})
+    return this.http.post<ICommonComponent>(`${this.base}/${component.uuid}/organisations`, {})
       .finally(() => this.invalidateCache())
       .catch(error => this.handleError(error));
   }
@@ -76,18 +74,18 @@ export class CommonComponentService {
   // -- Clients
   // ---------------------------------
   allClients(): Observable<IClient[]> {
-    return this.http.get(`${this.clientBase}`)
+    return this.http.get<IClient[]>(`${this.clientBase}`)
       .catch(error => this.handleError(error));
   }
 
   getClient(clientUuid: string): Observable<IClient> {
-    return this.http.get(`${this.clientBase}/${clientUuid}`)
+    return this.http.get<IClient>(`${this.clientBase}/${clientUuid}`)
       .catch(error => this.handleError(error));
   }
 
   removeClient(client: IClient) {
     const url = `${this.clientBase}/${client.name}`;
-    return this.http.delete(url)
+    return this.http.delete<IClient>(url)
       .finally(() => this.invalidateCache())
       .catch(error => this.handleError(error));
   }
@@ -97,13 +95,15 @@ export class CommonComponentService {
     if (!client.name) { delete client.dn; delete client.name; }
     if (!client.orgId) { delete client.orgId; }
     if (!client.secret) { delete client.secret; }
-    return (client.dn ? this.http.put(`${url}/${client.name}`, client) : this.http.post(url, client))
-      .finally(() => this.invalidateCache())
-      .catch(error => this.handleError(error));
+    return (client.dn
+      ? this.http.put<IClient>(`${url}/${client.name}`, client)
+      : this.http.post<IClient>(url, client))
+        .catch(error => this.handleError(error))
+        .finally(() => this.invalidateCache());
   }
 
   resetClientPassword(client: IClient) {
-    return this.http.put(`${this.clientBase}/${client.name}/password`, {})
+    return this.http.put<IClient>(`${this.clientBase}/${client.name}/password`, {})
       .catch(error => this.handleError(error));
   }
 
@@ -111,18 +111,18 @@ export class CommonComponentService {
   // -- Adapters
   // ---------------------------------
   allAdapters(compUuid: string): Observable<IComponentAdapter[]> {
-    return this.http.get(`${this.base}/${compUuid}/organisations/adapters`)
+    return this.http.get<IComponentAdapter[]>(`${this.base}/${compUuid}/organisations/adapters`)
       .catch(error => this.handleError(error));
   }
 
   getAdapter(compUuid: string, adapterUuid: string): Observable<IComponentAdapter> {
-    return this.http.get(`${this.base}/${compUuid}/organisations/adapters/${adapterUuid}`)
+    return this.http.get<IComponentAdapter>(`${this.base}/${compUuid}/organisations/adapters/${adapterUuid}`)
       .catch(error => this.handleError(error));
   }
 
   removeAdapter(compUuid: string, adapter: IComponentAdapter) {
     const url = `${this.base}/${compUuid}/organisations/adapters/${adapter.uuid}`;
-    return this.http.delete(url)
+    return this.http.delete<IComponentAdapter>(url)
       .finally(() => this.invalidateCache())
       .catch(error => this.handleError(error));
   }
@@ -133,13 +133,15 @@ export class CommonComponentService {
     if (!adapter.orgId) { delete adapter.orgId; }
     if (!adapter.secret) { delete adapter.secret; }
     delete adapter.confirmation;
-    return (adapter.uuid ? this.http.put(`${url}/${adapter.uuid}`, adapter) : this.http.post(url, adapter))
-      .finally(() => this.invalidateCache())
-      .catch(error => this.handleError(error));
+    return (adapter.uuid
+      ? this.http.put<IComponentAdapter>(`${url}/${adapter.uuid}`, adapter)
+      : this.http.post<IComponentAdapter>(url, adapter))
+        .catch(error => this.handleError(error))
+        .finally(() => this.invalidateCache());
   }
 
   resetAdapterPassword(compUuid: string, adapter: IComponentAdapter) {
-    return this.http.put(`${this.base}/${compUuid}/organisations/adapters/${adapter.uuid}/password`, {})
+    return this.http.put<IComponentAdapter>(`${this.base}/${compUuid}/organisations/adapters/${adapter.uuid}/password`, {})
       .catch(error => this.handleError(error));
   }
 

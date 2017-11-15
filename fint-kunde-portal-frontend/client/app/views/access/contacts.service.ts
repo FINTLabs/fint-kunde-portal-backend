@@ -17,25 +17,26 @@ export class ContactService {
   constructor(private http: HttpClient, private fintDialog: FintDialogService) {}
 
   all(): Observable<IContactHALPage> {
-    return this.http.get(this.base)
-      .catch(error => this.handleError(error));
+    return this.http.get<IContactHALPage>(this.base)
+      .catch(err => this.handleError(err));
   }
 
   getById(nin): Observable<IContact> {
-    return this.http.get(this.base + '/' + nin)
-      .catch(error => this.handleError(error));
+    return this.http.get<IContact>(this.base + '/' + nin)
+      .catch(err => this.handleError(err));
   }
 
   revokeAccess(contact: IContact): Observable<any> {
     return this.http.delete(this.base + '/' + contact.nin)
-      .catch(error => this.handleError(error));
+      .catch(err => this.handleError(err));
   }
 
   save(contact: IContact): Observable<IContact> {
     if (!contact.dn) { delete contact.dn; }
-    const call = (contact.dn) ? this.http.put(`${this.base}/${contact.nin}`, contact) : this.http.post(this.base, contact); // If exists, put - else post
-    return call
-      .catch(error => this.handleError(error));
+    return ((contact.dn)
+      ? this.http.put<IContact>(`${this.base}/${contact.nin}`, contact)
+      : this.http.post<IContact>(this.base, contact)) // If exists, put - else post
+        .catch(err => this.handleError(err));
   }
 
   handleError(error) {
