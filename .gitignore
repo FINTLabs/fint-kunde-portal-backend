@@ -9,3 +9,6 @@ out
 *.project
 *.iml
 run.cmd
+portal.env
+.classpath
+/bin/

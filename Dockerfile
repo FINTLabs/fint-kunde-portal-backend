@@ -1,7 +1,14 @@
-FROM java:8
+FROM node AS node
+WORKDIR /src/client
+COPY client .
+RUN yarn install && npm rebuild node-sass && yarn build
 
-LABEL authors="Frode Sjovatsen <frode@fintprosjektet.no>, Øystein Amundsen <oystein@fintprosjektet.no>"
+FROM gradle:jdk8-alpine as java
+USER root
+COPY . .
+COPY --from=node /src/client/dist/ src/main/resources/public/
+RUN gradle --no-daemon build
 
-ADD ./fint-kunde-portal-backend/build/libs/fint-kunde-portal-backend*.jar /data/app.jar
-
-ENTRYPOINT java ${PARAMS} -jar /data/app.jar
+FROM openjdk:8-jre-alpine
+COPY --from=java /home/gradle/build/libs/fint-kunde-portal-backend*.jar /data/app.jar
+CMD ["java", "-jar", "/data/app.jar"]
