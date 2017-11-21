@@ -19,14 +19,23 @@
     ],
     "paths": {
       "@angular/*": ["./node_modules/@angular/*"],
-      "rxjs/*": ["./node_modules/rxjs/*"]
+      "rxjs/*": ["./node_modules/rxjs/*"],
+      "d3*": ["./node_modules/d3*"]
     }
   },
   "include": [
     "./client/**/*.ts",
-    "./node_modules/fint-shared-components/*.ts"
+    "./node_modules/fint-shared-components/src/app/index.ts",
+    "./node_modules/fint-shared-components/src/app/shared/index.ts",
+    "./node_modules/fint-shared-components/src/app/shared/shared.module.ts",
+    "./node_modules/fint-shared-components/src/app/shared/flip-card/flip-card.component.ts",
+    "./node_modules/fint-shared-components/src/app/shared/dialogs/fint-dialog.service.ts",
+    "./node_modules/fint-shared-components/src/app/shared/dialogs/error/error.component.ts",
+    "./node_modules/fint-shared-components/src/app/shared/dialogs/confirm-delete/confirm-delete.component.ts"
   ],
   "exclude": [
+    "**/*.spec.ts",
+    "./node_modules/fint-shared-components/src/**/*.spec.ts",
     "./node_modules/fint-shared-components/node_modules/**/*.ts"
   ]
 }
