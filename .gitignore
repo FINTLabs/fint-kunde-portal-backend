@@ -12,3 +12,4 @@ run.cmd
 portal.env
 .classpath
 /bin/
+node_modules
