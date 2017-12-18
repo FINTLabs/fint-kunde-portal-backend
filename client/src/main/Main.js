@@ -12,7 +12,7 @@ import IconButton from 'material-ui/IconButton';
 import MenuIcon from 'material-ui-icons/Menu';
 import ChevronLeftIcon from 'material-ui-icons/ChevronLeft';
 import ChevronRightIcon from 'material-ui-icons/ChevronRight';
-import {List, ListItem, ListItemIcon, ListItemText} from "material-ui";
+import {Divider, List, ListItem, ListItemIcon, ListItemText} from "material-ui";
 import AdapterIcon from 'material-ui-icons/Link';
 import ApiIcon from 'material-ui-icons/WebAsset';
 import DashboardIcon from 'material-ui-icons/Home';
@@ -141,8 +141,8 @@ class Main extends React.Component {
 
     render() {
         const {classes, theme} = this.props;
-        const {anchorEl} = this.state;
-        const open = Boolean(anchorEl);
+        //const {anchorEl} = this.state;
+        //const open = Boolean(anchorEl);
 
 
         return (
@@ -178,6 +178,7 @@ class Main extends React.Component {
                                         {theme.direction === 'rtl' ? <ChevronRightIcon/> : <ChevronLeftIcon/>}
                                     </IconButton>
                                 </div>
+                                <Divider absolute/>
                                 <List>
                                     <Link to="/" className={classes.menuLink}>
                                         <ListItem button>

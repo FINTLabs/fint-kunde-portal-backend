@@ -4,16 +4,16 @@ package no.fint.portal.customer.controller;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
-import no.fint.portal.client.Client;
-import no.fint.portal.client.ClientService;
-import no.fint.portal.component.Component;
-import no.fint.portal.component.ComponentService;
 import no.fint.portal.exceptions.EntityFoundException;
 import no.fint.portal.exceptions.EntityNotFoundException;
 import no.fint.portal.exceptions.UpdateEntityMismatchException;
 import no.fint.portal.model.ErrorResponse;
-import no.fint.portal.organisation.Organisation;
-import no.fint.portal.organisation.OrganisationService;
+import no.fint.portal.model.client.Client;
+import no.fint.portal.model.client.ClientService;
+import no.fint.portal.model.component.Component;
+import no.fint.portal.model.component.ComponentService;
+import no.fint.portal.model.organisation.Organisation;
+import no.fint.portal.model.organisation.OrganisationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -86,7 +86,6 @@ public class ClientController {
     return ResponseEntity.ok().body(client);
 
   }
-
 
 
   @ApiOperation("Reset client password.")
@@ -164,7 +163,7 @@ public class ClientController {
     Component component = verifyComponent(compUuid);
 
     Optional<Client> client = clientService.getClient(clientUuid, organisation.getName());
-    clientService.linkComponent(client.get(), component);
+    componentService.linkClient(component, client.get());
 
     return ResponseEntity.ok().build();
   }
@@ -179,33 +178,28 @@ public class ClientController {
     Component component = verifyComponent(compUuid);
 
     Optional<Client> client = clientService.getClient(clientUuid, organisation.getName());
-    clientService.unLinkComponent(client.get(), component);
+    componentService.unLinkClient(component, client.get());
 
     return ResponseEntity.accepted().build();
 
   }
 
 
+  private Organisation verifyOrganisation(String orgName) {
+    Optional<Organisation> organisation = organisationService.getOrganisation(orgName);
 
-
-  private Organisation verifyOrganisation(String orgId) {
-    Optional<Organisation> organisation = organisationService.getOrganisationByOrgId(orgId);
-    if (organisation.isPresent()) {
-      return organisation.get();
-    }
-
-    throw new EntityNotFoundException(
-      String.format("Organisation %s (%s) could not be found", orgId, organisation.get().getName())
+    return organisation.orElseThrow(() -> new EntityNotFoundException(
+        String.format("Organisation %s (%s) could not be found", orgName, organisation.get().getName())
+      )
     );
   }
 
-  private Component verifyComponent(String compUuid) {
-    Optional<Component> component = componentService.getComponentByUUID(compUuid);
-    if (component.isPresent()) {
-      return component.get();
-    }
-    throw new EntityNotFoundException(
-      String.format("Component %s could not be found", compUuid)
+  private Component verifyComponent(String compName) {
+    Optional<Component> component = componentService.getComponentByName(compName);
+
+    return component.orElseThrow(() -> new EntityNotFoundException(
+        String.format("Component %s could not be found", compName)
+      )
     );
   }
 

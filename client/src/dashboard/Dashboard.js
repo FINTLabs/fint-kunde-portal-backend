@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {Avatar, Card, CardContent, CardHeader, Divider, Grid, Typography, withStyles} from "material-ui";
-import {green, grey, red} from 'material-ui/colors';
+import {green} from 'material-ui/colors';
 import PropTypes from 'prop-types';
 import {Link} from "react-router-dom";
 
