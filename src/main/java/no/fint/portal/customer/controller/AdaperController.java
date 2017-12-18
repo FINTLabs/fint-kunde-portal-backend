@@ -28,7 +28,7 @@ import java.util.Optional;
 
 @Slf4j
 @RestController
-@Api(tags = "Components")
+@Api(tags = "Adapters")
 @CrossOrigin(origins = "*")
 @RequestMapping(value = "/api/adapters/{orgName}")
 public class AdaperController {
@@ -38,9 +38,6 @@ public class AdaperController {
 
   @Autowired
   private OrganisationService organisationService;
-
-  @Autowired
-  private ComponentService componentService;
 
   @ApiOperation("Add adapter.")
   @RequestMapping(
@@ -154,53 +151,10 @@ public class AdaperController {
     );
   }
 
-  @ApiOperation("Add adapter to component")
-  @RequestMapping(method = RequestMethod.POST,
-    consumes = MediaType.APPLICATION_JSON_VALUE,
-    value = "/{adapterName}/component/{compName}"
-  )
-  public ResponseEntity addClientToComponent(@PathVariable final String adapterName, @PathVariable final String compName, @PathVariable("orgName") final String orgName) {
-
-    Organisation organisation = verifyOrganisation(orgName);
-    Component component = verifyComponent(compName);
-
-    Optional<Adapter> adapter = adapterService.getAdapter(adapterName, organisation.getName());
-    componentService.linkAdapter(component, adapter.get());
-
-    return ResponseEntity.ok().build();
-  }
-
-  @ApiOperation("Remove adapter from component")
-  @RequestMapping(method = RequestMethod.DELETE,
-    value = "/{adapterName}/component/{compName}"
-  )
-  public ResponseEntity removeOrganisationFromComponent(@PathVariable final String adapterName, @PathVariable final String compName, @PathVariable("orgName") final String orgName) {
-
-    Organisation organisation = verifyOrganisation(orgName);
-    Component component = verifyComponent(compName);
-
-    Optional<Adapter> adapter = adapterService.getAdapter(adapterName, organisation.getName());
-    componentService.unLinkAdapter(component, adapter.get());
-
-    return ResponseEntity.accepted().build();
-
-  }
-
 
   private Organisation verifyOrganisation(String orgName) {
-    Optional<Organisation> organisation = organisationService.getOrganisation(orgName);
-
-    return organisation.orElseThrow(() -> new EntityNotFoundException(
+    return organisationService.getOrganisation(orgName).orElseThrow(() -> new EntityNotFoundException(
         String.format("Organisation %s (%s) could not be found", orgName)
-      )
-    );
-  }
-
-  private Component verifyComponent(String compName) {
-    Optional<Component> component = componentService.getComponentByName(compName);
-
-    return component.orElseThrow(() -> new EntityNotFoundException(
-        String.format("Component %s could not be found", compName)
       )
     );
   }

@@ -10,8 +10,6 @@ import no.fint.portal.exceptions.UpdateEntityMismatchException;
 import no.fint.portal.model.ErrorResponse;
 import no.fint.portal.model.client.Client;
 import no.fint.portal.model.client.ClientService;
-import no.fint.portal.model.component.Component;
-import no.fint.portal.model.component.ComponentService;
 import no.fint.portal.model.organisation.Organisation;
 import no.fint.portal.model.organisation.OrganisationService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,9 +26,9 @@ import java.util.Optional;
 
 @Slf4j
 @RestController
-@Api(tags = "Components")
+@Api(tags = "Clients")
 @CrossOrigin(origins = "*")
-@RequestMapping(value = "/api/clients")
+@RequestMapping(value = "/api/clients/{orgName}")
 public class ClientController {
 
   @Autowired
@@ -39,18 +37,14 @@ public class ClientController {
   @Autowired
   private OrganisationService organisationService;
 
-  @Autowired
-  private ComponentService componentService;
-
-
   @ApiOperation("Add client.")
   @RequestMapping(method = RequestMethod.POST,
     consumes = MediaType.APPLICATION_JSON_VALUE
   )
   public ResponseEntity addClient(@RequestBody final Client client,
-                                  @RequestHeader("x-org-id") final String orgId) {
+                                  @PathVariable("orgName") final String orgName) {
 
-    Organisation organisation = verifyOrganisation(orgId);
+    Organisation organisation = verifyOrganisation(orgName);
 
     if (clientService.addClient(client, organisation)) {
       return ResponseEntity.ok().body(client);
@@ -65,18 +59,18 @@ public class ClientController {
 
   @ApiOperation("Update client.")
   @RequestMapping(method = RequestMethod.PUT,
-    value = "/{clientUuid}"
+    value = "/{clientName}"
   )
-  public ResponseEntity updateClient(@RequestBody final Client client, @PathVariable final String clientUuid,
-                                     @RequestHeader("x-org-id") final String orgId) {
+  public ResponseEntity updateClient(@RequestBody final Client client, @PathVariable final String clientName,
+                                     @PathVariable("orgName") final String orgName) {
 
-    verifyOrganisation(orgId);
+    verifyOrganisation(orgName);
 
-    if (!client.getName().equals(clientUuid)) {
+    if (!client.getName().equals(clientName)) {
       throw new UpdateEntityMismatchException(
         String.format("Client requested for update (%s) is not the same client in endpoint (%s).",
           client.getName(),
-          clientUuid)
+          clientName)
       );
     }
     if (!clientService.updateClient(client)) {
@@ -90,14 +84,14 @@ public class ClientController {
 
   @ApiOperation("Reset client password.")
   @RequestMapping(method = RequestMethod.PUT,
-    value = "/{clientUuid}/password"
+    value = "/{clientName}/password"
   )
-  public ResponseEntity resetClientPassword(@PathVariable final String clientUuid,
-                                            @RequestHeader("x-org-id") final String orgId) {
+  public ResponseEntity resetClientPassword(@PathVariable final String clientName,
+                                            @PathVariable("orgName") final String orgName) {
 
-    Organisation organisation = verifyOrganisation(orgId);
+    Organisation organisation = verifyOrganisation(orgName);
 
-    Optional<Client> client = clientService.getClient(clientUuid, organisation.getName());
+    Optional<Client> client = clientService.getClient(clientName, organisation.getName());
     if (client.isPresent()) {
       clientService.resetClientPassword(client.get());
       return ResponseEntity.ok().body(client.get());
@@ -108,8 +102,8 @@ public class ClientController {
 
   @ApiOperation("Get all clients.")
   @RequestMapping(method = RequestMethod.GET)
-  public ResponseEntity getAllClients(@RequestHeader("x-org-id") final String orgId) {
-    Organisation organisation = verifyOrganisation(orgId);
+  public ResponseEntity getAllClients(@PathVariable("orgName") final String orgName) {
+    Organisation organisation = verifyOrganisation(orgName);
 
     List<Client> list = clientService.getClients(organisation.getName());
     return ResponseEntity.ok().body(list);
@@ -117,30 +111,30 @@ public class ClientController {
 
   @ApiOperation("Get client.")
   @RequestMapping(method = RequestMethod.GET,
-    value = "/{clientUuid}"
+    value = "/{clientName}"
   )
-  public ResponseEntity getClient(@PathVariable final String clientUuid, @RequestHeader("x-org-id") final String orgId) {
-    Organisation organisation = verifyOrganisation(orgId);
+  public ResponseEntity getClient(@PathVariable final String clientName, @PathVariable("orgName") final String orgName) {
+    Organisation organisation = verifyOrganisation(orgName);
 
-    Optional client = clientService.getClient(clientUuid, organisation.getName());
+    Optional client = clientService.getClient(clientName, organisation.getName());
     if (client.isPresent()) {
       return ResponseEntity.ok().body(client.get());
     }
 
     throw new EntityNotFoundException(
-      String.format("Client %s could not be found", clientUuid)
+      String.format("Client %s could not be found", clientName)
     );
   }
 
   @ApiOperation("Delete client.")
   @RequestMapping(method = RequestMethod.DELETE,
-    value = "/{clientUuid}"
+    value = "/{clientName}"
   )
-  public ResponseEntity deleteClient(@PathVariable final String clientUuid, @RequestHeader("x-org-id") final String orgId) {
+  public ResponseEntity deleteClient(@PathVariable final String clientName, @PathVariable("orgName") final String orgName) {
 
-    Organisation organisation = verifyOrganisation(orgId);
+    Organisation organisation = verifyOrganisation(orgName);
 
-    Optional<Client> client = clientService.getClient(clientUuid, organisation.getName());
+    Optional<Client> client = clientService.getClient(clientName, organisation.getName());
 
     if (client.isPresent()) {
       clientService.deleteClient(client.get());
@@ -152,53 +146,12 @@ public class ClientController {
     );
   }
 
-  @ApiOperation("Add client to component")
-  @RequestMapping(method = RequestMethod.POST,
-    consumes = MediaType.APPLICATION_JSON_VALUE,
-    value = "/{clientUuid}/component/{compUuid}"
-  )
-  public ResponseEntity addClientToComponent(@PathVariable final String clientUuid, @PathVariable final String compUuid, @RequestHeader("x-org-id") final String orgId) {
-
-    Organisation organisation = verifyOrganisation(orgId);
-    Component component = verifyComponent(compUuid);
-
-    Optional<Client> client = clientService.getClient(clientUuid, organisation.getName());
-    componentService.linkClient(component, client.get());
-
-    return ResponseEntity.ok().build();
-  }
-
-  @ApiOperation("Remove client from component")
-  @RequestMapping(method = RequestMethod.DELETE,
-    value = "/{clientUuid}/component/{compUuid}/"
-  )
-  public ResponseEntity removeOrganisationFromComponent(@PathVariable final String clientUuid, @PathVariable final String compUuid, @RequestHeader("x-org-id") final String orgId) {
-
-    Organisation organisation = verifyOrganisation(orgId);
-    Component component = verifyComponent(compUuid);
-
-    Optional<Client> client = clientService.getClient(clientUuid, organisation.getName());
-    componentService.unLinkClient(component, client.get());
-
-    return ResponseEntity.accepted().build();
-
-  }
-
 
   private Organisation verifyOrganisation(String orgName) {
     Optional<Organisation> organisation = organisationService.getOrganisation(orgName);
 
     return organisation.orElseThrow(() -> new EntityNotFoundException(
         String.format("Organisation %s (%s) could not be found", orgName, organisation.get().getName())
-      )
-    );
-  }
-
-  private Component verifyComponent(String compName) {
-    Optional<Component> component = componentService.getComponentByName(compName);
-
-    return component.orElseThrow(() -> new EntityNotFoundException(
-        String.format("Component %s could not be found", compName)
       )
     );
   }

@@ -3,15 +3,13 @@ package no.fint.portal.customer.controller;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
-import no.fint.portal.contact.Contact;
-import no.fint.portal.contact.ContactService;
 import no.fint.portal.exceptions.CreateEntityMismatchException;
 import no.fint.portal.exceptions.EntityFoundException;
 import no.fint.portal.exceptions.EntityNotFoundException;
 import no.fint.portal.exceptions.UpdateEntityMismatchException;
 import no.fint.portal.model.ErrorResponse;
-import no.fint.portal.organisation.Organisation;
-import no.fint.portal.organisation.OrganisationService;
+import no.fint.portal.model.contact.Contact;
+import no.fint.portal.model.contact.ContactService;
 import no.rogfk.hateoas.extension.HalPagedResources;
 import no.rogfk.hateoas.extension.annotations.HalResource;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,19 +34,14 @@ public class ContactController {
   @Autowired
   private ContactService contactService;
 
-  @Autowired
-  private OrganisationService organisationService;
-
-  @ApiOperation("Request new contact")
+  @ApiOperation("Create new contact")
   @RequestMapping(method = RequestMethod.POST,
     consumes = MediaType.APPLICATION_JSON_UTF8_VALUE
   )
-  public ResponseEntity createContact(@RequestBody final Contact contact, @RequestHeader("x-org-id") final String orgId) {
+  public ResponseEntity createContact(@RequestBody final Contact contact) {
     log.info("Contact: {}", contact);
 
-    Organisation organisation = verifyOrganisation(orgId);
-
-    if (!contactService.addContact(contact, organisation)) {
+    if (!contactService.addContact(contact)) {
       throw new EntityFoundException(
         ServletUriComponentsBuilder
           .fromCurrentRequest().path("/{nin}")
@@ -58,27 +51,16 @@ public class ContactController {
     return ResponseEntity.status(HttpStatus.CREATED).body(contact);
   }
 
-  @ApiOperation("Update organisation contact")
+  @ApiOperation("Update contact")
   @RequestMapping(method = RequestMethod.PUT,
     consumes = MediaType.APPLICATION_JSON_UTF8_VALUE,
     value = "/{nin}"
   )
-  public ResponseEntity updateContact(@RequestBody final Contact contact, @PathVariable final String nin,
-                                      @RequestHeader("x-org-id") final String orgId) {
+  public ResponseEntity updateContact(@RequestBody final Contact contact, @PathVariable final String nin) {
       log.info("Contact: {}", contact);
-
-    verifyOrganisation(orgId);
 
     if (!nin.equals(contact.getNin())) {
       throw new UpdateEntityMismatchException("The contact to updateEntry is not the contact in endpoint.");
-    }
-
-    if (!contact.getOrgId().equals(orgId) || (contact.getOrgId() == null)) {
-      throw new UpdateEntityMismatchException(
-        String.format("Contact belongs to orgId: %s. This orgId is: %s",
-          contact.getOrgId(),
-          orgId)
-      );
     }
 
     if (!contactService.updateContact(contact)) {
@@ -88,45 +70,39 @@ public class ContactController {
     return ResponseEntity.ok(contact);
   }
 
-  @ApiOperation("Get the organisation contacts")
+  @ApiOperation("Get all contacts")
   @HalResource(pageSize = 10)
   @RequestMapping(method = RequestMethod.GET)
-  public HalPagedResources<Contact> getContacts(@RequestHeader("x-org-id") final String orgId, @RequestParam(required = false) Integer page) {
-    Organisation organisation = verifyOrganisation(orgId);
-    Optional<List<Contact>> contacts = Optional.ofNullable(contactService.getContacts(organisation.getName()));
+  public HalPagedResources<Contact> getContacts(@RequestParam(required = false) Integer page) {
+    Optional<List<Contact>> contacts = Optional.ofNullable(contactService.getContacts());
 
     if (contacts.isPresent()) {
       return new HalPagedResources<>(contacts.get(), page);
     }
 
-    throw new EntityNotFoundException(
-      String.format("No contacts found for %s.", organisation.getName())
-    );
-
+    throw new EntityNotFoundException("No contacts found.");
   }
 
-  @ApiOperation("Get the organisation contact by nin")
+  @ApiOperation("Get contact by nin")
   @RequestMapping(method = RequestMethod.GET, value = "/{nin}")
-  public ResponseEntity getContact(@RequestHeader("x-org-id") final String orgId, @PathVariable final String nin) {
+  public ResponseEntity getContact(@PathVariable final String nin) {
 
-    Organisation organisation = verifyOrganisation(orgId);
-    Optional<Contact> contact = contactService.getContact(organisation.getName(), nin);
+    Optional<Contact> contact = contactService.getContact(nin);
 
     if (contact.isPresent()) {
       return ResponseEntity.ok(contact.get());
     }
 
     throw new EntityNotFoundException(
-      String.format("Contact %s not found in organisation %s",
-        nin, organisation)
+      String.format("Contact %s not found.",
+        nin)
     );
   }
 
-  @ApiOperation("Delete an organisation contact")
+  @ApiOperation("Delete a contact")
   @RequestMapping(method = RequestMethod.DELETE, value = "/{nin}")
-  public ResponseEntity deleteContacts(@RequestHeader("x-org-id") final String orgId, @PathVariable final String nin) {
-    Organisation organisation = verifyOrganisation(orgId);
-    Optional<Contact> contact = contactService.getContact(organisation.getName(), nin);
+  public ResponseEntity deleteContacts(@PathVariable final String nin) {
+    Optional<Contact> contact = contactService.getContact(nin);
 
     if (contact.isPresent()) {
       contactService.deleteContact(contact.get());
@@ -134,19 +110,8 @@ public class ContactController {
     }
 
     throw new EntityNotFoundException(
-      String.format("Contact %s not found in organisation %s",
-        nin, organisation)
-    );
-  }
-
-  private Organisation verifyOrganisation(String orgId) {
-    Optional<Organisation> organisation = organisationService.getOrganisationByOrgId(orgId);
-    if (organisation.isPresent()) {
-      return organisation.get();
-    }
-
-    throw new EntityNotFoundException(
-      String.format("Organisation %s could not be found", orgId)
+      String.format("Contact %s not found.",
+        nin)
     );
   }
 

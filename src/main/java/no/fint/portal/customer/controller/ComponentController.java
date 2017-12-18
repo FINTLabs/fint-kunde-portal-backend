@@ -8,6 +8,10 @@ import no.fint.portal.exceptions.EntityFoundException;
 import no.fint.portal.exceptions.EntityNotFoundException;
 import no.fint.portal.exceptions.UpdateEntityMismatchException;
 import no.fint.portal.model.ErrorResponse;
+import no.fint.portal.model.adapter.Adapter;
+import no.fint.portal.model.adapter.AdapterService;
+import no.fint.portal.model.client.Client;
+import no.fint.portal.model.client.ClientService;
 import no.fint.portal.model.component.Component;
 import no.fint.portal.model.component.ComponentService;
 import no.fint.portal.model.organisation.Organisation;
@@ -38,6 +42,12 @@ public class ComponentController {
 
   @Autowired
   private OrganisationService organisationService;
+
+  @Autowired
+  private AdapterService adapterService;
+
+  @Autowired
+  private ClientService clientService;
 
   @ApiOperation("Get all components")
   @HalResource(pageSize = 10)
@@ -81,7 +91,7 @@ public class ComponentController {
 
   @ApiOperation("Remove organisation to component")
   @RequestMapping(method = RequestMethod.DELETE,
-    value = "/{compUuid}"
+    value = "/{compName}"
   )
   public ResponseEntity removeOrganisationFromComponent(@PathVariable final String compName, @PathVariable("orgName") final String orgName) {
 
@@ -91,7 +101,69 @@ public class ComponentController {
     organisationService.unLinkComponent(organisation, component);
 
     return ResponseEntity.accepted().build();
+  }
 
+  @ApiOperation("Add adapter to component")
+  @RequestMapping(method = RequestMethod.PUT,
+    consumes = MediaType.APPLICATION_JSON_VALUE,
+    value = "/{compName}/adapters/{adapterName}"
+  )
+  public ResponseEntity addAdapterToComponent(@PathVariable final String adapterName, @PathVariable final String compName, @PathVariable("orgName") final String orgName) {
+
+    Organisation organisation = verifyOrganisation(orgName);
+    Component component = verifyComponent(compName);
+    Adapter adapter = verifyAdapter(organisation, adapterName);
+
+    componentService.linkAdapter(component, adapter);
+
+    return ResponseEntity.ok().build();
+  }
+
+  @ApiOperation("Remove adapter from component")
+  @RequestMapping(method = RequestMethod.DELETE,
+    value = "/{compName}/adapters/{adapterName}"
+  )
+  public ResponseEntity removeAdapterFromComponent(@PathVariable final String adapterName, @PathVariable final String compName, @PathVariable("orgName") final String orgName) {
+
+    Organisation organisation = verifyOrganisation(orgName);
+    Component component = verifyComponent(compName);
+    Adapter adapter = verifyAdapter(organisation, adapterName);
+
+    componentService.unLinkAdapter(component, adapter);
+
+    return ResponseEntity.accepted().build();
+  }
+
+
+  @ApiOperation("Add client to component")
+  @RequestMapping(method = RequestMethod.PUT,
+    consumes = MediaType.APPLICATION_JSON_VALUE,
+    value = "/{compName}/clients/{clientName}"
+  )
+  public ResponseEntity addClientToComponent(@PathVariable final String clientName, @PathVariable final String compName, @PathVariable("orgName") final String orgName) {
+
+    Organisation organisation = verifyOrganisation(orgName);
+    Component component = verifyComponent(compName);
+    Client client = verifyClient(organisation, clientName);
+
+    componentService.linkClient(component, client);
+
+    return ResponseEntity.ok().build();
+  }
+
+  @ApiOperation("Remove client from component")
+  @RequestMapping(method = RequestMethod.DELETE,
+    value = "/{compName}/clients/{clientName}"
+  )
+  public ResponseEntity removeClientFromComponent(@PathVariable final String clientName, @PathVariable final String compName, @PathVariable("orgName") final String orgName) {
+
+    Organisation organisation = verifyOrganisation(orgName);
+    Component component = verifyComponent(compName);
+    Client client = verifyClient(organisation, clientName);
+
+    componentService.unLinkClient(component, client);
+
+    return ResponseEntity.accepted().build();
   }
 
 
@@ -111,6 +183,14 @@ public class ComponentController {
         String.format("Component %s could not be found", compName)
       )
     );
+  }
+
+  private Client verifyClient(Organisation organisation, String clientName) {
+    return clientService.getClient(clientName, organisation.getName()).orElseThrow(() -> new EntityNotFoundException("Client " + clientName + " not found."));
+  }
+
+  private Adapter verifyAdapter(Organisation organisation, String adapterName) {
+    return adapterService.getAdapter(adapterName, organisation.getName()).orElseThrow(() -> new EntityNotFoundException("Adapter " + adapterName + " not found"));
   }
 
   //

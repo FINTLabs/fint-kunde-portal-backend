@@ -53,9 +53,11 @@ dependencies {
 
   runtime('org.springframework.boot:spring-boot-devtools')
 
-  compileOnly('org.projectlombok:lombok')
+  compile('org.projectlombok:lombok')
 
   testCompile('org.springframework.boot:spring-boot-starter-test')
+  runtime('org.springframework.ldap:spring-ldap-test')
+  runtime("com.unboundid:unboundid-ldapsdk:3.1.1")
   testCompile("org.spockframework:spock-core:${spockSpringVersion}")
 }
 

@@ -1,0 +1,41 @@
+springfox:
+ title: 'FINT Kunde Portal API'
+ version: '@version@'
+
+fint:
+  ldap:
+    url: "ldap://localhost:12345"
+    user: "uid=user"
+    password: "password"
+    component-base: "ou=felleskomponenter,o=fint"
+    organisation-base: "ou=organisasjoner,o=fint"
+    contact-base: "ou=contacts,o=fint"
+  nam:
+    oauth:
+      username: "dummy"
+      password: "dummy"
+      idp-hostname: "localhost"
+      clientId: "dummy"
+      clientSecret: "dummy"
+
+spring:
+  ldap:
+    embedded:
+      base-dn: o=fint
+      credential:
+        username: uid=user
+        password: password
+      ldif: classpath:test-schema.ldif
+      port: 12345
+      validation:
+        enabled: false
+
+security:
+  basic:
+    enabled: false
+
+logging:
+  level:
+    org:
+      springframework:
+        ldap: TRACE

@@ -1,0 +1,67 @@
+dn: o=fint
+objectclass: top
+objectclass: group
+o: fint
+
+dn: ou=felleskomponenter,o=fint
+objectclass: group
+ou: felleskomponenter
+
+dn: ou=administrasjon_personal,ou=felleskomponenter,o=fint
+objectclass: organizationalUnit
+objectclass: top
+objectclass: fintComponent
+ou: administrasjon_personal
+
+dn: ou=contacts,o=fint
+objectclass: group
+ou: contacts
+
+dn: cn=12345678901,ou=contacts,o=fint
+objectclass: inetOrgPerson
+objectclass: organizationalPerson
+objectclass: person
+objectclass: top
+objectclass: fintContact
+cn: 12345678901
+givenName: Tore
+sn: Test
+mail: test@example.com
+mobile: 98765432
+
+dn: ou=organisasjoner,o=fint
+objectclass: group
+ou: organisasjoner
+
+dn: ou=testing,ou=organisasjoner,o=fint
+objectclass: organizationalUnit
+objectclass: top
+objectclass: fintOrg
+ou: testing
+fintOrgNumber: 123456789
+fintOrgDisplayName: Testing Limited
+
+dn: ou=assets,ou=testing,ou=organisasjoner,o=fint
+objectclass: organizationalUnit
+objectclass: top
+ou: assets
+
+dn: ou=clients,ou=testing,ou=organisasjoner,o=fint
+objectclass: organizationalUnit
+objectclass: top
+ou: clients
+
+dn: ou=adapters,ou=testing,ou=organisasjoner,o=fint
+objectclass: organizationalUnit
+objectclass: top
+ou: adapters
+
+dn: cn=testadapter,ou=adapters,ou=testing,ou=organisasjoner,o=fint
+objectclass: fintAdapter
+objectclass: inetOrgPerson
+objectclass: organizationalPerson
+objectclass: person
+objectclass: top
+cn: testadapter
+sn: Test Adapter
+description: This is a Test Adapter for Testing
