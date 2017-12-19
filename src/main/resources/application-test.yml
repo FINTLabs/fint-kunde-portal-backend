@@ -1,3 +1,5 @@
+# TODO: Move to src/test/resources
+
 springfox:
  title: 'FINT Kunde Portal API'
  version: '@version@'

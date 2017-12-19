@@ -1,3 +1,5 @@
+# TODO Move to src/test/resources
+
 dn: o=fint
 objectclass: top
 objectclass: group
