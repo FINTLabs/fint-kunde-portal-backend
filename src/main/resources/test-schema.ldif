@@ -29,6 +29,18 @@ sn: Test
 mail: test@example.com
 mobile: 98765432
 
+dn: cn=23456789012,ou=contacts,o=fint
+objectclass: inetOrgPerson
+objectclass: organizationalPerson
+objectclass: person
+objectclass: top
+objectclass: fintContact
+cn: 23456789012
+givenName: Thomas
+sn: Test
+mail: test@example.com
+mobile: 45678901
+
 dn: ou=organisasjoner,o=fint
 objectclass: group
 ou: organisasjoner
