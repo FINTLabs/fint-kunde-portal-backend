@@ -3,6 +3,7 @@ package no.fint.portal.customer.controller;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
+import no.fint.portal.customer.service.PortalApiService;
 import no.fint.portal.exceptions.CreateEntityMismatchException;
 import no.fint.portal.exceptions.EntityFoundException;
 import no.fint.portal.exceptions.EntityNotFoundException;
@@ -10,8 +11,6 @@ import no.fint.portal.exceptions.UpdateEntityMismatchException;
 import no.fint.portal.model.ErrorResponse;
 import no.fint.portal.model.contact.Contact;
 import no.fint.portal.model.contact.ContactService;
-import no.rogfk.hateoas.extension.HalPagedResources;
-import no.rogfk.hateoas.extension.annotations.HalResource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -22,14 +21,15 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.UnknownHostException;
 import java.util.List;
-import java.util.Optional;
 
-@Slf4j
 @RestController
 @Api(tags = "Contacts")
 @CrossOrigin(origins = "*")
 @RequestMapping(value = "/api/contacts")
 public class ContactController {
+
+  @Autowired
+  PortalApiService portalApiService;
 
   @Autowired
   private ContactService contactService;
@@ -39,8 +39,6 @@ public class ContactController {
     consumes = MediaType.APPLICATION_JSON_UTF8_VALUE
   )
   public ResponseEntity createContact(@RequestBody final Contact contact) {
-    log.info("Contact: {}", contact);
-
     if (!contactService.addContact(contact)) {
       throw new EntityFoundException(
         ServletUriComponentsBuilder
@@ -57,27 +55,33 @@ public class ContactController {
     value = "/{nin}"
   )
   public ResponseEntity updateContact(@RequestBody final Contact contact, @PathVariable final String nin) {
-      log.info("Contact: {}", contact);
-
     if (!nin.equals(contact.getNin())) {
       throw new UpdateEntityMismatchException("The contact to updateEntry is not the contact in endpoint.");
     }
+    Contact original = portalApiService.getContact(nin);
+    if (contact.getFirstName()!=null)
+      original.setFirstName(contact.getFirstName());
+    if (contact.getLastName()!=null)
+      original.setLastName(contact.getLastName());
+    if (contact.getMail()!=null)
+      original.setMail(contact.getMail());
+    if (contact.getMobile()!=null)
+      original.setMobile(contact.getMobile());
 
-    if (!contactService.updateContact(contact)) {
-      throw new EntityNotFoundException(String.format("Could not find contact: %s", contact));
+    if (!contactService.updateContact(original)) {
+      throw new EntityNotFoundException(String.format("Could not find contact: %s", nin));
     }
 
-    return ResponseEntity.ok(contact);
+    return ResponseEntity.ok(original);
   }
 
   @ApiOperation("Get all contacts")
-  @HalResource(pageSize = 10)
   @RequestMapping(method = RequestMethod.GET)
-  public HalPagedResources<Contact> getContacts(@RequestParam(required = false) Integer page) {
-    Optional<List<Contact>> contacts = Optional.ofNullable(contactService.getContacts());
+  public ResponseEntity getContacts() {
+    List<Contact> contacts = contactService.getContacts();
 
-    if (contacts.isPresent()) {
-      return new HalPagedResources<>(contacts.get(), page);
+    if (contacts != null) {
+      return ResponseEntity.ok(contacts);
     }
 
     throw new EntityNotFoundException("No contacts found.");
@@ -86,33 +90,17 @@ public class ContactController {
   @ApiOperation("Get contact by nin")
   @RequestMapping(method = RequestMethod.GET, value = "/{nin}")
   public ResponseEntity getContact(@PathVariable final String nin) {
-
-    Optional<Contact> contact = contactService.getContact(nin);
-
-    if (contact.isPresent()) {
-      return ResponseEntity.ok(contact.get());
-    }
-
-    throw new EntityNotFoundException(
-      String.format("Contact %s not found.",
-        nin)
-    );
+    Contact contact = portalApiService.getContact(nin);
+    return ResponseEntity.ok(contact);
   }
 
   @ApiOperation("Delete a contact")
   @RequestMapping(method = RequestMethod.DELETE, value = "/{nin}")
   public ResponseEntity deleteContacts(@PathVariable final String nin) {
-    Optional<Contact> contact = contactService.getContact(nin);
+    Contact contact = portalApiService.getContact(nin);
 
-    if (contact.isPresent()) {
-      contactService.deleteContact(contact.get());
-      return ResponseEntity.accepted().build();
-    }
-
-    throw new EntityNotFoundException(
-      String.format("Contact %s not found.",
-        nin)
-    );
+    contactService.deleteContact(contact);
+    return ResponseEntity.noContent().build();
   }
 
   //

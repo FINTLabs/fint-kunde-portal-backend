@@ -1,25 +1,26 @@
-# TODO Move to src/test/resources
 
-dn: o=fint
+dn: o=fint-test
 objectclass: top
 objectclass: group
-o: fint
+o: fint-test
 
-dn: ou=felleskomponenter,o=fint
+dn: ou=felleskomponenter,o=fint-test
 objectclass: group
 ou: felleskomponenter
 
-dn: ou=administrasjon_personal,ou=felleskomponenter,o=fint
+dn: ou=administrasjon_personal,ou=felleskomponenter,o=fint-test
 objectclass: organizationalUnit
 objectclass: top
 objectclass: fintComponent
 ou: administrasjon_personal
+fintComponentBasePath: /administrasjon/personal
+description: Administrasjon Personal
 
-dn: ou=contacts,o=fint
+dn: ou=contacts,o=fint-test
 objectclass: group
 ou: contacts
 
-dn: cn=12345678901,ou=contacts,o=fint
+dn: cn=12345678901,ou=contacts,o=fint-test
 objectclass: inetOrgPerson
 objectclass: organizationalPerson
 objectclass: person
@@ -31,7 +32,7 @@ sn: Test
 mail: test@example.com
 mobile: 98765432
 
-dn: cn=23456789012,ou=contacts,o=fint
+dn: cn=23456789012,ou=contacts,o=fint-test
 objectclass: inetOrgPerson
 objectclass: organizationalPerson
 objectclass: person
@@ -43,11 +44,11 @@ sn: Test
 mail: test@example.com
 mobile: 45678901
 
-dn: ou=organisasjoner,o=fint
+dn: ou=organisasjoner,o=fint-test
 objectclass: group
 ou: organisasjoner
 
-dn: ou=testing,ou=organisasjoner,o=fint
+dn: ou=testing,ou=organisasjoner,o=fint-test
 objectclass: organizationalUnit
 objectclass: top
 objectclass: fintOrg
@@ -55,27 +56,17 @@ ou: testing
 fintOrgNumber: 123456789
 fintOrgDisplayName: Testing Limited
 
-dn: ou=assets,ou=testing,ou=organisasjoner,o=fint
+dn: ou=assets,ou=testing,ou=organisasjoner,o=fint-test
 objectclass: organizationalUnit
 objectclass: top
 ou: assets
 
-dn: ou=clients,ou=testing,ou=organisasjoner,o=fint
+dn: ou=clients,ou=testing,ou=organisasjoner,o=fint-test
 objectclass: organizationalUnit
 objectclass: top
 ou: clients
 
-dn: ou=adapters,ou=testing,ou=organisasjoner,o=fint
+dn: ou=adapters,ou=testing,ou=organisasjoner,o=fint-test
 objectclass: organizationalUnit
 objectclass: top
 ou: adapters
-
-dn: cn=testadapter,ou=adapters,ou=testing,ou=organisasjoner,o=fint
-objectclass: fintAdapter
-objectclass: inetOrgPerson
-objectclass: organizationalPerson
-objectclass: person
-objectclass: top
-cn: testadapter
-sn: Test Adapter
-description: This is a Test Adapter for Testing

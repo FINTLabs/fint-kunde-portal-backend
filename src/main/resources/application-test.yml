@@ -1,7 +1,6 @@
-# TODO: Move to src/test/resources
 
 springfox:
- title: 'FINT Kunde Portal API'
+ title: 'FINT Kunde Portal API - TEST MODE'
  version: '@version@'
 
 fint:
@@ -9,9 +8,9 @@ fint:
     url: "ldap://localhost:12345"
     user: "uid=user"
     password: "password"
-    component-base: "ou=felleskomponenter,o=fint"
-    organisation-base: "ou=organisasjoner,o=fint"
-    contact-base: "ou=contacts,o=fint"
+    component-base: "ou=felleskomponenter,o=fint-test"
+    organisation-base: "ou=organisasjoner,o=fint-test"
+    contact-base: "ou=contacts,o=fint-test"
   nam:
     oauth:
       username: "dummy"
@@ -23,7 +22,7 @@ fint:
 spring:
   ldap:
     embedded:
-      base-dn: o=fint
+      base-dn: o=fint-test
       credential:
         username: uid=user
         password: password

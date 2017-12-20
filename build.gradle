@@ -49,15 +49,15 @@ dependencies {
 
   compile("com.github.springfox.loader:springfox-loader:${springfoxLoaderVersion}")
   compile('no.rogfk:spring-hateoas-hal-extension:0.0.6')
-  compile('no.fint:fint-portal-api:3.0.0-beta-3')
+  compile('no.fint:fint-portal-api:3.0.0-beta-6')
 
   runtime('org.springframework.boot:spring-boot-devtools')
 
   compile('org.projectlombok:lombok')
 
   testCompile('org.springframework.boot:spring-boot-starter-test')
-  testRuntime('org.springframework.ldap:spring-ldap-test')
-  testRuntime("com.unboundid:unboundid-ldapsdk:3.1.1")
+  runtime('org.springframework.ldap:spring-ldap-test')
+  runtime("com.unboundid:unboundid-ldapsdk:3.1.1")
   testCompile("org.spockframework:spock-core:${spockSpringVersion}")
 }
 
