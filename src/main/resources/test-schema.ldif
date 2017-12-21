@@ -4,11 +4,11 @@ objectclass: top
 objectclass: group
 o: fint-test
 
-dn: ou=felleskomponenter,o=fint-test
+dn: ou=apis,o=fint-test
 objectclass: group
-ou: felleskomponenter
+ou: apis
 
-dn: ou=administrasjon_personal,ou=felleskomponenter,o=fint-test
+dn: ou=administrasjon_personal,ou=apis,o=fint-test
 objectclass: organizationalUnit
 objectclass: top
 objectclass: fintComponent
@@ -44,11 +44,11 @@ sn: Test
 mail: test@example.com
 mobile: 45678901
 
-dn: ou=organisasjoner,o=fint-test
+dn: ou=organisations,o=fint-test
 objectclass: group
-ou: organisasjoner
+ou: organisations
 
-dn: ou=testing,ou=organisasjoner,o=fint-test
+dn: ou=testing,ou=organisations,o=fint-test
 objectclass: organizationalUnit
 objectclass: top
 objectclass: fintOrg
@@ -56,17 +56,17 @@ ou: testing
 fintOrgNumber: 123456789
 fintOrgDisplayName: Testing Limited
 
-dn: ou=assets,ou=testing,ou=organisasjoner,o=fint-test
+dn: ou=assets,ou=testing,ou=organisations,o=fint-test
 objectclass: organizationalUnit
 objectclass: top
 ou: assets
 
-dn: ou=clients,ou=testing,ou=organisasjoner,o=fint-test
+dn: ou=clients,ou=testing,ou=organisations,o=fint-test
 objectclass: organizationalUnit
 objectclass: top
 ou: clients
 
-dn: ou=adapters,ou=testing,ou=organisasjoner,o=fint-test
+dn: ou=adapters,ou=testing,ou=organisations,o=fint-test
 objectclass: organizationalUnit
 objectclass: top
 ou: adapters

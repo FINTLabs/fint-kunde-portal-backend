@@ -8,8 +8,8 @@ fint:
     url: "ldap://localhost:12345"
     user: "uid=user"
     password: "password"
-    component-base: "ou=felleskomponenter,o=fint-test"
-    organisation-base: "ou=organisasjoner,o=fint-test"
+    component-base: "ou=apis,o=fint-test"
+    organisation-base: "ou=organisations,o=fint-test"
     contact-base: "ou=contacts,o=fint-test"
   nam:
     oauth:
