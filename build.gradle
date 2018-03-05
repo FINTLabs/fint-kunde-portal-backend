@@ -49,7 +49,7 @@ dependencies {
 
   compile("com.github.springfox.loader:springfox-loader:${springfoxLoaderVersion}")
   compile('no.rogfk:spring-hateoas-hal-extension:0.0.6')
-  compile('no.fint:fint-portal-api:3.0.0-beta-7')
+  compile('no.fint:fint-portal-api:3.0.0-rc-1')
 
   runtime('org.springframework.boot:spring-boot-devtools')
 

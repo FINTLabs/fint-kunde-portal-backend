@@ -1,92 +1,105 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import { withStyles } from 'material-ui/styles';
-import ExpansionPanel, {
-    ExpansionPanelDetails,
-    ExpansionPanelSummary,
-} from 'material-ui/ExpansionPanel';
-import Typography from 'material-ui/Typography';
-import ExpandMoreIcon from 'material-ui-icons/ExpandMore';
+import {withStyles} from 'material-ui/styles';
+import FolderIcon from 'material-ui-icons/Folder';
+import DeleteIcon from 'material-ui-icons/Delete';
+import EditIcon from 'material-ui-icons/ModeEdit';
+import List, {ListItem, ListItemAvatar, ListItemSecondaryAction, ListItemText,} from 'material-ui/List';
+import {Avatar, IconButton, Paper} from "material-ui";
 
 const styles = theme => ({
-    root: {
-        width: '100%',
-    },
-    heading: {
-        fontSize: theme.typography.pxToRem(15),
-        flexBasis: '33.33%',
-        flexShrink: 0,
-    },
-    secondaryHeading: {
-        fontSize: theme.typography.pxToRem(15),
-        color: theme.palette.text.secondary,
-    },
+  root: {
+    width: '100%',
+  },
+  list: {
+    background: theme.palette.background.paper,
+  }
 });
 
+const clients = [
+  {
+    "dn": "cn=testClient1,ou=clients,ou=test_org,ou=organisations,o=fint",
+    "name": "testclient1",
+    "note": "Test Client 1",
+    "password": "password",
+    "shortDescription": "This is a Test Client.",
+    "assetId": "test.org",
+    "clientId": "12345",
+    "clientSecret": "aså93ru0a9sefnawh3r983hrv9a8wh3r98",
+    "components": []
+  },
+  {
+    "dn": "cn=testClient2,ou=clients,ou=test_org,ou=organisations,o=fint",
+    "name": "testclient2",
+    "note": "Test Client 2",
+    "password": "password",
+    "shortDescription": "This is a Test Client.",
+    "assetId": "test.org",
+    "clientId": "12345",
+    "clientSecret": "aså93ru0a9sefnawh3r983hrv9a8wh3r98",
+    "components": []
+  }
+];
+
 class ClientList extends Component {
-    state = {
-        expanded: null,
-    };
+  state = {
+    expanded: null,
+  };
 
-    handleChange = panel => (event, expanded) => {
-        this.setState({
-            expanded: expanded ? panel : false,
-        });
-    };
+  handleChange = panel => (event, expanded) => {
+    this.setState({
+      expanded: expanded ? panel : false,
+    });
+  };
 
-    render() {
-        const { classes } = this.props;
-        const { expanded } = this.state;
+  edit = () => {
 
-        return (
-            <div className={classes.root}>
-                <ExpansionPanel expanded={expanded === 'panel1'} onChange={this.handleChange('panel1')}>
-                    <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-                        <Typography className={classes.heading}>General settings</Typography>
-                        <Typography className={classes.secondaryHeading}>I am an expansion panel</Typography>
-                    </ExpansionPanelSummary>
-                    <ExpansionPanelDetails>
-                        <Typography>
-                            Nulla facilisi. Phasellus sollicitudin nulla et quam mattis feugiat. Aliquam eget
-                            maximus est, id dignissim quam.
-                        </Typography>
-                    </ExpansionPanelDetails>
-                </ExpansionPanel>
-                <ExpansionPanel expanded={expanded === 'panel2'} onChange={this.handleChange('panel2')}>
-                    <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-                        <Typography className={classes.heading}>Users</Typography>
-                        <Typography className={classes.secondaryHeading}>
-                            You are currently not an owner
-                        </Typography>
-                    </ExpansionPanelSummary>
-                    <ExpansionPanelDetails>
-                        <Typography>
-                            Donec placerat, lectus sed mattis semper, neque lectus feugiat lectus, varius pulvinar
-                            diam eros in elit. Pellentesque convallis laoreet laoreet.
-                        </Typography>
-                    </ExpansionPanelDetails>
-                </ExpansionPanel>
-                <ExpansionPanel expanded={expanded === 'panel3'} onChange={this.handleChange('panel3')}>
-                    <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-                        <Typography className={classes.heading}>Advanced settings</Typography>
-                        <Typography className={classes.secondaryHeading}>
-                            Filtering has been entirely disabled for whole web server
-                        </Typography>
-                    </ExpansionPanelSummary>
-                    <ExpansionPanelDetails>
-                        <Typography>
-                            Nunc vitae orci ultricies, auctor nunc in, volutpat nisl. Integer sit amet egestas
-                            eros, vitae egestas augue. Duis vel est augue.
-                        </Typography>
-                    </ExpansionPanelDetails>
-                </ExpansionPanel>
-            </div>
-        );
-    }
+  }
+
+  render() {
+    const {classes} = this.props;
+
+    return (
+      <div className={classes.root}>
+        <Paper>
+          <List dense={true}>
+            {
+              clients.map(c => {
+                  return (
+                    <ListItem button>
+                      <ListItemAvatar>
+                        <Avatar>
+                          <FolderIcon/>
+                        </Avatar>
+                      </ListItemAvatar>
+                      <ListItemText
+                        primary={c.name}
+                        secondary={c.note}
+                      />
+                      <ListItemSecondaryAction>
+                        <IconButton aria-label="Delete" onClick={() => alert('edit')}>
+                          <EditIcon/>
+                        </IconButton>
+                        <IconButton aria-label="Delete" onClick={() => alert('delete')}>
+                          <DeleteIcon/>
+                        </IconButton>
+                      </ListItemSecondaryAction>
+                    </ListItem>
+                  )
+                }
+              )
+            }
+          </List>
+        </Paper>
+
+
+      </div>
+    );
+  }
 }
 
 ClientList.propTypes = {
-    classes: PropTypes.object.isRequired,
+  classes: PropTypes.object.isRequired,
 };
 
 export default withStyles(styles)(ClientList);
