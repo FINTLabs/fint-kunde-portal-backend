@@ -28,7 +28,7 @@ import java.util.List;
 @Api(tags = "Adapters")
 @CrossOrigin(origins = "*")
 @RequestMapping(value = "/api/adapters/{orgName}")
-public class AdaperController {
+public class AdapterController {
 
   @Autowired
   PortalApiService portalApiService;
