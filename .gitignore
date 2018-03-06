@@ -13,3 +13,4 @@ portal.env
 .classpath
 /bin/
 node_modules
+application-*.yml

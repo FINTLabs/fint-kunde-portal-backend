@@ -129,6 +129,19 @@ public class AdapterController {
     return ResponseEntity.ok().body(adapter);
   }
 
+  @ApiOperation("Get Adapter OpenID Secret")
+  @RequestMapping(
+    method = RequestMethod.GET,
+    value = "/{adapterName}/secret"
+  )
+  public ResponseEntity getAdapterSecret(@PathVariable("orgName") final String orgName,
+                                         @PathVariable final String adapterName) {
+    Organisation organisation = portalApiService.getOrganisation(orgName);
+    Adapter adapter = portalApiService.getAdapter(organisation, adapterName);
+
+    return ResponseEntity.ok().body(adapterService.getAdapterSecret(adapter));
+  }
+
   @ApiOperation("Delete adapter")
   @RequestMapping(method = RequestMethod.DELETE,
     value = "/{adapterName}"

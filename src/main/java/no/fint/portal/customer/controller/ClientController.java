@@ -123,6 +123,20 @@ public class ClientController {
     return ResponseEntity.ok().body(client);
   }
 
+  @ApiOperation("Get Client OpenID Secret")
+  @RequestMapping(
+    method = RequestMethod.GET,
+    value = "/{clientName}/secret"
+  )
+  public ResponseEntity getClientSecret(@PathVariable("orgName") final String orgName,
+                                        @PathVariable final String clientName) {
+    Organisation organisation = portalApiService.getOrganisation(orgName);
+    Client client = portalApiService.getClient(organisation, clientName);
+
+    return ResponseEntity.ok().body(clientService.getClientSecret(client));
+  }
+
+
   @ApiOperation("Delete client")
   @RequestMapping(method = RequestMethod.DELETE,
     value = "/{clientName}"
