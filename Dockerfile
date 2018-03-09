@@ -2,6 +2,7 @@ FROM node:9-alpine AS node
 WORKDIR /src/client
 COPY client .
 RUN yarn install && npm rebuild node-sass && yarn build
+RUN ls -l
 
 FROM gradle:jdk8-alpine as java
 USER root
