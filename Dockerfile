@@ -1,4 +1,4 @@
-FROM node AS node
+FROM node:9-alpine AS node
 WORKDIR /src/client
 COPY client .
 RUN yarn install && npm rebuild node-sass && yarn build
