@@ -52,7 +52,7 @@ class Dashboard extends Component {
                             <Divider/>
                             <CardContent className={classes.cardContent}>
                                 <Typography type="display4">
-                                    13
+                                    25
                                 </Typography>
                             </CardContent>
 
