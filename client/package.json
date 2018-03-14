@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "classnames": "^2.2.5",
+    "immutable": "^3.8.2",
     "material-ui": "^1.0.0-beta.25",
     "material-ui-icons": "^1.0.0-beta.17",
     "prop-types": "^15.6.0",
@@ -11,15 +12,18 @@
     "react-dom": "^16.1.1",
     "react-router-dom": "^4.2.2",
     "react-scripts": "1.0.17",
-    "typeface-roboto": "^0.0.45",
-    "react-redux": "5.0.10",
-    "redux-actions": "2.2.2",
-    "remote-redux-devtools": "^0.5.12"
+    "redux": "^3.7.2",
+    "typeface-roboto": "^0.0.45"
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject"
+  },
+  "devDependencies": {
+    "chai": "^4.1.2",
+    "chai-immutable": "^1.6.0",
+    "mocha": "^5.0.4"
   }
 }
