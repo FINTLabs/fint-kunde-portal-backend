@@ -1,5 +1,4 @@
 import React, {Component} from 'react';
-import 'typeface-roboto';
 import {Grid, Paper, Typography, withStyles} from "material-ui";
 import PropTypes from 'prop-types';
 import ClientList from "./client-list/ClientList";

@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import {connect} from 'react-redux';
 import {Avatar, Card, CardContent, CardHeader, Divider, Grid, Typography, withStyles} from "material-ui";
 import {green} from 'material-ui/colors';
 import PropTypes from 'prop-types';
@@ -29,7 +30,6 @@ const styles = theme => ({
 
 });
 
-
 class Dashboard extends Component {
 
     render() {
@@ -52,7 +52,7 @@ class Dashboard extends Component {
                             <Divider/>
                             <CardContent className={classes.cardContent}>
                                 <Typography type="display4">
-                                    25
+                                    25		
                                 </Typography>
                             </CardContent>
 
@@ -136,5 +136,7 @@ class Dashboard extends Component {
 Dashboard.propTypes = {
     classes: PropTypes.object.isRequired,
 };
+
+
 
 export default withStyles(styles)(Dashboard);

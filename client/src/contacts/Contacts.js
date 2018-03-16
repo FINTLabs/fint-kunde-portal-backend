@@ -1,5 +1,4 @@
 import React, {Component} from 'react';
-import 'typeface-roboto';
 import {withStyles} from "material-ui";
 import PropTypes from 'prop-types';
 
