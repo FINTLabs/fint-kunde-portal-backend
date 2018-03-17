@@ -25,7 +25,7 @@ import DocumentationIcon from 'material-ui-icons/Book';
 import Dashboard from "../dashboard/Dashboard";
 import {BrowserRouter, Link, Route} from "react-router-dom";
 import Clients from "../clients/Clients";
-import Adapters from "../adpaters/Adapters";
+import Adapters from "../adapters/Adapters";
 import Contacts from "../contacts/Contacts";
 import Apis from "../apis/Apis";
 import Organisations from "../organisations/Organisations";

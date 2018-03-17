@@ -3,14 +3,13 @@ import {connect} from 'react-redux';
 import {Avatar, Card, CardContent, CardHeader, Divider, Grid, Typography, withStyles} from "material-ui";
 import {green} from 'material-ui/colors';
 import PropTypes from 'prop-types';
-import {Link} from "react-router-dom";
-
+import {BrowserRouter, Link, Route} from "react-router-dom";
 import ContactIcon from 'material-ui-icons/Person';
 import AdapterIcon from 'material-ui-icons/Link';
 import ApiIcon from 'material-ui-icons/WebAsset';
 import ClientIcon from 'material-ui-icons/ImportantDevices';
-
-
+//import Adapters from "../containers/Adapters";
+import Adapters from "../adapters/Adapters";
 const styles = theme => ({
     root: {
         marginTop: theme.spacing.unit * 3,
@@ -59,8 +58,9 @@ class Dashboard extends Component {
                         </Card>
                     </Link>
                 </Grid>
+
                 <Grid item xs={3}>
-                    <Link to="adapters" className={classes.cardLink}>
+                    <Link to="adapters/adapters" className={classes.cardLink}>
 
                         <Card className={classes.card}>
                             <CardHeader
@@ -82,6 +82,7 @@ class Dashboard extends Component {
                         </Card>
                     </Link>
                 </Grid>
+
                 <Grid item xs={3}>
                     <Link to="apis" className={classes.cardLink}>
                         <Card className={classes.card}>

@@ -1,3 +1,19 @@
+//import 'babel-polyfill';
+import React from 'react';
+import ReactDOM from "react-dom";
+import {Provider} from 'react-redux';
+import App from './App';
+import store from './store/configure-store'
+
+import './index.css';
+
+ReactDOM.render(
+    <Provider store={store}>
+        <App />
+    </Provider>,
+    document.getElementById('root')
+);
+/*
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
@@ -8,7 +24,7 @@ import { Provider } from 'react-redux';
 import { persistReducer, persistStore } from 'redux-persist';
 import storage from 'redux-persist/es/storage';
 import { PersistGate } from 'redux-persist/es/integration/react';
-import reducers from './entries';
+import reducers from './reducers/index';
 
 const persistedReducer = persistReducer({ key: 'root', storage }, reducers);
 
@@ -35,3 +51,4 @@ ReactDOM.render(
   </Provider>,
   document.getElementById('root')
 );
+*/

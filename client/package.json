@@ -3,6 +3,10 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "expect": "^23.0.0-alpha.0",
+    "expect-redux": "^3.1.1",
+    "fetchmock": "^1.0.1",
+    "glob-to-regexp": "^0.4.0",
     "immutable": "^3.8.2",
     "material-ui": "^1.0.0-beta.30",
     "material-ui-icons": "^1.0.0-beta.36",
@@ -15,7 +19,10 @@
     "react-router-dom": "^4.2.2",
     "react-scripts": "1.1.0",
     "redux": "^3.7.2",
+    "redux-logger": "^3.0.6",
     "redux-persist": "^5.9.1",
+    "redux-promise": "^0.5.3",
+    "redux-thunk": "^2.2.0",
     "roboto-fontface": "^0.9.0"
   },
   "scripts": {
@@ -30,6 +37,7 @@
     "husky": "^0.14.3",
     "lint-staged": "^6.1.0",
     "prettier": "^1.10.2",
-    "react-test-renderer": "^16.2.0"
+    "react-test-renderer": "^16.2.0",
+    "redux-mock-store": "^1.5.1"
   }
 }
