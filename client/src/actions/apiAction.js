@@ -24,15 +24,16 @@ function fetchPostsError() {
   }
 }
 export function fetchPostsWithRedux() {
-  return (dispatch) => {
-    dispatch(fetchPostsRequest());
+	console.log('fetching', "background: blue; color: yellow; padding-left:10px;");	
+	return (dispatch) => {
+  	dispatch(fetchPostsRequest());
     return fetchPosts().then(([response, json]) =>{
-        console.log('fetching', "background: blue; color: yellow; padding-left:10px;"); 
-      if(response.status === 200){
+      	console.log('fetching', "background: blue; color: yellow; padding-left:10px;");	
+    	if(response.status === 200){
         dispatch(fetchPostsSuccess(json));
       }
       else{
-      console.log('fetching', "background: blue; color: yellow; padding-left:10px;"); 
+    	console.log('fetching', "background: blue; color: yellow; padding-left:10px;");	
         dispatch(fetchPostsError());
       }
     })

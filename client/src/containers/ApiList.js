@@ -2,9 +2,9 @@
 import React, {Component} from 'react';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
-import {fetchPostsWithRedux} from '../actions/adaptersAction';
+import {fetchPostsWithRedux} from '../actions/apiAction';
 
-class AdaptersList extends Component {
+class ApiList extends Component {
 	componentDidMount(){
   	this.props.fetchPostsWithRedux()
   }
@@ -27,7 +27,7 @@ class AdaptersList extends Component {
     render(){
         return(
             <div> 
-            	<h1>Adapters</h1>
+            	<h1>Api</h1>
                 { this.renderList()}
             </div>
                
@@ -46,4 +46,4 @@ function  matchDispatchToProps(dispatch){
     return bindActionCreators({fetchPostsWithRedux: fetchPostsWithRedux}, dispatch);
 }
 
-export default connect(mapStateToProps, matchDispatchToProps)(AdaptersList);
+export default connect(mapStateToProps, matchDispatchToProps)(ApiList);
