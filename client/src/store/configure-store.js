@@ -6,7 +6,7 @@ import allReducer from '../reducers/index';
 const logger = createLogger();
 const store = createStore(
     allReducer,  
-     applyMiddleware(thunkMiddleware, logger)
+    applyMiddleware(thunkMiddleware, logger)
 );
 
 export default store 
