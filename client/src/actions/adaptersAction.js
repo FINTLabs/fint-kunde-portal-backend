@@ -3,8 +3,9 @@ export const FETCH_SUCCESS="FETCH_SUCCESS";
 export const FETCH_ERROR="FETCH_ERROR";
 
 //const BASE_URL = location.href.indexOf('localhost') > 0 ? 'http://localhost:8080' : '';
-export const url='https://content.viaplay.se/pc-se/serier/samtliga';
-//export const url='https://pokeapi.co/api/v2/pokemon';
+//export const url='https://content.viaplay.se/pc-se/serier/samtliga';
+export const url='https://jsonplaceholder.typicode.com/posts';
+//export const url='http://localhost:8080/api/adapters/testing';
 
 function fetchPostsRequest(){
   return {

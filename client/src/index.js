@@ -8,6 +8,7 @@ import reducers from './reducers/index';
 import { persistReducer, persistStore } from 'redux-persist';
 import storage from 'redux-persist/es/storage';
 import './index.css';
+import { PersistGate } from 'redux-persist/integration/react'
 
 const persistedReducer = persistReducer({ key: 'root', storage }, reducers);
 ReactDOM.render(

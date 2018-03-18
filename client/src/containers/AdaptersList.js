@@ -8,31 +8,35 @@ class AdaptersList extends Component {
 	componentDidMount(){
   	this.props.fetchPostsWithRedux()
   }
-
-    renderList() {
-        if (!this.props.posts) {
-            return (<div>Content Unavailable...</div>);
-        }
-        
-        return this.props.posts._embedded["viaplay:blocks"]["0"]._embedded["viaplay:products"].map((series) => {
-        	    return (
-        	    		
-        	      <li>
-        	      		{series.publicPath}
-        	      </li>
-        	    );
-        	  });
-        	} 
- 
-    render(){
-        return(
-            <div> 
-            	<h1>Adapters</h1>
-                { this.renderList()}
-            </div>
-               
-       );
+	/* The object looks like
+	{
+    "userId": 1,
+    "id": 1,
+    "title": "",
+    "body": ""
     }
+	 */
+	render () {
+	    if (!this.props.posts) {
+	      return <p>Nothing here yet...</p>;
+	    } else {
+	      return this.renderPosts();
+	    }
+	  }
+
+	  renderPosts () {
+	    return (
+	     <div> 
+            	<h1>Adapters</h1>
+            	<ul>
+            		{this.props.posts.map((post, i) =>
+            		<li key={i}>{post.id} : {post.title}</li>
+            		)}
+            	</ul>
+	      </div>
+	    );
+	  }
+
 }
 
 
