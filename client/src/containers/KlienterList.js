@@ -1,4 +1,3 @@
-
 import React, {Component} from 'react';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
@@ -8,31 +7,38 @@ class KlienterList extends Component {
 	componentDidMount(){
   	this.props.fetchPostsWithRedux()
   }
-
-    renderList() {
-        if (!this.props.posts) {
-            return (<div>Content Unavailable...</div>);
-        }
-        
-        return this.props.posts._embedded["viaplay:blocks"]["0"]._embedded["viaplay:products"].map((series) => {
-        	    return (
-        	    		
-        	      <li>
-        	      		{series.publicPath}
-        	      </li>
-        	    );
-        	  });
-        	} 
- 
-    render(){
-        return(
-            <div> 
-            	<h1>Klienter</h1>
-                { this.renderList()}
-            </div>
-               
-       );
+	
+	/* The object looks like
+{
+        "dn": "cn=testAdapter,ou=adapters,ou=testing,ou=organisations,o=fint-test",
+        "name": "testAdapter",
+        "shortDescription": "This is a Test Adapter",
+        "note": "Test Adapter",
+        "clientId": "A_testing_testAdapter_ClientId",
+        "components": []
     }
+	 */
+	render () {
+	    if (!this.props.posts) {
+	      return <p>Nothing here yet...</p>;
+	    } else {
+	      return this.renderPosts();
+	    }
+	  }
+
+	  renderPosts () {
+	    return (
+	     <div> 
+            	<h1>Klienter</h1>
+            	<ul>
+            		{this.props.posts.map((post, i) =>
+            		<li key={i}>{post.clientId} : {post.shortDescription}</li>
+            		)}
+            	</ul>
+	      </div>
+	    );
+	  }
+
 }
 
 

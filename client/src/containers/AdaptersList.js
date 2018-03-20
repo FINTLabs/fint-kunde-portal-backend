@@ -9,11 +9,13 @@ class AdaptersList extends Component {
   	this.props.fetchPostsWithRedux()
   }
 	/* The object looks like
-	{
-    "userId": 1,
-    "id": 1,
-    "title": "",
-    "body": ""
+{
+        "dn": "cn=testAdapter,ou=adapters,ou=testing,ou=organisations,o=fint-test",
+        "name": "testAdapter",
+        "shortDescription": "This is a Test Adapter",
+        "note": "Test Adapter",
+        "clientId": "A_testing_testAdapter_ClientId",
+        "components": []
     }
 	 */
 	render () {
@@ -30,7 +32,7 @@ class AdaptersList extends Component {
             	<h1>Adapters</h1>
             	<ul>
             		{this.props.posts.map((post, i) =>
-            		<li key={i}>{post.id} : {post.title}</li>
+            		<li key={i}>{post.clientId} : {post.shortDescription}</li>
             		)}
             	</ul>
 	      </div>

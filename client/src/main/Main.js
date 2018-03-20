@@ -26,6 +26,8 @@ import Dashboard from "../dashboard/Dashboard";
 import {BrowserRouter, Link, Route} from "react-router-dom";
 import Clients from "../clients/Clients";
 import Adapters from "../adapters/Adapters";
+import Kontakter from "../kontakter/Kontakter";
+import Klienter from "../klienter/Klienter";
 import Contacts from "../contacts/Contacts";
 import Apis from "../apis/Apis";
 import Organisations from "../organisations/Organisations";
@@ -261,6 +263,8 @@ class Main extends React.Component {
                 <Route exact path='/' component={Dashboard}/>
                 <Route path='/clients' component={Clients}/>
                 <Route path='/adapters' component={Adapters}/>
+                <Route path='/kontakter' component={Kontakter}/>
+                <Route path='/klienter' component={Klienter}/>
                 <Route path='/contacts' component={Contacts}/>
                 <Route path='/apis' component={Apis}/>
                 <Route path='/organisations' component={Organisations}/>

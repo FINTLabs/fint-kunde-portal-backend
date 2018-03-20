@@ -8,8 +8,10 @@ import ContactIcon from 'material-ui-icons/Person';
 import AdapterIcon from 'material-ui-icons/Link';
 import ApiIcon from 'material-ui-icons/WebAsset';
 import ClientIcon from 'material-ui-icons/ImportantDevices';
-//import Adapters from "../containers/Adapters";
 import Adapters from "../adapters/Adapters";
+import Klienter from "../klienter/Klienter";
+import Kontakter from "../kontakter/Kontakter";
+import Apis from "../apis/Apis";
 const styles = theme => ({
     root: {
         marginTop: theme.spacing.unit * 3,
@@ -36,8 +38,9 @@ class Dashboard extends Component {
 
         return (
             <Grid container xs={12}>
+            
                 <Grid item xs={3}>
-                    <Link to="clients" className={classes.cardLink}>
+                    <Link to="klienter/klienter" className={classes.cardLink}>
                         <Card className={classes.card}>
                             <CardHeader
                                 title="Klienter"
@@ -84,52 +87,53 @@ class Dashboard extends Component {
                 </Grid>
 
                 <Grid item xs={3}>
-                    <Link to="apis" className={classes.cardLink}>
-                        <Card className={classes.card}>
-                            <CardHeader
-                                title="API"
-                                avatar={
-                                    <Avatar className={classes.avatar}>
-                                        <ApiIcon className={classes.avatar}/>
-                                    </Avatar>
-                                }
-                                subheader="Antall"
-                            />
-                            <Divider/>
-                            <CardContent className={classes.cardContent}>
+                <Link to="apis/apis" className={classes.cardLink}>
 
-                                <Typography type="display4">
-                                    5
-                                </Typography>
-                            </CardContent>
+                    <Card className={classes.card}>
+                        <CardHeader
+                            title="API"
+                            avatar={
+                                <Avatar className={classes.avatar}>
+                                    <ApiIcon className={classes.avatar}/>
+                                </Avatar>
+                            }
+                            subheader="Antall"
+                        />
+                        <Divider/>
+                        <CardContent className={classes.cardContent}>
+                            <Typography type="display4">
+                                5
+                            </Typography>
+                        </CardContent>
 
-                        </Card>
-                    </Link>
-                </Grid>
-                <Grid item xs={3}>
-                    <Link to="contacts" className={classes.cardLink}>
-
-                        <Card className={classes.card}>
-                            <CardHeader
-                                title="Kontakter"
-                                avatar={
-                                    <Avatar className={classes.avatar}>
-                                        <ContactIcon className={classes.avatar}/>
-                                    </Avatar>
-                                }
-                                subheader="Antall"
-                            />
-                            <Divider/>
-                            <CardContent className={classes.cardContent}>
-                                <Typography type="display4">
-                                    3
-                                </Typography>
-                            </CardContent>
-
-                        </Card>
-                    </Link>
-                </Grid>
+                    </Card>
+                </Link>
             </Grid>
+            <Grid item xs={3}>
+                <Link to="kontakter/kontakter" className={classes.cardLink}>
+
+                    <Card className={classes.card}>
+                        <CardHeader
+                            title="kontakter"
+                            avatar={
+                                <Avatar className={classes.avatar}>
+                                    <ContactIcon className={classes.avatar}/>
+                                </Avatar>
+                            }
+                            subheader="Antall"
+                        />
+                        <Divider/>
+                        <CardContent className={classes.cardContent}>
+                            <Typography type="display4">
+                                5
+                            </Typography>
+                        </CardContent>
+
+                    </Card>
+                </Link>
+            </Grid>
+           </Grid>
+
         );
     }
 }
