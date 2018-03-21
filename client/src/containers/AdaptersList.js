@@ -2,7 +2,10 @@
 import React, {Component} from 'react';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
+import { NavLink, Route } from 'react-router-dom';
+import { Link } from 'react-router-dom'
 import {fetchPostsWithRedux} from '../actions/adaptersAction';
+import AdapterPage from '../components/adapters/AdapterPage';
 
 class AdaptersList extends Component {
 	componentDidMount(){
@@ -30,11 +33,14 @@ class AdaptersList extends Component {
 	    return (
 	     <div> 
             	<h1>Adapters</h1>
+            	
             	<ul>
             		{this.props.posts.map((post, i) =>
-            		<li key={i}>{post.clientId} : {post.shortDescription}</li>
+            		<li className="list-group-item" key={i}><Link to={'/adapters/AdapterPage/' + i}>{post.name}</Link></li>
             		)}
             	</ul>
+            	<NavLink className="item" activeClassName="active" exact to="/adapters/newAdapterPage">Add Adapter</NavLink>
+            	<Route path="/adapters/newAdapterPage" component={AdapterPage}/>
 	      </div>
 	    );
 	  }
