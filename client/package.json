@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "axios": "^0.18.0",
     "expect": "^23.0.0-alpha.0",
     "expect-redux": "^3.1.1",
     "fetchmock": "^1.0.1",
