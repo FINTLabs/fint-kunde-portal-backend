@@ -63,11 +63,19 @@ class AdapterPage extends React.Component {
     browserHistory.push('/adapters');
   }
 */
+/* TODO
+ *       /*
+        <h1>{this.state.adapter.name}</h1>
+        <p>note: {this.state.adapter.note}</p>
+        <p>clientID: {this.state.adapter.clientId}</p>
+        <p>shortDescription: {this.state.adapter.shortDescription}</p>
+       */
+
   render() {
     if (this.state.isEditing) {
       return (
       <div>
-        <h1>edit adapter</h1>
+        <h1>Add adapter</h1>
         <AdapterForm 
           adapter={this.state.adapter} 
           onSave={this.saveAdapter} 
@@ -78,12 +86,9 @@ class AdapterPage extends React.Component {
     }
     return (
       <div className="col-md-8 col-md-offset-2">
-        <h1>{this.state.adapter.name}</h1>
-        <p>note: {this.state.adapter.note}</p>
-        <p>clientID: {this.state.adapter.clientId}</p>
-        <p>shortDescription: {this.state.adapter.shortDescription}</p>
-        <button onClick={this.toggleEdit} className="btn btn-default  ">edit</button>
-        <button onClick={this.deleteAdapter} className="btn btn-default  ">delete</button>
+
+        <button onClick={this.toggleEdit} className="btn btn-default  ">Add Adapter</button>
+        <button onClick={this.deleteAdapter} className="btn btn-default  ">Delete</button>
       </div>
     );
   }

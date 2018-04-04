@@ -1,49 +1,62 @@
-export const FETCH_REQUEST="FETCH_REQUEST";
-export const FETCH_SUCCESS="FETCH_SUCCESS";
-export const FETCH_ERROR="FETCH_ERROR";
+import * as types from './actionTypes';
+import KontakterApi from '../api/KontakterApi';
 
-//const BASE_URL = location.href.indexOf('localhost') > 0 ? 'http://localhost:8080' : '';
-//export const url='https://jsonplaceholder.typicode.com/posts';
-export const url='http://localhost:8080/api/contacts';
-
-function fetchPostsRequest(){
-  return {
-    type: FETCH_REQUEST
-  }
+export function loadKontakterSuccess(kontakter) {
+  return {type: types.LOAD_KONTAKTER_SUCCESS, kontakter};
 }
 
-function fetchPostsSuccess(payload) {
-  return {
-    type: FETCH_SUCCESS,
-    payload
-  }
+export function updateKontakterSuccess(kontakter) {
+  return {type: types.UPDATE_KONTAKTER_SUCCESS, kontakter}
 }
 
-function fetchPostsError() {
-  return {
-    type: FETCH_ERROR
-  }
+export function createKontakterSuccess(kontakter) {
+  return {type: types.CREATE_KONTAKTER_SUCCESS, kontakter}
 }
 
-export function fetchPostsWithRedux() {
+export function deleteKontakterSuccess(kontakter) {
+  return {type: types.DELETE_KONTAKTER_SUCCESS, kontakter}
+}
 
-	return (dispatch) => {
-  	dispatch(fetchPostsRequest());
-    return fetchPosts().then(([response, json]) =>{
-      	console.log('fetching', "background: blue; color: yellow; padding-left:10px;");	
-    	if(response.status === 200){
-        dispatch(fetchPostsSuccess(json));
-      }
-      else{
-    	console.log('fetching', "background: blue; color: yellow; padding-left:10px;");	
-        dispatch(fetchPostsError());
-      }
+export function loadKontakter() {
+  // make async call to api, handle promise, dispatch action when promise is resolved
+  return function(dispatch) {
+    return KontakterApi.getAllKontakter().then(kontakter => {
+      dispatch(loadKontakterSuccess(kontakter));
+    }).catch(error => {
+      throw(error);
+    });
+  };
+}
+
+export function updateKontakter(kontakter) {
+  return function (dispatch) {
+    return KontakterApi.updateKontakter(kontakter).then(responseKontakter => {
+      dispatch(updateKontakterSuccess(responseKontakter));
+    }).catch(error => {
+      throw(error);
+    });
+  };
+}
+
+export function createKontakter(kontakter) {
+  return function (dispatch) {
+    return KontakterApi.createKontakter(kontakter).then(responseKontakter => {
+      dispatch(createKontakterSuccess(responseKontakter));
+      return responseKontakter;
+    }).catch(error => {
+      throw(error);
+    });
+  };
+}
+
+export function deleteKontakter(kontakter) {
+  return function(dispatch) {
+    return KontakterApi.deleteKontakter(kontakter).then(() => {
+      console.log(`Deleted ${kontakter.name}`)
+      dispatch(deleteKontakterSuccess(kontakter));
+      return;
+    }).catch(error => {
+      throw(error);
     })
   }
-}
-
-function fetchPosts() {
-  
-  return fetch(url, { method: 'GET'})
-     .then( response => Promise.all([response,response.json()]));
 }

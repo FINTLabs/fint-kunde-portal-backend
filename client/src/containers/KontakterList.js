@@ -1,11 +1,11 @@
 import React, {Component} from 'react';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
-import {fetchPostsWithRedux} from '../actions/kontakterAction';
+import {loadKontakter} from '../actions/kontakterAction';
 
 class KontakterList extends Component {
 	componentDidMount(){
-  	this.props.fetchPostsWithRedux()
+  	this.props.loadKontakter()
   }
 	
 	/* The object looks like
@@ -51,7 +51,7 @@ function mapStateToProps(state){
   }
 }
 function  matchDispatchToProps(dispatch){
-    return bindActionCreators({fetchPostsWithRedux: fetchPostsWithRedux}, dispatch);
+    return bindActionCreators({loadKontakter: loadKontakter}, dispatch);
 }
 
 export default connect(mapStateToProps, matchDispatchToProps)(KontakterList);

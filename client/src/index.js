@@ -9,9 +9,15 @@ import reducers from './reducers/index';
 import { persistReducer, persistStore } from 'redux-persist';
 import storage from 'redux-persist/es/storage';
 import './index.css';
-import { PersistGate } from 'redux-persist/integration/react'
+import { PersistGate } from 'redux-persist/integration/react';
+import {loadAdapters} from './actions/adapterAction';
+import {loadKontakter} from './actions/kontakterAction';
 
 const persistedReducer = persistReducer({ key: 'root', storage }, reducers);
+
+store.dispatch(loadAdapters());
+store.dispatch(loadKontakter());
+
 ReactDOM.render(
     <Provider store={store}>
     	<Router>

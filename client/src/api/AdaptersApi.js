@@ -42,7 +42,7 @@ class AdaptersApi {
   }
 
   static deleteAdapter(Adapter) {
-    const request = new Request(`http://localhost:8080/api/adapters/testing/testadapter/${Adapter.name}`, {
+    const request = new Request(`http://localhost:8080/api/adapters/testing/${Adapter.name}`, {
       method: 'DELETE'
     });
 

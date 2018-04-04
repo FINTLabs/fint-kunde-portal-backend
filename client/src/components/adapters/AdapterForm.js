@@ -39,6 +39,12 @@ class AdapterForm extends React.Component {
             value={this.props.adapter.ClientId}
             onChange={this.props.onChange}/>
 
+          <TextInput
+          name="shortDescription"
+          label="ShortDescription"
+          value={this.props.adapter.shortDescription}
+          onChange={this.props.onChange}/>
+          		
           <input
             type="submit"
             disabled={this.props.saving}

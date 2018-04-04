@@ -93,7 +93,7 @@ export function deleteAdapterSuccess(adapter) {
 export function deleteAdapter(adapter) {
 	  return function(dispatch) {
 	    return AdaptersApi.deleteAdapter(adapter).then(() => {
-	      console.log(`Deleted ${adapter.name}`)
+	      console.log(`Deleted ${adapter.id}`)
 	      dispatch(deleteAdapterSuccess(adapter));
 	      return;
 	    }).catch(error => {
