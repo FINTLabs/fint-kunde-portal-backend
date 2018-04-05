@@ -4,7 +4,7 @@ import { Router, Route, IndexRoute } from 'react-router'
 import { PropTypes } from 'react';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
-import * as adaptersActions from '../../actions/adaptersAction';
+import { createAdapter } from '../../actions/adaptersAction';
 import AdapterForm from './AdapterForm';
 import createHistory from 'history/createBrowserHistory'
 import { Redirect } from 'react-router'
@@ -18,7 +18,7 @@ class AdapterPage extends React.Component {
       saving: false,
       isEditing: false
     };
-    this.saveAdapter = this.saveAdapter.bind(this);
+    this.createAdapter = this.createAdapter.bind(this);
     this.updateAdapterState = this.updateAdapterState.bind(this);
     this.toggleEdit = this.toggleEdit.bind(this);
     this.deleteAdapter = this.deleteAdapter.bind(this);
@@ -48,12 +48,9 @@ class AdapterPage extends React.Component {
     return this.setState({adapter: adapter});
   }
 
-  saveAdapter(event) {
-    event.preventDefault();
-    this.setState({saving: true});
-    this.props.actions.updateAdapter(this.state.adapter);
-
-  } 
+  createAdapter(adapter) {
+	    this.props.createAdapter(adapter)
+  }
 
   deleteAdapter(event) {
     this.props.actions.deleteAdapter(this.state.adapter)
@@ -78,7 +75,7 @@ class AdapterPage extends React.Component {
         <h1>Add adapter</h1>
         <AdapterForm 
           adapter={this.state.adapter} 
-          onSave={this.saveAdapter} 
+          onSave={this.addAdapter} 
           onChange={this.updateAdapterState} 
           saving={this.state.saving}/> 
       </div>
@@ -87,8 +84,8 @@ class AdapterPage extends React.Component {
     return (
       <div className="col-md-8 col-md-offset-2">
 
-        <button onClick={this.toggleEdit} className="btn btn-default  ">Add Adapter</button>
-        <button onClick={this.deleteAdapter} className="btn btn-default  ">Delete</button>
+        <button onClick={this.createAdapter} className="btn btn-default  ">Add Adapter</button>
+
       </div>
     );
   }
@@ -107,7 +104,7 @@ function getAdapterById(adapters, id) {
 
 
 function mapStateToProps(state) {
-  let adapter = {name: '', note: '', clientId: '', shortDescription: ''};
+  let adapter = {name: '', note: '', clientID: '', shortDescription: ''};
   const adapterName = state.posts.name;
   if (adapterName && state.adapters.length > 0 ) {
     adapter = getAdapterById(state.adapters, state.posts.name);
@@ -116,12 +113,15 @@ function mapStateToProps(state) {
     return {adapter: adapter};
 }
 
-function mapDispatchToProps(dispatch) {
-  return {
-    actions: bindActionCreators(adaptersActions, dispatch)
-  };
+function mapStateToProps(state){
+	return {
+        posts: state.posts
+  }
 }
-export default connect(mapStateToProps, mapDispatchToProps)(AdapterPage);
+function  matchDispatchToProps(dispatch){
+    return bindActionCreators({createAdapter : createAdapter}, dispatch);
+}
+export default connect(mapStateToProps, matchDispatchToProps)(AdapterPage);
 
 
 

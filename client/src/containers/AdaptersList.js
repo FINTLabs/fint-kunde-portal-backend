@@ -4,11 +4,15 @@ import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import { NavLink, Route } from 'react-router-dom';
 import { Link } from 'react-router-dom';
-import {fetchPostsWithRedux} from '../actions/adaptersAction';
+import {fetchPostsWithRedux, deleteAdapter} from '../actions/adaptersAction';
 import AdapterPage from '../components/adapters/AdapterPage';
-import AdapterListItem from '../components/adapters/AdapterListItem';
+
 
 class AdaptersList extends Component {
+	constructor(props) {
+	    super(props);
+	    this.deleteAdapter= this.deleteAdapter.bind(this);
+	}
 	componentDidMount(){
   	this.props.fetchPostsWithRedux()
   }
@@ -22,6 +26,9 @@ class AdaptersList extends Component {
         "components": []
     }
 	 */
+	  deleteAdapter(adapter) {
+		    this.props.deleteAdapter(adapter)
+		  }
 	render () {
 	    if (!this.props.posts) {
 	      return <p>Nothing here yet...</p>;
@@ -34,10 +41,15 @@ class AdaptersList extends Component {
 	    return (
 	     <div> 
             	<h1>Adapters</h1>
-            	
+
             	<ul>
             		{this.props.posts.map((post, i) =>
-            		<li className="list-group-item" key={i}><Link to={'/adapters/'+i}>{post.name}</Link></li>
+                	<div>
+                	<table><tr>
+            		<td width="90%"><li className="list-group-item" key={i}><Link to={'/adapters/'+i}>{post.name}</Link></li></td>
+                    <td width="10%"><button onClick={this.deleteAdapter(post)} className="btn btn-default  ">Delete</button></td>
+                    </tr></table>
+                	</div>
             		)}
             	</ul>
 
@@ -57,7 +69,7 @@ function mapStateToProps(state){
   }
 }
 function  matchDispatchToProps(dispatch){
-    return bindActionCreators({fetchPostsWithRedux: fetchPostsWithRedux}, dispatch);
+    return bindActionCreators({fetchPostsWithRedux: fetchPostsWithRedux, deleteAdapter : deleteAdapter}, dispatch);
 }
 
 export default connect(mapStateToProps, matchDispatchToProps)(AdaptersList);

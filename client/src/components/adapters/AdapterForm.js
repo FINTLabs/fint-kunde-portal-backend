@@ -15,6 +15,16 @@ class AdapterForm extends React.Component {
     })
   }
 */
+	/* The object looks like
+{
+      "dn": "cn=testAdapter,ou=adapters,ou=testing,ou=organisations,o=fint-test",
+      "name": "testAdapter",
+      "shortDescription": "This is a Test Adapter",
+      "note": "Test Adapter",
+      "clientId": "A_testing_testAdapter_ClientId",
+      "components": []
+  }
+	 */
   render() {
     //const boxes = this.makeCheckBoxes();
     return (

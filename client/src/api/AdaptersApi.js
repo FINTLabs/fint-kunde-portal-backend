@@ -30,7 +30,11 @@ class AdaptersApi {
   static createAdapter(Adapter) {
     const request = new Request(`localhost:8080/api/adapters/testing`, {
       method: 'POST',
-      body: JSON.stringify({Adapter: Adapter})
+ //     body: JSON.stringify({Adapter: Adapter}
+      body: JSON.stringify({
+    	    name: 'Adapter.name',
+    	    note: 'Adapter.note',
+    	  })
     });
 
 
