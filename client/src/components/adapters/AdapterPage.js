@@ -29,8 +29,9 @@ class AdapterPage extends React.Component {
 
 
   componentWillReceiveProps(nextProps) {
-    if (this.props.adapter.id != nextProps.adapter.id) {
+    if (this.props.adapter != nextProps.adapter) {
       this.setState({adapter: Object.assign({}, nextProps.adapter)});
+
     }
 
     this.setState({saving: false, isEditing: false});
@@ -75,7 +76,7 @@ class AdapterPage extends React.Component {
         <h1>Add adapter</h1>
         <AdapterForm 
           adapter={this.state.adapter} 
-          onSave={this.addAdapter} 
+          onSave={this.createAdapter} 
           onChange={this.updateAdapterState} 
           saving={this.state.saving}/> 
       </div>
@@ -84,7 +85,7 @@ class AdapterPage extends React.Component {
     return (
       <div className="col-md-8 col-md-offset-2">
 
-        <button onClick={this.createAdapter} className="btn btn-default  ">Add Adapter</button>
+        <button onClick={this.toggleEdit} className="btn btn-default  ">Add Adapter</button>
 
       </div>
     );
@@ -113,11 +114,11 @@ function mapStateToProps(state) {
     return {adapter: adapter};
 }
 
-function mapStateToProps(state){
-	return {
-        posts: state.posts
-  }
-}
+//function mapStateToProps(state){
+//	return {
+//        posts: state.posts
+//  }
+//}
 function  matchDispatchToProps(dispatch){
     return bindActionCreators({createAdapter : createAdapter}, dispatch);
 }

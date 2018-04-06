@@ -1,4 +1,3 @@
-
 import React, {Component} from 'react';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
@@ -47,7 +46,7 @@ class AdaptersList extends Component {
                 	<div>
                 	<table><tr>
             		<td width="90%"><li className="list-group-item" key={i}><Link to={'/adapters/'+i}>{post.name}</Link></li></td>
-                    <td width="10%"><button onClick={this.deleteAdapter(post)} className="btn btn-default  ">Delete</button></td>
+                    <td width="10%"><button type="submit" onClick={() => {this.deleteAdapter(post)}}>Delete</button></td>
                     </tr></table>
                 	</div>
             		)}
@@ -73,3 +72,4 @@ function  matchDispatchToProps(dispatch){
 }
 
 export default connect(mapStateToProps, matchDispatchToProps)(AdaptersList);
+
