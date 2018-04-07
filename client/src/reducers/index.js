@@ -22,12 +22,17 @@ const allReducer =  (state = {}, action) =>{
         return newState;
       }
     
-    case "CREATE_SUCCESS":
+    case "CREATE_SUCCESS": {
+        const newState = Object.assign([], state);
+        const indexOfAdapterToSave = state.posts.findIndex(({ id }) => id == action.payload); 
+        newState.splice(indexOfAdapterToSave, 1);
+        return newState;
+    }
 //        browserHistory.push(`/adapters/${action.adapter.id}`)
-        return [
-          ...state.filter(adapter => adapter.id !== action.adapter.id),
-          Object.assign({}, action.adapter)
-        ]
+//        return [
+//          ...state.filter(adapter => adapter.id !== action.adapter.id),
+//          Object.assign({}, action.adapter)
+//        ]
     default:
       return state;
   }

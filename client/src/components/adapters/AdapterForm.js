@@ -2,34 +2,24 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types'
 import TextInput from '../common/TextInput';
 import CheckBox from '../common/CheckBox';
+import {bindActionCreators} from 'redux';
 
 class AdapterForm extends React.Component {
   constructor(props) {
     super(props);
-//    this.makeCheckBoxes = this.makeCheckBoxes.bind(this);
+
   }
-/* TODO
-  makeCheckBoxes() {
-    return this.props.data.map(adapter => {
-      return <CheckBox item={adapter} handleChange={this.props.onAdapterChange} key={adapter.name}/>
-    })
-  }
-*/
-	/* The object looks like
-{
-      "dn": "cn=testAdapter,ou=adapters,ou=testing,ou=organisations,o=fint-test",
-      "name": "testAdapter",
-      "shortDescription": "This is a Test Adapter",
-      "note": "Test Adapter",
-      "clientId": "A_testing_testAdapter_ClientId",
-      "components": []
-  }
-	 */
+  
+  submitForm(adapter) {
+	  this.props.createAdapter(adapter)
+	}
+
   render() {
-    //const boxes = this.makeCheckBoxes();
+	const {handleSubmit, submitForm} = this.props;
     return (
       <div>
-        <form>
+      <form onSubmit={()=> this.submitForm()}>
+      
           <TextInput
             name="name"
             label="name"
@@ -44,9 +34,9 @@ class AdapterForm extends React.Component {
             onChange={this.props.onChange}/>
 
           <TextInput
-            name="ClientId"
-            label="ClientId"
-            value={this.props.adapter.ClientId}
+            name="secret"
+            label="secret"
+            value={this.props.adapter.secret}
             onChange={this.props.onChange}/>
 
           <TextInput
@@ -54,7 +44,9 @@ class AdapterForm extends React.Component {
           label="ShortDescription"
           value={this.props.adapter.shortDescription}
           onChange={this.props.onChange}/>
-          		
+	      
+ 
+
           <input
             type="submit"
             disabled={this.props.saving}
@@ -67,10 +59,6 @@ class AdapterForm extends React.Component {
   }
 }
 
-AdapterForm.propTypes = {
-//  adapter: React.PropTypes.object.isRequired,
-//  onSave: React.PropTypes.func.isRequired,
-//  onChange: React.PropTypes.func.isRequired,
-};
+
 
 export default AdapterForm;

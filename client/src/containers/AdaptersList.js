@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
-import { NavLink, Route } from 'react-router-dom';
+import { Route,  NavLink,  HashRouter } from "react-router-dom";
 import { Link } from 'react-router-dom';
 import {fetchPostsWithRedux, deleteAdapter} from '../actions/adaptersAction';
 import AdapterPage from '../components/adapters/AdapterPage';
@@ -38,6 +38,7 @@ class AdaptersList extends Component {
 
 	  renderPosts () {
 	    return (
+
 	     <div> 
             	<h1>Adapters</h1>
 
@@ -45,7 +46,7 @@ class AdaptersList extends Component {
             		{this.props.posts.map((post, i) =>
                 	<div>
                 	<table><tr>
-            		<td width="90%"><li className="list-group-item" key={i}><Link to={'/adapters/'+i}>{post.name}</Link></li></td>
+            		<td width="90%"><li className="list-group-item" key={post.name}><Link to={'/adapters/:{adapter}'}>{post.name}</Link></li></td>
                     <td width="10%"><button type="submit" onClick={() => {this.deleteAdapter(post)}}>Delete</button></td>
                     </tr></table>
                 	</div>
@@ -53,7 +54,7 @@ class AdaptersList extends Component {
             	</ul>
 
 
-            	<Route path="/adapters/:i" component={AdapterPage}/>
+            	<Route path="/adapters" component={AdapterPage}/>
 	      </div>
 	    );
 	  }

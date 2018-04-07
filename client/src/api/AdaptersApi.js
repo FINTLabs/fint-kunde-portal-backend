@@ -16,6 +16,9 @@ class AdaptersApi {
   static updateAdapter(Adapter) {
     const request = new Request(`localhost:8080/api/adapters/testing/${Adapter.name}`, {
       method: 'PUT',
+      headers: new Headers({
+          'Content-Type': 'application/json'
+        }), 
       body: JSON.stringify({Adapter: Adapter})
     });
 
@@ -28,16 +31,33 @@ class AdaptersApi {
   }
 
   static createAdapter(Adapter) {
-    const request = new Request(`localhost:8080/api/adapters/testing`, {
+	console.log("testing3:"+Adapter.name);
+	console.log("testing3:"+Adapter.note);
+	console.log("testing3:"+Adapter.shortDescription);
+	console.log("testing3:"+Adapter.secret);
+    const request = new Request(`http://localhost:8080/api/adapters/testing`, {
       method: 'POST',
- //     body: JSON.stringify({Adapter: Adapter}
+      headers: {
+          'Accept': '*/*',
+          'Content-Type': 'application/json'
+        }, 
       body: JSON.stringify({
-    	    name: 'Adapter.name',
-    	    note: 'Adapter.note',
-    	  })
+    	  name: Adapter.name,
+    	  note: Adapter.note,
+    	  secret: Adapter.secret,
+    	  shortDescription:Adapter.shortDescription})
     });
 
-
+//    curl --request POST \
+//    --url http://localhost:8080/api/adapters/testing \
+//    --header 'Accept: */*' \
+//    --header 'Content-Type: application/json' \
+//    --data '{
+//    "name": "testAdapter",
+//    "note": "Test Adapter",
+//    "secret": "Open Sesame!",
+//    "shortDescription": "This is a Test Adapter"
+//  }'
     return fetch(request).then(response => {
       return response.json();
     }).catch(error => {

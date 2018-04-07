@@ -1,4 +1,5 @@
 import AdaptersApi from '../api/AdaptersApi';
+//import * as type from './actionTypes';
 export const FETCH_REQUEST="FETCH_REQUEST";
 export const FETCH_SUCCESS="FETCH_SUCCESS";
 export const FETCH_ERROR="FETCH_ERROR";
@@ -64,6 +65,8 @@ export function createAdapter(adapter) {
 	    return AdaptersApi.createAdapter(adapter).then(responseAdapter => {
 	      dispatch(createAdapterSuccess(responseAdapter));
 	      return responseAdapter;
+		    //eslint-disable-next-line
+	      location.reload();
 	    }).catch(error => {
 	      throw(error);
 	    });
@@ -81,6 +84,9 @@ export function updateAdapter(adapter) {
 	  return function (dispatch) {
 	    return AdaptersApi.updateAdapter(adapter).then(responseAdapter => {
 	      dispatch(updateAdapterSuccess(responseAdapter));
+	    //eslint-disable-next-line
+	      location.reload();
+	      return;
 	    }).catch(error => {
 	      throw(error);
 	    });
@@ -95,6 +101,8 @@ export function deleteAdapter(adapter) {
 	    return AdaptersApi.deleteAdapter(adapter).then(() => {
 	      console.log(`Deleted ${adapter.id}`)
 	      dispatch(deleteAdapterSuccess(adapter));
+	    //eslint-disable-next-line
+	      location.reload();
 	      return;
 	    }).catch(error => {
 	      throw(error);

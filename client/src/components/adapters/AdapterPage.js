@@ -6,6 +6,7 @@ import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import { createAdapter } from '../../actions/adaptersAction';
 import AdapterForm from './AdapterForm';
+
 import createHistory from 'history/createBrowserHistory'
 import { Redirect } from 'react-router'
 
@@ -18,13 +19,13 @@ class AdapterPage extends React.Component {
       saving: false,
       isEditing: false
     };
+
     this.createAdapter = this.createAdapter.bind(this);
     this.updateAdapterState = this.updateAdapterState.bind(this);
     this.toggleEdit = this.toggleEdit.bind(this);
     this.deleteAdapter = this.deleteAdapter.bind(this);
- /* TODO
-    this.redirect = this.redirect.bind(this);
- */
+    this.saveAdapter = this.saveAdapter.bind(this);
+
   }
 
 
@@ -38,7 +39,13 @@ class AdapterPage extends React.Component {
   }
 
   toggleEdit() {
+
     this.setState({isEditing: true});
+  }
+  
+  saveAdapter(event) {
+	    event.preventDefault();
+	    this.props.createAdapter(this.state.adapter);
   }
 
 
@@ -50,33 +57,22 @@ class AdapterPage extends React.Component {
   }
 
   createAdapter(adapter) {
+	    console.log("testing2");
 	    this.props.createAdapter(adapter)
   }
 
   deleteAdapter(event) {
     this.props.actions.deleteAdapter(this.state.adapter)
   }
-/* TODO
-  redirect() {
-    browserHistory.push('/adapters');
-  }
-*/
-/* TODO
- *       /*
-        <h1>{this.state.adapter.name}</h1>
-        <p>note: {this.state.adapter.note}</p>
-        <p>clientID: {this.state.adapter.clientId}</p>
-        <p>shortDescription: {this.state.adapter.shortDescription}</p>
-       */
 
   render() {
     if (this.state.isEditing) {
       return (
       <div>
-        <h1>Add adapter</h1>
+        <h3>Add adapter</h3>
         <AdapterForm 
           adapter={this.state.adapter} 
-          onSave={this.createAdapter} 
+          onSave={this.saveAdapter} 
           onChange={this.updateAdapterState} 
           saving={this.state.saving}/> 
       </div>
@@ -94,8 +90,7 @@ class AdapterPage extends React.Component {
 
 
 AdapterPage.propTypes = {
-//  adapter: PropTypes.object.isRequired,
-//  actions: PropTypes.object.isRequired
+
 };
 
 function getAdapterById(adapters, id) {
@@ -114,11 +109,6 @@ function mapStateToProps(state) {
     return {adapter: adapter};
 }
 
-//function mapStateToProps(state){
-//	return {
-//        posts: state.posts
-//  }
-//}
 function  matchDispatchToProps(dispatch){
     return bindActionCreators({createAdapter : createAdapter}, dispatch);
 }
