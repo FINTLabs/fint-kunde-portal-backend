@@ -37,7 +37,7 @@ class AdaptersList extends Component {
             		{this.props.posts.map((post, i) =>
                 	<div>
                 	<table><tr>
-            		<td width="90%"><li className="list-group-item" key={post.name}><Link to={'/adapter/:{adapter}'}>{post.name}</Link></li></td>
+            		<td width="90%"><li className="list-group-item" key={post.name}><Link to={'/adapters/:{adapters}'}>{post.name}</Link></li></td>
                     <td width="10%"><button type="submit" onClick={() => {this.deleteAdapter(post)}}>Delete</button></td>
                     </tr></table>
                 	</div>
