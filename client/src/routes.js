@@ -9,6 +9,6 @@ import AdapterPage from './components/adapters/AdaptersPage';
 export default (  
   <Route path="/" component={App}>
     <IndexRoute component={Dashboard} />
-    <Route path="/adapterslist" component={AdaptersList} />
+    <Route path="/adapter" component={AdapterPage} />
   </Route>
 );

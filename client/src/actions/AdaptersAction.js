@@ -14,10 +14,6 @@ export const DELETE_SUCCESS = 'DELETE_SUCCESS';
 export const DELETE_ERROR="DELETE_ERROR";
 
 
-//const BASE_URL = location.href.indexOf('localhost') > 0 ? 'http://localhost:8080' : '';
-//export const url='https://jsonplaceholder.typicode.com/posts';
-//export const url='http://localhost:8080/api/adapters/testing';
-
 function fetchPostsRequest(){
   return {
     type: FETCH_REQUEST
@@ -64,9 +60,9 @@ export function createAdapter(adapter) {
 	  return function (dispatch) {
 	    return AdaptersApi.createAdapter(adapter).then(responseAdapter => {
 	      dispatch(createAdapterSuccess(responseAdapter));
-	      return responseAdapter;
 		    //eslint-disable-next-line
 	      location.reload();
+	      return responseAdapter;
 	    }).catch(error => {
 	      throw(error);
 	    });

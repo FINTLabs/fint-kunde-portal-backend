@@ -17,12 +17,12 @@ class AdapterPage extends React.Component {
     this.state = {
       adapter: Object.assign({}, this.props.adapter), 
       saving: false,
-      isEditing: false
+      isAdding: false
     };
 
     this.createAdapter = this.createAdapter.bind(this);
     this.updateAdapterState = this.updateAdapterState.bind(this);
-    this.toggleEdit = this.toggleEdit.bind(this);
+    this.toggleAdd = this.toggleAdd.bind(this);
     this.deleteAdapter = this.deleteAdapter.bind(this);
     this.saveAdapter = this.saveAdapter.bind(this);
 
@@ -35,12 +35,12 @@ class AdapterPage extends React.Component {
 
     }
 
-    this.setState({saving: false, isEditing: false});
+    this.setState({saving: false, isAdding: false});
   }
 
-  toggleEdit() {
+  toggleAdd() {
 
-    this.setState({isEditing: true});
+    this.setState({isAdding: true});
   }
   
   saveAdapter(event) {
@@ -57,7 +57,6 @@ class AdapterPage extends React.Component {
   }
 
   createAdapter(adapter) {
-	    console.log("testing2");
 	    this.props.createAdapter(adapter)
   }
 
@@ -66,7 +65,7 @@ class AdapterPage extends React.Component {
   }
 
   render() {
-    if (this.state.isEditing) {
+    if (this.state.isAdding) {
       return (
       <div>
         <h3>Add adapter</h3>
@@ -81,7 +80,7 @@ class AdapterPage extends React.Component {
     return (
       <div className="col-md-8 col-md-offset-2">
 
-        <button onClick={this.toggleEdit} className="btn btn-default  ">Add Adapter</button>
+        <button onClick={this.toggleAdd} className="btn btn-default  ">Add Adapter</button>
 
       </div>
     );
