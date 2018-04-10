@@ -2,8 +2,8 @@ import React from 'react';
 import { PropTypes } from 'react';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
-import { createAdapter } from '../../actions/adaptersAction';
-import AdapterForm from './AdapterForm';
+import { updateAdapter } from '../../actions/adaptersAction';
+import AdapterViewForm from './AdapterViewForm';
 import { Route,  Link, withRouter } from "react-router-dom";
 import createHistory from 'history/createBrowserHistory'
 import { Redirect } from 'react-router'
@@ -14,14 +14,12 @@ class AdapterPage extends React.Component {
     super(props, context);
     this.state = {
       adapter: Object.assign({}, this.props.location.state), 
-      isSaving: false,
-      isAdding: false
+      isSaving: true
     };
-    this.createAdapter = this.createAdapter.bind(this);
+
     this.updateAdapterState = this.updateAdapterState.bind(this);
-    this.toggleAdd = this.toggleAdd.bind(this);
-    this.deleteAdapter = this.deleteAdapter.bind(this);
-    this.saveAdapter = this.saveAdapter.bind(this);
+    this.toggleSave = this.toggleSave.bind(this);
+    this.updateAdapter = this.updateAdapter.bind(this);
 
   }
 
@@ -35,14 +33,14 @@ class AdapterPage extends React.Component {
     this.setState({saving: false, isAdding: false});
   }
 
-  toggleAdd() {
-
-    this.setState({isAdding: true});
+  toggleSave() {
+	  console.log("toggleSave");
+    this.setState({isSaving: true});
   }
   
-  saveAdapter(event) {
+  updateAdapter(event) {
 	    event.preventDefault();
-	    this.props.createAdapter(this.state.adapter);
+	    this.props.updateAdapter(this.state.adapter);
   }
 
 
@@ -53,21 +51,14 @@ class AdapterPage extends React.Component {
     return this.setState({adapter: adapter});
   }
 
-  createAdapter(adapter) {
-	    this.props.createAdapter(adapter)
-  }
-
-  deleteAdapter(event) {
-    this.props.actions.deleteAdapter(this.state.adapter)
-  }
 
   render() {
-	  console.log("test"+this.state.adapter.name);
-    if (this.state.isAdding) {
+
+    if (this.state.isSaving) {
       return (
       <div>
-        <h3>Add adapter</h3>
-        <AdapterForm 
+        <h3>Update adapter</h3>
+        <AdapterViewForm 
           adapter={this.state.adapter} 
           onSave={this.saveAdapter} 
           onChange={this.updateAdapterState} 
@@ -77,7 +68,7 @@ class AdapterPage extends React.Component {
     }
     return (
       <div className="col-md-8 col-md-offset-2">
-        <button onClick={this.toggleAdd} className="btn btn-default  ">Add Adapter</button>
+        <button onClick={this.toggleSave} className="btn btn-default  ">Save Adapter</button>
       </div>
     );
   }
@@ -105,13 +96,6 @@ function mapStateToProps(state) {
 }
 
 function  matchDispatchToProps(dispatch){
-    return bindActionCreators({createAdapter : createAdapter}, dispatch);
+    return bindActionCreators({updateAdapter : updateAdapter}, dispatch);
 }
 export default withRouter(connect(mapStateToProps, matchDispatchToProps)(AdapterPage));
-
-
-
-
-
-
-

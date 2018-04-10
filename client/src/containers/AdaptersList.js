@@ -1,11 +1,12 @@
 import React, {Component} from 'react';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
-import { Route,  Link, withRouter } from "react-router-dom";
+//import { Route,  Link, withRouter } from "react-router-dom";
+import { BrowserRouter as Router, Route, Link, Switch, Redirect, withRouter	} from 'react-router-dom'
 import {fetchPostsWithRedux, deleteAdapter} from '../actions/adaptersAction';
-import { routerMiddleware as createRouterMiddleware, ConnectedRouter as Router,  routerReducer, push} from "react-router-redux";
+import { routerMiddleware as createRouterMiddleware,  routerReducer, push} from "react-router-redux";
 import AdapterPage from '../components/adapters/AdapterPage';
-
+import AdapterView from '../components/adapters/AdapterView';
 
 class AdaptersList extends Component {
 	constructor(props) {
@@ -29,26 +30,32 @@ class AdaptersList extends Component {
 
 	  renderPosts () {
 	    return (
-
+	    		<Router>
 	     <div> 
             	<h1>Adapters</h1>
 
             	<ul>
             		{this.props.posts.map((post, i) =>
                 	<div>
-                	<table><tr>
-            		<td width="90%"><li className="list-group-item" key={post.name}><Link to={'/adapters/:{adapters}'}>{post.name}</Link></li></td>
-                    <td width="10%"><button type="submit" onClick={() => {this.deleteAdapter(post)}}>Delete</button></td>
-                    </tr></table>
+	                	<table><tr>
+	            		<td width="90%"><li className="list-group-item" key={i}><Link to={{pathname: '/adapter', state: { post : post}}}>{post.name}</Link></li></td>
+	                    <td width="10%"><button type="submit" onClick={() => {this.deleteAdapter(post)}}>Delete</button></td>
+	                    </tr></table>
+
                 	</div>
             		)}
             	</ul>
-
+            	<Route
+            	  path="/adapter/"
+            	  render={({ props }) => (
+            	    <AdapterView post={this.props.post} />
+            	    )}
+            	/>
 
             	<Route path="/adapters" component={AdapterPage}/>
 	      </div>
+            	</Router>
 	    );
-	    AdaptersList = withRouter(connect(null, { push })(AdaptersList));
 	  }
 
 }
@@ -64,5 +71,5 @@ function  matchDispatchToProps(dispatch){
     return bindActionCreators({fetchPostsWithRedux: fetchPostsWithRedux, deleteAdapter : deleteAdapter}, dispatch);
 }
 
-export default connect(mapStateToProps, matchDispatchToProps)(AdaptersList);
+export default withRouter(connect(mapStateToProps, matchDispatchToProps)(AdaptersList));
 
