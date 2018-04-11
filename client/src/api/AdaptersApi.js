@@ -14,13 +14,16 @@ class AdaptersApi {
   }
 
   static updateAdapter(Adapter) {
-    const request = new Request(`localhost:8080/api/adapters/testing/${Adapter.name}`, {
+    const request = new Request(`http://localhost:8080/api/adapters/testing/${Adapter.name}`, {
       method: 'PUT',
       headers: new Headers({
           'Content-Type': 'application/json'
         }), 
-      body: JSON.stringify({Adapter: Adapter})
-    });
+        body: JSON.stringify({
+      	  name: Adapter.name,
+      	  note: Adapter.note,
+      	  shortDescription:Adapter.shortDescription})
+      });
 
 
     return fetch(request).then(response => {
@@ -31,10 +34,7 @@ class AdaptersApi {
   }
 
   static createAdapter(Adapter) {
-	console.log("testing3:"+Adapter.name);
-	console.log("testing3:"+Adapter.note);
-	console.log("testing3:"+Adapter.shortDescription);
-	console.log("testing3:"+Adapter.secret);
+
     const request = new Request(`http://localhost:8080/api/adapters/testing`, {
       method: 'POST',
       headers: {

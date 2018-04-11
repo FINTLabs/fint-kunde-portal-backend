@@ -79,7 +79,7 @@ export function updateAdapterSuccess(adapter) {
 export function updateAdapter(adapter) {
 	  return function (dispatch) {
 	    return AdaptersApi.updateAdapter(adapter).then(responseAdapter => {
-	      dispatch(updateAdapterSuccess(responseAdapter));
+//	      dispatch(updateAdapterSuccess(adapter));
 	    //eslint-disable-next-line
 	      location.reload();
 	      return;

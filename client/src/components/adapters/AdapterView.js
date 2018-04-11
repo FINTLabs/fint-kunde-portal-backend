@@ -2,14 +2,16 @@ import React from 'react';
 import { PropTypes } from 'react';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
+import { reduxForm } from 'redux-form';
 import { updateAdapter } from '../../actions/adaptersAction';
 import AdapterViewForm from './AdapterViewForm';
 import { Route,  Link, withRouter } from "react-router-dom";
-import createHistory from 'history/createBrowserHistory'
-import { Redirect } from 'react-router'
+import createHistory from 'history/createBrowserHistory';
+import { Redirect } from 'react-router';
+import TestForm from './TestForm';
 
 
-class AdapterPage extends React.Component {
+class AdapterView extends React.Component {
   constructor(props, context) {
     super(props, context);
     this.state = {
@@ -34,13 +36,14 @@ class AdapterPage extends React.Component {
   }
 
   toggleSave() {
-	  console.log("toggleSave");
     this.setState({isSaving: true});
   }
   
   updateAdapter(event) {
+	  console.log("update");
+	  console.log(this.state.adapter.post);
 	    event.preventDefault();
-	    this.props.updateAdapter(this.state.adapter);
+	    this.props.updateAdapter(this.state.adapter.post);
   }
 
 
@@ -48,7 +51,9 @@ class AdapterPage extends React.Component {
     const field = event.target.name;
     const adapter = this.state.adapter;
     adapter[field] = event.target.value;
-    return this.setState({adapter: adapter});
+    return this.setState({
+    	  value: event.target.value
+    });
   }
 
 
@@ -60,7 +65,7 @@ class AdapterPage extends React.Component {
         <h3>Update adapter</h3>
         <AdapterViewForm 
           adapter={this.state.adapter} 
-          onSave={this.saveAdapter} 
+          onSave={this.updateAdapter} 
           onChange={this.updateAdapterState} 
           saving={this.state.saving}/> 
       </div>
@@ -68,14 +73,14 @@ class AdapterPage extends React.Component {
     }
     return (
       <div className="col-md-8 col-md-offset-2">
-        <button onClick={this.toggleSave} className="btn btn-default  ">Save Adapter</button>
+        <button onClick={this.toggleSave} className="btn btn-default">Edit Adapter</button>
       </div>
     );
   }
 }
 
 
-AdapterPage.propTypes = {
+AdapterView.propTypes = {
 
 };
 
@@ -98,4 +103,5 @@ function mapStateToProps(state) {
 function  matchDispatchToProps(dispatch){
     return bindActionCreators({updateAdapter : updateAdapter}, dispatch);
 }
-export default withRouter(connect(mapStateToProps, matchDispatchToProps)(AdapterPage));
+export default withRouter(connect(mapStateToProps, matchDispatchToProps)(AdapterView));
+//export default withRouter(reduxForm({ form: 'TestForm' }), connect(mapStateToProps, matchDispatchToProps))(AdapterView);

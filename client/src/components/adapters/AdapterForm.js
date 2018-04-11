@@ -33,11 +33,6 @@ class AdapterForm extends React.Component {
             value={this.props.adapter.note}
             onChange={this.props.onChange}/>
 
-          <TextInput
-            name="secret"
-            label="secret"
-            value={this.props.adapter.secret}
-            onChange={this.props.onChange}/>
 
           <TextInput
           name="shortDescription"

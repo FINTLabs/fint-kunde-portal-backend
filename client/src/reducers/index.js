@@ -28,11 +28,12 @@ const allReducer =  (state = {}, action) =>{
         newState.splice(indexOfAdapterToSave, 1);
         return newState;
     }
-//        browserHistory.push(`/adapters/${action.adapter.id}`)
-//        return [
-//          ...state.filter(adapter => adapter.id !== action.adapter.id),
-//          Object.assign({}, action.adapter)
-//        ]
+    case "UPDATE_SUCCESS": {
+        const newState = Object.assign([], state);
+        const indexOfAdapterToUpdate = state.posts.findIndex(({ id }) => id == action.payload); 
+        newState.splice(indexOfAdapterToUpdate, 1);
+        return newState;
+    }
     default:
       return state;
   }

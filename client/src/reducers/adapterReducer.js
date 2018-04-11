@@ -17,7 +17,8 @@ export default function adapterReducer(state = initialState.adapters, action) {
         ...state.filter(adapter => adapter.id !== action.adapter.id),
         Object.assign({}, action.adapter)
       ]
-    case types.UPDATE_ADAPTER_SUCCESS:
+    case types.UPDATE_SUCCESS:
+      browserHistory.push(`/adapters/${action.adapter.id}`)
       return [
         ...state.filter(adapter => adapter.id !== action.adapter.id),
         Object.assign({}, action.adapter)

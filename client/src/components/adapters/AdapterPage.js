@@ -20,7 +20,6 @@ class AdapterPage extends React.Component {
     this.createAdapter = this.createAdapter.bind(this);
     this.updateAdapterState = this.updateAdapterState.bind(this);
     this.toggleAdd = this.toggleAdd.bind(this);
-    this.deleteAdapter = this.deleteAdapter.bind(this);
     this.saveAdapter = this.saveAdapter.bind(this);
 
   }
@@ -36,7 +35,6 @@ class AdapterPage extends React.Component {
   }
 
   toggleAdd() {
-
     this.setState({isAdding: true});
   }
   
@@ -57,12 +55,9 @@ class AdapterPage extends React.Component {
 	    this.props.createAdapter(adapter)
   }
 
-  deleteAdapter(event) {
-    this.props.actions.deleteAdapter(this.state.adapter)
-  }
 
   render() {
-	  console.log("test"+this.state.adapter.name);
+	  
     if (this.state.isAdding) {
       return (
       <div>
@@ -95,7 +90,7 @@ function getAdapterById(adapters, id) {
 
 
 function mapStateToProps(state) {
-  let adapter = {name: '', note: '', clientID: '', shortDescription: ''};
+  let adapter = {name: '', note: '', shortDescription: ''};
   const adapterName = state.posts.name;
   if (adapterName && state.adapters.length > 0 ) {
     adapter = getAdapterById(state.adapters, state.posts.name);

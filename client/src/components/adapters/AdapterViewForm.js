@@ -4,19 +4,42 @@ import TextInput from '../common/TextInput';
 import CheckBox from '../common/CheckBox';
 import {bindActionCreators} from 'redux';
 
-class AdapterForm extends React.Component {
+class AdapterViewForm extends React.Component {
   constructor(props) {
     super(props);
-    console.log(this.props.adapter);
+    this.state = {
+    		note : this.props.adapter.post.note,
+    		shortDescription : this.props.adapter.post.shortDescription,
+    		adapter : this.props.adapter.post,
+    	    };
+    
   }
- 
 
+  handleNoteChange = (event) => {
+	    const field = event.target.name;
+	    const adapter = this.state.adapter;
+	    adapter[field] = event.target.value;
+	    this.setState({ note: event.target.value, adapter: adapter});
+		  console.log("N:"+ this.state.note);
+		  console.log("A:"+ this.state.adapter.note);
+	  };
+
+  handleShortDescriptionChange = (event) => {
+	    const field = event.target.name;
+	    const adapter = this.state.adapter;
+	    adapter[field] = event.target.value;
+		this.setState({ shortDescription: event.target.value, adapter: adapter});
+		  console.log("D:"+ this.state.shortDescription);
+		  console.log("A:"+ this.state.adapter.shortDescription);
+	  };
+		  
   submitForm(adapter) {
+
 	  this.props.updateAdapter(adapter)
 	}
 
   render() {
-
+	  
 	const {handleSubmit, submitForm} = this.props;
     return (
     	   
@@ -28,27 +51,23 @@ class AdapterForm extends React.Component {
             label="name"
             value={this.props.adapter.post.name}
             onChange={this.props.onChange}/>
-
-   
+ 
           <TextInput
-            name="note"
-            label="note"
-            value={this.props.adapter.post.note}
-            onChange={this.props.onChange}/>
-
-
+          name="note"
+          label="Note"
+          value={this.state.note}
+          onChange={this.handleNoteChange}/>
+          
           <TextInput
           name="shortDescription"
           label="ShortDescription"
-          value={this.props.adapter.post.shortDescription}
-          onChange={this.props.onChange}/>
-	      
+          value={this.state.shortDescription}
+          onChange={this.handleShortDescriptionChange}/>
  
-
           <input
             type="submit"
             disabled={this.props.saving}
-            value={this.props.saving ? 'Saving...' : 'Save'}
+            value={this.props.saving ? 'Saving...' : 'Update'}
             className="btn btn-primary"
             onClick={this.props.onSave}/>
         </form>
@@ -58,5 +77,4 @@ class AdapterForm extends React.Component {
 }
 
 
-
-export default AdapterForm;
+export default AdapterViewForm;

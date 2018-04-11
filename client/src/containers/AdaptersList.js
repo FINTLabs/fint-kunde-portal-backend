@@ -37,16 +37,16 @@ class AdaptersList extends Component {
             	<ul>
             		{this.props.posts.map((post, i) =>
                 	<div>
-	                	<table><tr>
+	                	<table><tbody><tr>
 	            		<td width="90%"><li className="list-group-item" key={i}><Link to={{pathname: '/adapter', state: { post : post}}}>{post.name}</Link></li></td>
 	                    <td width="10%"><button type="submit" onClick={() => {this.deleteAdapter(post)}}>Delete</button></td>
-	                    </tr></table>
+	                    </tr></tbody></table>
 
                 	</div>
             		)}
             	</ul>
             	<Route
-            	  path="/adapter/"
+            	  path="/adapter"
             	  render={({ props }) => (
             	    <AdapterView post={this.props.post} />
             	    )}
