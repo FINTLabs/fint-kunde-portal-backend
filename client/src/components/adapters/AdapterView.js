@@ -101,4 +101,3 @@ function  matchDispatchToProps(dispatch){
     return bindActionCreators({updateAdapter : updateAdapter}, dispatch);
 }
 export default withRouter(connect(mapStateToProps, matchDispatchToProps)(AdapterView));
-//export default withRouter(reduxForm({ form: 'TestForm' }), connect(mapStateToProps, matchDispatchToProps))(AdapterView);

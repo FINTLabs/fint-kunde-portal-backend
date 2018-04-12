@@ -7,6 +7,8 @@ import {fetchPostsWithRedux, deleteAdapter} from '../actions/adaptersAction';
 import { routerMiddleware as createRouterMiddleware,  routerReducer, push} from "react-router-redux";
 import AdapterPage from '../components/adapters/AdapterPage';
 import AdapterView from '../components/adapters/AdapterView';
+import DashboardIcon from 'material-ui-icons/Home';
+
 
 class AdaptersList extends Component {
 	constructor(props) {
@@ -31,9 +33,10 @@ class AdaptersList extends Component {
 	  renderPosts () {
 	    return (
 	    		<Router>
-	     <div> 
-            	<h1>Adapters</h1>
+	     <div>
 
+	     		<table><tbody><tr><td><a href="/"><DashboardIcon/></a></td><td><a href="/" style={{textDecoration:'none', color: 'black'}}>Dashboard</a></td></tr></tbody></table>
+    			<h1>Adapters</h1>
             	<ul>
             		{this.props.posts.map((post, i) =>
                 	<div>
