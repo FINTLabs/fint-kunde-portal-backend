@@ -39,8 +39,6 @@ class AdapterView extends React.Component {
   }
   
   updateAdapter(event) {
-	  console.log("update");
-	  console.log(this.state.adapter.post);
 	    event.preventDefault();
 	    this.props.updateAdapter(this.state.adapter.post);
   }

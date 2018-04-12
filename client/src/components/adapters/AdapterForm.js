@@ -47,7 +47,9 @@ class AdapterForm extends React.Component {
             value={this.props.saving ? 'Saving...' : 'Save'}
             className="btn btn-primary"
             onClick={this.props.onSave}/>
+          <a href="/adapters/adapters"><button type="button">Cancel</button></a>             		
         </form>
+                
       </div>
   );
   }

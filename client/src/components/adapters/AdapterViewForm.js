@@ -11,7 +11,7 @@ class AdapterViewForm extends React.Component {
     		shortDescription : this.props.adapter.post.shortDescription,
     		adapter : this.props.adapter.post,
     	    };
-    
+
   }
 
   handleNoteChange = (event) => {
@@ -29,7 +29,8 @@ class AdapterViewForm extends React.Component {
 		this.setState({ shortDescription: event.target.value, adapter: adapter});
 
 	  };
-		  
+	  
+	  
   submitForm(adapter) {
 	  this.props.updateAdapter(adapter)
 	}
@@ -44,7 +45,7 @@ class AdapterViewForm extends React.Component {
 
           <TextInput
             name="name"
-            label="name"
+            label="Name"
             value={this.props.adapter.post.name}
             onChange={this.props.onChange}/>
  
@@ -66,6 +67,9 @@ class AdapterViewForm extends React.Component {
             value={this.props.saving ? 'Saving...' : 'Update'}
             className="btn btn-primary"
             onClick={this.props.onSave}/>
+  
+          <a href="/adapters/adapters"><button type="button">Cancel</button></a>
+
         </form>
       </div>
   );
