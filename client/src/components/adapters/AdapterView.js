@@ -8,7 +8,6 @@ import AdapterViewForm from './AdapterViewForm';
 import { Route,  Link, withRouter } from "react-router-dom";
 import createHistory from 'history/createBrowserHistory';
 import { Redirect } from 'react-router';
-import TestForm from './TestForm';
 
 
 class AdapterView extends React.Component {

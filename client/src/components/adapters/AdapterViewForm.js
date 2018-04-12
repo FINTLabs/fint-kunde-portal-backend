@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types'
 import TextInput from '../common/TextInput';
-import CheckBox from '../common/CheckBox';
 import {bindActionCreators} from 'redux';
 
 class AdapterViewForm extends React.Component {
@@ -20,8 +19,7 @@ class AdapterViewForm extends React.Component {
 	    const adapter = this.state.adapter;
 	    adapter[field] = event.target.value;
 	    this.setState({ note: event.target.value, adapter: adapter});
-		  console.log("N:"+ this.state.note);
-		  console.log("A:"+ this.state.adapter.note);
+
 	  };
 
   handleShortDescriptionChange = (event) => {
@@ -29,12 +27,10 @@ class AdapterViewForm extends React.Component {
 	    const adapter = this.state.adapter;
 	    adapter[field] = event.target.value;
 		this.setState({ shortDescription: event.target.value, adapter: adapter});
-		  console.log("D:"+ this.state.shortDescription);
-		  console.log("A:"+ this.state.adapter.shortDescription);
+
 	  };
 		  
   submitForm(adapter) {
-
 	  this.props.updateAdapter(adapter)
 	}
 
@@ -53,16 +49,16 @@ class AdapterViewForm extends React.Component {
             onChange={this.props.onChange}/>
  
           <TextInput
-          name="note"
-          label="Note"
-          value={this.state.note}
-          onChange={this.handleNoteChange}/>
+           name="note"
+           label="Note"
+           value={this.state.note}
+           onChange={this.handleNoteChange}/>
           
           <TextInput
-          name="shortDescription"
-          label="ShortDescription"
-          value={this.state.shortDescription}
-          onChange={this.handleShortDescriptionChange}/>
+           name="shortDescription"
+           label="ShortDescription"
+           value={this.state.shortDescription}
+           onChange={this.handleShortDescriptionChange}/>
  
           <input
             type="submit"

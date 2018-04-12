@@ -34,7 +34,6 @@ class AdaptersApi {
   }
 
   static createAdapter(Adapter) {
-
     const request = new Request(`http://localhost:8080/api/adapters/testing`, {
       method: 'POST',
       headers: {
@@ -44,20 +43,10 @@ class AdaptersApi {
       body: JSON.stringify({
     	  name: Adapter.name,
     	  note: Adapter.note,
-    	  secret: Adapter.secret,
     	  shortDescription:Adapter.shortDescription})
     });
 
-//    curl --request POST \
-//    --url http://localhost:8080/api/adapters/testing \
-//    --header 'Accept: */*' \
-//    --header 'Content-Type: application/json' \
-//    --data '{
-//    "name": "testAdapter",
-//    "note": "Test Adapter",
-//    "secret": "Open Sesame!",
-//    "shortDescription": "This is a Test Adapter"
-//  }'
+
     return fetch(request).then(response => {
       return response.json();
     }).catch(error => {

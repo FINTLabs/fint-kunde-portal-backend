@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types'
 import TextInput from '../common/TextInput';
-import CheckBox from '../common/CheckBox';
 import {bindActionCreators} from 'redux';
 
 class AdapterForm extends React.Component {
