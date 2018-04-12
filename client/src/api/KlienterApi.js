@@ -1,8 +1,8 @@
-class AdaptersApi {
+class KlienterApi {
 
 
-  static fetchAdapters() {
-    const request = new Request(`localhost:8080/api/adapters/testing`, {
+  static fetchKlienter() {
+    const request = new Request(`localhost:8080/api/clients/testing`, {
       method: 'GET'
     });
 
@@ -13,22 +13,22 @@ class AdaptersApi {
     });
   }
 
-  static getAdapters() {
-	  const url='http://localhost:8080/api/adapters/testing';
+  static getKlienter() {
+	  const url='http://localhost:8080/api/clients/testing';
 	  return fetch(url, { method: 'GET'})
 	     .then( response => Promise.all([response,response.json()]));
 	}
   
-  static updateAdapter(Adapter) {
-    const request = new Request(`http://localhost:8080/api/adapters/testing/${Adapter.name}`, {
+  static updateKlient(Klient) {
+    const request = new Request(`http://localhost:8080/api/clients/testing/${Klient.name}`, {
       method: 'PUT',
       headers: new Headers({
           'Content-Type': 'application/json'
         }), 
         body: JSON.stringify({
-      	  name: Adapter.name,
-      	  note: Adapter.note,
-      	  shortDescription:Adapter.shortDescription})
+      	  name: Klient.name,
+      	  note: Klient.note,
+      	  shortDescription: Klient.shortDescription})
       });
 
 
@@ -40,7 +40,7 @@ class AdaptersApi {
   }
 
   static createAdapter(Adapter) {
-    const request = new Request(`http://localhost:8080/api/adapters/testing`, {
+    const request = new Request(`http://localhost:8080/api/clients/testing`, {
       method: 'POST',
       headers: {
           'Accept': '*/*',
@@ -61,7 +61,7 @@ class AdaptersApi {
   }
 
   static deleteAdapter(Adapter) {
-    const request = new Request(`http://localhost:8080/api/adapters/testing/${Adapter.name}`, {
+    const request = new Request(`http://localhost:8080/api/clients/testing/${Adapter.name}`, {
       method: 'DELETE'
     });
 
@@ -73,4 +73,4 @@ class AdaptersApi {
   }
 }
 
-export default AdaptersApi;
+export default KlienterApi;

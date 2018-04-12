@@ -1,5 +1,4 @@
 import AdaptersApi from '../api/AdaptersApi';
-//import * as type from './actionTypes';
 export const FETCH_REQUEST="FETCH_REQUEST";
 export const FETCH_SUCCESS="FETCH_SUCCESS";
 export const FETCH_ERROR="FETCH_ERROR";
@@ -12,7 +11,6 @@ export const CREATE_ERROR="CREATE_ERROR";
 export const DELETE_REQUEST="DELETE_REQUEST";
 export const DELETE_SUCCESS = 'DELETE_SUCCESS';
 export const DELETE_ERROR="DELETE_ERROR";
-
 
 function fetchPostsRequest(){
   return {
@@ -33,11 +31,11 @@ function fetchPostsError() {
   }
 }
 
-export function fetchPostsWithRedux() {
+export function fetchAdapters() {
 
 	return (dispatch) => {
   	dispatch(fetchPostsRequest());
-    return fetchPosts().then(([response, json]) =>{
+    return AdaptersApi.getAdapters().then(([response, json]) =>{
       	console.log('fetching', "background: blue; color: yellow; padding-left:10px;");	
     	if(response.status === 200){
         dispatch(fetchPostsSuccess(json));
@@ -50,11 +48,6 @@ export function fetchPostsWithRedux() {
   }
 }
 
-function fetchPosts() {
-  const url='http://localhost:8080/api/adapters/testing';
-  return fetch(url, { method: 'GET'})
-     .then( response => Promise.all([response,response.json()]));
-}
 
 export function createAdapter(adapter) {
 	  return function (dispatch) {

@@ -10,7 +10,6 @@ const styles = theme => ({});
 class Adapters extends Component {
 
     render() {
-        //const {classes} = this.props;
 
         return (
         	<Route exact path='/' component={AdaptersList}/>

@@ -3,7 +3,7 @@ import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 //import { Route,  Link, withRouter } from "react-router-dom";
 import { BrowserRouter as Router, Route, Link, Switch, Redirect, withRouter	} from 'react-router-dom'
-import {fetchPostsWithRedux, deleteAdapter} from '../actions/adaptersAction';
+import {fetchAdapters, deleteAdapter} from '../actions/adaptersAction';
 import { routerMiddleware as createRouterMiddleware,  routerReducer, push} from "react-router-redux";
 import AdapterPage from '../components/adapters/AdapterPage';
 import AdapterView from '../components/adapters/AdapterView';
@@ -16,7 +16,8 @@ class AdaptersList extends Component {
 	    this.deleteAdapter= this.deleteAdapter.bind(this);
 	}
 	componentDidMount(){
-  	     this.props.fetchPostsWithRedux()
+		console.log(this.props);
+  	     this.props.fetchAdapters()
    }
 
 	deleteAdapter(adapter) {
@@ -71,7 +72,7 @@ function mapStateToProps(state){
   }
 }
 function  matchDispatchToProps(dispatch){
-    return bindActionCreators({fetchPostsWithRedux: fetchPostsWithRedux, deleteAdapter : deleteAdapter}, dispatch);
+    return bindActionCreators({fetchAdapters: fetchAdapters, deleteAdapter : deleteAdapter}, dispatch);
 }
 
 export default withRouter(connect(mapStateToProps, matchDispatchToProps)(AdaptersList));
