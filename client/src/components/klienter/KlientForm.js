@@ -3,14 +3,14 @@ import PropTypes from 'prop-types'
 import TextInput from '../common/TextInput';
 import {bindActionCreators} from 'redux';
 
-class KlienterForm extends React.Component {
+class KlientForm extends React.Component {
   constructor(props) {
     super(props);
 
   }
   
-  submitForm(klienter) {
-	  this.props.createKlienter(klienter)
+  submitForm(klient) {
+	  this.props.createKlient(klient)
 	}
 
   render() {
@@ -22,21 +22,21 @@ class KlienterForm extends React.Component {
           <TextInput
             name="name"
             label="name"
-            value={this.props.klienter.name}
+            value={this.props.klient.name}
             onChange={this.props.onChange}/>
 
    
           <TextInput
             name="note"
             label="note"
-            value={this.props.klienter.note}
+            value={this.props.klient.note}
             onChange={this.props.onChange}/>
 
 
           <TextInput
           name="shortDescription"
           label="ShortDescription"
-          value={this.props.klienter.shortDescription}
+          value={this.props.klient.shortDescription}
           onChange={this.props.onChange}/>
 	      
  
@@ -57,4 +57,4 @@ class KlienterForm extends React.Component {
 
 
 
-export default KlienterForm;
+export default KlientForm;

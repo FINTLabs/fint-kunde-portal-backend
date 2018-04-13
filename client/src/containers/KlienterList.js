@@ -1,26 +1,25 @@
 import React, {Component} from 'react';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
-//import { Route,  Link, withRouter } from "react-router-dom";
 import { BrowserRouter as Router, Route, Link, Switch, Redirect, withRouter	} from 'react-router-dom'
-import {fetchKlienter, deleteKlienter} from '../actions/klienterAction';
+import {fetchKlienter, deleteKlient} from '../actions/klienterAction';
 import { routerMiddleware as createRouterMiddleware,  routerReducer, push} from "react-router-redux";
-import KlienterPage from '../components/klienter/KlienterPage';
-import KlienterView from '../components/klienter/KlienterView';
+import KlientPage from '../components/klienter/KlientPage';
+import KlientView from '../components/klienter/KlientView';
 import DashboardIcon from 'material-ui-icons/Home';
 
 
 class KlienterList extends Component {
 	constructor(props) {
 	    super(props);
-	    this.deleteKlienter= this.deleteKlienter.bind(this);
+	    this.deleteKlient= this.deleteKlient.bind(this);
 	}
 	componentDidMount(){
   	     this.props.fetchKlienter()
    }
 
-	deleteKlienter(klienter) {
-		 this.props.deleteKlienter(klienter)
+	deleteKlient(klienter) {
+		 this.props.deleteKlient(klienter)
 	}
 	render () {
 	    if (!this.props.posts) {
@@ -41,21 +40,21 @@ class KlienterList extends Component {
             		{this.props.posts.map((post, i) =>
                 	<div>
 	                	<table><tbody><tr>
-	            		<td width="90%"><li className="list-group-item" key={i}><Link to={{pathname: '/klienter', state: { post : post}}}>{post.name}</Link></li></td>
-	                    <td width="10%"><button type="submit" onClick={() => {this.deleteKlienter(post)}}>Delete</button></td>
+	            		<td width="90%"><li className="list-group-item" key={i}><Link to={{pathname: '/klient', state: { post : post}}}>{post.name}</Link></li></td>
+	                    <td width="10%"><button type="submit" onClick={() => {this.deleteKlient(post)}}>Delete</button></td>
 	                    </tr></tbody></table>
 
                 	</div>
             		)}
             	</ul>
             	<Route
-            	  path="/klienter"
+            	  path="/klient"
             	  render={({ props }) => (
-            	    <KlienterView post={this.props.post} />
+            	    <KlientView post={this.props.post} />
             	    )}
             	/>
 
-            	<Route path="/Klienter" component={KlienterPage}/>
+            	<Route path="/Klienter" component={KlientPage}/>
 	      </div>
             	</Router>
 	    );
@@ -71,7 +70,7 @@ function mapStateToProps(state){
   }
 }
 function  matchDispatchToProps(dispatch){
-    return bindActionCreators({fetchKlienter: fetchKlienter, deleteKlienter : deleteKlienter}, dispatch);
+    return bindActionCreators({fetchKlienter: fetchKlienter, deleteKlient : deleteKlient}, dispatch);
 }
 
 export default withRouter(connect(mapStateToProps, matchDispatchToProps)(KlienterList));

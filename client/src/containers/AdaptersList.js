@@ -1,29 +1,39 @@
 import React, {Component} from 'react';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
-//import { Route,  Link, withRouter } from "react-router-dom";
 import { BrowserRouter as Router, Route, Link, Switch, Redirect, withRouter	} from 'react-router-dom'
 import {fetchAdapters, deleteAdapter} from '../actions/adaptersAction';
 import { routerMiddleware as createRouterMiddleware,  routerReducer, push} from "react-router-redux";
 import AdapterPage from '../components/adapters/AdapterPage';
 import AdapterView from '../components/adapters/AdapterView';
 import DashboardIcon from 'material-ui-icons/Home';
+import routes from '../routes';
 
 
 class AdaptersList extends Component {
 	constructor(props) {
 	    super(props);
 	    this.deleteAdapter= this.deleteAdapter.bind(this);
+	    this.state = {posts: this.props.posts};
 	}
 	componentDidMount(){
-		console.log(this.props);
   	     this.props.fetchAdapters()
+  	   console.log("state:"+this.state.posts);
    }
 
+//	componentWillReceiveProps(nextProps) {
+//		console.log("state:"+this.props.adapter);
+//		console.log("state:"+this.props.nextProps);
+//	    if (this.props.adapter.id != nextProps.adapter.id) {
+//	      this.setState({adapter: nextProps.adapter});
+//	    }
+//
+//	  }
 	deleteAdapter(adapter) {
 		 this.props.deleteAdapter(adapter)
 	}
 	render () {
+		console.log("TTTTT:"+this.props.adapter);
 	    if (!this.props.posts) {
 	      return <p>Nothing here yet...</p>;
 	    } else {
@@ -68,6 +78,7 @@ class AdaptersList extends Component {
 
 function mapStateToProps(state){
 	return {
+
         posts: state.posts
   }
 }

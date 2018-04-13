@@ -3,36 +3,36 @@ import PropTypes from 'prop-types'
 import TextInput from '../common/TextInput';
 import {bindActionCreators} from 'redux';
 
-class KlienterViewForm extends React.Component {
+class KlientViewForm extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-    		note : this.props.klienter.post.note,
-    		shortDescription : this.props.klienter.post.shortDescription,
-    		klienter : this.props.klienter.post,
+    		note : this.props.klient.post.note,
+    		shortDescription : this.props.klient.post.shortDescription,
+    		klient : this.props.klient.post,
     	    };
 
   }
 
   handleNoteChange = (event) => {
 	    const field = event.target.name;
-	    const klienter = this.state.klienter;
-	    klienter[field] = event.target.value;
-	    this.setState({ note: event.target.value, klienter: klienter});
+	    const klient = this.state.klient;
+	    klient[field] = event.target.value;
+	    this.setState({ note: event.target.value, klient: klient});
 
 	  };
 
   handleShortDescriptionChange = (event) => {
 	    const field = event.target.name;
-	    const klienter = this.state.klienter;
-	    klienter[field] = event.target.value;
-		this.setState({ shortDescription: event.target.value, klienter: klienter});
+	    const klient = this.state.klient;
+	    klient[field] = event.target.value;
+		this.setState({ shortDescription: event.target.value, klient: klient});
 
 	  };
 	  
 	  
-  submitForm(klienter) {
-	  this.props.updateKlienter(klienter)
+  submitForm(klient) {
+	  this.props.updateKlient(klient)
 	}
 
   render() {
@@ -46,7 +46,7 @@ class KlienterViewForm extends React.Component {
           <TextInput
             name="name"
             label="Name"
-            value={this.props.klienter.post.name}
+            value={this.props.klient.post.name}
             onChange={this.props.onChange}/>
  
           <TextInput
@@ -77,4 +77,4 @@ class KlienterViewForm extends React.Component {
 }
 
 
-export default KlienterViewForm;
+export default KlientViewForm;

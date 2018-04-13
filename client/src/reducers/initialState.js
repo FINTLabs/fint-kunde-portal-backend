@@ -1,4 +1,4 @@
 export default {
   adapters: [],
-  kontakter: []
+  klienter: []
 }

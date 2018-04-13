@@ -1,5 +1,6 @@
 import React from 'react';
-import { PropTypes } from 'react';
+//import { PropTypes } from 'react';
+import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import { createAdapter } from '../../actions/adaptersAction';
@@ -80,7 +81,7 @@ class AdapterPage extends React.Component {
 
 
 AdapterPage.propTypes = {
-
+		adapters : PropTypes.array.isRequired
 };
 
 function getAdapterById(adapters, id) {

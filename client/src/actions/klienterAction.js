@@ -13,23 +13,23 @@ export const DELETE_SUCCESS = 'DELETE_SUCCESS';
 export const DELETE_ERROR="DELETE_ERROR";
 
 function fetchPostsRequest(){
-  return {
-    type: FETCH_REQUEST
-  }
-}
+	  return {
+	    type: FETCH_REQUEST
+	  }
+	}
 
-function fetchPostsSuccess(payload) {
-  return {
-    type: FETCH_SUCCESS,
-    payload
-  }
-}
+	function fetchPostsSuccess(payload) {
+	  return {
+	    type: FETCH_SUCCESS,
+	    payload
+	  }
+	}
 
-function fetchPostsError() {
-  return {
-    type: FETCH_ERROR
-  }
-}
+	function fetchPostsError() {
+	  return {
+	    type: FETCH_ERROR
+	  }
+	}
 
 export function fetchKlienter() {
 
@@ -69,27 +69,27 @@ export function createKlientSuccess(klient) {
 export function updateKlientSuccess(klient) {
 	  return {type: UPDATE_SUCCESS, klient}
 	}
-export function updateKlienter(klienter) {
+export function updateKlient(klient) {
 	  return function (dispatch) {
-	    return KlienterApi.updateKlienter(klienter).then(responseKlienter => {
+	    return KlienterApi.updateKlienter(klient).then(responseKlient => {
 	    //  dispatch(updateKlienterSuccess(responseKlienter));
   	    //eslint-disable-next-line
-	      location.assign("/klienters/klienters");
-	      return responseKlienter;
+	      location.assign("/klienter/klienter");
+	      return responseKlient;
 	    }).catch(error => {
 	      throw(error);
 	    });
 	  };
 	}
 
-export function deleteKlienterSuccess(klienter) {
-	  return {type: DELETE_SUCCESS, klienter}
+export function deleteKlientSuccess(klient) {
+	  return {type: DELETE_SUCCESS, klient}
 	}
-export function deleteKlienter(klienter) {
+export function deleteKlient(klient) {
 	  return function(dispatch) {
-	    return KlienterApi.deleteKlienter(klienter).then(() => {
-	      console.log(`Deleted ${klienter.id}`)
-	      dispatch(deleteKlienterSuccess(klienter));
+	    return KlienterApi.deleteKlient(klient).then(() => {
+	      console.log(`Deleted ${klient.id}`)
+	      dispatch(deleteKlientSuccess(klient));
 	    //eslint-disable-next-line
 	      location.reload();
 	      return;

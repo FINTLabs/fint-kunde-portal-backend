@@ -2,7 +2,7 @@ class KlienterApi {
 
 
   static fetchKlienter() {
-    const request = new Request(`localhost:8080/api/clients/testing`, {
+    const request = new Request(`http://localhost:8080/api/clients/testing`, {
       method: 'GET'
     });
 
@@ -39,7 +39,7 @@ class KlienterApi {
     });
   }
 
-  static createAdapter(Adapter) {
+  static createKlient(Klient) {
     const request = new Request(`http://localhost:8080/api/clients/testing`, {
       method: 'POST',
       headers: {
@@ -47,9 +47,9 @@ class KlienterApi {
           'Content-Type': 'application/json'
         }, 
       body: JSON.stringify({
-    	  name: Adapter.name,
-    	  note: Adapter.note,
-    	  shortDescription:Adapter.shortDescription})
+    	  name: Klient.name,
+    	  note: Klient.note,
+    	  shortDescription:Klient.shortDescription})
     });
 
 
@@ -60,8 +60,8 @@ class KlienterApi {
     });
   }
 
-  static deleteAdapter(Adapter) {
-    const request = new Request(`http://localhost:8080/api/clients/testing/${Adapter.name}`, {
+  static deleteKlient(Klient) {
+    const request = new Request(`http://localhost:8080/api/clients/testing/${Klient.name}`, {
       method: 'DELETE'
     });
 

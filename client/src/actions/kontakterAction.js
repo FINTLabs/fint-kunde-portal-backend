@@ -2,7 +2,7 @@ import * as types from './actionTypes';
 import KontakterApi from '../api/KontakterApi';
 
 export function loadKontakterSuccess(kontakter) {
-  return {type: types.LOAD_KONTAKTER_SUCCESS, kontakter};
+  return {type: types.FETCH_KONTAKTER_SUCCESS, kontakter};
 }
 
 export function updateKontakterSuccess(kontakter) {

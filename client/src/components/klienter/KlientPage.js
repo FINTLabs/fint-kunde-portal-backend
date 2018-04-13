@@ -3,7 +3,7 @@ import { PropTypes } from 'react';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import { createKlient } from '../../actions/klienterAction';
-import KlienterForm from './KlienterForm';
+import KlientForm from './KlientForm';
 import { Route,  Link, withRouter } from "react-router-dom";
 import createHistory from 'history/createBrowserHistory'
 import { Redirect } from 'react-router'
@@ -62,9 +62,9 @@ class KlienterPage extends React.Component {
       return (
       <div>
         <h3>Add klient</h3>
-        <KlienterForm 
+        <KlientForm 
           klient={this.state.klient} 
-          onSave={this.saveKlienter} 
+          onSave={this.saveKlient} 
           onChange={this.updateKlientState} 
           saving={this.state.saving}/> 
       </div>
