@@ -4944,6 +4944,10 @@ lodash.uniq@^4.5.0:
   version "4.17.5"
   resolved "https://registry.yarnpkg.com/lodash/-/lodash-4.17.5.tgz#99a92d65c0272debe8c96b6057bc8fbfa3bed511"
 
+lodash@^3.10.1:
+  version "3.10.1"
+  resolved "https://registry.yarnpkg.com/lodash/-/lodash-3.10.1.tgz#5bf45e8e49ba4189e17d482789dfd15bd140b7b6"
+
 log-symbols@^1.0.2:
   version "1.0.2"
   resolved "https://registry.yarnpkg.com/log-symbols/-/log-symbols-1.0.2.tgz#376ff7b58ea3086a0f09facc74617eca501e1a18"
@@ -5028,6 +5032,12 @@ map-visit@^1.0.0:
   resolved "https://registry.yarnpkg.com/map-visit/-/map-visit-1.0.0.tgz#ecdca8f13144e660f1b5bd41f12f3479d98dfb8f"
   dependencies:
     object-visit "^1.0.0"
+
+material-ui-icons@^1.0.0-beta.36:
+  version "1.0.0-beta.36"
+  resolved "https://registry.yarnpkg.com/material-ui-icons/-/material-ui-icons-1.0.0-beta.36.tgz#86390a61f4c83f718eaba77ccce575834f2cf2a8"
+  dependencies:
+    recompose "^0.26.0"
 
 material-ui@^1.0.0-beta.41:
   version "1.0.0-beta.41"
@@ -6451,6 +6461,14 @@ react-event-listener@^0.5.1:
     prop-types "^15.6.0"
     warning "^3.0.0"
 
+react-inline-grid@^0.5.3:
+  version "0.5.3"
+  resolved "https://registry.yarnpkg.com/react-inline-grid/-/react-inline-grid-0.5.3.tgz#814d26fed834bd2ad859b340db6f4c6a65084588"
+  dependencies:
+    lodash "^3.10.1"
+    react-redux "^2.1.1"
+    redux "^2.0.0"
+
 react-json-view@^1.16.0:
   version "1.16.1"
   resolved "https://registry.yarnpkg.com/react-json-view/-/react-json-view-1.16.1.tgz#ab81fc7db5af70135248704e37741cf097f46604"
@@ -6494,6 +6512,12 @@ react-reconciler@^0.7.0:
     loose-envify "^1.1.0"
     object-assign "^4.1.1"
     prop-types "^15.6.0"
+
+react-redux@^2.1.1:
+  version "2.1.2"
+  resolved "https://registry.yarnpkg.com/react-redux/-/react-redux-2.1.2.tgz#4b26e02a7e049d1dc8ba5200999a3e153b28afc7"
+  dependencies:
+    invariant "^2.0.0"
 
 react-redux@^5.0.6:
   version "5.0.7"
@@ -6764,6 +6788,10 @@ redux-promise@^0.5.3:
 redux-thunk@^2.2.0:
   version "2.2.0"
   resolved "https://registry.yarnpkg.com/redux-thunk/-/redux-thunk-2.2.0.tgz#e615a16e16b47a19a515766133d1e3e99b7852e5"
+
+redux@^2.0.0:
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/redux/-/redux-2.0.0.tgz#38923965e539496d5466f226f0a58c2238ec2a62"
 
 redux@^3.7.2:
   version "3.7.2"

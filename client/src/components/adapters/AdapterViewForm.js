@@ -7,9 +7,9 @@ class AdapterViewForm extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-    		note : this.props.adapter.post.note,
-    		shortDescription : this.props.adapter.post.shortDescription,
-    		adapter : this.props.adapter.post,
+    		note : this.props.adapter.note,
+    		shortDescription : this.props.adapter.shortDescription,
+    		adapter : this.props.adapter,
     	    };
 
   }
@@ -43,12 +43,9 @@ class AdapterViewForm extends React.Component {
       <div>
       <form onSubmit={()=> this.submitForm()}>
 
-          <TextInput
-            name="name"
-            label="Name"
-            value={this.props.adapter.post.name}
-            onChange={this.props.onChange}/>
- 
+      <label>Adapter's Name : </label>
+      <label>{this.props.adapter.name}</label>
+
           <TextInput
            name="note"
            label="Note"

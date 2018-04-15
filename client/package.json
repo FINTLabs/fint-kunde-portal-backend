@@ -14,6 +14,7 @@
     "prop-types": "^15.6.0",
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
+    "react-inline-grid": "^0.5.3",
     "react-json-view": "^1.16.0",
     "react-pretty-json": "^2.0.2",
     "react-redux": "^5.0.6",

@@ -12,6 +12,7 @@ export const DELETE_REQUEST="DELETE_REQUEST";
 export const DELETE_SUCCESS = 'DELETE_SUCCESS';
 export const DELETE_ERROR="DELETE_ERROR";
 
+
 function fetchPostsRequest(){
   return {
     type: FETCH_REQUEST
@@ -88,7 +89,7 @@ export function deleteAdapterSuccess(adapter) {
 export function deleteAdapter(adapter) {
 	  return function(dispatch) {
 	    return AdaptersApi.deleteAdapter(adapter).then(() => {
-	      console.log(`Deleted ${adapter.id}`)
+	      console.log(`Deleted ${adapter.name}`)
 	      dispatch(deleteAdapterSuccess(adapter));
 	    //eslint-disable-next-line
 	      location.reload();

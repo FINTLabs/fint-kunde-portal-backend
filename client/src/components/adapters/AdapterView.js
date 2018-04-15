@@ -13,8 +13,9 @@ import { Redirect } from 'react-router';
 class AdapterView extends React.Component {
   constructor(props, context) {
     super(props, context);
+    console.log(this.props.location.state.adapter);
     this.state = {
-      adapter: Object.assign({}, this.props.location.state), 
+      adapter: Object.assign({}, this.props.location.state.adapter), 
       isSaving: true
     };
 
@@ -40,7 +41,8 @@ class AdapterView extends React.Component {
   
   updateAdapter(event) {
 	    event.preventDefault();
-	    this.props.updateAdapter(this.state.adapter.post);
+	    console.log(this.state.adapter);
+	    this.props.updateAdapter(this.state.adapter);
   }
 
 
@@ -88,13 +90,13 @@ function getAdapterById(adapters, id) {
 
 
 function mapStateToProps(state) {
-  let adapter = {name: '', note: '', clientID: '', shortDescription: ''};
-  const adapterName = state.posts.name;
-  if (adapterName && state.adapters.length > 0 ) {
-    adapter = getAdapterById(state.adapters, state.posts.name);
+//  let adapter = {name: '', note: '', clientID: '', shortDescription: ''};
+//  const adapterName = state.adapter.name;
+//  if (adapterName && state.adapter.length > 0 ) {
+//    adapter = getAdapterById(state.adapters, state.adapter.name);
  
-  } 
-    return {adapter: adapter};
+//  } 
+//    return {adapter: adapter};
 }
 
 function  matchDispatchToProps(dispatch){

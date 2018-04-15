@@ -73,7 +73,7 @@ class AdapterPage extends React.Component {
     }
     return (
       <div className="col-md-8 col-md-offset-2">
-        <button onClick={this.toggleAdd} className="btn btn-default  ">Add Adapter</button>
+        <button onClick={this.toggleAdd} className="btn btn-success btn-lg">Add Adapter</button>
       </div>
     );
   }

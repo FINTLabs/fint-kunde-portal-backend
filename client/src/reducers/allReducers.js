@@ -16,9 +16,7 @@ const allReducer =  (state = {}, action) =>{
     case "DELETE_SUCCESS": {
         const newState = Object.assign([], state);
         const indexOfAdapterToDelete = state.posts.findIndex(({ id }) => id == action.payload);  
- //       const indexOfAdapterToDelete = state.findIndex(adapter => {return adapter.name == action.adapter.name})
         newState.splice(indexOfAdapterToDelete, 1);
-//        browserHistory.push('/adapters');
         return newState;
       }
     
