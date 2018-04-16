@@ -7,6 +7,18 @@ import {deleteAdapter} from '../../actions/adaptersAction';
 import DashboardIcon from 'material-ui-icons/Home';
 import AdapterView from './AdapterView';
 import PropTypes from 'prop-types';
+import {Grid} from "material-ui";
+
+const styles = {
+		  smallIcon: {
+		    width: 25,
+		    height: 19
+		  },
+		  small: {
+		    width: 25,
+		    height: 19
+		  },
+		};
 
 
 class AdaptersList extends Component {
@@ -23,16 +35,27 @@ class AdaptersList extends Component {
 	  return (
 	    <Router>
 	     <div>
-	     	<table><tbody><tr><td><a href="/"><DashboardIcon/></a></td><td><a href="/" style={{textDecoration:'none', color: 'black'}}>Dashboard</a></td></tr></tbody></table>
+         	<Grid container xs={2}>
+         		<Grid item xs={3}>
+         			<a href="/"><DashboardIcon iconStyle={styles.smallIcon} style={styles.small}/></a>
+         		</Grid>
+         		<Grid item xs={1}>
+         			<a href="/" style={{textDecoration:'none', color: 'black'}}>Dashboard</a>
+         		</Grid>
+         	</Grid>
   			<h1>Adapters</h1>
   			<ul className="list-group">
   				{this.props.adapters.map((adapter, i) => 
-  				<div>
-					<table><tr>
-						<td width="150"><li className="list-group-item" key={i}><Link to={{pathname: '/adapter', state: {adapter : adapter}}}>{adapter.name}</Link></li></td>
-						<td width="50" align="right"><button type="submit" onClick={() => {this.deleteAdapter(adapter)}}>Delete</button></td>
-					</tr></table>
-				</div>
+  			<div>
+  	         	<Grid container spacing={24}>
+  	         		<Grid item xs={12} sm={10}>
+  	         			<li className="list-group-item" key={i}><Link to={{pathname: '/adapter', state: {adapter : adapter}}}>{adapter.name}</Link></li>
+  	         		</Grid>
+  	         		<Grid item xs={12} sm={2}>
+  	         			<button type="submit" onClick={() => {this.deleteAdapter(adapter)}}>Delete</button>
+  	         		</Grid>
+  	         	</Grid>
+			</div>
 
   				)}
 	      </ul>

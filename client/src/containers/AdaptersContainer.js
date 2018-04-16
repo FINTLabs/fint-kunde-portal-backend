@@ -6,7 +6,7 @@ import {bindActionCreators} from 'redux';
 import AdaptersList from '../components/adapters/AdaptersList';
 import AdapterPage from '../components/adapters/AdapterPage';
 import {fetchAdapters} from '../actions/adaptersAction';
-
+import {Grid} from "material-ui";
 
 class AdaptersContainer extends React.Component {
 	constructor(props) {
@@ -28,11 +28,15 @@ class AdaptersContainer extends React.Component {
 	renderPosts () {
 	    const adapters = this.props.posts;
 	    return (
-
-	    		    <table><tr>
-	    		    <td width="70%"><AdaptersList adapters={adapters} /></td>
-	    		    <td width="30%" valign="top" align="left"><AdapterPage /></td>
-	    		    </tr></table>  
+	         <Grid container xs={12}>
+                <Grid item xs={4}>
+                	<AdaptersList adapters={adapters} />
+                </Grid>
+                <Grid item xs={8}>
+                	<AdapterPage />
+                </Grid>
+            </Grid>
+  
 
     );
   }

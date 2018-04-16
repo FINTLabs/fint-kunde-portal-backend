@@ -6,7 +6,6 @@ import {grey, red} from 'material-ui/colors';
 import PropTypes from 'prop-types';
 import Main from "./main/Main";
 
-
 const theme = createMuiTheme({
     palette: {
         primary: red,
