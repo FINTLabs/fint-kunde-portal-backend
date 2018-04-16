@@ -8,6 +8,8 @@ import DashboardIcon from 'material-ui-icons/Home';
 import AdapterView from './AdapterView';
 import PropTypes from 'prop-types';
 import {Grid} from "material-ui";
+import Button from 'material-ui/Button';
+import TextField from 'material-ui/TextField';
 
 const styles = {
 		  smallIcon: {
@@ -18,6 +20,7 @@ const styles = {
 		    width: 25,
 		    height: 19
 		  },
+		  margin: 12,
 		};
 
 
@@ -47,12 +50,12 @@ class AdaptersList extends Component {
   			<ul className="list-group">
   				{this.props.adapters.map((adapter, i) => 
   			<div>
-  	         	<Grid container spacing={24}>
-  	         		<Grid item xs={12} sm={10}>
-  	         			<li className="list-group-item" key={i}><Link to={{pathname: '/adapter', state: {adapter : adapter}}}>{adapter.name}</Link></li>
+  	         	<Grid container style={{ lineHeight: '12px' }} spacing={24}>
+  	         		<Grid item xs={12} sm={7}>
+  	         			<li className="list-group-item" key={i}><Link to={{pathname: '/adapter', state: {adapter : adapter}}} style={{ textDecoration: 'none' }}>{adapter.name}</Link></li>
   	         		</Grid>
-  	         		<Grid item xs={12} sm={2}>
-  	         			<button type="submit" onClick={() => {this.deleteAdapter(adapter)}}>Delete</button>
+  	         		<Grid item xs={12} sm={1}>
+  	         			<button style={{ padding: '1px 20px' ,  background: '#4CAF50', color: 'white'}} onClick={() => {this.deleteAdapter(adapter)}} className="btn btn-default">Delete</button>
   	         		</Grid>
   	         	</Grid>
 			</div>

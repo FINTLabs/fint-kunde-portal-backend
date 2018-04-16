@@ -9,7 +9,7 @@
     "fetchmock": "^1.0.1",
     "glob-to-regexp": "^0.4.0",
     "immutable": "^3.8.2",
-    "material-ui": "^1.0.0-beta.41",
+	"material-ui": "^1.0.0-beta.41",
     "material-ui-icons": "^1.0.0-beta.36",
     "prop-types": "^15.6.0",
     "react": "^16.2.0",

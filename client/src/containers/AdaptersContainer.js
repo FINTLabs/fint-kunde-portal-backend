@@ -29,10 +29,10 @@ class AdaptersContainer extends React.Component {
 	    const adapters = this.props.posts;
 	    return (
 	         <Grid container xs={12}>
-                <Grid item xs={4}>
+                <Grid item xs={5}>
                 	<AdaptersList adapters={adapters} />
                 </Grid>
-                <Grid item xs={8}>
+                <Grid item xs={7}>
                 	<AdapterPage />
                 </Grid>
             </Grid>

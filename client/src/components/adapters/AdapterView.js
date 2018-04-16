@@ -90,13 +90,7 @@ function getAdapterById(adapters, id) {
 
 
 function mapStateToProps(state) {
-//  let adapter = {name: '', note: '', clientID: '', shortDescription: ''};
-//  const adapterName = state.adapter.name;
-//  if (adapterName && state.adapter.length > 0 ) {
-//    adapter = getAdapterById(state.adapters, state.adapter.name);
- 
-//  } 
-//    return {adapter: adapter};
+
 }
 
 function  matchDispatchToProps(dispatch){

@@ -6,9 +6,9 @@ import {bindActionCreators} from 'redux';
 import { createAdapter } from '../../actions/adaptersAction';
 import AdapterForm from './AdapterForm';
 import { Route,  Link, withRouter } from "react-router-dom";
-import createHistory from 'history/createBrowserHistory'
-import { Redirect } from 'react-router'
-
+import createHistory from 'history/createBrowserHistory';
+import { Redirect } from 'react-router';
+import Button from 'material-ui/Button';
 
 class AdapterPage extends React.Component {
   constructor(props, context) {
@@ -73,7 +73,7 @@ class AdapterPage extends React.Component {
     }
     return (
       <div className="col-md-8 col-md-offset-2">
-        <button onClick={this.toggleAdd} className="btn btn-success btn-lg">Add Adapter</button>
+       <Button variant="raised" buttonStyle={{ height: "100%" }} onClick={this.toggleAdd} className="btn btn-success btn-lg">Add Adapter</Button>
       </div>
     );
   }
