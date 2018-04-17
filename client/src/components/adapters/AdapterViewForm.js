@@ -2,6 +2,9 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types'
 import TextInput from '../common/TextInput';
 import {bindActionCreators} from 'redux';
+import Button from 'material-ui/Button';
+import {Grid} from "material-ui";
+import TextField from 'material-ui/TextField';
 
 class AdapterViewForm extends React.Component {
   constructor(props) {
@@ -43,29 +46,45 @@ class AdapterViewForm extends React.Component {
       <div>
       <form onSubmit={()=> this.submitForm()}>
 
-      <label>Adapter's Name : </label>
-      <label>{this.props.adapter.name}</label>
-
-          <TextInput
-           name="note"
-           label="Note"
-           value={this.state.note}
-           onChange={this.handleNoteChange}/>
-          
-          <TextInput
+	   <div>
+	      <TextField
+	      id="name"
+	      label="Name"
+	      style={{ width: 350 }}
+	      value={this.props.adapter.name}
+	      disabled
+	      margin="normal"
+	      /> 
+	    </div>
+        <div>
+          <TextField
+          name="note"
+          label="Note"
+          style={{ width: 350 }}
+          value={this.props.adapter.note}
+          onChange={this.handleNoteChange}
+          margin="normal"
+          /> 
+        </div>
+        <div>         
+         <TextField
            name="shortDescription"
            label="ShortDescription"
+        	   multiline
+               rows="4"
+           style={{ width: 350 }}
            value={this.state.shortDescription}
            onChange={this.handleShortDescriptionChange}/>
- 
-          <input
-            type="submit"
-            disabled={this.props.saving}
-            value={this.props.saving ? 'Saving...' : 'Update'}
-            className="btn btn-primary"
-            onClick={this.props.onSave}/>
-  
-          <a href="/adapters/adapters"><button type="button">Cancel</button></a>
+         </div>          
+
+     	<Grid container style={{ lineHeight: '12px' }} spacing={6}>
+ 			<Grid item xs={6} sm={4}>
+ 				<Button variant="raised" style={{textTransform: 'none'}}  onClick={this.props.onSave} >Update Adapter</Button>
+ 			</Grid>
+ 			<Grid item xs={6} sm={2}>
+ 				<a href="/adapters/adapters" style={{ textDecoration: 'none' }}><Button variant="raised" style={{textTransform: 'none'}}>Cancel</Button></a>
+ 			</Grid>
+ 		</Grid>
 
         </form>
       </div>

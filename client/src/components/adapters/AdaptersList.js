@@ -50,12 +50,12 @@ class AdaptersList extends Component {
   			<ul className="list-group">
   				{this.props.adapters.map((adapter, i) => 
   			<div>
-  	         	<Grid container style={{ lineHeight: '12px' }} spacing={24}>
+  	         	<Grid container style={{ lineHeight: '5px' }} spacing={24}>
   	         		<Grid item xs={12} sm={7}>
   	         			<li className="list-group-item" key={i}><Link to={{pathname: '/adapter', state: {adapter : adapter}}} style={{ textDecoration: 'none' }}>{adapter.name}</Link></li>
   	         		</Grid>
   	         		<Grid item xs={12} sm={1}>
-  	         			<button style={{ padding: '1px 20px' ,  background: '#4CAF50', color: 'white'}} onClick={() => {this.deleteAdapter(adapter)}} className="btn btn-default">Delete</button>
+  	         			<button style={{ padding: '1px 20px' }} onClick={() => {this.deleteAdapter(adapter)}} className="btn btn-default">Delete</button>
   	         		</Grid>
   	         	</Grid>
 			</div>

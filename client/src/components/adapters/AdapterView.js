@@ -8,12 +8,12 @@ import AdapterViewForm from './AdapterViewForm';
 import { Route,  Link, withRouter } from "react-router-dom";
 import createHistory from 'history/createBrowserHistory';
 import { Redirect } from 'react-router';
+import Button from 'material-ui/Button';
 
 
 class AdapterView extends React.Component {
   constructor(props, context) {
     super(props, context);
-    console.log(this.props.location.state.adapter);
     this.state = {
       adapter: Object.assign({}, this.props.location.state.adapter), 
       isSaving: true
@@ -72,7 +72,7 @@ class AdapterView extends React.Component {
     }
     return (
       <div className="col-md-8 col-md-offset-2">
-        <button onClick={this.toggleSave} className="btn btn-default">Edit Adapter</button>
+        <Button variant="raised" style={{textTransform: 'none'}}  onClick={this.toggleSave} >Edit Adapter</Button>
       </div>
     );
   }

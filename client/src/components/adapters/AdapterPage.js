@@ -10,6 +10,13 @@ import createHistory from 'history/createBrowserHistory';
 import { Redirect } from 'react-router';
 import Button from 'material-ui/Button';
 
+const styles = theme => ({
+	  button: {
+	    margin: theme.spacing.unit,
+	    textTransform: 'none'
+	  },
+	});
+
 class AdapterPage extends React.Component {
   constructor(props, context) {
     super(props, context);
@@ -22,7 +29,6 @@ class AdapterPage extends React.Component {
     this.updateAdapterState = this.updateAdapterState.bind(this);
     this.toggleAdd = this.toggleAdd.bind(this);
     this.saveAdapter = this.saveAdapter.bind(this);
-
   }
 
 
@@ -41,6 +47,8 @@ class AdapterPage extends React.Component {
   
   saveAdapter(event) {
 	    event.preventDefault();
+		  console.log("ttttt");
+		  console.log(this.state.adapter);
 	    this.props.createAdapter(this.state.adapter);
   }
 
@@ -73,7 +81,7 @@ class AdapterPage extends React.Component {
     }
     return (
       <div className="col-md-8 col-md-offset-2">
-       <Button variant="raised" buttonStyle={{ height: "100%" }} onClick={this.toggleAdd} className="btn btn-success btn-lg">Add Adapter</Button>
+       <Button variant="raised" style={{textTransform: 'none'}} onClick={this.toggleAdd} >Add Adapter</Button>
       </div>
     );
   }
