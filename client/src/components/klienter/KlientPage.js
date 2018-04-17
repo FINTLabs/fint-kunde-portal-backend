@@ -1,15 +1,23 @@
 import React from 'react';
-import { PropTypes } from 'react';
+//import { PropTypes } from 'react';
+import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import { createKlient } from '../../actions/klienterAction';
 import KlientForm from './KlientForm';
 import { Route,  Link, withRouter } from "react-router-dom";
-import createHistory from 'history/createBrowserHistory'
-import { Redirect } from 'react-router'
+import createHistory from 'history/createBrowserHistory';
+import { Redirect } from 'react-router';
+import Button from 'material-ui/Button';
 
+const styles = theme => ({
+	  button: {
+	    margin: theme.spacing.unit,
+	    textTransform: 'none'
+	  },
+	});
 
-class KlienterPage extends React.Component {
+class KlientPage extends React.Component {
   constructor(props, context) {
     super(props, context);
     this.state = {
@@ -21,7 +29,6 @@ class KlienterPage extends React.Component {
     this.updateKlientState = this.updateKlientState.bind(this);
     this.toggleAdd = this.toggleAdd.bind(this);
     this.saveKlient = this.saveKlient.bind(this);
-
   }
 
 
@@ -40,6 +47,8 @@ class KlienterPage extends React.Component {
   
   saveKlient(event) {
 	    event.preventDefault();
+		  console.log("ttttt");
+		  console.log(this.state.klient);
 	    this.props.createKlient(this.state.klient);
   }
 
@@ -72,19 +81,19 @@ class KlienterPage extends React.Component {
     }
     return (
       <div className="col-md-8 col-md-offset-2">
-        <button onClick={this.toggleAdd} className="btn btn-default  ">Add Klient</button>
+       <Button variant="raised" style={{textTransform: 'none'}} onClick={this.toggleAdd} >Add Klient</Button>
       </div>
     );
   }
 }
 
 
-KlienterPage.propTypes = {
-
+KlientPage.propTypes = {
+		klienter : PropTypes.array.isRequired
 };
 
 function getKlientById(klienter, id) {
-  let klient = klient.find(klient => klient.id == id)
+  let klient = klienter.find(klient => klient.id == id)
   return Object.assign({}, klient)
 }
 
@@ -92,8 +101,8 @@ function getKlientById(klienter, id) {
 function mapStateToProps(state) {
   let klient = {name: '', note: '', shortDescription: ''};
   const klientName = state.posts.name;
-  if (klientName && state.klient.length > 0 ) {
-    klient = getKlientById(state.klient, state.posts.name);
+  if (klientName && state.klienter.length > 0 ) {
+    klient = getKlientById(state.klienter, state.posts.name);
  
   } 
     return {klient: klient};
@@ -102,7 +111,7 @@ function mapStateToProps(state) {
 function  matchDispatchToProps(dispatch){
     return bindActionCreators({createKlient : createKlient}, dispatch);
 }
-export default withRouter(connect(mapStateToProps, matchDispatchToProps)(KlienterPage));
+export default withRouter(connect(mapStateToProps, matchDispatchToProps)(KlientPage));
 
 
 

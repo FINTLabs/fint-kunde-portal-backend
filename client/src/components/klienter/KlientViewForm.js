@@ -2,14 +2,17 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types'
 import TextInput from '../common/TextInput';
 import {bindActionCreators} from 'redux';
+import Button from 'material-ui/Button';
+import {Grid} from "material-ui";
+import TextField from 'material-ui/TextField';
 
 class KlientViewForm extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-    		note : this.props.klient.post.note,
-    		shortDescription : this.props.klient.post.shortDescription,
-    		klient : this.props.klient.post,
+    		note : this.props.klient.note,
+    		shortDescription : this.props.klient.shortDescription,
+    		klient : this.props.klient,
     	    };
 
   }
@@ -43,32 +46,45 @@ class KlientViewForm extends React.Component {
       <div>
       <form onSubmit={()=> this.submitForm()}>
 
-          <TextInput
-            name="name"
-            label="Name"
-            value={this.props.klient.post.name}
-            onChange={this.props.onChange}/>
- 
-          <TextInput
-           name="note"
-           label="Note"
-           value={this.state.note}
-           onChange={this.handleNoteChange}/>
-          
-          <TextInput
+	   <div>
+	      <TextField
+	      id="name"
+	      label="Name"
+	      style={{ width: 350 }}
+	      value={this.props.klient.name}
+	      disabled
+	      margin="normal"
+	      /> 
+	    </div>
+        <div>
+          <TextField
+          name="note"
+          label="Note"
+          style={{ width: 350 }}
+          value={this.props.klient.note}
+          onChange={this.handleNoteChange}
+          margin="normal"
+          /> 
+        </div>
+        <div>         
+         <TextField
            name="shortDescription"
            label="ShortDescription"
-           value={this.state.shortDescription}
+        	   multiline
+               rows="4"
+           style={{ width: 350 }}
+           value={this.props.klient.shortDescription}
            onChange={this.handleShortDescriptionChange}/>
- 
-          <input
-            type="submit"
-            disabled={this.props.saving}
-            value={this.props.saving ? 'Saving...' : 'Update'}
-            className="btn btn-primary"
-            onClick={this.props.onSave}/>
-  
-          <a href="/klienter/klienter"><button type="button">Cancel</button></a>
+         </div>          
+
+     	<Grid container style={{ lineHeight: '12px' }} spacing={6}>
+ 			<Grid item xs={6} sm={4}>
+ 				<Button variant="raised" style={{textTransform: 'none'}}  onClick={this.props.onSave} >Update Klient</Button>
+ 			</Grid>
+ 			<Grid item xs={6} sm={2}>
+ 				<a href="/klienter/klienter" style={{ textDecoration: 'none' }}><Button variant="raised" style={{textTransform: 'none'}}>Cancel</Button></a>
+ 			</Grid>
+ 		</Grid>
 
         </form>
       </div>

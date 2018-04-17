@@ -73,7 +73,7 @@ class AdapterViewForm extends React.Component {
         	   multiline
                rows="4"
            style={{ width: 350 }}
-           value={this.state.shortDescription}
+           value={this.props.adapter.shortDescription}
            onChange={this.handleShortDescriptionChange}/>
          </div>          
 

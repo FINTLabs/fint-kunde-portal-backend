@@ -14,7 +14,7 @@ class KlientView extends React.Component {
   constructor(props, context) {
     super(props, context);
     this.state = {
-      klient: Object.assign({}, this.props.location.state), 
+      klient: Object.assign({}, this.props.location.state.klient), 
       isSaving: true
     };
 
@@ -24,8 +24,7 @@ class KlientView extends React.Component {
 
   }
 
-
-  componentWillReceiveProps(nextProps) {
+   componentWillReceiveProps(nextProps) {
     if (this.props.klient != nextProps.klient) {
       this.setState({klient: Object.assign({}, nextProps.klient)});
 
@@ -40,7 +39,7 @@ class KlientView extends React.Component {
   
   updateKlient(event) {
 	    event.preventDefault();
-	    this.props.updateKlientr(this.state.klient.post);
+	    this.props.updateKlient(this.state.klient);
   }
 
 
@@ -81,8 +80,8 @@ KlientView.propTypes = {
 
 };
 
-function getKlientById(klienters, id) {
-  let klient = klienters.find(klient => klient.id == id)
+function getKlientById(klienter, id) {
+  let klient = klienter.find(klient => klient.id == id)
   return Object.assign({}, klient)
 }
 
@@ -90,8 +89,8 @@ function getKlientById(klienters, id) {
 function mapStateToProps(state) {
   let klient = {name: '', note: '', clientID: '', shortDescription: ''};
   const klientName = state.posts.name;
-  if (klientName && state.klienters.length > 0 ) {
-    klient = getKlientById(state.klienters, state.posts.name);
+  if (klientName && state.klienter.length > 0 ) {
+    klient = getKlientById(state.klienter, state.posts.name);
  
   } 
     return {klient: klient};

@@ -71,7 +71,7 @@ export function updateKlientSuccess(klient) {
 	}
 export function updateKlient(klient) {
 	  return function (dispatch) {
-	    return KlienterApi.updateKlienter(klient).then(responseKlient => {
+	    return KlienterApi.updateKlient(klient).then(responseKlient => {
 	    //  dispatch(updateKlienterSuccess(responseKlienter));
   	    //eslint-disable-next-line
 	      location.assign("/klienter/klienter");

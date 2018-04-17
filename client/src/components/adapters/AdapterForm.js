@@ -25,7 +25,7 @@ class AdapterForm extends React.Component {
       <TextField
       required
       name="name"
-      label="Adapter's Name"
+      label="Adapter Name"
       style={{ width: 350 }}
       value={this.props.adapter.name}
       onChange={this.props.onChange}
