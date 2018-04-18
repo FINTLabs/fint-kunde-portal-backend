@@ -46,7 +46,7 @@ class KlientsList extends Component {
          			<a href="/" style={{textDecoration:'none', color: 'black'}}>Dashboard</a>
          		</Grid>
          	</Grid>
-  			<h1>Klients</h1>
+  			<h1>Klienter</h1>
   			<ul className="list-group">
   				{this.props.klienter.map((klient, i) => 
   			<div>
