@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import { createKlient } from '../../actions/klienterAction';
-import KlientForm from './KlientForm';
+import KlientAddForm from './KlientAddForm';
 import { Route,  Link, withRouter } from "react-router-dom";
 import createHistory from 'history/createBrowserHistory';
 import { Redirect } from 'react-router';
@@ -17,7 +17,7 @@ const styles = theme => ({
 	  },
 	});
 
-class KlientPage extends React.Component {
+class KlientAdd extends React.Component {
   constructor(props, context) {
     super(props, context);
     this.state = {
@@ -71,7 +71,7 @@ class KlientPage extends React.Component {
       return (
       <div>
         <h3>Add klient</h3>
-        <KlientForm 
+        <KlientAddForm 
           klient={this.state.klient} 
           onSave={this.saveKlient} 
           onChange={this.updateKlientState} 
@@ -88,7 +88,7 @@ class KlientPage extends React.Component {
 }
 
 
-KlientPage.propTypes = {
+KlientAdd.propTypes = {
 		klienter : PropTypes.array.isRequired
 };
 
@@ -111,7 +111,7 @@ function mapStateToProps(state) {
 function  matchDispatchToProps(dispatch){
     return bindActionCreators({createKlient : createKlient}, dispatch);
 }
-export default withRouter(connect(mapStateToProps, matchDispatchToProps)(KlientPage));
+export default withRouter(connect(mapStateToProps, matchDispatchToProps)(KlientAdd));
 
 
 

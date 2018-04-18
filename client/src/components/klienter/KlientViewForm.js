@@ -5,6 +5,8 @@ import {bindActionCreators} from 'redux';
 import Button from 'material-ui/Button';
 import {Grid} from "material-ui";
 import TextField from 'material-ui/TextField';
+import { BrowserRouter as Router, Route, Link, Redirect, withRouter	} from 'react-router-dom';
+import Klienter from "../../klienter/Klienter";
 
 class KlientViewForm extends React.Component {
   constructor(props) {
@@ -82,10 +84,10 @@ class KlientViewForm extends React.Component {
  				<Button variant="raised" style={{textTransform: 'none'}}  onClick={this.props.onSave} >Update Klient</Button>
  			</Grid>
  			<Grid item xs={6} sm={2}>
- 				<a href="/klienter/klienter" style={{ textDecoration: 'none' }}><Button variant="raised" style={{textTransform: 'none'}}>Cancel</Button></a>
+ 				<Link to={{pathname: '/klienter/klienter'}} style={{ textDecoration: 'none' }}><Button variant="raised" style={{textTransform: 'none'}}>Cancel</Button></Link>
  			</Grid>
  		</Grid>
-
+ 		<Route path='/klienter/klienter' component={Klienter}/>
         </form>
       </div>
   );

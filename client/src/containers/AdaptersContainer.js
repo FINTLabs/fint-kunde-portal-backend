@@ -4,7 +4,7 @@ import {BrowserRouter, Link, Route, withRouter} from "react-router-dom";
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import AdaptersList from '../components/adapters/AdaptersList';
-import AdapterPage from '../components/adapters/AdapterPage';
+import AdapterAdd from '../components/adapters/AdapterAdd';
 import {fetchAdapters} from '../actions/adaptersAction';
 import {Grid} from "material-ui";
 
@@ -33,7 +33,7 @@ class AdaptersContainer extends React.Component {
                 	<AdaptersList adapters={adapters} />
                 </Grid>
                 <Grid item xs={7}>
-                	<AdapterPage />
+                	<AdapterAdd />
                 </Grid>
             </Grid>
   

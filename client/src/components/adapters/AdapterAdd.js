@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import { createAdapter } from '../../actions/adaptersAction';
-import AdapterForm from './AdapterForm';
+import AdapterAddForm from './AdapterAddForm';
 import { Route,  Link, withRouter } from "react-router-dom";
 import createHistory from 'history/createBrowserHistory';
 import { Redirect } from 'react-router';
@@ -17,7 +17,7 @@ const styles = theme => ({
 	  },
 	});
 
-class AdapterPage extends React.Component {
+class AdapterAdd extends React.Component {
   constructor(props, context) {
     super(props, context);
     this.state = {
@@ -71,7 +71,7 @@ class AdapterPage extends React.Component {
       return (
       <div>
         <h3>Add adapter</h3>
-        <AdapterForm 
+        <AdapterAddForm 
           adapter={this.state.adapter} 
           onSave={this.saveAdapter} 
           onChange={this.updateAdapterState} 
@@ -88,7 +88,7 @@ class AdapterPage extends React.Component {
 }
 
 
-AdapterPage.propTypes = {
+AdapterAdd.propTypes = {
 		adapters : PropTypes.array.isRequired
 };
 
@@ -111,7 +111,7 @@ function mapStateToProps(state) {
 function  matchDispatchToProps(dispatch){
     return bindActionCreators({createAdapter : createAdapter}, dispatch);
 }
-export default withRouter(connect(mapStateToProps, matchDispatchToProps)(AdapterPage));
+export default withRouter(connect(mapStateToProps, matchDispatchToProps)(AdapterAdd));
 
 
 

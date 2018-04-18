@@ -5,6 +5,8 @@ import {bindActionCreators} from 'redux';
 import Button from 'material-ui/Button';
 import {Grid} from "material-ui";
 import TextField from 'material-ui/TextField';
+import Adapters from "../../adapters/Adapters";
+import { BrowserRouter as Router, Route, Link, Redirect	} from 'react-router-dom';
 
 class AdapterViewForm extends React.Component {
   constructor(props) {
@@ -39,14 +41,11 @@ class AdapterViewForm extends React.Component {
 	}
 
   render() {
-	  
 	const {handleSubmit, submitForm} = this.props;
     return (
-    	   
       <div>
-      <form onSubmit={()=> this.submitForm()}>
-
-	   <div>
+        <form onSubmit={()=> this.submitForm()}>
+	    <div>
 	      <TextField
 	      id="name"
 	      label="Name"
@@ -82,10 +81,10 @@ class AdapterViewForm extends React.Component {
  				<Button variant="raised" style={{textTransform: 'none'}}  onClick={this.props.onSave} >Update Adapter</Button>
  			</Grid>
  			<Grid item xs={6} sm={2}>
- 				<a href="/adapters/adapters" style={{ textDecoration: 'none' }}><Button variant="raised" style={{textTransform: 'none'}}>Cancel</Button></a>
+ 				<Link to={{pathname: '/adapters/adapters'}} style={{ textDecoration: 'none' }}><Button variant="raised" style={{textTransform: 'none'}}>Cancel</Button></Link>
  			</Grid>
  		</Grid>
-
+ 		<Route path='/adapters/adapters' component={Adapters}/>
         </form>
       </div>
   );

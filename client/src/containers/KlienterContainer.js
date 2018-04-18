@@ -4,7 +4,7 @@ import {BrowserRouter, Link, Route, withRouter} from "react-router-dom";
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import KlienterList from '../components/klienter/KlienterList';
-import KlientPage from '../components/klienter/KlientPage';
+import KlientAdd from '../components/klienter/KlientAdd';
 import {fetchKlienter} from '../actions/klienterAction';
 import {Grid} from "material-ui";
 
@@ -33,7 +33,7 @@ class KlienterContainer extends React.Component {
                 	<KlienterList klienter={klienter} />
                 </Grid>
                 <Grid item xs={7}>
-                	<KlientPage />
+                	<KlientAdd />
                 </Grid>
             </Grid>
   
