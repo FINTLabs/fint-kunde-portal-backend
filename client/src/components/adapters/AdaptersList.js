@@ -7,9 +7,10 @@ import {deleteAdapter} from '../../actions/adaptersAction';
 import DashboardIcon from 'material-ui-icons/Home';
 import AdapterView from './AdapterView';
 import PropTypes from 'prop-types';
-import {Grid} from "material-ui";
 import Button from 'material-ui/Button';
 import TextField from 'material-ui/TextField';
+import {Avatar, Card, CardContent, CardHeader, Divider, Grid, Typography, withStyles} from "material-ui";
+import {green} from 'material-ui/colors';
 
 const styles = {
 		  smallIcon: {
@@ -21,9 +22,13 @@ const styles = {
 		    height: 19
 		  },
 		  margin: 12,
-		};
+};
+const avtarstyle = {
+        margin: 1,
+        color: '#fff',
+        backgroundColor: green[500],
 
-
+};
 class AdaptersList extends Component {
 	constructor(props) {
 	    super(props);
@@ -38,14 +43,10 @@ class AdaptersList extends Component {
 	  return (
 	    <Router>
 	     <div>
-         	<Grid container xs={2}>
-         		<Grid item xs={3}>
-         			<a href="/"><DashboardIcon iconStyle={styles.smallIcon} style={styles.small}/></a>
-         		</Grid>
-         		<Grid item xs={1}>
-         			<a href="/" style={{textDecoration:'none', color: 'black'}}>Dashboard</a>
-         		</Grid>
-         	</Grid>
+      		<a href="/" style={{textDecoration:'none'}}><CardHeader	title="Dashboard" avatar={
+                <Avatar style={avtarstyle}>
+                    <DashboardIcon/>
+                </Avatar>}/></a>
   			<h1>Adapters</h1>
   			<ul className="list-group">
   				{this.props.adapters.map((adapter, i) => 
@@ -65,8 +66,8 @@ class AdaptersList extends Component {
 
 	      <Route
 	      	path="/adapter"
-	      	render={({ props }) => (
-	        <AdapterView adapter={this.props.adapter} />
+	      	render={({ state }) => (
+	        <AdapterView adapter={this.state.adapter} />
 	        )}
 	      />
 	    </div>
