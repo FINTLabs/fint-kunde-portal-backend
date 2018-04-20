@@ -1,8 +1,7 @@
 class KontakterApi {
 
-
-  static getAllKontakter() {
-    const request = new Request(`localhost:8080/api/contacts/testing`, {
+  static fetchKontakter() {
+    const request = new Request(`http://localhost:8080/api/contacts`, {
       method: 'GET'
     });
 
@@ -13,11 +12,25 @@ class KontakterApi {
     });
   }
 
-  static updateKontakter(Kontakter) {
-    const request = new Request(`localhost:8080/api/contacts/testing/${Kontakter.name}`, {
+  static getKontakter() {
+	  const url='http://localhost:8080/api/contacts';
+	  return fetch(url, { method: 'GET'})
+	     .then( response => Promise.all([response,response.json()]));
+	}
+  
+  static updateKontakt(Kontakt) {
+    const request = new Request(`http://localhost:8080/api/contacts/${Kontakt.nin}`, {
       method: 'PUT',
-      body: JSON.stringify({Kontakter: Kontakter})
-    });
+      headers: new Headers({
+          'Content-Type': 'application/json'
+        }), 
+        body: JSON.stringify({
+	  	  nin: Kontakt.nin,
+	  	  firstName: Kontakt.firstName,
+	  	  lastName: Kontakt.lastName,
+	  	  mail: Kontakt.mail,
+	  	  mobile: Kontakt.mobile})
+      });
 
 
     return fetch(request).then(response => {
@@ -27,12 +40,22 @@ class KontakterApi {
     });
   }
 
-  static createKontakter(Kontakter) {
-    const request = new Request(`localhost:8080/api/contacts/testing`, {
+  static createKontakt(Kontakt) {
+	  console.log(Kontakt)
+    const request = new Request(`http://localhost:8080/api/contacts`, {
       method: 'POST',
-      body: JSON.stringify({Kontakter: Kontakter})
+      headers: {
+          'Accept': '*/*',
+          'Content-Type': 'application/json'
+        }, 
+      body: JSON.stringify({
+    	  nin: Kontakt.nin,
+    	  firstName: Kontakt.firstName,
+    	  lastName: Kontakt.lastName,
+    	  mail: Kontakt.mail,
+    	  mobile: Kontakt.mobile
+    	  })
     });
-
 
     return fetch(request).then(response => {
       return response.json();
@@ -41,8 +64,8 @@ class KontakterApi {
     });
   }
 
-  static deleteKontakter(Kontakter) {
-    const request = new Request(`http://localhost:8080/api/contacts/testing/${Kontakter.name}`, {
+  static deleteKontakt(Kontakt) {
+    const request = new Request(`http://localhost:8080/api/contacts/${Kontakt.nin}`, {
       method: 'DELETE'
     });
 

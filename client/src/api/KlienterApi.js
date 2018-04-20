@@ -1,6 +1,5 @@
 class KlienterApi {
 
-
   static fetchKlienter() {
     const request = new Request(`http://localhost:8080/api/clients/testing`, {
       method: 'GET'

@@ -7,6 +7,7 @@ import {Grid} from "material-ui";
 import TextField from 'material-ui/TextField';
 import Adapters from "../../adapters/Adapters";
 import { BrowserRouter as Router, Route, Link, Redirect	} from 'react-router-dom';
+import {Field, reduxForm} from 'redux-form';
 
 class AdapterAddForm extends React.Component {
   constructor(props) {
@@ -15,6 +16,7 @@ class AdapterAddForm extends React.Component {
   }
   
   submitForm(adapter) {
+
 	  this.props.createAdapter(adapter)
 	}
 
@@ -29,7 +31,7 @@ class AdapterAddForm extends React.Component {
 		      name="name"
 		      label="Adapter Name"
 		      style={{ width: 350 }}
-		      value={this.props.adapter.name}
+	          value={this.props.adapter.name}
 		      onChange={this.props.onChange}
 		      margin="normal"
 	      /> 
@@ -70,7 +72,6 @@ class AdapterAddForm extends React.Component {
   );
   }
 }
-
 
 
 export default AdapterAddForm;

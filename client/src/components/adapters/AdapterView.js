@@ -1,5 +1,5 @@
 import React from 'react';
-import { PropTypes } from 'react';
+import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import { reduxForm } from 'redux-form';
@@ -80,7 +80,8 @@ class AdapterView extends React.Component {
 
 
 AdapterView.propTypes = {
-
+	 adapters: PropTypes.array.isRequired,
+	 children: PropTypes.object
 };
 
 function getAdapterById(adapters, id) {
@@ -90,7 +91,9 @@ function getAdapterById(adapters, id) {
 
 
 function mapStateToProps(state) {
-
+	return {
+	    adapters: state.adapters
+	  };
 }
 
 function  matchDispatchToProps(dispatch){

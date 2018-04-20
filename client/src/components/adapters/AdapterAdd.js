@@ -47,8 +47,6 @@ class AdapterAdd extends React.Component {
   
   saveAdapter(event) {
 	    event.preventDefault();
-		  console.log("ttttt");
-		  console.log(this.state.adapter);
 	    this.props.createAdapter(this.state.adapter);
   }
 

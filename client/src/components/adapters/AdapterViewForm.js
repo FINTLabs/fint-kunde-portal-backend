@@ -50,7 +50,7 @@ class AdapterViewForm extends React.Component {
 	      id="name"
 	      label="Name"
 	      style={{ width: 350 }}
-	      value={this.props.adapter.name}
+	      value={this.state.adapter.name}
 	      disabled
 	      margin="normal"
 	      /> 
@@ -60,7 +60,7 @@ class AdapterViewForm extends React.Component {
           name="note"
           label="Note"
           style={{ width: 350 }}
-          value={this.props.adapter.note}
+          value={this.state.adapter.note}
           onChange={this.handleNoteChange}
           margin="normal"
           /> 
@@ -72,7 +72,7 @@ class AdapterViewForm extends React.Component {
         	   multiline
                rows="4"
            style={{ width: 350 }}
-           value={this.props.adapter.shortDescription}
+           value={this.state.adapter.shortDescription}
            onChange={this.handleShortDescriptionChange}/>
          </div>          
 
@@ -91,5 +91,11 @@ class AdapterViewForm extends React.Component {
   }
 }
 
+AdapterViewForm.propTypes = {
+		  adapter: PropTypes.object.isRequired,
+		  onSave: PropTypes.func.isRequired,
+		  onChange: PropTypes.func.isRequired,
+		  saving: PropTypes.bool
+		};
 
 export default AdapterViewForm;
