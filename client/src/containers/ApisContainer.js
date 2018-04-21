@@ -3,18 +3,18 @@ import PropTypes from 'prop-types';
 import {BrowserRouter, Link, Route, withRouter} from "react-router-dom";
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
-import AdaptersList from '../components/adapters/AdaptersList';
-import AdapterAdd from '../components/adapters/AdapterAdd';
-import {fetchAdapters} from '../actions/adaptersAction';
+import ApisList from '../components/apis/ApisList';
+import KontaktAdd from '../components/apis/KontaktAdd';
+import {fetchApis} from '../actions/apisAction';
 import {Grid} from "material-ui";
 
-class AdaptersContainer extends React.Component {
+class ApisContainer extends React.Component {
 	constructor(props) {
 	    super(props);
 	    this.state = {posts: this.props.posts};
 	}
 	componentDidMount(){
-  	     this.props.fetchAdapters()
+  	     this.props.fetchApis()
 
    }
 	render () {
@@ -26,23 +26,24 @@ class AdaptersContainer extends React.Component {
 	  }
 
 	renderPosts () {
-	    const adapters = this.props.posts;
+	    const apis = this.props.posts;
 	    return (
 	         <Grid container xs={12}>
                 <Grid item xs={5}>
-                	<AdaptersList adapters={adapters} />
+                	<ApisList apis={apis} />
                 </Grid>
                 <Grid item xs={7}>
-                	<AdapterAdd />
+                	<KontaktAdd />
                 </Grid>
             </Grid>
+  
 
     );
   }
 }
 
-AdaptersContainer.propTypes = {
-  adapters: PropTypes.array.isRequired
+ApisContainer.propTypes = {
+  apis: PropTypes.array.isRequired
 };
 
 function mapStateToProps(state){
@@ -51,7 +52,7 @@ function mapStateToProps(state){
   }
 }
 function  matchDispatchToProps(dispatch){
-    return bindActionCreators({fetchAdapters: fetchAdapters}, dispatch);
+    return bindActionCreators({fetchApis: fetchApis}, dispatch);
 }
 
-export default withRouter(connect(mapStateToProps, matchDispatchToProps)(AdaptersContainer));
+export default withRouter(connect(mapStateToProps, matchDispatchToProps)(ApisContainer));

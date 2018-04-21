@@ -4,11 +4,12 @@ import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import { reduxForm } from 'redux-form';
 import { updateKlient } from '../../actions/klienterAction';
-import KlientViewForm from './KlientViewForm';
 import { Route,  Link, withRouter } from "react-router-dom";
 import createHistory from 'history/createBrowserHistory';
 import { Redirect } from 'react-router';
-
+import Button from 'material-ui/Button';
+import Dialog, { DialogActions, DialogContent, DialogContentText, DialogTitle,} from 'material-ui/Dialog';
+import TextField from 'material-ui/TextField';	
 
 class KlientView extends React.Component {
   constructor(props, context) {
@@ -24,6 +25,10 @@ class KlientView extends React.Component {
 
   }
 
+  componentDidMount() {
+	  this.setState({ open: true });
+  }
+  
    componentWillReceiveProps(nextProps) {
     if (this.props.klient != nextProps.klient) {
       this.setState({klient: Object.assign({}, nextProps.klient)});
@@ -38,7 +43,6 @@ class KlientView extends React.Component {
   }
   
   updateKlient(event) {
-	    event.preventDefault();
 	    this.props.updateKlient(this.state.klient);
   }
 
@@ -48,30 +52,77 @@ class KlientView extends React.Component {
     const klient = this.state.klient;
     klient[field] = event.target.value;
     return this.setState({
-    	  value: event.target.value
+    value: event.target.value
     });
   }
 
+  state = {
+		    open: false,
+		  };
+	handleClickOpen = () => {
+		    this.setState({ open: true });
+		  };
 
+  handleClose = () => {
+	  this.updateKlient(this.state.klient)
+      this.setState({ open: false });
+
+  };
   render() {
-
-    if (this.state.isSaving) {
       return (
-      <div>
-        <h3>Update klient</h3>
-        <KlientViewForm 
-          klient={this.state.klient} 
-          onSave={this.updateKlient} 
-          onChange={this.updateKlientState} 
-          saving={this.state.saving}/> 
-      </div>
-      )
-    }
-    return (
-      <div className="col-md-8 col-md-offset-2">
-        <button onClick={this.toggleSave} className="btn btn-default">Edit Klient</button>
-      </div>
-    );
+    		     <div>
+    		        <div>
+
+    		        <Dialog
+    		          open={this.state.open}
+    		          onClose={this.handleClose}
+    		          aria-labelledby="form-dialog-title"
+    		        >
+    		          <DialogTitle id="form-dialog-title">Oppdater klienten</DialogTitle>
+    		          <DialogContent>
+ 		            
+    		              <TextField
+    		              margin="dense"
+    		    	      required
+    		    	      name="name"
+    		    	      label="Klient Navn"
+    		    	      value={this.state.klient.name}  
+    		    	      fullWidth
+    		    	      onChange={this.updateKlientState}
+    		              disabled
+    		          /> 
+    		        
+  		       
+    		        	<TextField
+		                   autoFocus
+    		        	   name="shortDescription"
+    		        	   label="Kort beskrivelse"
+    		        	   fullWidth
+    		        	   onChange={this.updateKlientState}
+    		               value={this.state.klient.shortDescription}  
+    		        	/>
+      		    	  <TextField
+	  		    	  	name="note"
+	  		    	  	label="Note"
+	  		    	  	multiline
+	  		            rows="4"
+	  		            onChange={this.updateKlientState}
+	  		            value={this.state.klient.note}  
+  		    	  />    		   
+    		          </DialogContent>
+    		          <DialogActions>
+    		            <Button onClick={this.handleClose} color="primary" style={{textTransform: 'none'}}>
+    		            Avbryt
+    		            </Button>
+    		            <Button onClick={this.handleClose}  color="primary" style={{textTransform: 'none'}}>
+    		            Oppdater
+    		            </Button>
+    		          </DialogActions>
+    		        </Dialog>
+    		      </div>
+    		</div>
+      ) 		
+
   }
 }
 
@@ -87,7 +138,7 @@ function getKlientById(klienter, id) {
 
 
 function mapStateToProps(state) {
-  let klient = {name: '', note: '', clientID: '', shortDescription: ''};
+  let klient = {name: '', note: '',  shortDescription: ''};
   const klientName = state.posts.name;
   if (klientName && state.klienter.length > 0 ) {
     klient = getKlientById(state.klienter, state.posts.name);

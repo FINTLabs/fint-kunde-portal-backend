@@ -49,7 +49,7 @@ class KlientsList extends Component {
                         <DashboardIcon/>
                     </Avatar>}/></a>
 
-  			<h1>Klienter</h1>
+  			<h3>Klienter</h3>
   			<ul className="list-group">
   				{this.props.klienter.map((klient, i) => 
   			<div>

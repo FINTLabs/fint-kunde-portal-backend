@@ -76,7 +76,7 @@ class KontaktAddForm extends React.Component {
    				<Button variant="raised" style={{textTransform: 'none'}}  onClick={this.props.onSave} >Add Kontakt</Button>
    			</Grid>
    			<Grid item xs={6} sm={3}>
-   				<Link to={{pathname: '/kontakts/kontakts'}} style={{ textDecoration: 'none' }}><Button variant="raised" style={{textTransform: 'none'}}>Cancel</Button></Link>
+   				<Link to={{pathname: '/kontakter/kontakter'}} style={{ textDecoration: 'none' }}><Button variant="raised" style={{textTransform: 'none'}}>Cancel</Button></Link>
    			</Grid>
    		</Grid>
    
