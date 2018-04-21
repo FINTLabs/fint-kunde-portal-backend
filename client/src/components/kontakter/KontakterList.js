@@ -53,10 +53,10 @@ class KontakterList extends Component {
   			<div>
   	         	<Grid container style={{ lineHeight: '5px' }} spacing={24}>
   	         		<Grid item xs={12} sm={7}>
-  	         			<li className="list-group-item" key={i}><Link to={{pathname: '/kontakt', state: {kontakt : kontakt}}} style={{ textDecoration: 'none' }}>{kontakt.nin}</Link></li>
+  	         			<li className="list-group-item" key={i}><Link to={{pathname: '/kontakt', state: {kontakt : kontakt}}} style={{ textDecoration: 'none' }}>{kontakt.firstName} {kontakt.lastName}</Link></li>
   	         		</Grid>
   	         		<Grid item xs={12} sm={1}>
-  	         			<button style={{ padding: '1px 20px' }} onClick={() => {this.deleteKontakt(kontakt)}} className="btn btn-default">Delete</button>
+  	         			<button style={{ padding: '1px 20px' }} onClick={() => {this.deleteKontakt(kontakt)}} className="btn btn-default">Slett</button>
   	         		</Grid>
   	         	</Grid>
 			</div>

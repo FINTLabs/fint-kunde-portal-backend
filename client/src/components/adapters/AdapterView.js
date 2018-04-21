@@ -1,15 +1,15 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+import { PropTypes } from 'react';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import { reduxForm } from 'redux-form';
 import { updateAdapter } from '../../actions/adaptersAction';
-import AdapterViewForm from './AdapterViewForm';
 import { Route,  Link, withRouter } from "react-router-dom";
 import createHistory from 'history/createBrowserHistory';
 import { Redirect } from 'react-router';
 import Button from 'material-ui/Button';
-
+import Dialog, { DialogActions, DialogContent, DialogContentText, DialogTitle,} from 'material-ui/Dialog';
+import TextField from 'material-ui/TextField';	
 
 class AdapterView extends React.Component {
   constructor(props, context) {
@@ -25,8 +25,11 @@ class AdapterView extends React.Component {
 
   }
 
-
-  componentWillReceiveProps(nextProps) {
+  componentDidMount() {
+	  this.setState({ open: true });
+  }
+  
+   componentWillReceiveProps(nextProps) {
     if (this.props.adapter != nextProps.adapter) {
       this.setState({adapter: Object.assign({}, nextProps.adapter)});
 
@@ -40,8 +43,6 @@ class AdapterView extends React.Component {
   }
   
   updateAdapter(event) {
-	    event.preventDefault();
-	    console.log(this.state.adapter);
 	    this.props.updateAdapter(this.state.adapter);
   }
 
@@ -51,37 +52,83 @@ class AdapterView extends React.Component {
     const adapter = this.state.adapter;
     adapter[field] = event.target.value;
     return this.setState({
-    	  value: event.target.value
+    value: event.target.value
     });
   }
 
+  state = {
+		    open: false,
+		  };
+	handleClickOpen = () => {
+		    this.setState({ open: true });
+		  };
 
+  handleClose = () => {
+	  this.updateAdapter(this.state.adapter)
+      this.setState({ open: false });
+
+  };
   render() {
-
-    if (this.state.isSaving) {
       return (
-      <div>
-        <h3>Update adapter</h3>
-        <AdapterViewForm 
-          adapter={this.state.adapter} 
-          onSave={this.updateAdapter} 
-          onChange={this.updateAdapterState} 
-          saving={this.state.saving}/> 
-      </div>
-      )
-    }
-    return (
-      <div className="col-md-8 col-md-offset-2">
-        <Button variant="raised" style={{textTransform: 'none'}}  onClick={this.toggleSave} >Edit Adapter</Button>
-      </div>
-    );
+    		     <div>
+    		        <div>
+
+    		        <Dialog
+    		          open={this.state.open}
+    		          onClose={this.handleClose}
+    		          aria-labelledby="form-dialog-title"
+    		        >
+    		          <DialogTitle id="form-dialog-title">Oppdater adapteren</DialogTitle>
+    		          <DialogContent>
+ 		            
+    		              <TextField
+    		              margin="dense"
+    		    	      required
+    		    	      name="name"
+    		    	      label="Adapter Navn"
+    		    	      value={this.state.adapter.name}  
+    		    	      fullWidth
+    		    	      onChange={this.updateAdapterState}
+    		              disabled
+    		          /> 
+    		        
+  		       
+    		        	<TextField
+		                   autoFocus
+    		        	   name="shortDescription"
+    		        	   label="Kort beskrivelse"
+    		        	   fullWidth
+    		        	   onChange={this.updateAdapterState}
+    		               value={this.state.adapter.shortDescription}  
+    		        	/>
+      		    	  <TextField
+	  		    	  	name="note"
+	  		    	  	label="Note"
+	  		    	  	multiline
+	  		            rows="4"
+	  		            onChange={this.updateAdapterState}
+	  		            value={this.state.adapter.note}  
+  		    	  />    		   
+    		          </DialogContent>
+    		          <DialogActions>
+    		            <Button onClick={this.handleClose} color="primary" style={{textTransform: 'none'}}>
+    		            Avbryt
+    		            </Button>
+    		            <Button onClick={this.handleClose}  color="primary" style={{textTransform: 'none'}}>
+    		            Oppdater
+    		            </Button>
+    		          </DialogActions>
+    		        </Dialog>
+    		      </div>
+    		</div>
+      ) 		
+
   }
 }
 
 
 AdapterView.propTypes = {
-	 adapters: PropTypes.array.isRequired,
-	 children: PropTypes.object
+
 };
 
 function getAdapterById(adapters, id) {
@@ -91,9 +138,13 @@ function getAdapterById(adapters, id) {
 
 
 function mapStateToProps(state) {
-	return {
-	    adapters: state.adapters
-	  };
+  let adapter = {name: '', note: '',  shortDescription: ''};
+  const adapterName = state.posts.name;
+  if (adapterName && state.adapters.length > 0 ) {
+    adapter = getAdapterById(state.adapters, state.posts.name);
+ 
+  } 
+    return {adapter: adapter};
 }
 
 function  matchDispatchToProps(dispatch){

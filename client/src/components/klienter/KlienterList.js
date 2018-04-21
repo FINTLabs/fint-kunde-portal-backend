@@ -49,7 +49,7 @@ class KlientsList extends Component {
                         <DashboardIcon/>
                     </Avatar>}/></a>
 
-  			<h3>Klienter</h3>
+  			<h1>Klienter</h1>
   			<ul className="list-group">
   				{this.props.klienter.map((klient, i) => 
   			<div>
@@ -58,7 +58,7 @@ class KlientsList extends Component {
   	         			<li className="list-group-item" key={i}><Link to={{pathname: '/klient', state: {klient : klient}}} style={{ textDecoration: 'none' }}>{klient.name}</Link></li>
   	         		</Grid>
   	         		<Grid item xs={12} sm={1}>
-  	         			<button style={{ padding: '1px 20px' }} onClick={() => {this.deleteKlient(klient)}} className="btn btn-default">Delete</button>
+  	         			<button style={{ padding: '1px 20px' }} onClick={() => {this.deleteKlient(klient)}} className="btn btn-default">Slett</button>
   	         		</Grid>
   	         	</Grid>
 			</div>

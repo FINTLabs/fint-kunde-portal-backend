@@ -1,15 +1,14 @@
 import React from 'react';
-//import { PropTypes } from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import { createAdapter } from '../../actions/adaptersAction';
-import AdapterAddForm from './AdapterAddForm';
 import { Route,  Link, withRouter } from "react-router-dom";
 import createHistory from 'history/createBrowserHistory';
 import { Redirect } from 'react-router';
 import Button from 'material-ui/Button';
-
+import Dialog, { DialogActions, DialogContent, DialogContentText, DialogTitle,} from 'material-ui/Dialog';
+import TextField from 'material-ui/TextField';	
 const styles = theme => ({
 	  button: {
 	    margin: theme.spacing.unit,
@@ -42,11 +41,12 @@ class AdapterAdd extends React.Component {
   }
 
   toggleAdd() {
+
     this.setState({isAdding: true});
   }
   
   saveAdapter(event) {
-	    event.preventDefault();
+
 	    this.props.createAdapter(this.state.adapter);
   }
 
@@ -62,26 +62,74 @@ class AdapterAdd extends React.Component {
 	    this.props.createAdapter(adapter)
   }
 
+  state = {
+		    open: false,
+		  };
+  handleClickOpen = () => {
+	    this.setState({ open: true });
+	  };
 
+	  handleClose = () => {
+    	this.createAdapter(this.state.adapter)
+	    this.setState({ open: false });
+	  };
+	  
   render() {
 	  
-    if (this.state.isAdding) {
       return (
       <div>
-        <h3>Add adapter</h3>
-        <AdapterAddForm 
-          adapter={this.state.adapter} 
-          onSave={this.saveAdapter} 
-          onChange={this.updateAdapterState} 
-          saving={this.state.saving}/> 
+        <div>
+        <Button onClick={this.handleClickOpen}>Legg til ny adapter</Button>
+        <Dialog
+          open={this.state.open}
+          onClose={this.handleClose}
+          aria-labelledby="form-dialog-title"
+        >
+          <DialogTitle id="form-dialog-title">Ny adapter</DialogTitle>
+          <DialogContent>
+            <DialogContentText>
+            Vennligst fyll ut de obligatoriske feltene for å legge til ny adapter
+            </DialogContentText>
+            
+              <TextField
+              autoFocus
+              margin="dense"
+    	      required
+    	      name="name"
+    	      label="Adapter Navn"
+    	      fullWidth
+    	      onChange={this.updateAdapterState}
+          /> 
+              
+          	<TextField
+          	   name="shortDescription"
+          	   label="Kort beskrivelse"
+          	   fullWidth
+          	   onChange={this.updateAdapterState}
+          	/>        
+
+            <TextField
+    	  	name="note"
+    	  	label="Note"
+    	  	multiline
+            rows="4"
+            onChange={this.updateAdapterState}	
+    	  />
+
+   
+          </DialogContent>
+	          <DialogActions>
+	            <Button onClick={this.handleClose} color="primary" style={{textTransform: 'none'}}>
+	            Avbryt
+	            </Button>
+	            <Button onClick={this.handleClose}  color="primary" style={{textTransform: 'none'}}>
+	            Legg til
+	            </Button>
+	          </DialogActions>
+        </Dialog>
       </div>
+     </div>
       )
-    }
-    return (
-      <div className="col-md-8 col-md-offset-2">
-       <Button variant="raised" style={{textTransform: 'none'}} onClick={this.toggleAdd} >Add Adapter</Button>
-      </div>
-    );
   }
 }
 
@@ -99,7 +147,7 @@ function getAdapterById(adapters, id) {
 function mapStateToProps(state) {
   let adapter = {name: '', note: '', shortDescription: ''};
   const adapterName = state.posts.name;
-  if (adapterName && state.adapters.length > 0 ) {
+  if (adapterName && state.er.length > 0 ) {
     adapter = getAdapterById(state.adapters, state.posts.name);
  
   } 
@@ -110,10 +158,3 @@ function  matchDispatchToProps(dispatch){
     return bindActionCreators({createAdapter : createAdapter}, dispatch);
 }
 export default withRouter(connect(mapStateToProps, matchDispatchToProps)(AdapterAdd));
-
-
-
-
-
-
-

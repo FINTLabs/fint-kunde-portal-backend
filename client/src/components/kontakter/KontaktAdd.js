@@ -1,15 +1,14 @@
 import React from 'react';
-//import { PropTypes } from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import { createKontakt } from '../../actions/kontakterAction';
-import KontaktAddForm from './KontaktAddForm';
 import { Route,  Link, withRouter } from "react-router-dom";
 import createHistory from 'history/createBrowserHistory';
 import { Redirect } from 'react-router';
 import Button from 'material-ui/Button';
-
+import Dialog, { DialogActions, DialogContent, DialogContentText, DialogTitle,} from 'material-ui/Dialog';
+import TextField from 'material-ui/TextField';	
 const styles = theme => ({
 	  button: {
 	    margin: theme.spacing.unit,
@@ -42,11 +41,12 @@ class KontaktAdd extends React.Component {
   }
 
   toggleAdd() {
+
     this.setState({isAdding: true});
   }
   
   saveKontakt(event) {
-	    event.preventDefault();
+
 	    this.props.createKontakt(this.state.kontakt);
   }
 
@@ -62,26 +62,89 @@ class KontaktAdd extends React.Component {
 	    this.props.createKontakt(kontakt)
   }
 
+  state = {
+		    open: false,
+		  };
+  handleClickOpen = () => {
+	    this.setState({ open: true });
+	  };
 
+	  handleClose = () => {
+    	this.createKontakt(this.state.kontakt)
+	    this.setState({ open: false });
+	  };
+	  
   render() {
 	  
-    if (this.state.isAdding) {
       return (
       <div>
-        <h3>Add kontakt</h3>
-        <KontaktAddForm 
-          kontakt={this.state.kontakt} 
-          onSave={this.saveKontakt} 
-          onChange={this.updateKontaktState} 
-          saving={this.state.saving}/> 
+        <div>
+        <Button onClick={this.handleClickOpen}>Legg til ny kontakt</Button>
+        <Dialog
+          open={this.state.open}
+          onClose={this.handleClose}
+          aria-labelledby="form-dialog-title"
+        >
+          <DialogTitle name="form-dialog-title">Ny kontakt</DialogTitle>
+          <DialogContent>
+            <DialogContentText>
+            Vennligst fyll ut de obligatoriske feltene for å legge til ny kontakt
+            </DialogContentText>
+            <TextField
+	  	    	name="nin"
+	  	    	label="nin"
+	            autoFocus
+	            margin="dense"
+	  	        required
+  	            fullWidth
+            	onChange={this.updateKontaktState}
+  	         /> 
+            <TextField
+	            name="firstName"
+	            label="First Name"
+	            margin="normal"
+	  	        required
+  	            fullWidth
+            	onChange={this.updateKontaktState}
+            /> 
+       
+           <TextField
+             name="lastName"
+             label="Last Name"
+  	         required
+             fullWidth
+        	 onChange={this.updateKontaktState}
+           />
+
+           <TextField
+           		name="mail"
+           		label="Mail"
+           		required
+           		fullWidth
+           		onChange={this.updateKontaktState}
+           />
+
+           <TextField
+      		name="mobile"
+      		label="Mobile"
+      		required
+      		fullWidth
+      		onChange={this.updateKontaktState}
+          /> 
+  
+          </DialogContent>
+	          <DialogActions>
+	            <Button onClick={this.handleClose} color="primary" style={{textTransform: 'none'}}>
+	            Avbryt
+	            </Button>
+	            <Button onClick={this.handleClose}  color="primary" style={{textTransform: 'none'}}>
+	            Legg til
+	            </Button>
+	          </DialogActions>
+        </Dialog>
       </div>
+     </div>
       )
-    }
-    return (
-      <div className="col-md-8 col-md-offset-2">
-       <Button variant="raised" style={{textTransform: 'none'}} onClick={this.toggleAdd} >Add Kontakt</Button>
-      </div>
-    );
   }
 }
 
@@ -97,10 +160,10 @@ function getKontaktById(kontakter, id) {
 
 
 function mapStateToProps(state) {
-  let kontakt = {nin: '', firstName: '', lastName: ''};
-  const kontaktNin = state.posts.nin;
-  if (kontaktNin && state.kontakter.length > 0 ) {
-    kontakt = getKontaktById(state.kontakter, state.posts.nin);
+  let kontakt = {name: '', note: '', shortDescription: ''};
+  const kontaktName = state.posts.name;
+  if (kontaktName && state.kontakter.length > 0 ) {
+    kontakt = getKontaktById(state.kontakter, state.posts.name);
  
   } 
     return {kontakt: kontakt};
