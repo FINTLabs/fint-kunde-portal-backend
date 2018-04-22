@@ -4,7 +4,7 @@ import {BrowserRouter, Link, Route, withRouter} from "react-router-dom";
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import ApisList from '../components/apis/ApisList';
-import KontaktAdd from '../components/apis/KontaktAdd';
+import ApiLink from '../components/apis/apiLink';
 import {fetchApis} from '../actions/apisAction';
 import {Grid} from "material-ui";
 
@@ -33,7 +33,7 @@ class ApisContainer extends React.Component {
                 	<ApisList apis={apis} />
                 </Grid>
                 <Grid item xs={7}>
-                	<KontaktAdd />
+                	<ApiLink />
                 </Grid>
             </Grid>
   

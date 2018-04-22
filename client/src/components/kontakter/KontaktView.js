@@ -80,7 +80,7 @@ class KontaktView extends React.Component {
     		        >
     		          <DialogTitle id="form-dialog-title">Oppdater kontakt</DialogTitle>
     		          <DialogContent>
-    		            <TextField
+    		        <TextField
     		  	    	name="nin"
     		  	    	label="nin"
     		            autoFocus
@@ -89,6 +89,7 @@ class KontaktView extends React.Component {
     	  	            fullWidth
     	            	onChange={this.updateKontaktState}
     		            value={this.state.kontakt.nin}  
+    		        	type='password'
     	  	         /> 
     	            <TextField
     		            name="firstName"
