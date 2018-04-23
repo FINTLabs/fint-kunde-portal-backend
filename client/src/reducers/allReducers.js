@@ -5,6 +5,12 @@ const allReducer =  (state = {}, action) =>{
       return state;
     case "FETCH_SUCCESS": 
       return {...state,posts:action.payload};
+    case "FETCHORG_REQUEST":
+        return state;  
+    case "FETCHORG_SUCCESS": 
+    	console.log("fetch");
+    	console.log(action.payload);
+        return {...state,organisation:action.payload};
     case "UPDATE_REQUEST":
         return {...state, 
              updateData: {

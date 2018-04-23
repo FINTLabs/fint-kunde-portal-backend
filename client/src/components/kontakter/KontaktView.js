@@ -59,7 +59,7 @@ class KontaktView extends React.Component {
   state = {
 		    open: false,
 		  };
-	handleClickOpen = () => {
+  handleClickOpen = () => {
 		    this.setState({ open: true });
 		  };
 
