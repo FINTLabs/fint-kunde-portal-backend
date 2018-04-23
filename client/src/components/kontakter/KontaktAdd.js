@@ -92,7 +92,7 @@ class KontaktAdd extends React.Component {
             </DialogContentText>
             <TextField
 	  	    	name="nin"
-	  	    	label="nin"
+	  	    	label="Fødselsnnummer (11 siffer)"
 	            autoFocus
 	            margin="dense"
 	  	        required

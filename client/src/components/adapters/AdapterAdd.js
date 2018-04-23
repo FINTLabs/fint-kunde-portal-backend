@@ -111,6 +111,7 @@ class AdapterAdd extends React.Component {
             <TextField
     	  	name="note"
     	  	label="Note"
+    	  	fullWidth
     	  	multiline
             rows="4"
             onChange={this.updateAdapterState}	

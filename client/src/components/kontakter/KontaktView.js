@@ -82,7 +82,7 @@ class KontaktView extends React.Component {
     		          <DialogContent>
     		        <TextField
     		  	    	name="nin"
-    		  	    	label="nin"
+    		  	    	label="Fødselsnnummer"
     		            autoFocus
     		            margin="dense"
     		  	        required

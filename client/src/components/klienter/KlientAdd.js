@@ -107,11 +107,12 @@ class KlientAdd extends React.Component {
           	   label="Kort beskrivelse"
           	   fullWidth
           	   onChange={this.updateKlientState}
-          	/>"        
+          	/>        
 
             <TextField
     	  	name="note"
     	  	label="Note"
+    	  	fullWidth	
     	  	multiline
             rows="4"
             onChange={this.updateKlientState}	
