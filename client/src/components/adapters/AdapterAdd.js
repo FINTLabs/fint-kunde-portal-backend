@@ -69,10 +69,10 @@ class AdapterAdd extends React.Component {
 	    this.setState({ open: true });
 	  };
 
-	  handleClose = () => {
-    	this.createAdapter(this.state.adapter)
-	    this.setState({ open: false });
-	  };
+  handleClose = () => {
+	this.createAdapter(this.state.adapter)
+    this.setState({ open: false });
+  };
 	  
   render() {
 	  

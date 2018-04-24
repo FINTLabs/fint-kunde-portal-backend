@@ -1,145 +1,87 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import {BrowserRouter as Router, Route,  Link, withRouter } from "react-router-dom";
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
-import {viewOrganisation} from '../../actions/apisAction';
-import {BrowserRouter as Router, Route,  Link, withRouter } from "react-router-dom";
-import createHistory from 'history/createBrowserHistory';
-import { Redirect } from 'react-router';
-import Button from 'material-ui/Button';
-import Dialog, { DialogActions, DialogContent, DialogContentText, DialogTitle,} from 'material-ui/Dialog';
-import {Avatar, Card, CardContent, CardHeader, Divider, Grid, Typography, withStyles} from "material-ui";
-import TextField from 'material-ui/TextField';
 import OrgView from './OrgView';
+import {fetchOrganisation, linkComponent, unlinkComponent} from '../../actions/apisAction';
+import {Grid} from "material-ui";
+import Button from 'material-ui/Button';
 
-const styles = theme => ({
-	  button: {
-	    margin: theme.spacing.unit,
-	    textTransform: 'none'
-	  },
-	});
-
-//class ApiLink extends React.Component {
-//  constructor(props, context) {
-//    super(props, context);
-//    organisation: Object.assign({}, this.props.location.state.organisation);
-//  }
-//  
-//  componentDidMount() {
-//	  this.setState({ open: true });
-//  }
-//  
-//   componentWillReceiveProps(nextProps) {
-//    if (this.props.organisation != nextProps.klient) {
-//      this.setState({organisation: Object.assign({}, nextProps.organisation)});
-//
-//    }
-//
-//    state = {
-//		    open: false,
-//		  };
-//	handleClickOpen = () => {
-//		    this.setState({ open: true });
-//		  };
-//
-//  handleClose = () => {
-//      this.setState({ open: false });
-//
-//  };
-//    render() {
-//        return (
-//		    <Router>
-//	  			<div>
-//	  				<h1>Organisation</h1>
-//	  	         	<Grid container style={{ lineHeight: '5px' }} spacing={24}>
-//	  	         		<Grid item xs={12} sm={7}>
-//	  	         			<li className="list-group-item" ><Link to={{pathname: '/api', state: {organisation : organisation}}} style={{ textDecoration: 'none' }}>{organisation.name}</Link></li>
-//	  	         		</Grid>
-//	  	         	</Grid>
-//				</div>
-//
-//	  				)}
-//
-//		      <Route
-//		      	path="/api"
-//		      	render={({ state }) => (
-//		        <OrgView api={this.state.organisation} />
-//		        )}
-//		      />
-//		  </Router>
-//		    );
-//		  }
-//
-//	}
-//
-//	ApiLink.propTypes = {
-//			organisation: PropTypes.object.isRequired
-//		};
-//
-//	function mapStateToProps(state){
-//		return {
-//	  }
-//	}
-//	function  matchDispatchToProps(dispatch){
-//	    return bindActionCreators({fetchOrganisation : fetchOrganisation}, dispatch);
-//	}
-//
-//	export default withRouter(connect(mapStateToProps, matchDispatchToProps)(ApiLink));
-//
-//
 class OrgList extends React.Component {
 	constructor(props) {
 	    super(props);
-	    console.log("test");
-	    console.log(this.props)
-	    this.state = {organisation: this.props.organisation};
-	    console.log(this.state)
+	    this.state = {organisation: this.props.organisation,
+	    		componenetName : this.props.apis[0].name};
+	    this.linkComponent = this.linkComponent.bind(this);
+	    this.unlinkComponent = this.unlinkComponent.bind(this);
 	}
+    
+	componentDidMount(){
+  	     this.props.fetchOrganisation()
 
+   }
 
+linkComponent(event) {
+	  this.props.linkComponent(this.state.componenetName);
+}  
+
+unlinkComponent(event) {
+	  this.props.unlinkComponent(this.state.componenetName);
+}	
+handleLink = () => {
+	  this.linkComponent(this.state.componenetName)
+};
+handleUnlink = () => {
+	  this.unlinkComponent(this.state.componenetName)
+};
 	render () {
-	  return (
-	    <Router>
-	     <div>
-  			<h1>Organistaion</h1>
-  			<ul className="list-group">
-				{this.props.organisation.map((organisation, i) => 
-			<div>
-	         	<Grid container style={{ lineHeight: '5px' }} spacing={24}>
-	         		<Grid item xs={12} sm={7}>
-	         			<li className="list-group-item" key={i}><Link to={{pathname: '/api', state: {organisation : organisation}}} style={{ textDecoration: 'none' }}>{organisation.name}</Link></li>
-	         		</Grid>
-	         	</Grid>
-		</div>
-
-				)}
-      </ul>
-
-	      <Route
-	      	path="/organisation"
-	      	render={({ state }) => (
-	        <OrgView organisation={this.props.organisation} />
-	        )}
-	      />
-	    </div>
-	  </Router>
-	    );
+	    if (!this.props.organisation) {
+	      return <p>Nothing here yet...</p>;
+	    } else {
+	      return this.renderOrgs();
+	    }
 	  }
 
+	renderOrgs () {
+		const organisation = this.props.organisation;
+	    return (
+	    		<Router>
+	   	     <div>
+	     			<h3>Organistaion</h3>
+	     			<Grid container style={{ lineHeight: '5px' }} spacing={24}>
+  	         		<Grid item xs={12} sm={4}>
+  	         			<h5><Link to={{pathname: '/organisation', state: {organisation : organisation}}} style={{ textDecoration: 'none' }}>{organisation.displayName}</Link></h5>
+  	         		</Grid>
+  	         		<Grid item xs={6} sm={8}>
+  	         			<Button onClick={this.handleLink} variant="raised" size="small" style={{textTransform: 'none'}}>Link componenet</Button>&nbsp;
+	         			<Button onClick={this.handleUnlink} variant="raised" size="small" style={{textTransform: 'none'}}>Unlink componenet</Button>
+	         		</Grid>  	         		
+  	         	</Grid>
+  	         	<Route
+  		      	path="/organisation"
+  		      	render={({ state }) => (
+  		        <OrgView organisation={organisation} />
+  		        )}
+  		      />
+	   	    </div>
+
+  	         	</Router>
+    );
+  }
 }
-	
+
 OrgList.propTypes = {
-		organisation: PropTypes.object.isRequired
-	};
+//  adapters: PropTypes.array.isRequired
+};
 
 function mapStateToProps(state){
 	return {
+		organisation: state.organisation
   }
 }
-//function  matchDispatchToProps(dispatch){
-//    return bindActionCreators({viewOrganisation : viewOrganisation}, dispatch);
-//}
+function  matchDispatchToProps(dispatch){
+    return bindActionCreators({fetchOrganisation: fetchOrganisation, linkComponent : linkComponent, unlinkComponent : unlinkComponent}, dispatch);
+}
 
-export default withRouter(connect(mapStateToProps)(OrgList));
-
-
+export default withRouter(connect(mapStateToProps, matchDispatchToProps)(OrgList));

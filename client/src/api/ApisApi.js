@@ -13,7 +13,7 @@ class ApisApi {
 	}
 
   static linkComponent(api) {
-    const request = new Request(`http://localhost:8080/api/organisations/testing/components/${api.name}`, {
+    const request = new Request(`http://localhost:8080/api/organisations/testing/components/${api}`, {
       method: 'PUT',
       headers: new Headers({
           'Content-Type': 'application/json'
@@ -31,7 +31,7 @@ class ApisApi {
   }
 
   static unlinkComponent(api) {
-	    const request = new Request(`http://localhost:8080/api/organisations/testing/components/${api.name}`, {
+	    const request = new Request(`http://localhost:8080/api/organisations/testing/components/${api}`, {
 	      method: 'DELETE',
 	      headers: new Headers({
 	          'Content-Type': 'application/json'

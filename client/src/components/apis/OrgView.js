@@ -11,11 +11,11 @@ import Button from 'material-ui/Button';
 import Dialog, { DialogActions, DialogContent, DialogContentText, DialogTitle,} from 'material-ui/Dialog';
 import TextField from 'material-ui/TextField';	
 
-class ApiView extends React.Component {
+class OrgView extends React.Component {
   constructor(props, context) {
     super(props, context);
     this.state = {
-      api: Object.assign({}, this.props.location.state.api), 
+    		organisation: Object.assign({}, this.props.location.state.organisation), 
       isSaving: true
     };
 
@@ -34,8 +34,8 @@ class ApiView extends React.Component {
   }
   
    componentWillReceiveProps(nextProps) {
-    if (this.props.api != nextProps.api) {
-      this.setState({api: Object.assign({}, nextProps.api)});
+    if (this.props.organisation != nextProps.organisation) {
+      this.setState({organisation: Object.assign({}, nextProps.organisation)});
 
     }
 
@@ -70,8 +70,8 @@ unlinkComponent(event) {
 //}
   updateApiState(event) {
     const field = event.target.name;
-    const api = this.state.api;
-    api[field] = event.target.value;
+    const organisation = this.state.organisation;
+    organisation[field] = event.target.value;
     return this.setState({
     value: event.target.value
     });
@@ -110,14 +110,14 @@ unlinkComponent(event) {
     		          onClose={this.handleClose}
     		          aria-labelledby="form-dialog-title"
     		        >
-    		          <DialogTitle id="form-dialog-title">Component</DialogTitle>
+    		          <DialogTitle id="form-dialog-title">Organisation</DialogTitle>
     		          <DialogContent>
    		              <TextField
     		              margin="dense"
     		    	      required
     		    	      name="name"
-    		    	      label="Component Navn"
-    		    	      value={this.state.api.name}  
+    		    	      label="Organisation Navn"
+    		    	      value={this.state.organisation.name}  
     		    	      fullWidth
     		              disabled
     		          /> 
@@ -125,17 +125,17 @@ unlinkComponent(event) {
   		       
     		        	<TextField
 		                   autoFocus
-    		        	   name="description"
-    		        	   label="Beskrivelse"
-    		        	   value={this.state.api.description}   
+    		        	   name="displayName"
+    		        	   label="Display Navn"
+    		        	   value={this.state.organisation.displayName}   
     		        	   fullWidth
     		        	   disabled  
     		        	/>
       		    	  <TextField
-	  		    	  	name="basePath"
-	  		    	  	label="basePath"
+	  		    	  	name="orgNumber"
+	  		    	  	label="orgNumber"
 	  		            onChange={this.updateApiState}
-	  		            value={this.state.api.basePath}
+	  		            value={this.state.organisation.orgNumber}
       		    	    disabled
   		    	  />    		   
     		          </DialogContent>
@@ -143,6 +143,7 @@ unlinkComponent(event) {
     		            <Button onClick={this.handleClose} color="primary" style={{textTransform: 'none'}}>
     		            	Avbryt
     		            </Button>
+
 
     		          </DialogActions>
     		        </Dialog>
@@ -154,7 +155,7 @@ unlinkComponent(event) {
 }
 
 
-ApiView.propTypes = {
+OrgView.propTypes = {
 
 };
 
@@ -177,4 +178,4 @@ function mapStateToProps(state) {
 function  matchDispatchToProps(dispatch){
     return bindActionCreators({linkComponent : linkComponent, unlinkComponent : unlinkComponent}, dispatch);
 }
-export default withRouter(connect(mapStateToProps, matchDispatchToProps)(ApiView));
+export default withRouter(connect(mapStateToProps, matchDispatchToProps)(OrgView));

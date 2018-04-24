@@ -43,7 +43,7 @@ class ApisList extends Component {
                 <Avatar style={avtarstyle}>
                     <DashboardIcon/>
                 </Avatar>}/></a>
-  			<h1>Components</h1>
+  			<h3>Components</h3>
   			<ul className="list-group">
   				{this.props.apis.map((api, i) => 
   			<div>
