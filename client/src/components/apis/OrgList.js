@@ -4,6 +4,8 @@ import {BrowserRouter as Router, Route,  Link, withRouter } from "react-router-d
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import OrgView from './OrgView';
+import OrgComponentsLink from './OrgComponentsLink';
+import OrgComponentsUnlink from './OrgComponentsUnlink';
 import {fetchOrganisation, linkComponent, unlinkComponent} from '../../actions/apisAction';
 import {Grid} from "material-ui";
 import Button from 'material-ui/Button';
@@ -12,7 +14,8 @@ class OrgList extends React.Component {
 	constructor(props) {
 	    super(props);
 	    this.state = {organisation: this.props.organisation,
-	    		componenetName : this.props.apis[0].name};
+	    		componenetName : this.props.apis[0].name,
+	    		components : this.props.apis};
 	    this.linkComponent = this.linkComponent.bind(this);
 	    this.unlinkComponent = this.unlinkComponent.bind(this);
 	}
@@ -35,6 +38,7 @@ handleLink = () => {
 handleUnlink = () => {
 	  this.unlinkComponent(this.state.componenetName)
 };
+
 	render () {
 	    if (!this.props.organisation) {
 	      return <p>Nothing here yet...</p>;
@@ -44,7 +48,10 @@ handleUnlink = () => {
 	  }
 
 	renderOrgs () {
+
 		const organisation = this.props.organisation;
+		const components = this.state.components;
+
 	    return (
 	    		<Router>
 	   	     <div>
@@ -54,17 +61,28 @@ handleUnlink = () => {
   	         			<h5><Link to={{pathname: '/organisation', state: {organisation : organisation}}} style={{ textDecoration: 'none' }}>{organisation.displayName}</Link></h5>
   	         		</Grid>
   	         		<Grid item xs={6} sm={8}>
-  	         			<Button onClick={this.handleLink} variant="raised" size="small" style={{textTransform: 'none'}}>Link componenet</Button>&nbsp;
-	         			<Button onClick={this.handleUnlink} variant="raised" size="small" style={{textTransform: 'none'}}>Unlink componenet</Button>
+  	         		<Link to={{pathname: '/componentsLink'}} style={{ textDecoration: 'none' }}>
+  	         			<Button  variant="raised" size="small" style={{textTransform: 'none'}}>Link componenet</Button></Link>&nbsp;&nbsp;
+  	         		<Link to={{pathname: '/componentsUnlink'}} style={{ textDecoration: 'none' }}>	
+	         			<Button variant="raised" size="small" style={{textTransform: 'none'}}>Unlink componenet</Button></Link>
 	         		</Grid>  	         		
   	         	</Grid>
   	         	<Route
-  		      	path="/organisation"
-  		      	render={({ state }) => (
-  		        <OrgView organisation={organisation} />
-  		        )}
-  		      />
-	   	    </div>
+  		      		path="/organisation"
+  		      		render={({ state }) => (
+  		      		<OrgView organisation={organisation} />
+  		        )}/>
+  	         	<Route
+  		      		path="/componentsLink"
+  		      		render={({ state }) => (
+  		      		<OrgComponentsLink components={components} />
+  		        )}/>
+  	         	<Route
+  		      		path="/componentsUnlink"
+  		      		render={({ state }) => (
+  		      		<OrgComponentsUnlink components={components} />
+  		        )}/>
+  	         	</div>
 
   	         	</Router>
     );
