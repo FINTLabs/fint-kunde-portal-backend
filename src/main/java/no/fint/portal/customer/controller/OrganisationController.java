@@ -62,15 +62,6 @@ public class OrganisationController {
     return ResponseEntity.ok(legalContact);
   }
 
-  @GetMapping("/contacts/technical")
-  @ApiOperation("Get Technical Contacts")
-  public ResponseEntity getTechnicalContacts(@PathVariable String orgName) {
-    Organisation organisation = portalApiService.getOrganisation(orgName);
-    List<Contact> technicalContacts = organisationService.getTechnicalContacts(organisation);
-
-    return ResponseEntity.ok(technicalContacts);
-  }
-
   @PutMapping("/contacts/legal/{nin}")
   @ApiOperation("Set Legal Contact")
   public ResponseEntity linkLegalContact(@PathVariable String orgName, @PathVariable String nin) {
@@ -91,6 +82,15 @@ public class OrganisationController {
     organisationService.unLinkLegalContact(organisation, contact);
 
     return ResponseEntity.noContent().build();
+  }
+
+  @GetMapping("/contacts/technical")
+  @ApiOperation("Get Technical Contacts")
+  public ResponseEntity getTechnicalContacts(@PathVariable String orgName) {
+    Organisation organisation = portalApiService.getOrganisation(orgName);
+    List<Contact> technicalContacts = organisationService.getTechnicalContacts(organisation);
+
+    return ResponseEntity.ok(technicalContacts);
   }
 
   @PutMapping("/contacts/technical/{nin}")

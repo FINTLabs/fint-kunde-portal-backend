@@ -16,6 +16,38 @@ ou: administrasjon_personal
 fintComponentBasePath: /administrasjon/personal
 description: Administrasjon Personal
 
+dn: ou=administrasjon_kodeverk,ou=apis,o=fint-test
+objectclass: organizationalUnit
+objectclass: top
+objectclass: fintComponent
+ou: administrasjon_kodeverk
+fintComponentBasePath: /administrasjon/kodeverk
+description: Administrasjon Kodeverk
+
+dn: ou=administrasjon_organisasjon,ou=apis,o=fint-test
+objectclass: organizationalUnit
+objectclass: top
+objectclass: fintComponent
+ou: administrasjon_organisasjon
+fintComponentBasePath: /administrasjon/organisasjon
+description: Administrasjon Organisasjon
+
+dn: ou=administrasjon_fullmakt,ou=apis,o=fint-test
+objectclass: organizationalUnit
+objectclass: top
+objectclass: fintComponent
+ou: administrasjon_fullmakt
+fintComponentBasePath: /administrasjon/fullmakt
+description: Administrasjon Fullmakt
+
+dn: ou=felles_kodeverk,ou=apis,o=fint-test
+objectclass: organizationalUnit
+objectclass: top
+objectclass: fintComponent
+ou: felles_kodeverk
+fintComponentBasePath: /felles/kodeverk
+description: Felles Kodeverk
+
 dn: ou=contacts,o=fint-test
 objectclass: group
 ou: contacts

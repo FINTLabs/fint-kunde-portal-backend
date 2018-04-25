@@ -7,8 +7,9 @@ fint:
     url: "${url}"
     user: "${user}"
     password: "${password}"
-    component-base: "ou=felleskomponenter,o=fint"
-    organisation-base: "ou=organisasjoner,o=fint"
+    component-base: "ou=apis,o=fint-test"
+    organisation-base: "ou=organisations,o=fint-test"
+    contact-base: "ou=contacts,o=fint-test"
 
 security:
   basic:

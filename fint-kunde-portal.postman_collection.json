@@ -11,7 +11,7 @@
 			"description": "Folder for api",
 			"item": [
 				{
-					"name": "Get all components",
+					"name": "Get  all  components",
 					"event": [
 						{
 							"listen": "test",
@@ -58,7 +58,7 @@
 					"response": []
 				},
 				{
-					"name": "Get component by name",
+					"name": "Get  component  by  name",
 					"event": [
 						{
 							"listen": "test",
@@ -104,7 +104,7 @@
 					"response": []
 				},
 				{
-					"name": "Get all assets",
+					"name": "Get  all   assets",
 					"event": [
 						{
 							"listen": "test",
@@ -151,7 +151,7 @@
 					"response": []
 				},
 				{
-					"name": "Create asset",
+					"name": "Create   asset",
 					"event": [
 						{
 							"listen": "test",
@@ -201,7 +201,7 @@
 					"response": []
 				},
 				{
-					"name": "Get asset by name",
+					"name": "Get   asset  by   name",
 					"event": [
 						{
 							"listen": "test",
@@ -251,7 +251,7 @@
 					"response": []
 				},
 				{
-					"name": "Update asset",
+					"name": "Update   asset",
 					"event": [
 						{
 							"listen": "test",
@@ -304,7 +304,7 @@
 					"response": []
 				},
 				{
-					"name": "Get all adapters",
+					"name": "Get  all  adapters",
 					"event": [
 						{
 							"listen": "test",
@@ -350,7 +350,7 @@
 					"response": []
 				},
 				{
-					"name": "Add adapter",
+					"name": "Add  adapter",
 					"event": [
 						{
 							"listen": "test",
@@ -399,7 +399,7 @@
 					"response": []
 				},
 				{
-					"name": "Get adapter",
+					"name": "Get  adapter",
 					"event": [
 						{
 							"listen": "test",
@@ -449,7 +449,56 @@
 					"response": []
 				},
 				{
-					"name": "Reset adapter password",
+					"name": "Get  adapter secret",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "2dcf0ef7-f1ce-41c8-aeee-88e97f1ab36b",
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"Client Secret Found\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									""
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "*/*"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {},
+						"url": {
+							"raw": "http://targethost:8080/api/adapters/testing/testadapter/secret",
+							"protocol": "http",
+							"host": [
+								"targethost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"adapters",
+								"testing",
+								"testadapter",
+								"secret"
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Reset  adapter  password",
 					"event": [
 						{
 							"listen": "test",
@@ -504,7 +553,7 @@
 					"response": []
 				},
 				{
-					"name": "Update adapter",
+					"name": "Update  adapter",
 					"event": [
 						{
 							"listen": "test",
@@ -556,7 +605,7 @@
 					"response": []
 				},
 				{
-					"name": "Link adapter to asset",
+					"name": "Link   adapter  to   asset",
 					"event": [
 						{
 							"listen": "test",
@@ -605,7 +654,7 @@
 					"response": []
 				},
 				{
-					"name": "Add adapter to component",
+					"name": "Add  adapter  to  component",
 					"event": [
 						{
 							"listen": "test",
@@ -654,7 +703,7 @@
 					"response": []
 				},
 				{
-					"name": "Unlink adapter from asset",
+					"name": "Unlink   adapter  from   asset",
 					"event": [
 						{
 							"listen": "test",
@@ -703,7 +752,7 @@
 					"response": []
 				},
 				{
-					"name": "Remove adapter from component",
+					"name": "Remove  adapter  from  component",
 					"event": [
 						{
 							"listen": "test",
@@ -752,7 +801,7 @@
 					"response": []
 				},
 				{
-					"name": "Delete adapter",
+					"name": "Delete  adapter",
 					"event": [
 						{
 							"listen": "test",
@@ -799,7 +848,7 @@
 					"response": []
 				},
 				{
-					"name": "Get all clients",
+					"name": "Get  all  clients",
 					"event": [
 						{
 							"listen": "test",
@@ -845,7 +894,7 @@
 					"response": []
 				},
 				{
-					"name": "Add client",
+					"name": "Add  client",
 					"event": [
 						{
 							"listen": "test",
@@ -897,7 +946,7 @@
 					"response": []
 				},
 				{
-					"name": "Get client",
+					"name": "Get  client",
 					"event": [
 						{
 							"listen": "test",
@@ -946,7 +995,55 @@
 					"response": []
 				},
 				{
-					"name": "Update client",
+					"name": "Get  client secret",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "535e6a26-27a7-4423-9d1c-ea26ec165bbe",
+								"type": "text/javascript",
+								"exec": [
+									"pm.test(\"Client secret exists\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								]
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Accept",
+								"value": "*/*"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {},
+						"url": {
+							"raw": "http://targethost:8080/api/clients/testing/testclient/secret",
+							"protocol": "http",
+							"host": [
+								"targethost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"clients",
+								"testing",
+								"testclient",
+								"secret"
+							]
+						},
+						"description": ""
+					},
+					"response": []
+				},
+				{
+					"name": "Update  client",
 					"event": [
 						{
 							"listen": "test",
@@ -998,7 +1095,7 @@
 					"response": []
 				},
 				{
-					"name": "Reset client password",
+					"name": "Reset  client  password",
 					"event": [
 						{
 							"listen": "test",
@@ -1049,7 +1146,7 @@
 					"response": []
 				},
 				{
-					"name": "Link client to asset",
+					"name": "Link   client  to   asset",
 					"event": [
 						{
 							"listen": "test",
@@ -1098,7 +1195,7 @@
 					"response": []
 				},
 				{
-					"name": "Add client to component",
+					"name": "Add  client  to  component",
 					"event": [
 						{
 							"listen": "test",
@@ -1147,7 +1244,7 @@
 					"response": []
 				},
 				{
-					"name": "Unlink client from asset",
+					"name": "Unlink   client  from   asset",
 					"event": [
 						{
 							"listen": "test",
@@ -1196,7 +1293,7 @@
 					"response": []
 				},
 				{
-					"name": "Remove client from component",
+					"name": "Remove  client  from  component",
 					"event": [
 						{
 							"listen": "test",
@@ -1245,7 +1342,7 @@
 					"response": []
 				},
 				{
-					"name": "Delete client",
+					"name": "Delete  client",
 					"event": [
 						{
 							"listen": "test",
@@ -1292,7 +1389,7 @@
 					"response": []
 				},
 				{
-					"name": "Delete asset",
+					"name": "Delete   asset",
 					"event": [
 						{
 							"listen": "test",
@@ -1339,7 +1436,7 @@
 					"response": []
 				},
 				{
-					"name": "Get all contacts",
+					"name": "Get  all  contacts",
 					"event": [
 						{
 							"listen": "test",
@@ -1385,7 +1482,7 @@
 					"response": []
 				},
 				{
-					"name": "Get contact by nin",
+					"name": "Get  contact  by  nin",
 					"event": [
 						{
 							"listen": "test",
@@ -1432,7 +1529,7 @@
 					"response": []
 				},
 				{
-					"name": "Update contact",
+					"name": "Update  contact",
 					"event": [
 						{
 							"listen": "test",
@@ -1484,7 +1581,7 @@
 					"response": []
 				},
 				{
-					"name": "Create new contact",
+					"name": "Create  new  contact",
 					"event": [
 						{
 							"listen": "test",
@@ -1516,7 +1613,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n \"firstName\": \"John\",\r\n \"lastName\": \"Doe\",\r\n \"mail\": \"john.doe@example.com\",\r\n \"mobile\": \"1-800-555-1212\",\r\n \"nin\": \"00000000000\"\r\n}"
+							"raw": "{\r\n  \"firstName\": \"John\",\r\n  \"lastName\": \"Doe\",\r\n  \"mail\": \"john.doe@example.com\",\r\n  \"mobile\": \"1-800-555-1212\",\r\n  \"nin\": \"00000000000\"\r\n}"
 						},
 						"url": {
 							"raw": "http://targethost:8080/api/contacts",
@@ -1535,7 +1632,7 @@
 					"response": []
 				},
 				{
-					"name": "Delete a contact",
+					"name": "Delete  a  contact",
 					"event": [
 						{
 							"listen": "test",
@@ -1581,7 +1678,7 @@
 					"response": []
 				},
 				{
-					"name": "Get organisation",
+					"name": "Get   organisation",
 					"event": [
 						{
 							"listen": "test",
@@ -1629,7 +1726,7 @@
 					"response": []
 				},
 				{
-					"name": "Update organisation",
+					"name": "Update   organisation",
 					"event": [
 						{
 							"listen": "test",
@@ -1676,12 +1773,12 @@
 								""
 							]
 						},
-						"description": ""
+						"description": null
 					},
 					"response": []
 				},
 				{
-					"name": "Link component",
+					"name": "Link   component",
 					"event": [
 						{
 							"listen": "test",
@@ -1724,12 +1821,12 @@
 								"administrasjon_personal"
 							]
 						},
-						"description": ""
+						"description": null
 					},
 					"response": []
 				},
 				{
-					"name": "Unlink component",
+					"name": "Unlink   component",
 					"event": [
 						{
 							"listen": "test",
@@ -1772,12 +1869,12 @@
 								"administrasjon_personal"
 							]
 						},
-						"description": ""
+						"description": null
 					},
 					"response": []
 				},
 				{
-					"name": "Set legal contact",
+					"name": "Set   legal   contact",
 					"event": [
 						{
 							"listen": "test",
@@ -1826,7 +1923,7 @@
 					"response": []
 				},
 				{
-					"name": "Get legal contact",
+					"name": "Get   legal   contact",
 					"event": [
 						{
 							"listen": "test",
@@ -1877,7 +1974,7 @@
 					"response": []
 				},
 				{
-					"name": "Unset legal contact",
+					"name": "Unset   legal   contact",
 					"event": [
 						{
 							"listen": "test",
@@ -1921,12 +2018,12 @@
 								"12345678901"
 							]
 						},
-						"description": ""
+						"description": null
 					},
 					"response": []
 				},
 				{
-					"name": "Get technical contacts",
+					"name": "Get   technical   contacts",
 					"request": {
 						"method": "GET",
 						"header": [
@@ -1960,7 +2057,7 @@
 					"response": []
 				},
 				{
-					"name": "Add technical contact",
+					"name": "Add   technical   contact",
 					"event": [
 						{
 							"listen": "test",
@@ -2009,7 +2106,7 @@
 					"response": []
 				},
 				{
-					"name": "Remove technical contact",
+					"name": "Remove   technical   contact",
 					"request": {
 						"method": "DELETE",
 						"header": [
