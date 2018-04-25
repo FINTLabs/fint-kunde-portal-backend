@@ -13,7 +13,7 @@ class ApisApi {
 	}
 
   static linkComponent(api) {
-    const request = new Request(`http://localhost:8080/api/organisations/testing/components/${api}`, {
+    const request = new Request(`http://localhost:8080/api/organisations/testing/components/${api.name}`, {
       method: 'PUT',
       headers: new Headers({
           'Content-Type': 'application/json'

@@ -4,6 +4,7 @@ import {BrowserRouter as Router, Route,  Link, withRouter } from "react-router-d
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import OrgView from './OrgView';
+import ApiView from './ApiView';
 import OrgComponentsLink from './OrgComponentsLink';
 import OrgComponentsUnlink from './OrgComponentsUnlink';
 import {fetchOrganisation, linkComponent, unlinkComponent} from '../../actions/apisAction';
@@ -20,25 +21,58 @@ class OrgList extends React.Component {
 	    this.unlinkComponent = this.unlinkComponent.bind(this);
 	}
     
-	componentDidMount(){
-  	     this.props.fetchOrganisation()
 
-   }
+	  componentDidMount() {
+		  this.props.fetchOrganisation()
+	  }
+	  
+	   componentWillReceiveProps(nextProps) {
+	    if (this.props.api != nextProps.api) {
+	      this.setState({api: Object.assign({}, nextProps.api)});
 
-linkComponent(event) {
-	  this.props.linkComponent(this.state.componenetName);
-}  
+	    }
 
-unlinkComponent(event) {
-	  this.props.unlinkComponent(this.state.componenetName);
-}	
-handleLink = () => {
-	  this.linkComponent(this.state.componenetName)
+	    this.setState({saving: false, isAdding: false});
+	  }
+
+	  toggleSave() {
+	    this.setState({isSaving: true});
+	  }
+
+	linkComponent(api) {
+	  this.props.linkComponent(api);
+	}  
+
+	unlinkComponent(api) {
+		  this.props.unlinkComponent(api);
+	}	
+updateApiState(event) {
+  const field = event.target.name;
+  const api = this.state.api;
+  api[field] = event.target.value;
+  return this.setState({
+  value: event.target.value
+  });
+}
+
+state = {
+		    open: false,
+		  };
+handleClickOpen = () => {
+		    this.setState({ open: true });
+		  };
+
+handleClose = () => {
+    this.setState({ open: false });
+	    //eslint-disable-next-line
+    location.assign("/apis/apis");
 };
-handleUnlink = () => {
-	  this.unlinkComponent(this.state.componenetName)
-};
+handleCloseUnlink = (api) => {
+	const componentName = api.substr(3, api.indexOf(',')-3);
+	this.unlinkComponent(componentName)
+    this.setState({ open: false });
 
+};
 	render () {
 	    if (!this.props.organisation) {
 	      return <p>Nothing here yet...</p>;
@@ -48,46 +82,46 @@ handleUnlink = () => {
 	  }
 
 	renderOrgs () {
-
 		const organisation = this.props.organisation;
-		const components = this.state.components;
+		  return (
+		    <Router>
+		     <div>
+		     <h4><Link to={{pathname: '/organisation', state: {organisation : organisation}}} style={{ textDecoration: 'none' }}>Organistaion:{organisation.displayName}</Link></h4>
+	  			<ul className="list-group">
+	  				{organisation.components.map((api, i) => 
+	  				<div>
+		  	         	<Grid container style={{ lineHeight: '5px' }} spacing={24}>
+		  	         		<Grid item xs={12} sm={7}>
+		  	         			<li className="list-group-item" key={i}><Link to={{pathname: '/api', state: {api : api}}} style={{ textDecoration: 'none' }}>{api}</Link></li>
+		  	         		</Grid>
+		  	         		<Grid item xs={12} sm={5}>
+		  	         			<Button variant="raised" size="small" onClick={() => this.handleCloseUnlink(api)} color="primary" style={{textTransform: 'none'}}>unlink componenet</Button>
+		  	         		</Grid>
+		  	           </Grid>	
+	  	         		
+				</div>
 
-	    return (
-	    		<Router>
-	   	     <div>
-	     			<h3>Organistaion</h3>
-	     			<Grid container style={{ lineHeight: '5px' }} spacing={24}>
-  	         		<Grid item xs={12} sm={4}>
-  	         			<h5><Link to={{pathname: '/organisation', state: {organisation : organisation}}} style={{ textDecoration: 'none' }}>{organisation.displayName}</Link></h5>
-  	         		</Grid>
-  	         		<Grid item xs={6} sm={8}>
-  	         		<Link to={{pathname: '/componentsLink'}} style={{ textDecoration: 'none' }}>
-  	         			<Button  variant="raised" size="small" style={{textTransform: 'none'}}>Link componenet</Button></Link>&nbsp;&nbsp;
-  	         		<Link to={{pathname: '/componentsUnlink'}} style={{ textDecoration: 'none' }}>	
-	         			<Button variant="raised" size="small" style={{textTransform: 'none'}}>Unlink componenet</Button></Link>
-	         		</Grid>  	         		
-  	         	</Grid>
-  	         	<Route
-  		      		path="/organisation"
-  		      		render={({ state }) => (
-  		      		<OrgView organisation={organisation} />
-  		        )}/>
-  	         	<Route
-  		      		path="/componentsLink"
-  		      		render={({ state }) => (
-  		      		<OrgComponentsLink components={components} />
-  		        )}/>
-  	         	<Route
-  		      		path="/componentsUnlink"
-  		      		render={({ state }) => (
-  		      		<OrgComponentsUnlink components={components} />
-  		        )}/>
-  	         	</div>
+	  				)}
+		      </ul>
 
-  	         	</Router>
-    );
-  }
-}
+	         	<Route
+		      		path="/organisation"
+		      		render={({ state }) => (
+		      		<OrgView organisation={organisation} />
+		        )}/>
+	  		    <Route
+		  	      	path="/api"
+		  	      	render={({ state }) => (
+		  	        <ApiView api={this.state.api} />
+		  	     )}/>
+
+		    </div>
+		  </Router>
+		    );
+		  }
+
+	}
+
 
 OrgList.propTypes = {
 //  adapters: PropTypes.array.isRequired

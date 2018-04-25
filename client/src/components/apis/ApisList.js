@@ -4,6 +4,7 @@ import {connect} from 'react-redux';
 import { BrowserRouter as Router, Route, Link, Switch, Redirect, withRouter	} from 'react-router-dom';
 import { routerMiddleware as createRouterMiddleware,  routerReducer, push} from "react-router-redux";
 import {fetchApis} from '../../actions/apisAction';
+import { linkComponent, unlinkComponent } from '../../actions/apisAction';
 import DashboardIcon from 'material-ui-icons/Home';
 import ApiView from './ApiView';
 import PropTypes from 'prop-types';
@@ -33,7 +34,72 @@ class ApisList extends Component {
 	constructor(props) {
 	    super(props);
 	    this.state = {apis: this.props.apis};
-	}
+	    this.updateApiState = this.updateApiState.bind(this);
+	    this.toggleSave = this.toggleSave.bind(this);
+	    this.linkComponent = this.linkComponent.bind(this);
+	    this.unlinkComponent = this.unlinkComponent.bind(this);
+//		    this.AddAdapterToComponent = this.AddAdapterToComponent.bind(this);
+//		    this.deleteAdapterFromComponent = this.deleteAdapterFromComponent.bind(this);
+//		    this.AddKlientToComponent = this.AddKlientToComponent.bind(this);
+//		    this.deleteklientFromComponent = this.deleteKlientFromComponent.bind(this);
+		  }
+
+		  componentDidMount() {
+			  this.setState({ open: true });
+		  }
+		  
+		   componentWillReceiveProps(nextProps) {
+		    if (this.props.api != nextProps.api) {
+		      this.setState({api: Object.assign({}, nextProps.api)});
+
+		    }
+
+		    this.setState({saving: false, isAdding: false});
+		  }
+
+		  toggleSave() {
+		    this.setState({isSaving: true});
+		  }
+
+		linkComponent(api) {
+		  this.props.linkComponent(api);
+		}  
+
+		unlinkComponent(event) {
+			  this.props.unlinkComponent(this.state.api);
+		}	
+  updateApiState(event) {
+	    const field = event.target.name;
+	    const api = this.state.api;
+	    api[field] = event.target.value;
+	    return this.setState({
+	    value: event.target.value
+	    });
+	  }
+
+	  state = {
+			    open: false,
+			  };
+	 handleClickOpen = () => {
+			    this.setState({ open: true });
+			  };
+
+	  handleClose = () => {
+	      this.setState({ open: false });
+		    //eslint-disable-next-line
+	      location.assign("/apis/apis");
+	  };
+	  
+	  handleCloseLink = (api) => {
+		  this.linkComponent(api)
+	      this.setState({ open: false });
+
+	  };
+	  handleCloseUnlink = () => {
+		  this.unlinkComponent(this.state.api)
+	      this.setState({ open: false });
+
+	  };	
 
 	render () {
 	  return (
@@ -51,7 +117,11 @@ class ApisList extends Component {
   	         		<Grid item xs={12} sm={7}>
   	         			<li className="list-group-item" key={i}><Link to={{pathname: '/api', state: {api : api}}} style={{ textDecoration: 'none' }}>{api.name}</Link></li>
   	         		</Grid>
-  	         	</Grid>
+  	         		<Grid item xs={12} sm={5}>
+  	         			<Button variant="raised" size="small" onClick={() => this.handleCloseLink(api)} color="primary" style={{textTransform: 'none'}}>Link componenet</Button>
+  	         		</Grid>
+  	           </Grid>	
+  	         		
 			</div>
 
   				)}
@@ -79,7 +149,7 @@ function mapStateToProps(state){
   }
 }
 function  matchDispatchToProps(dispatch){
-    return bindActionCreators({fetchApis : fetchApis}, dispatch);
+    return bindActionCreators({fetchApis : fetchApis, linkComponent : linkComponent, unlinkComponent : unlinkComponent}, dispatch);
 }
 
 export default withRouter(connect(mapStateToProps, matchDispatchToProps)(ApisList));
