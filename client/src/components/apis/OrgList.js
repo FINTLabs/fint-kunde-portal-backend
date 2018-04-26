@@ -5,9 +5,8 @@ import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import OrgView from './OrgView';
 import ApiView from './ApiView';
-import OrgComponentsLink from './OrgComponentsLink';
 import OrgComponentsUnlink from './OrgComponentsUnlink';
-import {fetchOrganisation, linkComponent, unlinkComponent} from '../../actions/apisAction';
+import {fetchOrganisation, unlinkComponent} from '../../actions/apisAction';
 import {Grid} from "material-ui";
 import Button from 'material-ui/Button';
 
@@ -17,7 +16,6 @@ class OrgList extends React.Component {
 	    this.state = {organisation: this.props.organisation,
 	    		componenetName : this.props.apis[0].name,
 	    		components : this.props.apis};
-	    this.linkComponent = this.linkComponent.bind(this);
 	    this.unlinkComponent = this.unlinkComponent.bind(this);
 	}
     
@@ -35,13 +33,6 @@ class OrgList extends React.Component {
 	    this.setState({saving: false, isAdding: false});
 	  }
 
-	  toggleSave() {
-	    this.setState({isSaving: true});
-	  }
-
-	linkComponent(api) {
-	  this.props.linkComponent(api);
-	}  
 
 	unlinkComponent(api) {
 		  this.props.unlinkComponent(api);
@@ -92,7 +83,7 @@ handleCloseUnlink = (api) => {
 	  				<div>
 		  	         	<Grid container style={{ lineHeight: '5px' }} spacing={24}>
 		  	         		<Grid item xs={12} sm={7}>
-		  	         			<li className="list-group-item" key={i}><Link to={{pathname: '/api', state: {api : api}}} style={{ textDecoration: 'none' }}>{api}</Link></li>
+		  	         			<li>{api.substr(3, api.indexOf(',')-3)}</li>
 		  	         		</Grid>
 		  	         		<Grid item xs={12} sm={5}>
 		  	         			<Button variant="raised" size="small" onClick={() => this.handleCloseUnlink(api)} color="primary" style={{textTransform: 'none'}}>unlink componenet</Button>
@@ -133,7 +124,7 @@ function mapStateToProps(state){
   }
 }
 function  matchDispatchToProps(dispatch){
-    return bindActionCreators({fetchOrganisation: fetchOrganisation, linkComponent : linkComponent, unlinkComponent : unlinkComponent}, dispatch);
+    return bindActionCreators({fetchOrganisation: fetchOrganisation, unlinkComponent : unlinkComponent}, dispatch);
 }
 
 export default withRouter(connect(mapStateToProps, matchDispatchToProps)(OrgList));

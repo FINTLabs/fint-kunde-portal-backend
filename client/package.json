@@ -22,6 +22,7 @@
     "react-router-dom": "^4.2.2",
     "react-router-redux": "^4.0.8",
     "react-scripts": "1.1.0",
+    "react-search": "^2.0.5",
     "redux": "^3.7.2",
     "redux-form": "^7.3.0",
     "redux-logger": "^3.0.6",

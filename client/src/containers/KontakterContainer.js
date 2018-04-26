@@ -33,7 +33,7 @@ class KontakterContainer extends React.Component {
                 	<KontakterList kontakter={kontakter} />
                 </Grid>
                 <Grid item xs={7}>
-                	<KontaktAdd />
+                	<KontaktAdd  kontakter={kontakter} />
                 </Grid>
             </Grid>
   

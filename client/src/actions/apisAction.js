@@ -100,8 +100,6 @@ export function linkComponentSuccess(api) {
 }
 
 export function unlinkComponent(api) {
-	console.log("api");
-	console.log(api);
 	  return function (dispatch) {
 	    return ApisApi.unlinkComponent(api).then(responseApi => {
 	      dispatch(unlinkComponentSuccess(responseApi));

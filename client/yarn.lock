@@ -6631,6 +6631,10 @@ react-scrollbar-size@^2.0.2:
     react-event-listener "^0.5.1"
     stifle "^1.0.2"
 
+react-search@^2.0.5:
+  version "2.0.5"
+  resolved "https://registry.yarnpkg.com/react-search/-/react-search-2.0.5.tgz#ae643095f4901fff0d86afadbebf5c5b2c31829b"
+
 react-test-renderer@^16.0.0-0, react-test-renderer@^16.2.0:
   version "16.2.0"
   resolved "https://registry.yarnpkg.com/react-test-renderer/-/react-test-renderer-16.2.0.tgz#bddf259a6b8fcd8555f012afc8eacc238872a211"
