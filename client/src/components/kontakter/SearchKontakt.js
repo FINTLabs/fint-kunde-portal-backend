@@ -10,14 +10,14 @@ class SearchKontakt extends Component {
 	    this.state = {kontakter: this.props.kontakter};
 	}
 
-	  SelectedItems(items) {
+  SelectedItems(items) {
 
   }
  
   render () {
 	    let items = []
 		{this.props.kontakter.map((kontakt, i) => 
-			items[i] = {id: i, value: kontakt.firstName+" "+kontakt.lastName}
+			items[i] = {id: i, value: kontakt.firstName+" "+kontakt.lastName, nin:kontakt.dn}
 		)}	    
     return (
     	<div>	

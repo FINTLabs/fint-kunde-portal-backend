@@ -4,6 +4,7 @@ import {connect} from 'react-redux';
 import { BrowserRouter as Router, Route, Link, Switch, Redirect, withRouter	} from 'react-router-dom';
 import { routerMiddleware as createRouterMiddleware,  routerReducer, push} from "react-router-redux";
 import {deleteKontakt} from '../../actions/kontakterAction';
+import {removeTechnicalContact} from '../../actions/apisAction';
 import DashboardIcon from 'material-ui-icons/Home';
 import KontaktView from './KontaktView';
 import PropTypes from 'prop-types';
@@ -33,11 +34,13 @@ class KontakterList extends Component {
 	constructor(props) {
 	    super(props);
 	    this.deleteKontakt= this.deleteKontakt.bind(this);
-	    this.state = {kontakter: this.props.kontakter};
+	    this.state = {kontakter: this.props.kontakter,
+	    		technicalContacts: this.props.technicalContacts};
 	}
 
 	deleteKontakt(kontakt) {
-		 this.props.deleteKontakt(kontakt)
+//		 this.props.deleteKontakt(kontakt)
+		 this.props.removeTechnicalContact(kontakt)
 	}
 	render () {
 	  return (
@@ -49,14 +52,14 @@ class KontakterList extends Component {
                 </Avatar>}/></a>
   			<h1>Kontakter</h1>
   			<ul className="list-group">
-  				{this.props.kontakter.map((kontakt, i) => 
+  				{this.props.technicalContacts.map((kontakt, i) => 
   			<div>
   	         	<Grid container style={{ lineHeight: '5px' }} spacing={24}>
   	         		<Grid item xs={12} sm={7}>
   	         			<li className="list-group-item" key={i}><Link to={{pathname: '/kontakt', state: {kontakt : kontakt}}} style={{ textDecoration: 'none' }}>{kontakt.firstName} {kontakt.lastName}</Link></li>
   	         		</Grid>
-  	         		<Grid item xs={12} sm={1}>
-  	         			<button style={{ padding: '1px 20px' }} onClick={() => {this.deleteKontakt(kontakt)}} className="btn btn-default">Slett</button>
+  	         		<Grid item xs={12} sm={5}>
+  	         			<button style={{ padding: '1px 20px' }} onClick={() => {this.deleteKontakt(kontakt)}} className="btn btn-default">Fjern teknisk kontakt</button>
   	         		</Grid>
   	         	</Grid>
 			</div>
@@ -86,7 +89,7 @@ function mapStateToProps(state){
   }
 }
 function  matchDispatchToProps(dispatch){
-    return bindActionCreators({deleteKontakt : deleteKontakt}, dispatch);
+    return bindActionCreators({deleteKontakt : deleteKontakt, removeTechnicalContact: removeTechnicalContact}, dispatch);
 }
 
 export default withRouter(connect(mapStateToProps, matchDispatchToProps)(KontakterList));

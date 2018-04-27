@@ -3,6 +3,7 @@ export const FETCH_REQUEST="FETCH_REQUEST";
 export const FETCHORG_REQUEST="FETCHORG_REQUEST";
 export const FETCH_SUCCESS="FETCH_SUCCESS";
 export const FETCHORG_SUCCESS="FETCHORG_SUCCESS";
+export const FETCHTECHNICALCONTACTS_SUCCESS="FETCHTECHNICALCONTACTS_SUCCESS";
 export const FETCH_ERROR="FETCH_ERROR";
 export const UPDATE_REQUEST="UPDATE_REQUEST";
 export const UPDATE_SUCCESS = 'UPDATE_SUCCESS';
@@ -20,6 +21,13 @@ function fetchPostsRequest(){
 function fetchPostsSuccess(payload) {
 	  return {
 	    type: FETCH_SUCCESS,
+	    payload
+	  }
+	}
+
+function fetchTechnicalContactsSuccess(payload) {
+	  return {
+	    type: FETCHTECHNICALCONTACTS_SUCCESS,
 	    payload
 	  }
 	}
@@ -48,6 +56,7 @@ function fetchOrgError() {
 	    type: FETCH_ERROR
 	  }
 	}
+
 export function fetchApis() {
 
 	return (dispatch) => {
@@ -56,6 +65,23 @@ export function fetchApis() {
       	console.log('fetching', "background: blue; color: yellow; padding-left:10px;");	
     	if(response.status === 200){
         dispatch(fetchPostsSuccess(json));
+      }
+      else{
+    	console.log('fetching', "background: blue; color: yellow; padding-left:10px;");	
+        dispatch(fetchPostsError());
+      }
+    })
+  }
+}
+
+export function fetchTechnicalContacts() {
+
+	return (dispatch) => {
+  	dispatch(fetchPostsRequest());
+    return ApisApi.getTechnicalContacts().then(([response, json]) =>{
+      	console.log('fetching', "background: blue; color: yellow; padding-left:10px;");	
+    	if(response.status === 200){
+    		dispatch(fetchTechnicalContactsSuccess(json));
       }
       else{
     	console.log('fetching', "background: blue; color: yellow; padding-left:10px;");	
@@ -112,9 +138,36 @@ export function unlinkComponent(api) {
 	  };
 }
 
+
 export function unlinkComponentSuccess(api) {
 	return {type: UPDATE_SUCCESS, api}
 }
+
+
+export function removeTechnicalContact(nin) {
+	  return function (dispatch) {
+	    return ApisApi.removeTechnicalContact(nin).then(responseKontakt => {
+	    //eslint-disable-next-line
+	      location.assign("/kontakter/kontakter");
+	      return responseKontakt;
+	    }).catch(error => {
+	      throw(error);
+	    });
+	  };
+	}
+
+export function addTechnicalContact(nin) {
+	  return function (dispatch) {
+	    return ApisApi.addTechnicalContact(nin).then(responseKontakt => {
+	    //eslint-disable-next-line
+	      location.assign("/kontakter/kontakter");
+	      return responseKontakt;
+	    }).catch(error => {
+	      throw(error);
+	    });
+	  };
+	}
+
 //export function addAdapterToComponent(api) {
 //	  return function (dispatch) {
 //	    return ApisApi.addAdapter(api).then(responseApi => {

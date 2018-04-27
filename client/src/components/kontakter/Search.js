@@ -4,10 +4,16 @@
 import React, { Component } from 'react'
 import ReactDOM from 'react-dom'
 import PropTypes from 'prop-types';
+import {connect} from 'react-redux';
+import {bindActionCreators} from 'redux';
+import { Route,  Link, withRouter } from "react-router-dom";
+import createHistory from 'history/createBrowserHistory';
+import { Redirect } from 'react-router';
 import TextField from 'material-ui/TextField';
+import { addTechnicalContact } from '../../actions/apisAction';
 import Button from 'material-ui/Button';
 import {Grid} from "material-ui";
-export default class Search extends Component {
+class Search extends Component {
 
   static get defaultProps () {
     return {
@@ -44,6 +50,7 @@ export default class Search extends Component {
       searchValue: '',
       menuVisible: false
     }
+    this.addTechnicalContact = this.addTechnicalContact.bind(this);
   }
 
   componentDidMount() {
@@ -204,15 +211,17 @@ export default class Search extends Component {
 
   handleSelect(e) {
     let element = e.currentTarget.children[0]
-    let item = { id: parseInt(element.dataset.id), value: element.innerHTML.replace(/&amp;/g, '&') }
+    let item = { id: parseInt(element.dataset.id), value: element.innerHTML.replace(/&amp;/g, '&'), nin:this.props.items[parseInt(element.dataset.id)] }
     this.selectMenuItem(item)
   }
 
+  addTechnicalContact(kontakt) {
+	    this.props.addTechnicalContact(kontakt)
+	    return kontakt
+ }	
   handleSelectedItemClick(item){
-		console.log("test")
-		console.log(item)
+		this.addTechnicalContact(item.nin.nin.substring(3,14))
 	}
-	
   handleKeyChange (e) {
     const { getItemsAsync } = this.props;
     let value = this.refs.searchInput.value
@@ -361,3 +370,12 @@ export default class Search extends Component {
     )
   }
 }
+function mapStateToProps(state) {
+	  let item = {id: '', value: '', nin: ''};
+	    return {item: item};
+	}
+
+function  matchDispatchToProps(dispatch){
+    return bindActionCreators({addTechnicalContact : addTechnicalContact}, dispatch);
+}
+export default withRouter(connect(mapStateToProps, matchDispatchToProps)(Search));

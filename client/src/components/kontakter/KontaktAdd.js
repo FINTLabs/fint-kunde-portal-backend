@@ -7,7 +7,8 @@ import { BrowserRouter as Router, Route,  Link, withRouter } from "react-router-
 import createHistory from 'history/createBrowserHistory';
 import { Redirect } from 'react-router';
 import Button from 'material-ui/Button';
-	
+import {fetchKontakter} from '../../actions/kontakterAction';
+
 const style = {
 		  margin: 12,
 		  textDecoration: 'none',
@@ -17,9 +18,12 @@ const style = {
 class KontaktAdd extends React.Component {
 	constructor(props) {
 	    super(props);
-	    this.state = {kontakter: this.props.kontakter};
+	    this.state = {kontakter: this.props.posts};
 	}
+	componentDidMount(){
+	 	   this.props.fetchKontakter();
 
+	   }
   render() {
 	  
       return (
@@ -29,7 +33,7 @@ class KontaktAdd extends React.Component {
 	      <Route
 	      	path="/addKontakt"
 	      	render={({ state }) => (
-	        <SearchKontakt kontakter={this.state.kontakter} />
+	        <SearchKontakt kontakter={this.props.posts} />
 	        )} 
 	      />
 		</div>
@@ -38,7 +42,16 @@ class KontaktAdd extends React.Component {
         );
    }
 }
-  export default (KontaktAdd);
+function mapStateToProps(state){
+	return {
+        posts: state.posts
+  }
+}
+function  matchDispatchToProps(dispatch){
+    return bindActionCreators({fetchKontakter: fetchKontakter}, dispatch);
+}
+
+export default withRouter(connect(mapStateToProps, matchDispatchToProps)(KontaktAdd));
 
 
 

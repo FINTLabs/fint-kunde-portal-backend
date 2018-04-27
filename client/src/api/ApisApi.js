@@ -6,6 +6,12 @@ class ApisApi {
 	     .then( response => Promise.all([response,response.json()]));
 	}
 
+  static getTechnicalContacts() {
+	  const url='http://localhost:8080/api/organisations/testing/contacts/technical';
+	  return fetch(url, { method: 'GET'})
+	     .then( response => Promise.all([response,response.json()]));
+	}
+  
   static getOrganisation() {
 	  const url='http://localhost:8080/api/organisations/testing/';
 	  return fetch(url, { method: 'GET'})
@@ -46,6 +52,44 @@ class ApisApi {
 	    }).catch(error => {
 	      return error;
 	    });
+  }
+  
+
+static addTechnicalContact(nin) {
+	    const request = new Request(`http://localhost:8080/api/organisations/testing/contacts/technical/${nin}`, {
+	      method: 'PUT',
+	      headers: new Headers({
+	          'Content-Type': 'application/json'
+	        }), 
+	        body: JSON.stringify({
+		  	  nin: nin})
+	      });
+
+
+	    return fetch(request).then(response => {
+	      return response.json();
+	    }).catch(error => {
+	      return error;
+	    });
+	  }
+
+
+static removeTechnicalContact(kontakt) {
+    const request = new Request(`http://localhost:8080/api/organisations/testing/contacts/technical/${kontakt.nin}`, {
+      method: 'DELETE',
+      headers: new Headers({
+          'Content-Type': 'application/json'
+        }), 
+        body: JSON.stringify({
+	  	  nin: kontakt.nin})
+      });
+
+
+    return fetch(request).then(response => {
+      return response.json();
+    }).catch(error => {
+      return error;
+    });
   }
 }
 export default ApisApi;

@@ -82,6 +82,7 @@ export function updateKontakt(kontakt) {
 	  };
 	}
 
+
 export function deleteKontaktSuccess(kontakt) {
 	  return {type: DELETE_SUCCESS, kontakt}
 	}
@@ -91,7 +92,7 @@ export function deleteKontakt(kontakt) {
 	      console.log(`Deleted ${kontakt.id}`)
 	      dispatch(deleteKontaktSuccess(kontakt));
 	    //eslint-disable-next-line
-	      location.reload();
+	      location.assign("/kontakter/kontakter");
 	      return;
 	    }).catch(error => {
 	      throw(error);

@@ -40,6 +40,7 @@ class KontakterApi {
     });
   }
 
+  
   static createKontakt(Kontakt) {
 	  console.log(Kontakt)
     const request = new Request(`http://localhost:8080/api/contacts`, {

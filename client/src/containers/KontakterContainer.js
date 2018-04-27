@@ -6,19 +6,21 @@ import {bindActionCreators} from 'redux';
 import KontakterList from '../components/kontakter/KontakterList';
 import KontaktAdd from '../components/kontakter/KontaktAdd';
 import {fetchKontakter} from '../actions/kontakterAction';
+import {fetchTechnicalContacts} from '../actions/apisAction';
 import {Grid} from "material-ui";
 
 class KontakterContainer extends React.Component {
 	constructor(props) {
 	    super(props);
-	    this.state = {posts: this.props.posts};
+	    this.state = {technicalContacts: this.props.technicalContacts};
 	}
 	componentDidMount(){
-  	     this.props.fetchKontakter()
+	   this.props.fetchTechnicalContacts();
+// 	   this.props.fetchKontakter();
 
    }
 	render () {
-	    if (!this.props.posts) {
+	    if (!this.props.technicalContacts) {
 	      return <p>Nothing here yet...</p>;
 	    } else {
 	      return this.renderPosts();
@@ -26,14 +28,17 @@ class KontakterContainer extends React.Component {
 	  }
 
 	renderPosts () {
-	    const kontakter = this.props.posts;
+//	    const kontakter = this.props.posts;
+	    const technicalContacts = this.props.technicalContacts;
+	    console.log("technicalContacts")
+	    console.log(technicalContacts)
 	    return (
 	         <Grid container xs={12}>
                 <Grid item xs={5}>
-                	<KontakterList kontakter={kontakter} />
+                	<KontakterList technicalContacts={technicalContacts} />
                 </Grid>
                 <Grid item xs={7}>
-                	<KontaktAdd  kontakter={kontakter} />
+                	<KontaktAdd />
                 </Grid>
             </Grid>
   
@@ -48,11 +53,12 @@ KontakterContainer.propTypes = {
 
 function mapStateToProps(state){
 	return {
-        posts: state.posts
+        posts: state.posts,
+        technicalContacts: state.technicalContacts
   }
 }
 function  matchDispatchToProps(dispatch){
-    return bindActionCreators({fetchKontakter: fetchKontakter}, dispatch);
+    return bindActionCreators({fetchKontakter: fetchKontakter, fetchTechnicalContacts: fetchTechnicalContacts}, dispatch);
 }
 
 export default withRouter(connect(mapStateToProps, matchDispatchToProps)(KontakterContainer));
