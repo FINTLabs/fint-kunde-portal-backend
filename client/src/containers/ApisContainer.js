@@ -14,14 +14,13 @@ class ApisContainer extends React.Component {
 	    super(props);
 	    this.state = {
 	    		posts: this.props.posts,
-	    		technicalContacts: this.props.technicalContacts,
 	    };
 
 	}
 
   componentDidMount(){
   	   this.props.fetchApis();
-  	   this.props.fetchTechnicalContacts();
+	   
   }
 
 
@@ -36,15 +35,12 @@ class ApisContainer extends React.Component {
 
 	renderPosts () {
 	    const apis = this.props.posts;
-	    const technicalContacts = this.props.technicalContacts
-	    console.log("technicalContacts")
-	    console.log(technicalContacts)
 	    const componentName = apis.name;
 
 	    return (
 	         <Grid container xs={12}>
                 <Grid item xs={5}>
-                	<ApisList apis={technicalContacts} />
+                	<ApisList apis={apis} />
                 </Grid>
                 <Grid item xs={7}>
                 	<OrgList apis={apis}/>

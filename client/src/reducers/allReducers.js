@@ -6,7 +6,9 @@ const allReducer =  (state = {}, action) =>{
     case "FETCH_SUCCESS": 
       return {...state,posts:action.payload};
     case "FETCHTECHNICALCONTACTS_SUCCESS": 
-        return {...state,technicalContacts:action.payload};      
+        return {...state,technicalContacts:action.payload};   
+    case "FETCHLEGALCONTACT_SUCCESS": 
+        return {...state,legalContact:action.payload};           
     case "FETCHORG_REQUEST":
         return state;  
     case "FETCHORG_SUCCESS": 

@@ -11,6 +11,12 @@ class ApisApi {
 	  return fetch(url, { method: 'GET'})
 	     .then( response => Promise.all([response,response.json()]));
 	}
+
+  static getLegalContact() {
+	  const url='http://localhost:8080/api/organisations/testing/contacts/legal';
+	  return fetch(url, { method: 'GET'})
+	     .then( response => Promise.all([response,response.json()]));
+	}
   
   static getOrganisation() {
 	  const url='http://localhost:8080/api/organisations/testing/';
@@ -82,6 +88,46 @@ static removeTechnicalContact(kontakt) {
         }), 
         body: JSON.stringify({
 	  	  nin: kontakt.nin})
+      });
+
+
+    return fetch(request).then(response => {
+      return response.json();
+    }).catch(error => {
+      return error;
+    });
+  }
+
+static setLegalContact(kontakt) {
+	console.log("nin")
+	console.log(kontakt.nin)
+    const request = new Request(`http://localhost:8080/api/organisations/testing/contacts/legal/${kontakt.nin}`, {
+      method: 'PUT',
+      headers: new Headers({
+          'Content-Type': 'application/json'
+        }), 
+        body: JSON.stringify({
+      	  name: kontakt.nin})
+      });
+
+
+    return fetch(request).then(response => {
+      return response.json();
+    }).catch(error => {
+      return error;
+    });
+  }
+
+static unsetLegalContact(kontakt) {
+	console.log("nin")
+	console.log(kontakt.nin)
+    const request = new Request(`http://localhost:8080/api/organisations/testing/contacts/legal/${kontakt.nin}`, {
+      method: 'DELETE',
+      headers: new Headers({
+          'Content-Type': 'application/json'
+        }), 
+        body: JSON.stringify({
+      	  name: kontakt.nin})
       });
 
 

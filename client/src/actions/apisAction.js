@@ -4,6 +4,7 @@ export const FETCHORG_REQUEST="FETCHORG_REQUEST";
 export const FETCH_SUCCESS="FETCH_SUCCESS";
 export const FETCHORG_SUCCESS="FETCHORG_SUCCESS";
 export const FETCHTECHNICALCONTACTS_SUCCESS="FETCHTECHNICALCONTACTS_SUCCESS";
+export const FETCHLEGALCONTACT_SUCCESS="FETCHLEGALCONTACT_SUCCESS";
 export const FETCH_ERROR="FETCH_ERROR";
 export const UPDATE_REQUEST="UPDATE_REQUEST";
 export const UPDATE_SUCCESS = 'UPDATE_SUCCESS';
@@ -28,6 +29,13 @@ function fetchPostsSuccess(payload) {
 function fetchTechnicalContactsSuccess(payload) {
 	  return {
 	    type: FETCHTECHNICALCONTACTS_SUCCESS,
+	    payload
+	  }
+	}
+
+function fetchLegalContactSuccess(payload) {
+	  return {
+	    type: FETCHLEGALCONTACT_SUCCESS,
 	    payload
 	  }
 	}
@@ -91,6 +99,25 @@ export function fetchTechnicalContacts() {
   }
 }
 
+export function fetchLegalContact() {
+
+	return (dispatch) => {
+  	dispatch(fetchPostsRequest());
+    return ApisApi.getLegalContact().then(([response, json]) =>{
+      	console.log('fetching', "background: blue; color: yellow; padding-left:10px;");	
+    	if(response.status === 200){
+			console.log("legal")
+			console.log(json)
+    		dispatch(fetchLegalContactSuccess(json));
+      }
+      else{
+    	console.log('fetching', "background: blue; color: yellow; padding-left:10px;");	
+        dispatch(fetchPostsError());
+      }
+    })
+  }
+}
+
 export function fetchOrganisation() {
 
 	return (dispatch) => {
@@ -144,9 +171,9 @@ export function unlinkComponentSuccess(api) {
 }
 
 
-export function removeTechnicalContact(nin) {
+export function removeTechnicalContact(kontakt) {
 	  return function (dispatch) {
-	    return ApisApi.removeTechnicalContact(nin).then(responseKontakt => {
+	    return ApisApi.removeTechnicalContact(kontakt).then(responseKontakt => {
 	    //eslint-disable-next-line
 	      location.assign("/kontakter/kontakter");
 	      return responseKontakt;
@@ -168,6 +195,29 @@ export function addTechnicalContact(nin) {
 	  };
 	}
 
+export function setLegalContact(nin) {
+	  return function (dispatch) {
+	    return ApisApi.setLegalContact(nin).then(responseKontakt => {
+	    //eslint-disable-next-line
+	      location.assign("/kontakter/kontakter");
+	      return responseKontakt;
+	    }).catch(error => {
+	      throw(error);
+	    });
+	  };
+	}
+
+export function unsetLegalContact(kontakt) {
+	  return function (dispatch) {
+	    return ApisApi.unsetLegalContact(kontakt).then(responseKontakt => {
+	    //eslint-disable-next-line
+	      location.assign("/kontakter/kontakter");
+	      return responseKontakt;
+	    }).catch(error => {
+	      throw(error);
+	    });
+	  };
+	}
 //export function addAdapterToComponent(api) {
 //	  return function (dispatch) {
 //	    return ApisApi.addAdapter(api).then(responseApi => {

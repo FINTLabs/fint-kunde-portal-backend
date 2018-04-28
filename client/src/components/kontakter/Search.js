@@ -290,12 +290,12 @@ class Search extends Component {
 
       return (
         <li key={i} className={itemClass}>
-       		<Grid container style={{ lineHeight: '2px' }} spacing={24}>
-       			<Grid item xs={12} sm={4}>
-       			<Button size="small" style={{textTransform: 'none'}}>{item.value }</Button>
+       		<Grid container style={{ lineHeight: '0px' }} spacing={48}>
+       			<Grid item xs={12} sm={5}>
+       			<Button size="medium" style={{textTransform: 'none'}}>{item.value }</Button>
        			</Grid>
        			<Grid item xs={12} sm={7}>
-       				<Button size="small" color="primary"onClick={() => {this.handleSelectedItemClick(item)}} style={{textTransform: 'none'}}>Legg til</Button>
+       				<Button size="medium" color="primary"onClick={() => {this.handleSelectedItemClick(item)}} style={{textTransform: 'none'}}>Legg til</Button>
        			</Grid>
        		</Grid>
        </li>

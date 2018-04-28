@@ -3,17 +3,18 @@ import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import { BrowserRouter as Router, Route, Link, Switch, Redirect, withRouter	} from 'react-router-dom';
 import { routerMiddleware as createRouterMiddleware,  routerReducer, push} from "react-router-redux";
-import {deleteKontakt} from '../../actions/kontakterAction';
-import {removeTechnicalContact} from '../../actions/apisAction';
+import {fetchLegalContact, removeTechnicalContact, unsetLegalContact, setLegalContact} from '../../actions/apisAction';
 import DashboardIcon from 'material-ui-icons/Home';
 import KontaktView from './KontaktView';
+import LegalKontakt from './LegalKontakt';
 import PropTypes from 'prop-types';
 import Button from 'material-ui/Button';
 import TextField from 'material-ui/TextField';
 import {Avatar, Card, CardContent, CardHeader, Divider, Grid, Typography, withStyles} from "material-ui";
 import {green} from 'material-ui/colors';
+import Table, { TableBody, TableCell, TableHead, TableRow } from 'material-ui/Table';
 
-const styles = {
+const style = {
 		  smallIcon: {
 		    width: 25,
 		    height: 19
@@ -23,6 +24,13 @@ const styles = {
 		    height: 19
 		  },
 		  margin: 12,
+		  root: {
+		    width: '100%',
+		    overflowX: 'auto',
+		  },
+		  table: {
+		    minWidth: 700,
+		  },
 };
 const avtarstyle = {
         margin: 1,
@@ -30,18 +38,58 @@ const avtarstyle = {
         backgroundColor: green[500],
 
 };
+const CustomTableCell = withStyles(theme => ({
+	  head: {
+	    backgroundColor: theme.palette.common.black,
+	    color: theme.palette.common.white,
+	  },
+	  body: {
+	    fontSize: 14,
+	  },
+	}))(TableCell);
+
+	const styles = theme => ({
+	  root: {
+	    width: '100%',
+	    marginTop: theme.spacing.unit * 3,
+	    overflowX: 'auto',
+	  },
+	  table: {
+	    minWidth: 700,
+	  },
+	  row: {
+	    '&:nth-of-type(odd)': {
+	      backgroundColor: theme.palette.background.default,
+	    },
+	  },
+	});
+
 class KontakterList extends Component {
 	constructor(props) {
 	    super(props);
-	    this.deleteKontakt= this.deleteKontakt.bind(this);
+	    this.removeTechnicalContact= this.removeTechnicalContact.bind(this);
+	    this.unsetLegalContact= this.unsetLegalContact.bind(this);
+	    this.setLegalContact= this.setLegalContact.bind(this);
 	    this.state = {kontakter: this.props.kontakter,
-	    		technicalContacts: this.props.technicalContacts};
+	    		technicalContacts: this.props.technicalContacts,
+	    		legalContact: this.props.legalContact};
 	}
+    componentDidMount(){
+  	   this.props.fetchLegalContact();
+	   
+    }
 
-	deleteKontakt(kontakt) {
-//		 this.props.deleteKontakt(kontakt)
+	removeTechnicalContact(kontakt) {
 		 this.props.removeTechnicalContact(kontakt)
 	}
+	
+	unsetLegalContact(kontakt) {
+		 this.props.unsetLegalContact(kontakt)
+	}
+	
+	setLegalContact(kontakt) {
+		 this.props.setLegalContact(kontakt)
+	}	
 	render () {
 	  return (
 	    <Router>
@@ -50,22 +98,25 @@ class KontakterList extends Component {
                 <Avatar style={avtarstyle}>
                     <DashboardIcon/>
                 </Avatar>}/></a>
-  			<h1>Kontakter</h1>
-  			<ul className="list-group">
-  				{this.props.technicalContacts.map((kontakt, i) => 
-  			<div>
-  	         	<Grid container style={{ lineHeight: '5px' }} spacing={24}>
-  	         		<Grid item xs={12} sm={7}>
-  	         			<li className="list-group-item" key={i}><Link to={{pathname: '/kontakt', state: {kontakt : kontakt}}} style={{ textDecoration: 'none' }}>{kontakt.firstName} {kontakt.lastName}</Link></li>
-  	         		</Grid>
-  	         		<Grid item xs={12} sm={5}>
-  	         			<button style={{ padding: '1px 20px' }} onClick={() => {this.deleteKontakt(kontakt)}} className="btn btn-default">Fjern teknisk kontakt</button>
-  	         		</Grid>
-  	         	</Grid>
-			</div>
+  			<h3>Kontakter</h3>
 
-  				)}
-	      </ul>
+  		<LegalKontakt />  
+  		<Table >
+          <TableHead>
+              <TextField id="text-field-default" defaultValue="Teknisk Kontakter"/>
+          </TableHead>
+          <TableBody>
+          {this.props.technicalContacts.map((kontakt, i) =>  {
+              return (
+            		  <TableRow  key={i}>
+            		  	<TableCell><Link to={{pathname: '/kontakt', state: {kontakt : kontakt}}} style={{ textDecoration: 'none' }}><Button size="medium" style={{textTransform: 'none'}}>{kontakt.firstName} {kontakt.lastName}</Button></Link></TableCell>
+            		  	<TableCell numeric><Button size="medium" color="primary"onClick={() => {this.removeTechnicalContact(kontakt)}} style={{textTransform: 'none'}}>Slett</Button></TableCell>
+            		  	<TableCell numeric><Button size="medium" color="primary"onClick={() => {this.setLegalContact(kontakt)}} style={{textTransform: 'none'}}>Juridisk</Button></TableCell>
+            		  </TableRow>
+              );
+            })}
+          </TableBody>
+       </Table>
 
 	      <Route
 	      	path="/kontakt"
@@ -89,7 +140,7 @@ function mapStateToProps(state){
   }
 }
 function  matchDispatchToProps(dispatch){
-    return bindActionCreators({deleteKontakt : deleteKontakt, removeTechnicalContact: removeTechnicalContact}, dispatch);
+    return bindActionCreators({fetchLegalContact: fetchLegalContact, setLegalContact : setLegalContact, unsetLegalContact : unsetLegalContact, removeTechnicalContact: removeTechnicalContact}, dispatch);
 }
 
 export default withRouter(connect(mapStateToProps, matchDispatchToProps)(KontakterList));

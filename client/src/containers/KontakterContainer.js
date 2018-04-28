@@ -5,7 +5,6 @@ import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import KontakterList from '../components/kontakter/KontakterList';
 import KontaktAdd from '../components/kontakter/KontaktAdd';
-import {fetchKontakter} from '../actions/kontakterAction';
 import {fetchTechnicalContacts} from '../actions/apisAction';
 import {Grid} from "material-ui";
 
@@ -16,7 +15,6 @@ class KontakterContainer extends React.Component {
 	}
 	componentDidMount(){
 	   this.props.fetchTechnicalContacts();
-// 	   this.props.fetchKontakter();
 
    }
 	render () {
@@ -28,10 +26,7 @@ class KontakterContainer extends React.Component {
 	  }
 
 	renderPosts () {
-//	    const kontakter = this.props.posts;
 	    const technicalContacts = this.props.technicalContacts;
-	    console.log("technicalContacts")
-	    console.log(technicalContacts)
 	    return (
 	         <Grid container xs={12}>
                 <Grid item xs={5}>
@@ -58,7 +53,7 @@ function mapStateToProps(state){
   }
 }
 function  matchDispatchToProps(dispatch){
-    return bindActionCreators({fetchKontakter: fetchKontakter, fetchTechnicalContacts: fetchTechnicalContacts}, dispatch);
+    return bindActionCreators({ fetchTechnicalContacts: fetchTechnicalContacts}, dispatch);
 }
 
 export default withRouter(connect(mapStateToProps, matchDispatchToProps)(KontakterContainer));
