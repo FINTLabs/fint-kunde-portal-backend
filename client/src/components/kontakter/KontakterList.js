@@ -99,8 +99,7 @@ class KontakterList extends Component {
                     <DashboardIcon/>
                 </Avatar>}/></a>
   			<h3>Kontakter</h3>
-
-  		<LegalKontakt />  
+  			<LegalKontakt />  
   		<Table >
           <TableHead>
               <TextField id="text-field-default" defaultValue="Teknisk Kontakter"/>

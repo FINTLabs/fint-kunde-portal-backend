@@ -9,7 +9,7 @@ class SearchKontakt extends Component {
 	    super(props);
 	    this.state = {kontakter: this.props.kontakter};
 	}
-
+	
   SelectedItems(items) {
 
   }

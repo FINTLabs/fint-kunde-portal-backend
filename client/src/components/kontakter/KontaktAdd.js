@@ -29,7 +29,9 @@ class KontaktAdd extends React.Component {
       return (
     	<Router>	  
         <div>
-         <Link to={{pathname: '/addKontakt', state: {kontakter : this.props.kontakter}}} style={{ textDecoration: 'none' }}><Button variant="raised" size="large" color="primary" style={{textTransform: 'none'}}>Legg til ny kontakt</Button></Link>
+         <Link to={{pathname: '/addKontakt', state: {kontakter : this.props.kontakter}}} style={{ textDecoration: 'none' }}>
+         	<Button variant="raised" size="large" color="primary" style={{textTransform: 'none'}}>Legg til ny kontakt</Button>
+         </Link>
 	      <Route
 	      	path="/addKontakt"
 	      	render={({ state }) => (
