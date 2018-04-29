@@ -109,7 +109,8 @@ class LegalKontakt extends Component {
 	            <TableBody>
 	            	<TableRow>
 	              		  	<TableCell><Link to={{pathname: '/kontakt', state: {kontakt : legalContact}}} style={{ textDecoration: 'none' }}><Button size="medium" style={{textTransform: 'none'}}>{legalContact.firstName} {legalContact.lastName}</Button></Link></TableCell>
-	              		  	<TableCell numeric><Button size="medium" color="primary"onClick={() => {this.unsetLegalContact(legalContact)}} style={{textTransform: 'none'}}>Slett</Button></TableCell>
+	              		  	<TableCell><Button size="medium" color="primary"onClick={() => {this.unsetLegalContact(legalContact)}} style={{textTransform: 'none'}}>Slett</Button></TableCell>
+	              		    <TableCell numeric></TableCell>
 	              	</TableRow>
 	            </TableBody>
 	          </Table>

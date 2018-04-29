@@ -29,10 +29,10 @@ class KontakterContainer extends React.Component {
 	    const technicalContacts = this.props.technicalContacts;
 	    return (
 	         <Grid container xs={12} spacing={16}>
-                <Grid item xs={4}>
+                <Grid item xs={6}>
                 	<KontakterList technicalContacts={technicalContacts} />
                 </Grid>
-                <Grid item xs={8}>
+                <Grid item xs={6}>
                 	<KontaktAdd />
                 </Grid>
             </Grid>

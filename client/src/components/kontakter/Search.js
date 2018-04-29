@@ -12,7 +12,9 @@ import { Redirect } from 'react-router';
 import TextField from 'material-ui/TextField';
 import { addTechnicalContact } from '../../actions/apisAction';
 import Button from 'material-ui/Button';
-import {Grid} from "material-ui";
+import {Grid} from 'material-ui';
+import Icon from 'material-ui/Icon';
+
 class Search extends Component {
 
   static get defaultProps () {
@@ -268,13 +270,13 @@ class Search extends Component {
     if(!selectedItems.length && multiple ) return;
 
     if(!selectedItems.length && !multiple ) {
-//      return (
-//        <li className='autocomplete__item autocomplete__item--selected autocomplete__item__dropdown'
-//            onClick={this.handleItemClick.bind(this)}>
-//          <span dangerouslySetInnerHTML={{__html: placeholder}}></span>
-//          <span className='autocomplete__dropdown' />
-//        </li>
-//      )
+      return (
+        <li className='autocomplete__item autocomplete__item--selected autocomplete__item__dropdown'
+            onClick={this.handleItemClick.bind(this)}>
+          <span dangerouslySetInnerHTML={{__html: placeholder}}></span>
+          <span className='autocomplete__dropdown' />
+        </li>
+      )
     }
 
     let items = selectedItems.map((item, i) => {
@@ -314,22 +316,22 @@ class Search extends Component {
     }
 
     return (
-    		<div>
-    		<label for="velg">Kontaktens navn : </label>
-    		<input type='text'
-                className={inputClass}
-                ref='searchInput'
-                placeholder={this.props.placeholder}
-                onClick={this.handleClick.bind(this)}
-                onFocus={this.handleFocus.bind(this)}
-                onBlur={this.handleBlur.bind(this)}
-                onKeyUp={this.handleKeyChange.bind(this)}
-    			size="45"/> 
+    		<div style={{position: 'relative', display: 'inline-block'}}>
+    			<Icon style={{position: 'absolute', right: 5, top: 5, width: 20, height: 80}} onClick={this.handleClick.bind(this)}>search</Icon>
+	    		<input type="search"
+	                className={inputClass}
+	                ref='searchInput'
+	                placeholder={this.props.placeholder}
+	                onClick={this.handleClick.bind(this)}
+	                onFocus={this.handleFocus.bind(this)}
+	                onBlur={this.handleBlur.bind(this)}
+	                onKeyUp={this.handleKeyChange.bind(this)}
+	    			size="45" icon='search'
+	    				style={{height: '35px'}}/> 
     		</div>
     )
   }
-
-  getMenuClass() {
+    getMenuClass() {
     const { maxSelected, multiple } = this.props;
     const { menuVisible, selectedItems } = this.state;
     let menuClass = 'autocomplete__menu autocomplete__menu--hidden'
