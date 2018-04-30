@@ -102,18 +102,19 @@ class LegalKontakt extends Component {
 	    return (
 	    <Router>
 	     <div>
-	  	  		<Table >
+	  	  	<Table >
 	            <TableHead>
 	                <TextField id="text-field-default" defaultValue="Juridisk Kontakt"/>
 	            </TableHead>
-	            <TableBody>
-	            	<TableRow>
-	              		  	<TableCell><Link to={{pathname: '/kontakt', state: {kontakt : legalContact}}} style={{ textDecoration: 'none' }}><Button size="medium" style={{textTransform: 'none'}}>{legalContact.firstName} {legalContact.lastName}</Button></Link></TableCell>
-	              		  	<TableCell><Button size="medium" color="primary"onClick={() => {this.unsetLegalContact(legalContact)}} style={{textTransform: 'none'}}>Slett</Button></TableCell>
-	              		    <TableCell numeric></TableCell>
-	              	</TableRow>
-	            </TableBody>
 	          </Table>
+	          <Grid container style={{ lineHeight: '4px' }} spacing={8}>
+					<Grid item xs={12} sm={6}>
+						<Link to={{pathname: '/kontakt', state: {kontakt : legalContact}}} style={{ textDecoration: 'none' }}><Button size="medium" style={{textTransform: 'none'}}>{legalContact.firstName} {legalContact.lastName}</Button></Link>
+					</Grid>
+					<Grid item xs={12} sm={6}>
+						<Button size="medium" color="primary"onClick={() => {this.unsetLegalContact(legalContact)}} style={{textTransform: 'none'}}>Slett</Button>
+					</Grid>
+				</Grid>
 
 	      <Route
 	      	path="/kontakt"

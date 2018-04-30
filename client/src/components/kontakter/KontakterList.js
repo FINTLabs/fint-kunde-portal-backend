@@ -104,19 +104,22 @@ class KontakterList extends Component {
           <TableHead>
               <TextField id="text-field-default" defaultValue="Teknisk Kontakter"/>
           </TableHead>
-          <TableBody>
-          {this.props.technicalContacts.map((kontakt, i) =>  {
-              return (
-            		  <TableRow  key={i}>
-            		  	<TableCell><Link to={{pathname: '/kontakt', state: {kontakt : kontakt}}} style={{ textDecoration: 'none' }}><Button size="medium" style={{textTransform: 'none'}}>{kontakt.firstName} {kontakt.lastName}</Button></Link></TableCell>
-            		  	<TableCell numeric><Button size="medium" color="primary"onClick={() => {this.removeTechnicalContact(kontakt)}} style={{textTransform: 'none'}}>Slett</Button></TableCell>
-            		  	<TableCell numeric><Button size="medium" color="primary"onClick={() => {this.setLegalContact(kontakt)}} style={{textTransform: 'none'}}>Juridisk</Button></TableCell>
-            		  </TableRow>
-              );
-            })}
-          </TableBody>
        </Table>
-
+       {this.props.technicalContacts.map((kontakt, i) =>  {
+           return (
+				<Grid container style={{ lineHeight: '4px' }} spacing={8}>
+					<Grid item xs={12} sm={6}>
+						<Link to={{pathname: '/kontakt', state: {kontakt : kontakt}}} style={{ textDecoration: 'none' }}><Button size="medium" style={{textTransform: 'none'}}>{kontakt.firstName} {kontakt.lastName}</Button></Link>
+					</Grid>
+					<Grid item xs={12} sm={3}>
+						<Button size="medium" color="primary"onClick={() => {this.removeTechnicalContact(kontakt)}} style={{textTransform: 'none'}}>Slett</Button>
+					</Grid>
+					<Grid item xs={12} sm={3}>
+						<Button size="medium" color="primary"onClick={() => {this.setLegalContact(kontakt)}} style={{textTransform: 'none'}}>Juridisk</Button>
+					</Grid>
+			   </Grid>
+           );
+         })}
 	      <Route
 	      	path="/kontakt"
 	      	render={({ state }) => (
