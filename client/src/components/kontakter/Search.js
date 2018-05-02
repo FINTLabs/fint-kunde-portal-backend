@@ -219,6 +219,8 @@ class Search extends Component {
 
   addTechnicalContact(kontakt) {
 	    this.props.addTechnicalContact(kontakt)
+	    		    //eslint-disable-next-line
+	      location.assign("/kontakter/kontakter");
 	    return kontakt
  }	
   handleSelectedItemClick(item){

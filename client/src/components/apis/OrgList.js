@@ -9,7 +9,22 @@ import OrgComponentsUnlink from './OrgComponentsUnlink';
 import {fetchOrganisation, unlinkComponent} from '../../actions/apisAction';
 import {Grid} from "material-ui";
 import Button from 'material-ui/Button';
+import {green} from 'material-ui/colors';
 
+const buttonstyle = {
+        margin: 1,
+        color: '#fff',
+        backgroundColor: green[500],
+        textDecoration: 'none',
+        textTransform: 'none',
+
+};
+const linkstyle = {
+        margin: 1,
+        textDecoration: 'none',
+        textTransform: 'none',
+
+};
 class OrgList extends React.Component {
 	constructor(props) {
 	    super(props);
@@ -77,16 +92,17 @@ handleCloseUnlink = (api) => {
 		  return (
 		    <Router>
 		     <div>
-		     <h4><Link to={{pathname: '/organisation', state: {organisation : organisation}}} style={{ textDecoration: 'none' }}>Organistaion:{organisation.displayName}</Link></h4>
-	  			<ul className="list-group">
+		     <h3>Organisasjon:</h3><Link to={{pathname: '/organisation', state: {organisation : organisation}}} style={linkstyle}>{organisation.displayName}</Link>
+		     <h3>Koblede komponenter</h3>
+		     <ul className="list-group">
 	  				{organisation.components.map((api, i) => 
 	  				<div>
 		  	         	<Grid container style={{ lineHeight: '5px' }} spacing={24}>
 		  	         		<Grid item xs={12} sm={7}>
-		  	         			<li>{api.substr(3, api.indexOf(',')-3)}</li>
+		  	         			<Button bsStyle="primary"  style={linkstyle}>{api.substr(3, api.indexOf(',')-3)}</Button>
 		  	         		</Grid>
 		  	         		<Grid item xs={12} sm={5}>
-		  	         			<Button variant="raised" size="small" onClick={() => this.handleCloseUnlink(api)} color="primary" style={{textTransform: 'none'}}>unlink componenet</Button>
+		  	         			<Button bsStyle="primary" onClick={() => this.handleCloseUnlink(api)} style={buttonstyle}>Løsne komponenet</Button>
 		  	         		</Grid>
 		  	           </Grid>	
 	  	         		

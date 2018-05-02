@@ -8,12 +8,21 @@ import createHistory from 'history/createBrowserHistory';
 import { Redirect } from 'react-router';
 import Button from 'material-ui/Button';
 import {fetchKontakter} from '../../actions/kontakterAction';
+import {green} from 'material-ui/colors';
 
 const style = {
 		  margin: 12,
 		  textDecoration: 'none',
 		};
 
+const buttonstyle = {
+        margin: 1,
+        color: '#fff',
+        backgroundColor: green[500],
+        textDecoration: 'none',
+        textTransform: 'none',
+
+};
 
 class KontaktAdd extends React.Component {
 	constructor(props) {
@@ -30,8 +39,7 @@ class KontaktAdd extends React.Component {
     	<Router>	  
         <div>
          <Link to={{pathname: '/addKontakt', state: {kontakter : this.props.kontakter}}} style={{ textDecoration: 'none' }}>
-         	<Button variant="raised" size="large" color="primary" style={{textTransform: 'none'}}>Legg til ny kontakt</Button>
-         </Link>
+         	<Button style={buttonstyle}>Legg til ny kontakt</Button></Link>
 	      <Route
 	      	path="/addKontakt"
 	      	render={({ state }) => (

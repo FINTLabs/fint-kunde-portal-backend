@@ -24,10 +24,25 @@ const styles = {
 		  },
 		  margin: 12,
 };
+const buttonstyle = {
+        margin: 1,
+        color: '#fff',
+        backgroundColor: green[500],
+        textDecoration: 'none',
+        textTransform: 'none',
+
+};
+const linkstyle = {
+        margin: 1,
+        textDecoration: 'none',
+        textTransform: 'none',
+
+};
 const avtarstyle = {
         margin: 1,
         color: '#fff',
         backgroundColor: green[500],
+       
 
 };
 class ApisList extends Component {
@@ -44,30 +59,36 @@ class ApisList extends Component {
 //		    this.deleteklientFromComponent = this.deleteKlientFromComponent.bind(this);
 		  }
 
-		  componentDidMount() {
-			  this.setState({ open: true });
-		  }
-		  
-		   componentWillReceiveProps(nextProps) {
-		    if (this.props.api != nextProps.api) {
-		      this.setState({api: Object.assign({}, nextProps.api)});
-
-		    }
-
-		    this.setState({saving: false, isAdding: false});
-		  }
-
-		  toggleSave() {
-		    this.setState({isSaving: true});
-		  }
-
-		linkComponent(api) {
-		  this.props.linkComponent(api);
-		}  
-
-		unlinkComponent(event) {
-			  this.props.unlinkComponent(this.state.api);
-		}	
+	componentDidMount() {
+		  this.setState({ open: true });
+	  }
+	  
+	componentWillReceiveProps(nextProps) {
+	    if (this.props.api != nextProps.api) {
+	      this.setState({api: Object.assign({}, nextProps.api)});
+	
+	    }
+	
+	    this.setState({saving: false, isAdding: false});
+	  }
+	
+	toggleSave() {
+	    this.setState({isSaving: true});
+	  }
+	
+	linkComponent(api) {
+	  this.props.linkComponent(api);
+	}  
+	
+	unlinkComponent(event) {
+		  this.props.unlinkComponent(this.state.api);
+	}	
+	
+  toggleModal = () => {
+	    this.setState({
+	      isOpen: !this.state.isOpen
+	    });
+	  }
   updateApiState(event) {
 	    const field = event.target.name;
 	    const api = this.state.api;
@@ -109,24 +130,22 @@ class ApisList extends Component {
                 <Avatar style={avtarstyle}>
                     <DashboardIcon/>
                 </Avatar>}/></a>
-  			<h3>Components</h3>
+  			<h3>Komponenter</h3>
   			<ul className="list-group">
   				{this.props.apis.map((api, i) => 
-  			<div>
-  	         	<Grid container style={{ lineHeight: '5px' }} spacing={24}>
-  	         		<Grid item xs={12} sm={7}>
-  	         			<li className="list-group-item" key={i}><Link to={{pathname: '/api', state: {api : api}}} style={{ textDecoration: 'none' }}>{api.name}</Link></li>
-  	         		</Grid>
-  	         		<Grid item xs={12} sm={5}>
-  	         			<Button variant="raised" size="small" onClick={() => this.handleCloseLink(api)} color="primary" style={{textTransform: 'none'}}>Link componenet</Button>
-  	         		</Grid>
-  	           </Grid>	
-  	         		
-			</div>
-
+  				<div>
+	  	         	<Grid container style={{ lineHeight: '5px' }} spacing={24}>
+	  	         		<Grid item xs={12} sm={7}>
+	  	         			<Link to={{pathname: '/api', state: {api : api}}} style={{ textDecoration: 'none' }}><Button style={linkstyle}>{api.name}</Button></Link>
+	  	         		</Grid>
+	  	         		<Grid item xs={12} sm={5}>
+	  	         			<Button bsStyle="primary" onClick={() => this.handleCloseLink(api)} style={buttonstyle}>Link komponenet</Button>
+	  	         		</Grid>
+	  	           </Grid>	
+  	           </div>
   				)}
 	      </ul>
-
+	      
 	      <Route
 	      	path="/api"
 	      	render={({ state }) => (

@@ -29,6 +29,22 @@ const avtarstyle = {
         backgroundColor: green[500],
 
 };
+
+const buttonstyle = {
+        margin: 1,
+        color: '#fff',
+        backgroundColor: green[500],
+        textDecoration: 'none',
+        textTransform: 'none',
+
+};
+const linkstyle = {
+        margin: 1,
+        textDecoration: 'none',
+        textTransform: 'none',
+        align: 'left'
+
+};
 class AdaptersList extends Component {
 	constructor(props) {
 	    super(props);
@@ -47,23 +63,21 @@ class AdaptersList extends Component {
                 <Avatar style={avtarstyle}>
                     <DashboardIcon/>
                 </Avatar>}/></a>
-  			<h1>Adapters</h1>
+  			<h3>Adapters</h3>
   			<ul className="list-group">
   				{this.props.adapters.map((adapter, i) => 
-  			<div>
-  	         	<Grid container style={{ lineHeight: '5px' }} spacing={24}>
-  	         		<Grid item xs={12} sm={7}>
-  	         			<Link to={{pathname: '/adapter', state: {adapter : adapter}}} style={{ textDecoration: 'none' }}>{adapter.name}</Link>
-  	         		</Grid>
-  	         		<Grid item xs={12} sm={5}>
-  	         			<Button size="small" onClick={() => this.deleteAdapter(adapter)} color="primary" style={{textTransform: 'none'}}>Slett</Button>
-  	         		</Grid>
-  	         	</Grid>
-			</div>
-
+  				<div>
+	  	         	<Grid container style={{ lineHeight: '5px' }} spacing={24}>
+	  	         		<Grid item xs={12} sm={7}>
+	  	         			<Link to={{pathname: '/adapter', state: {adapter : adapter}}} style={{ textDecoration: 'none' }}><Button style={linkstyle}>{adapter.name}</Button></Link>
+	  	         		</Grid>
+	  	         		<Grid item xs={12} sm={5}>
+	  	         			<Button bsStyle="primary" onClick={() => this.deleteAdapter(adapter)} style={buttonstyle}>Slett</Button>
+	  	         		</Grid>
+	  	           </Grid>	
+  	           </div>
   				)}
 	      </ul>
-
 	      <Route
 	      	path="/adapter"
 	      	render={({ state }) => (

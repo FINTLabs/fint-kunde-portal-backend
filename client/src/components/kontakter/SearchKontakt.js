@@ -6,7 +6,16 @@ import React, { Component } from 'react'
 import Button from 'material-ui/Button';
 import Table, { TableBody, TableCell, TableHead, TableRow } from 'material-ui/Table';
 import {Grid} from "material-ui";
+import {green} from 'material-ui/colors';
 
+const buttonstyle = {
+        margin: 1,
+        color: '#fff',
+        backgroundColor: green[500],
+        textDecoration: 'none',
+        textTransform: 'none',
+
+};
 class SearchKontakt extends Component {
 	constructor(props) {
 	    super(props);
@@ -33,7 +42,7 @@ class SearchKontakt extends Component {
 					<Grid item xs={12} sm={5}>
 					</Grid>
 					<Grid item xs={12} sm={7}>
-						<a href="/kontakter/kontakter" style={{textDecoration:'none'}}><Button align="right" variant="raised" size="large" color="primary" style={{textTransform: 'none'}}>Avbryt</Button></a>
+						<a href="/kontakter/kontakter" style={{textDecoration:'none'}}><Button style={buttonstyle}>Avbryt</Button></a>
 					</Grid>
 				</Grid>
 	        </div>

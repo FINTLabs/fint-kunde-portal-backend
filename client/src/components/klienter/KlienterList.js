@@ -30,6 +30,22 @@ const avtarstyle = {
 
 };
 
+const buttonstyle = {
+        margin: 1,
+        color: '#fff',
+        backgroundColor: green[500],
+        textDecoration: 'none',
+        textTransform: 'none',
+
+};
+const linkstyle = {
+        margin: 1,
+        textDecoration: 'none',
+        textTransform: 'none',
+        align: 'left'
+
+};
+
 class KlientsList extends Component {
 	constructor(props) {
 	    super(props);
@@ -48,24 +64,21 @@ class KlientsList extends Component {
                     <Avatar style={avtarstyle}>
                         <DashboardIcon/>
                     </Avatar>}/></a>
-
-  			<h1>Klienter</h1>
+  			<h3>Klienter</h3>
   			<ul className="list-group">
   				{this.props.klienter.map((klient, i) => 
-  			<div>
-  	         	<Grid container style={{ lineHeight: '5px' }} spacing={24}>
-  	         		<Grid item xs={12} sm={7}>
-  	         			<li className="list-group-item" key={i}><Link to={{pathname: '/klient', state: {klient : klient}}} style={{ textDecoration: 'none' }}>{klient.name}</Link></li>
-  	         		</Grid>
-  	         		<Grid item xs={12} sm={1}>
-  	         			<Button size="small" onClick={() => this.deleteKlient(klient)} color="primary" style={{textTransform: 'none'}}>Slett</Button>
-  	         		</Grid>
-  	         	</Grid>
-			</div>
-
+  				<div>
+	  	         	<Grid container style={{ lineHeight: '5px' }} spacing={24}>
+	  	         		<Grid item xs={12} sm={7}>
+	  	         			<Link to={{pathname: '/klient', state: {klient : klient}}} style={{ textDecoration: 'none' }}><Button style={linkstyle}>{klient.name}</Button></Link>
+	  	         		</Grid>
+	  	         		<Grid item xs={12} sm={5}>
+	  	         			<Button bsStyle="primary" onClick={() => this.deleteKlient(klient)} style={buttonstyle}>Slett</Button>
+	  	         		</Grid>
+	  	           </Grid>	
+  	           </div>
   				)}
 	      </ul>
-
 	      <Route
 	      	path="/klient"
 	      	render={({ props }) => (

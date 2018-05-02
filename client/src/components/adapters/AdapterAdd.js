@@ -9,12 +9,21 @@ import { Redirect } from 'react-router';
 import Button from 'material-ui/Button';
 import Dialog, { DialogActions, DialogContent, DialogContentText, DialogTitle,} from 'material-ui/Dialog';
 import TextField from 'material-ui/TextField';	
-const styles = theme => ({
-	  button: {
-	    margin: theme.spacing.unit,
-	    textTransform: 'none'
-	  },
-	});
+import {green} from 'material-ui/colors';
+
+const style = {
+		  margin: 12,
+		  textDecoration: 'none',
+		};
+
+const buttonstyle = {
+        margin: 1,
+        color: '#fff',
+        backgroundColor: green[500],
+        textDecoration: 'none',
+        textTransform: 'none',
+
+};
 
 class AdapterAdd extends React.Component {
   constructor(props, context) {
@@ -79,7 +88,7 @@ class AdapterAdd extends React.Component {
       return (
       <div>
         <div>
-     	<Button variant="raised" size="large" onClick={this.handleClickOpen} color="primary" style={{textTransform: 'none'}}>Legg til ny adapter</Button>
+        <Button style={buttonstyle} onClick={this.handleClickOpen}>Legg til ny adapter</Button>
         <Dialog
           open={this.state.open}
           onClose={this.handleClose}
