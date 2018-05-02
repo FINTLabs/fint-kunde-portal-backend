@@ -29,10 +29,10 @@ class KontaktAdd extends React.Component {
 	    super(props);
 	    this.state = {kontakter: this.props.posts};
 	}
-	componentDidMount(){
-	 	   this.props.fetchKontakter();
+componentDidMount() {
+ 	   this.props.fetchKontakter();
 
-	   }
+}
   render() {
 	  
       return (

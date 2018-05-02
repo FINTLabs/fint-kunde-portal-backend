@@ -74,7 +74,7 @@ class AdaptersList extends Component {
 	  	         		<Grid item xs={12} sm={5}>
 	  	         			<Button bsStyle="primary" onClick={() => this.deleteAdapter(adapter)} style={buttonstyle}>Slett</Button>
 	  	         		</Grid>
-	  	           </Grid>	
+	  	            </Grid>	
   	           </div>
   				)}
 	      </ul>

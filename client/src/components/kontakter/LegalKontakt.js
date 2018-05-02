@@ -10,10 +10,10 @@ import PropTypes from 'prop-types';
 import Button from 'material-ui/Button';
 import TextField from 'material-ui/TextField';
 import {Avatar, Card, CardContent, CardHeader, Divider, Grid, Typography, withStyles} from "material-ui";
-import {green} from 'material-ui/colors';
 import Table, { TableBody, TableCell, TableHead, TableRow } from 'material-ui/Table';
+import {green} from 'material-ui/colors';
 
-const style = {
+const styles = {
 		  smallIcon: {
 		    width: 25,
 		    height: 19
@@ -23,13 +23,6 @@ const style = {
 		    height: 19
 		  },
 		  margin: 12,
-		  root: {
-		    width: '100%',
-		    overflowX: 'auto',
-		  },
-		  table: {
-		    minWidth: 700,
-		  },
 };
 const avtarstyle = {
         margin: 1,
@@ -37,31 +30,22 @@ const avtarstyle = {
         backgroundColor: green[500],
 
 };
-const CustomTableCell = withStyles(theme => ({
-	  head: {
-	    backgroundColor: theme.palette.common.black,
-	    color: theme.palette.common.white,
-	  },
-	  body: {
-	    fontSize: 14,
-	  },
-	}))(TableCell);
 
-	const styles = theme => ({
-	  root: {
-	    width: '100%',
-	    marginTop: theme.spacing.unit * 3,
-	    overflowX: 'auto',
-	  },
-	  table: {
-	    minWidth: 700,
-	  },
-	  row: {
-	    '&:nth-of-type(odd)': {
-	      backgroundColor: theme.palette.background.default,
-	    },
-	  },
-	});
+const buttonstyle = {
+        margin: 1,
+        color: '#fff',
+        backgroundColor: green[500],
+        textDecoration: 'none',
+        textTransform: 'none',
+
+};
+const linkstyle = {
+        margin: 1,
+        textDecoration: 'none',
+        textTransform: 'none',
+        align: 'left'
+
+};
 
 class LegalKontakt extends Component {
 	constructor(props) {
@@ -107,14 +91,16 @@ class LegalKontakt extends Component {
 	                <TextField id="text-field-default" defaultValue="Juridisk Kontakt"/>
 	            </TableHead>
 	          </Table>
-	          <Grid container style={{ lineHeight: '4px' }} spacing={8}>
-					<Grid item xs={12} sm={6}>
-						<Link to={{pathname: '/kontakt', state: {kontakt : legalContact}}} style={{ textDecoration: 'none' }}><Button size="medium" style={{textTransform: 'none'}}>{legalContact.firstName} {legalContact.lastName}</Button></Link>
-					</Grid>
-					<Grid item xs={12} sm={6}>
-						<Button size="medium" color="primary"onClick={() => {this.unsetLegalContact(legalContact)}} style={{textTransform: 'none'}}>Slett</Button>
-					</Grid>
-				</Grid>
+	            <Grid container style={{ lineHeight: '4px' }} spacing={8}>
+	         		<Grid item xs={12} sm={6}>
+	         			<Link to={{pathname: '/kontakt', state: {kontakt : legalContact}}} style={{ textDecoration: 'none' }}><Button style={linkstyle}>{legalContact.firstName} {legalContact.lastName}</Button></Link>
+	         		</Grid>
+	         		<Grid item xs={12} sm={2}>
+	         			<Button bsStyle="primary" onClick={() => this.unsetLegalContact(legalContact)} style={buttonstyle}>Slett</Button>
+	         		</Grid>
+	         		<Grid item xs={12} sm={2}>
+         			</Grid>
+	            </Grid>	
 
 	      <Route
 	      	path="/kontakt"

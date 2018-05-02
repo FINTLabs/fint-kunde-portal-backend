@@ -14,7 +14,16 @@ import { addTechnicalContact } from '../../actions/apisAction';
 import Button from 'material-ui/Button';
 import {Grid} from 'material-ui';
 import Icon from 'material-ui/Icon';
+import {green} from 'material-ui/colors';
 
+const buttonstyle = {
+        margin: 1,
+        color: '#fff',
+        backgroundColor: green[500],
+        textDecoration: 'none',
+        textTransform: 'none',
+
+};
 class Search extends Component {
 
   static get defaultProps () {
@@ -219,8 +228,8 @@ class Search extends Component {
 
   addTechnicalContact(kontakt) {
 	    this.props.addTechnicalContact(kontakt)
-	    		    //eslint-disable-next-line
-	      location.assign("/kontakter/kontakter");
+	    //eslint-disable-next-line
+	    location.assign("/kontakter/kontakter");
 	    return kontakt
  }	
   handleSelectedItemClick(item){
@@ -299,7 +308,7 @@ class Search extends Component {
        			<Button size="medium" style={{textTransform: 'none'}}>{item.value }</Button>
        			</Grid>
        			<Grid item xs={12} sm={7}>
-       				<Button size="medium" color="primary"onClick={() => {this.handleSelectedItemClick(item)}} style={{textTransform: 'none'}}>Legg til</Button>
+       				<Button bsStyle="primary" onClick={() => this.handleSelectedItemClick(item)} style={buttonstyle}>Sett som teknisk kontakt</Button>
        			</Grid>
        		</Grid>
        </li>
