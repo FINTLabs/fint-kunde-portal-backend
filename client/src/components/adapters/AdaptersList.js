@@ -53,10 +53,10 @@ class AdaptersList extends Component {
   			<div>
   	         	<Grid container style={{ lineHeight: '5px' }} spacing={24}>
   	         		<Grid item xs={12} sm={7}>
-  	         			<li className="list-group-item" key={i}><Link to={{pathname: '/adapter', state: {adapter : adapter}}} style={{ textDecoration: 'none' }}>{adapter.name}</Link></li>
+  	         			<Link to={{pathname: '/adapter', state: {adapter : adapter}}} style={{ textDecoration: 'none' }}>{adapter.name}</Link>
   	         		</Grid>
-  	         		<Grid item xs={12} sm={1}>
-  	         			<Button style={{ padding: '1px 20px' }} onClick={() => {this.deleteAdapter(adapter)}} className="btn btn-default">Slett</Button>
+  	         		<Grid item xs={12} sm={5}>
+  	         			<Button size="small" onClick={() => this.deleteAdapter(adapter)} color="primary" style={{textTransform: 'none'}}>Slett</Button>
   	         		</Grid>
   	         	</Grid>
 			</div>

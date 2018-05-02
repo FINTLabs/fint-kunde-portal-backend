@@ -80,7 +80,7 @@ class KlientAdd extends React.Component {
       return (
       <div>
         <div>
-        <Button onClick={this.handleClickOpen}>Legg til ny klient</Button>
+        <Button variant="raised" size="large" onClick={this.handleClickOpen} color="primary" style={{textTransform: 'none'}}>Legg til ny klient</Button>
         <Dialog
           open={this.state.open}
           onClose={this.handleClose}

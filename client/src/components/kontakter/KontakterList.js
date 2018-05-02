@@ -112,10 +112,10 @@ class KontakterList extends Component {
 						<Link to={{pathname: '/kontakt', state: {kontakt : kontakt}}} style={{ textDecoration: 'none' }}><Button size="medium" style={{textTransform: 'none'}}>{kontakt.firstName} {kontakt.lastName}</Button></Link>
 					</Grid>
 					<Grid item xs={12} sm={3}>
-						<Button size="medium" color="primary"onClick={() => {this.removeTechnicalContact(kontakt)}} style={{textTransform: 'none'}}>Slett</Button>
+						<Button size="medium" color="primary" onClick={() => {this.removeTechnicalContact(kontakt)}} style={{textTransform: 'none'}}>Slett</Button>
 					</Grid>
 					<Grid item xs={12} sm={3}>
-						<Button size="medium" color="primary"onClick={() => {this.setLegalContact(kontakt)}} style={{textTransform: 'none'}}>Juridisk</Button>
+						<Button size="medium" color="primary" onClick={() => {this.setLegalContact(kontakt)}} style={{textTransform: 'none'}}>Juridisk</Button>
 					</Grid>
 			   </Grid>
            );

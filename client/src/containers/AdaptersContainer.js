@@ -17,9 +17,7 @@ class AdaptersContainer extends React.Component {
   	     this.props.fetchAdapters()
 
    }
-	componentWillReceiveProps() {
-		    this.props.fetchAdapters();
-		  }
+
 	render () {
 	    if (!this.props.posts) {
 	      return <p>Nothing here yet...</p>;

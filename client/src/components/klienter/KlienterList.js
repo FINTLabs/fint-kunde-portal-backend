@@ -58,7 +58,7 @@ class KlientsList extends Component {
   	         			<li className="list-group-item" key={i}><Link to={{pathname: '/klient', state: {klient : klient}}} style={{ textDecoration: 'none' }}>{klient.name}</Link></li>
   	         		</Grid>
   	         		<Grid item xs={12} sm={1}>
-  	         			<button style={{ padding: '1px 20px' }} onClick={() => {this.deleteKlient(klient)}} className="btn btn-default">Slett</button>
+  	         			<Button size="small" onClick={() => this.deleteKlient(klient)} color="primary" style={{textTransform: 'none'}}>Slett</Button>
   	         		</Grid>
   	         	</Grid>
 			</div>
