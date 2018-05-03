@@ -98,3 +98,38 @@ export function deleteKlient(klient) {
 	    })
 	  }
 	}
+
+export function addKlientToComponent(klient) {
+	  return function (dispatch) {
+	    return KlienterApi.addKlient(klient).then(responseKlient => {
+	      dispatch(addKlientToComponentSuccess(responseKlient));
+		    //eslint-disable-next-line
+	      location.reload();
+	      return responseKlient;
+	    }).catch(error => {
+	      throw(error);
+	    });
+	  };
+}
+
+export function addKlientToComponentSuccess(klient) {
+	  return {type: CREATE_SUCCESS, klient}
+}
+
+
+export function deleteKlientFromComponent(klient) {
+	  return function(dispatch) {
+	    return KlienterApi.deleteKlientFromComponent(klient).then(() => {
+	      dispatch(deleteKlientFromComponentSuccess(klient));
+	    //eslint-disable-next-line
+	      location.reload();
+	      return;
+	    }).catch(error => {
+	      throw(error);
+	    })
+	  }
+	}
+export function deleteKlientFromComponentSuccess(klient) {
+	  return {type: DELETE_SUCCESS, klient}
+}
+

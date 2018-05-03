@@ -40,6 +40,13 @@ class KlientsList extends Component {
 	    this.state = {klienter: this.props.klienter};
 	}
 
+//  AddKlientToComponent(event) {
+//    this.props.addKlientToComponent(this.state.api);
+//}
+//
+//deleteKlientFromComponent(event) {
+//    this.props.deleteKlientFromComponent(this.state.api);
+//}
 	deleteKlient(klient) {
 		 this.props.deleteKlient(klient)
 	}

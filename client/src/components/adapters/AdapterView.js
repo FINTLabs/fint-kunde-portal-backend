@@ -5,7 +5,8 @@ import { updateAdapter } from '../../actions/adaptersAction';
 import { withRouter } from "react-router-dom";
 import Button from 'material-ui/Button';
 import Dialog, { DialogActions, DialogContent, DialogTitle,} from 'material-ui/Dialog';
-import TextField from 'material-ui/TextField';	
+import TextField from 'material-ui/TextField';
+import PropTypes from 'prop-types';
 
 class AdapterView extends React.Component {
   constructor(props, context) {
@@ -38,8 +39,8 @@ class AdapterView extends React.Component {
     this.setState({isSaving: true});
   }
   
-  updateAdapter(event) {
-	    this.props.updateAdapter(this.state.adapter);
+  updateAdapter(adapter, org) {
+	    this.props.updateAdapter(this.state.adapter, org);
   }
 
 
@@ -59,12 +60,18 @@ class AdapterView extends React.Component {
 		    this.setState({ open: true });
 		  };
 
-  handleClose = () => {
-	  this.updateAdapter(this.state.adapter)
-      this.setState({ open: false });
-
+  handleClose(org)  {
+	  this.updateAdapter(this.state.adapter, org)
   };
-  render() {
+  handleCancel = () => {
+	      this.setState({ open: false });
+	  };
+
+	static contextTypes = {
+        organisation: PropTypes.string
+    };
+	render () {
+		const org = this.context.organisation;
       return (
     		     <div>
     		        <div>
@@ -76,17 +83,16 @@ class AdapterView extends React.Component {
     		        >
     		          <DialogTitle id="form-dialog-title">Oppdater adapteren</DialogTitle>
     		          <DialogContent>
- 		            
     		              <TextField
-    		              margin="dense"
-    		    	      required
-    		    	      name="name"
-    		    	      label="Adapter Navn"
-    		    	      value={this.state.adapter.name}  
-    		    	      fullWidth
-    		    	      onChange={this.updateAdapterState}
-    		              disabled
-    		          /> 
+	    		              margin="dense"
+	    		    	      required
+	    		    	      name="name"
+	    		    	      label="Adapter Navn"
+	    		    	      value={this.state.adapter.name}  
+	    		    	      fullWidth
+	    		    	      onChange={this.updateAdapterState}
+	    		              disabled
+    		              /> 
     		        
   		       
     		        	<TextField
@@ -96,21 +102,44 @@ class AdapterView extends React.Component {
     		        	   fullWidth
     		        	   onChange={this.updateAdapterState}
     		               value={this.state.adapter.shortDescription}  
+    		        	/> 
+    		        	<TextField
+		                   autoFocus
+	 		        	   name="clientId"
+	 		        	   label="Klient Id"
+	 		        	   fullWidth
+	 		        	   onChange={this.updateAdapterState}
+	 		               value={this.state.adapter.clientId}  
     		        	/>
-      		    	  <TextField
-	  		    	  	name="note"
-	  		    	  	label="Note"
-	  		    	  	multiline
-	  		            rows="4"
-	  		            onChange={this.updateAdapterState}
-	  		            value={this.state.adapter.note}  
-  		    	  />    		   
+    		            <TextField
+		  		    	  	name="note"
+		  		    	  	label="Note"
+		  		    	  	multiline
+		  		            rows="4"
+		  		            onChange={this.updateAdapterState}
+		  		            value={this.state.adapter.note}  
+    		           /> 	   
+      		    	    <TextField
+	  	  		    	  	name="Komponenter"
+	  	  		    	  	label="Komponenter"
+	      		    	    fullWidth
+
+        		    	/> 
+	        		    	<dl>
+	        		         {this.state.adapter.components.map(component => {
+	        		             return ( <div key={component.dn}>
+	        		                 <dt>{component.substr(3, component.indexOf(',')-3)}</dt>
+	        		                </div>
+	        		               )
+	        		             })
+	        		         }
+	        		      </dl>
     		          </DialogContent>
     		          <DialogActions>
-    		            <Button onClick={this.handleClose} color="primary" style={{textTransform: 'none'}}>
+    		            <Button onClick={this.handleCancel} color="primary" style={{textTransform: 'none'}}>
     		            Avbryt
     		            </Button>
-    		            <Button onClick={this.handleClose}  color="primary" style={{textTransform: 'none'}}>
+    		            <Button onClick={this.handleClose(org)}  color="primary" style={{textTransform: 'none'}}>
     		            Oppdater
     		            </Button>
     		          </DialogActions>

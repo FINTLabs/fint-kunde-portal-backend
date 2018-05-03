@@ -34,6 +34,7 @@ class AdapterAdd extends React.Component {
 
 
   componentWillReceiveProps(nextProps) {
+	  console.log(this.props.org)
     if (this.props.adapter !== nextProps.adapter) {
       this.setState({adapter: Object.assign({}, nextProps.adapter)});
 
@@ -48,8 +49,7 @@ class AdapterAdd extends React.Component {
   }
   
   saveAdapter(event) {
-
-	    this.props.createAdapter(this.state.adapter);
+	    this.props.createAdapter(this.state.adapter, this.props.org);
   }
 
 
@@ -60,8 +60,8 @@ class AdapterAdd extends React.Component {
     return this.setState({adapter: adapter});
   }
 
-  createAdapter(adapter) {
-	    this.props.createAdapter(adapter)
+  createAdapter(adapter, org) {
+	    this.props.createAdapter(adapter,this.props.org)
   }
 
   state = {
@@ -72,7 +72,7 @@ class AdapterAdd extends React.Component {
 	  };
 
   handleClose = () => {
-	this.createAdapter(this.state.adapter)
+	this.createAdapter(this.state.adapter, this.props.org)
     this.setState({ open: false });
   };
 	  

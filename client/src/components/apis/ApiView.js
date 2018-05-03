@@ -7,6 +7,7 @@ import Button from 'material-ui/Button';
 import Dialog, { DialogActions, DialogContent, DialogTitle,} from 'material-ui/Dialog';
 import TextField from 'material-ui/TextField';	
 
+
 class ApiView extends React.Component {
   constructor(props, context) {
     super(props, context);
@@ -15,14 +16,6 @@ class ApiView extends React.Component {
       isSaving: true
     };
 
-    this.updateApiState = this.updateApiState.bind(this);
-    this.toggleSave = this.toggleSave.bind(this);
-    this.linkComponent = this.linkComponent.bind(this);
-    this.unlinkComponent = this.unlinkComponent.bind(this);
-//    this.AddAdapterToComponent = this.AddAdapterToComponent.bind(this);
-//    this.deleteAdapterFromComponent = this.deleteAdapterFromComponent.bind(this);
-//    this.AddKlientToComponent = this.AddKlientToComponent.bind(this);
-//    this.deleteklientFromComponent = this.deleteKlientFromComponent.bind(this);
   }
 
   componentDidMount() {
@@ -38,32 +31,7 @@ class ApiView extends React.Component {
     this.setState({saving: false, isAdding: false});
   }
 
-  toggleSave() {
-    this.setState({isSaving: true});
-  }
 
-linkComponent(event) {
-  this.props.linkComponent(this.state.api);
-}  
-
-unlinkComponent(event) {
-	  this.props.unlinkComponent(this.state.api);
-}
-//  AddAdapterToComponent(event) {
-//	    this.props.addAdapterToComponent(this.state.api);
-//  }
-//
-//  deleteAdapterFromComponent(event) {
-//	    this.props.deleteAdapterFromComponent(this.state.api);
-//  }
-//  
-//  AddKlientToComponent(event) {
-//	    this.props.addKlientToComponent(this.state.api);
-//}
-//
-//  deleteKlientFromComponent(event) {
-//	    this.props.deleteKlientFromComponent(this.state.api);
-//}
   updateApiState(event) {
     const field = event.target.name;
     const api = this.state.api;
@@ -86,16 +54,6 @@ unlinkComponent(event) {
       location.assign("/apis/apis");
   };
   
-  handleCloseLink = () => {
-	  this.linkComponent(this.state.api)
-      this.setState({ open: false });
-
-  };
-  handleCloseUnlink = () => {
-	  this.unlinkComponent(this.state.api)
-      this.setState({ open: false });
-
-  };
   render() {
       return (
     		     <div>
@@ -106,50 +64,76 @@ unlinkComponent(event) {
     		          onClose={this.handleClose}
     		          aria-labelledby="form-dialog-title"
     		        >
-    		          <DialogTitle id="form-dialog-title">Component</DialogTitle>
+    		          <DialogTitle id="form-dialog-title">Komponent</DialogTitle>
     		          <DialogContent>
+
    		              <TextField
     		              margin="dense"
-    		    	      required
     		    	      name="name"
-    		    	      label="Component Navn"
+    		    	      label="Komponent Navn"
     		    	      value={this.state.api.name}  
     		    	      fullWidth
-    		              disabled
+
     		          /> 
     		        
-  		       
-    		        	<TextField
-		                   autoFocus
+   		              <TextField
     		        	   name="description"
     		        	   label="Beskrivelse"
     		        	   value={this.state.api.description}   
     		        	   fullWidth
-    		        	   disabled  
+
     		        	/>
       		    	  <TextField
-	  		    	  	name="basePath"
-	  		    	  	label="basePath"
-	  		            onChange={this.updateApiState}
-	  		            value={this.state.api.basePath}
-      		    	    disabled
-  		    	  />    		   
-    		          </DialogContent>
+		  		    	  	name="basePath"
+		  		    	  	label="basePath"
+		  		            onChange={this.updateApiState}
+		  		            value={this.state.api.basePath}
+	      		    	  	fullWidth
+	      		    	    disabled
+      		    	    />   	   
+
+      		    	    <TextField
+	  	  		    	  	name="organisation"
+	  	  		    	  	label="Organisations"
+	  	  		            onChange={this.updateApiState}
+	  	  		            value={this.state.api.organisations}
+	      		    	    fullWidth
+
+        		    	/>  
+      		    	    <TextField
+	  	  		    	  	name="klienter"
+	  	  		    	  	label="Klienter"
+	      		    	    fullWidth
+
+        		    	/> 
+	        		    	<dl>
+	        		         {this.state.api.clients.map(client => {
+	        		             return ( <div key={client.dn}>
+	        		                 <dt>{client.substr(3, client.indexOf(',')-3)}</dt>
+	        		                </div>
+	        		               )
+	        		             })
+	        		         }
+	        		      </dl>
+      		    	    <TextField
+	  	  		    	  	name="adapters"
+	  	  		    	  	label="Adapters"
+	      		    	    fullWidth
+
+        		    	/>  
+	        		    	<dl>
+	        		         {this.state.api.adapters.map(adapter => {
+	        		             return ( <div key={adapter.dn}>
+	        		                 <dt>{adapter.substr(3, adapter.indexOf(',')-3)}</dt>
+	        		                </div>
+	        		               )
+	        		             })
+	        		         }
+	        		      </dl>
+      		    	    </DialogContent>
     		          <DialogActions>
     		            <Button onClick={this.handleClose} color="primary" style={{textTransform: 'none'}}>
     		            	Avbryt
-    		            </Button>
-        		        <Button onClick={this.handleCloseLink}  color="primary" style={{textTransform: 'none'}}>
-    		            	Legg til Adapter
-    		            </Button>
-            		    <Button onClick={this.handleCloseLink}  color="primary" style={{textTransform: 'none'}}>
-    		            	Slett Adapter
-    		            </Button>
-    		            <Button onClick={this.handleCloseUnlink}  color="primary" style={{textTransform: 'none'}}>
-    		            	Legg til Klient
-    		            </Button>
-        		         <Button onClick={this.handleCloseUnlink}  color="primary" style={{textTransform: 'none'}}>
-    		            	Slett Klient
     		            </Button>
     		            </DialogActions>
     		        </Dialog>

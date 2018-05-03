@@ -123,19 +123,21 @@ class ApisList extends Component {
   				{this.props.apis.map((api, i) => 
   				<div>
 	  	         	<Grid container style={{ lineHeight: '5px' }} spacing={24}>
-	  	         		<Grid item xs={12} sm={5}>
+	  	         		<Grid item xs={12} sm={6}>
 	  	         			<Link to={{pathname: '/api', state: {api : api}}} style={{ textDecoration: 'none' }}><Button style={linkstyle}>{api.name}</Button></Link>
 	  	         		</Grid>
-	  	         		<Grid item xs={12} sm={3}>
+	  	         		<Grid item xs={12} sm={4}>
 	  	         			<Button bsStyle="primary" onClick={() => this.handleCloseLink(api)} style={buttonstyle}>Link komponenet</Button>
   	         			</Grid>
-	  	         		<Grid item xs={12} sm={3}>
+	  	         		<Grid item xs={12} sm={2}>
+  	         				
 	         			</Grid>
 	  	           </Grid>	
   	           </div>
   				)}
 	      </ul>
-   
+
+	      
 	      <Route
 	      	path="/api"
 	      	render={({ state }) => (

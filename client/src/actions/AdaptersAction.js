@@ -32,11 +32,11 @@ function fetchPostsError() {
   }
 }
 
-export function fetchAdapters() {
+export function fetchAdapters(org) {
 
 	return (dispatch) => {
   	dispatch(fetchPostsRequest());
-    return AdaptersApi.getAdapters().then(([response, json]) =>{
+    return AdaptersApi.getAdapters(org).then(([response, json]) =>{
       	console.log('fetching', "background: blue; color: yellow; padding-left:10px;");	
     	if(response.status === 200){
         dispatch(fetchPostsSuccess(json));
@@ -50,9 +50,9 @@ export function fetchAdapters() {
 }
 
 
-export function createAdapter(adapter) {
+export function createAdapter(adapter, org) {
 	  return function (dispatch) {
-	    return AdaptersApi.createAdapter(adapter).then(responseAdapter => {
+	    return AdaptersApi.createAdapter(adapter, org).then(responseAdapter => {
 	      dispatch(createAdapterSuccess(responseAdapter));
 		    //eslint-disable-next-line
 	      location.reload();
@@ -70,9 +70,9 @@ export function createAdapterSuccess(adapter) {
 export function updateAdapterSuccess(adapter) {
 	  return {type: UPDATE_SUCCESS, adapter}
 	}
-export function updateAdapter(adapter) {
+export function updateAdapter(adapter, org) {
 	  return function (dispatch) {
-	    return AdaptersApi.updateAdapter(adapter).then(responseAdapter => {
+	    return AdaptersApi.updateAdapter(adapter, org).then(responseAdapter => {
 	    //  dispatch(updateAdapterSuccess(responseAdapter));
   	    //eslint-disable-next-line
 	      location.assign("/adapters/adapters");
@@ -86,9 +86,9 @@ export function updateAdapter(adapter) {
 export function deleteAdapterSuccess(adapter) {
 	  return {type: DELETE_SUCCESS, adapter}
 	}
-export function deleteAdapter(adapter) {
+export function deleteAdapter(adapter, org) {
 	  return function(dispatch) {
-	    return AdaptersApi.deleteAdapter(adapter).then(() => {
+	    return AdaptersApi.deleteAdapter(adapter, org).then(() => {
 	      console.log(`Deleted ${adapter.name}`)
 	      dispatch(deleteAdapterSuccess(adapter));
 	    //eslint-disable-next-line
@@ -99,3 +99,37 @@ export function deleteAdapter(adapter) {
 	    })
 	  }
 	}
+
+export function addAdapterToComponent(adapter, org) {
+return function (dispatch) {
+  return AdaptersApi.addAdapterToComponent(adapter, org).then(responseAdapter => {
+    dispatch(addAdapterToComponentSuccess(responseAdapter));
+	    //eslint-disable-next-line
+    location.reload();
+    return responseAdapter;
+  }).catch(error => {
+    throw(error);
+  });
+};
+}
+
+export function addAdapterToComponentSuccess(adapter) {
+return {type: CREATE_SUCCESS, adapter}
+}
+
+
+export function deleteAdapterFromComponent(adapter) {
+return function(dispatch) {
+  return AdaptersApi.deleteAdapterFromComponent(adapter).then(() => {
+    dispatch(deleteAdapterFromComponentSuccess(adapter));
+  //eslint-disable-next-line
+    location.reload();
+    return;
+  }).catch(error => {
+    throw(error);
+  })
+}
+}
+export function deleteAdapterFromComponentSuccess(adapter) {
+return {type: DELETE_SUCCESS, adapter}
+}

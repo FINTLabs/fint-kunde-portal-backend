@@ -9,16 +9,18 @@ import {fetchAdapters} from '../actions/adaptersAction';
 import {Grid} from "material-ui";
 
 class AdaptersContainer extends React.Component {
-	constructor(props) {
-	    super(props);
+	constructor(props, context) {
+	    super(props, context);
 	    this.state = {posts: this.props.posts};
 	}
+	
 	componentDidMount(){
-  	     this.props.fetchAdapters()
+  	     this.props.fetchAdapters(this.props.org)
 
    }
 
 	render () {
+
 	    if (!this.props.posts) {
 	      return <p>Nothing here yet...</p>;
 	    } else {
@@ -28,13 +30,14 @@ class AdaptersContainer extends React.Component {
 
 	renderPosts () {
 	    const adapters = this.props.posts;
+	    const org = this.props.org
 	    return (
 	         <Grid container xs={12}>
                 <Grid item xs={5}>
                 	<AdaptersList adapters={adapters} />
                 </Grid>
                 <Grid item xs={7}>
-                	<AdapterAdd />
+                	<AdapterAdd org={org}/>
                 </Grid>
             </Grid>
 

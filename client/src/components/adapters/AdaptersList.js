@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import { BrowserRouter as Router, Route, Link, withRouter	} from 'react-router-dom';
-import {deleteAdapter} from '../../actions/adaptersAction';
+import {deleteAdapter, deleteAdapterFromComponent} from '../../actions/adaptersAction';
 import DashboardIcon from 'material-ui-icons/Home';
 import AdapterView from './AdapterView';
 import PropTypes from 'prop-types';
@@ -39,11 +39,26 @@ class AdaptersList extends Component {
 	    this.state = {adapters: this.props.adapters};
 	}
 
-	deleteAdapter(adapter) {
-		 this.props.deleteAdapter(adapter)
+//  AddAdapterToComponent(event) {
+//	    this.props.addAdapterToComponent(this.state.api);
+//  }
+//
+  deleteAdapterFromComponent(adapter, component, org) {
+	    this.props.deleteAdapterFromComponent(adapter, component, org);
+  }
+  
+
+ deleteAdapter(adapter, org) {
+		 this.props.deleteAdapterFromComponent(adapter, org);
+		 this.props.deleteAdapter(adapter, org);
 	}
+ 
+	static contextTypes = {
+        organisation: PropTypes.string
+    };
 	render () {
-	  return (
+		const org = this.context.organisation;
+  	    return (
 	    <Router>
 	     <div>
       		<a href="/" style={{textDecoration:'none'}}><CardHeader	title="Dashboard" avatar={
@@ -59,7 +74,7 @@ class AdaptersList extends Component {
 	  	         			<Link to={{pathname: '/adapter', state: {adapter : adapter}}} style={{ textDecoration: 'none' }}><Button style={linkstyle}>{adapter.name}</Button></Link>
 	  	         		</Grid>
 	  	         		<Grid item xs={12} sm={5}>
-	  	         			<Button bsStyle="primary" onClick={() => this.deleteAdapter(adapter)} style={buttonstyle}>Slett</Button>
+	  	         			<Button bsStyle="primary" onClick={() => this.deleteAdapter(adapter, org)} style={buttonstyle}>Slett</Button>
 	  	         		</Grid>
 	  	            </Grid>	
   	           </div>
@@ -87,7 +102,7 @@ function mapStateToProps(state){
   }
 }
 function  matchDispatchToProps(dispatch){
-    return bindActionCreators({deleteAdapter : deleteAdapter}, dispatch);
+    return bindActionCreators({deleteAdapter : deleteAdapter, deleteAdapterFromComponent: deleteAdapterFromComponent}, dispatch);
 }
 
 export default withRouter(connect(mapStateToProps, matchDispatchToProps)(AdaptersList));

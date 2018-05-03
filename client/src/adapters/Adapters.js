@@ -1,17 +1,26 @@
 import React, {Component} from 'react';
 import {withStyles} from "material-ui";
 import PropTypes from 'prop-types';
-import { Route } from "react-router-dom";
 import AdaptersContainer from "../containers/AdaptersContainer";
-const styles = theme => ({});
+import {connect} from 'react-redux';
+import { BrowserRouter as Router, Route, Link, withRouter	} from 'react-router-dom';
 
 
 class Adapters extends Component {
 
+	static contextTypes = {
+        organisation: PropTypes.string
+    };
+	
     render() {
+		const org = this.context.organisation;
         return (
-        	<Route exact path='/' component={AdaptersContainer}/>
-
+      	      <Route
+  	      	path="/"
+  	      	render={({ state }) => (
+  	        <AdaptersContainer org={org} />
+  	        )}
+  	      />
         );
     }
 }
@@ -20,4 +29,9 @@ Adapters.propTypes = {
     classes: PropTypes.object.isRequired,
 };
 
-export default withStyles(styles)(AdaptersContainer);
+function mapStateToProps(state){
+	return {
+  }
+}
+
+export default withRouter(connect(mapStateToProps)(Adapters));

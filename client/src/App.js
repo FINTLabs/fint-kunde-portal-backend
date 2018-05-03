@@ -24,7 +24,15 @@ const styles = theme => ({
 
 
 class App extends Component {
+	static childContextTypes = {
+        organisation: PropTypes.string
+    };
 
+    getChildContext() {
+        return {
+        	organisation: 'testing'
+        };
+    }
     render() {
         //const {classes} = this.props;
 
