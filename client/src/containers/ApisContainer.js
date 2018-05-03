@@ -1,13 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {BrowserRouter, Link, Route, withRouter} from "react-router-dom";
+import {withRouter} from "react-router-dom";
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import ApisList from '../components/apis/ApisList';
 import OrgList from '../components/apis/OrgList';
-import {fetchApis, fetchTechnicalContacts} from '../actions/apisAction';
+import {fetchApis} from '../actions/apisAction';
 import {Grid} from "material-ui";
-import Button from 'material-ui/Button';
 
 class ApisContainer extends React.Component {
 	constructor(props) {
@@ -35,7 +34,6 @@ class ApisContainer extends React.Component {
 
 	renderPosts () {
 	    const apis = this.props.posts;
-	    const componentName = apis.name;
 
 	    return (
 	         <Grid container xs={12}>

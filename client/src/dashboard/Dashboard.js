@@ -1,17 +1,13 @@
 import React, {Component} from 'react';
-import {connect} from 'react-redux';
 import {Avatar, Card, CardContent, CardHeader, Divider, Grid, Typography, withStyles} from "material-ui";
 import {green} from 'material-ui/colors';
 import PropTypes from 'prop-types';
-import {BrowserRouter, Link, Route} from "react-router-dom";
+import { Link} from "react-router-dom";
 import ContactIcon from 'material-ui-icons/Person';
 import AdapterIcon from 'material-ui-icons/Link';
 import ApiIcon from 'material-ui-icons/WebAsset';
 import ClientIcon from 'material-ui-icons/ImportantDevices';
-import Adapters from "../adapters/Adapters";
-import Klienter from "../klienter/Klienter";
-import Kontakter from "../kontakter/Kontakter";
-import Apis from "../apis/Apis";
+
 const styles = theme => ({
     root: {
         marginTop: theme.spacing.unit * 3,

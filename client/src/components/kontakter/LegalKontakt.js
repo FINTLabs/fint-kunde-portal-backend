@@ -1,35 +1,14 @@
 import React, {Component} from 'react';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
-import { BrowserRouter as Router, Route, Link, Switch, Redirect, withRouter	} from 'react-router-dom';
-import { routerMiddleware as createRouterMiddleware,  routerReducer, push} from "react-router-redux";
-import {fetchLegalContact, unsetLegalContact, setLegalContact} from '../../actions/apisAction';
-import DashboardIcon from 'material-ui-icons/Home';
+import { BrowserRouter as Router, Route, Link, withRouter	} from 'react-router-dom';
+import {fetchLegalContact, unsetLegalContact} from '../../actions/apisAction';
 import KontaktView from './KontaktView';
-import PropTypes from 'prop-types';
 import Button from 'material-ui/Button';
 import TextField from 'material-ui/TextField';
-import {Avatar, Card, CardContent, CardHeader, Divider, Grid, Typography, withStyles} from "material-ui";
-import Table, { TableBody, TableCell, TableHead, TableRow } from 'material-ui/Table';
+import {Grid} from "material-ui";
+import Table, { TableBody, TableCell, TableHead } from 'material-ui/Table';
 import {green} from 'material-ui/colors';
-
-const styles = {
-		  smallIcon: {
-		    width: 25,
-		    height: 19
-		  },
-		  small: {
-		    width: 25,
-		    height: 19
-		  },
-		  margin: 12,
-};
-const avtarstyle = {
-        margin: 1,
-        color: '#fff',
-        backgroundColor: green[500],
-
-};
 
 const buttonstyle = {
         margin: 1,

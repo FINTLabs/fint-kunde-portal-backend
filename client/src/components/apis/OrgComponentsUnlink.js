@@ -1,41 +1,14 @@
 import React, {Component} from 'react';
-import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
-import { BrowserRouter as Router, Route, Link, Switch, Redirect, withRouter	} from 'react-router-dom';
-import { routerMiddleware as createRouterMiddleware,  routerReducer, push} from "react-router-redux";
-import {fetchApis} from '../../actions/apisAction';
-import DashboardIcon from 'material-ui-icons/Home';
-import ApiView from './ApiView';
+import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import Button from 'material-ui/Button';
-import TextField from 'material-ui/TextField';
-import {Avatar, Card, CardContent, CardHeader, Divider, Grid, Typography, withStyles} from "material-ui";
-import {green} from 'material-ui/colors';
-import Dialog, { DialogActions, DialogContent, DialogContentText, DialogTitle,} from 'material-ui/Dialog';
+import Dialog, { DialogActions, DialogContent, DialogTitle,} from 'material-ui/Dialog';
 
-const styles = {
-		  smallIcon: {
-		    width: 25,
-		    height: 19
-		  },
-		  small: {
-		    width: 25,
-		    height: 19
-		  },
-		  margin: 12,
-};
-const avtarstyle = {
-        margin: 1,
-        color: '#fff',
-        backgroundColor: green[500],
-
-};
 class OrgComponentsUnlink extends Component {
 	constructor(props, context) {
     super(props);
     this.state = {components: this.props.components};
-//    this.linkComponent = this.linkComponent.bind(this);
-//    this.unlinkComponent = this.unlinkComponent.bind(this);
 
   }
 
@@ -44,7 +17,7 @@ class OrgComponentsUnlink extends Component {
   }
   
    componentWillReceiveProps(nextProps) {
-    if (this.props.components != nextProps.components) {
+    if (this.props.components !== nextProps.components) {
       this.setState({components: Object.assign({}, nextProps.components)});
 
     }

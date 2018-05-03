@@ -1,10 +1,6 @@
-import Search from './Search'
-//import Search from 'react-search'
-import ReactDOM from 'react-dom'
-import PropTypes from 'prop-types';
+import Search from '../common/Search'
 import React, { Component } from 'react'
 import Button from 'material-ui/Button';
-import Table, { TableBody, TableCell, TableHead, TableRow } from 'material-ui/Table';
 import {Grid} from "material-ui";
 import {green} from 'material-ui/colors';
 

@@ -4,18 +4,11 @@ import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import { createKlient } from '../../actions/klienterAction';
-import { Route,  Link, withRouter } from "react-router-dom";
-import createHistory from 'history/createBrowserHistory';
-import { Redirect } from 'react-router';
+import {withRouter } from "react-router-dom";
 import Button from 'material-ui/Button';
 import Dialog, { DialogActions, DialogContent, DialogContentText, DialogTitle,} from 'material-ui/Dialog';
 import TextField from 'material-ui/TextField';	
 import {green} from 'material-ui/colors';
-
-const style = {
-		  margin: 12,
-		  textDecoration: 'none',
-		};
 
 const buttonstyle = {
         margin: 1,

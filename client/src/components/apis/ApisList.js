@@ -1,29 +1,17 @@
 import React, {Component} from 'react';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
-import { BrowserRouter as Router, Route, Link, Switch, Redirect, withRouter	} from 'react-router-dom';
-import { routerMiddleware as createRouterMiddleware,  routerReducer, push} from "react-router-redux";
+import { BrowserRouter as Router, Route, Link, withRouter	} from 'react-router-dom';
 import {fetchApis} from '../../actions/apisAction';
 import { linkComponent, unlinkComponent } from '../../actions/apisAction';
 import DashboardIcon from 'material-ui-icons/Home';
 import ApiView from './ApiView';
 import PropTypes from 'prop-types';
 import Button from 'material-ui/Button';
-import TextField from 'material-ui/TextField';
-import {Avatar, Card, CardContent, CardHeader, Divider, Grid, Typography, withStyles} from "material-ui";
+import {Avatar, CardHeader, Grid} from "material-ui";
 import {green} from 'material-ui/colors';
 
-const styles = {
-		  smallIcon: {
-		    width: 25,
-		    height: 19
-		  },
-		  small: {
-		    width: 25,
-		    height: 19
-		  },
-		  margin: 12,
-};
+
 const buttonstyle = {
         margin: 1,
         color: '#fff',
@@ -36,13 +24,13 @@ const linkstyle = {
         margin: 1,
         textDecoration: 'none',
         textTransform: 'none',
+        align: 'left'
 
 };
 const avtarstyle = {
         margin: 1,
         color: '#fff',
         backgroundColor: green[500],
-       
 
 };
 class ApisList extends Component {
@@ -130,22 +118,24 @@ class ApisList extends Component {
                 <Avatar style={avtarstyle}>
                     <DashboardIcon/>
                 </Avatar>}/></a>
-  			<h3>Komponenter</h3>
+  			<h3>Components</h3>
   			<ul className="list-group">
   				{this.props.apis.map((api, i) => 
   				<div>
 	  	         	<Grid container style={{ lineHeight: '5px' }} spacing={24}>
-	  	         		<Grid item xs={12} sm={7}>
+	  	         		<Grid item xs={12} sm={5}>
 	  	         			<Link to={{pathname: '/api', state: {api : api}}} style={{ textDecoration: 'none' }}><Button style={linkstyle}>{api.name}</Button></Link>
 	  	         		</Grid>
-	  	         		<Grid item xs={12} sm={5}>
+	  	         		<Grid item xs={12} sm={3}>
 	  	         			<Button bsStyle="primary" onClick={() => this.handleCloseLink(api)} style={buttonstyle}>Link komponenet</Button>
-	  	         		</Grid>
+  	         			</Grid>
+	  	         		<Grid item xs={12} sm={3}>
+	         			</Grid>
 	  	           </Grid>	
   	           </div>
   				)}
 	      </ul>
-	      
+   
 	      <Route
 	      	path="/api"
 	      	render={({ state }) => (

@@ -1,14 +1,10 @@
 import React from 'react';
-import { PropTypes } from 'react';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
-import { reduxForm } from 'redux-form';
 import { updateKlient } from '../../actions/klienterAction';
-import { Route,  Link, withRouter } from "react-router-dom";
-import createHistory from 'history/createBrowserHistory';
-import { Redirect } from 'react-router';
+import { withRouter } from "react-router-dom";
 import Button from 'material-ui/Button';
-import Dialog, { DialogActions, DialogContent, DialogContentText, DialogTitle,} from 'material-ui/Dialog';
+import Dialog, { DialogActions, DialogContent, DialogTitle,} from 'material-ui/Dialog';
 import TextField from 'material-ui/TextField';	
 
 class KlientView extends React.Component {

@@ -46,11 +46,6 @@ function fetchPostsError() {
 	  }
 	}
 
-function fetchOrgRequest(){
-	  return {
-	    type: FETCHORG_REQUEST
-	  }
-	}
 
 function fetchOrgSuccess(payload) {
 	  return {
@@ -106,7 +101,6 @@ export function fetchLegalContact() {
     return ApisApi.getLegalContact().then(([response, json]) =>{
       	console.log('fetching', "background: blue; color: yellow; padding-left:10px;");	
     	if(response.status === 200){
-			console.log("legal")
 			console.log(json)
     		dispatch(fetchLegalContactSuccess(json));
       }

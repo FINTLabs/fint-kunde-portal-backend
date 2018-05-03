@@ -6,10 +6,7 @@ import ReactDOM from 'react-dom'
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
-import { Route,  Link, withRouter } from "react-router-dom";
-import createHistory from 'history/createBrowserHistory';
-import { Redirect } from 'react-router';
-import TextField from 'material-ui/TextField';
+import { withRouter } from "react-router-dom";
 import { addTechnicalContact } from '../../actions/apisAction';
 import Button from 'material-ui/Button';
 import {Grid} from 'material-ui';
@@ -119,8 +116,6 @@ class Search extends Component {
   }
 
   setSelected(selected) {
-	  console.log("selected");
-	  console.log(selected)
     this.setState({selectedItems: selected }, () => {
       this.triggerItemsChanged()
     })
@@ -229,8 +224,8 @@ class Search extends Component {
   addTechnicalContact(kontakt) {
 	    this.props.addTechnicalContact(kontakt)
 	    //eslint-disable-next-line
-	    location.assign("/kontakter/kontakter");
-	    return kontakt
+//	    location.assign("/kontakter/kontakter");
+//	    return kontakt
  }	
   handleSelectedItemClick(item){
 		this.addTechnicalContact(item.nin.nin.substring(3,14))

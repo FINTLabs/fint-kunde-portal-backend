@@ -1,8 +1,7 @@
 import React, {Component} from 'react';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
-import { BrowserRouter as Router, Route, Link, Switch, Redirect, withRouter	} from 'react-router-dom';
-import { routerMiddleware as createRouterMiddleware,  routerReducer, push} from "react-router-redux";
+import { BrowserRouter as Router, Route, Link, withRouter	} from 'react-router-dom';
 import {fetchLegalContact, removeTechnicalContact, unsetLegalContact, setLegalContact} from '../../actions/apisAction';
 import DashboardIcon from 'material-ui-icons/Home';
 import KontaktView from './KontaktView';
@@ -10,21 +9,10 @@ import LegalKontakt from './LegalKontakt';
 import PropTypes from 'prop-types';
 import Button from 'material-ui/Button';
 import TextField from 'material-ui/TextField';
-import {Avatar, Card, CardContent, CardHeader, Divider, Grid, Typography, withStyles} from "material-ui";
-import Table, { TableBody, TableCell, TableHead, TableRow } from 'material-ui/Table';
+import {Avatar,CardHeader, Grid} from "material-ui";
+import Table, { TableHead } from 'material-ui/Table';
 import {green} from 'material-ui/colors';
 
-const styles = {
-		  smallIcon: {
-		    width: 25,
-		    height: 19
-		  },
-		  small: {
-		    width: 25,
-		    height: 19
-		  },
-		  margin: 12,
-};
 const avtarstyle = {
         margin: 1,
         color: '#fff',
