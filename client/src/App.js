@@ -4,6 +4,10 @@ import {createMuiTheme, MuiThemeProvider, withStyles} from "material-ui";
 import {grey, red} from 'material-ui/colors';
 import PropTypes from 'prop-types';
 import Main from "./main/Main";
+import {fetchApis} from './actions/apisAction';
+import {bindActionCreators} from 'redux';
+import {withRouter} from "react-router-dom";
+import {connect} from 'react-redux';
 
 const theme = createMuiTheme({
     palette: {
@@ -24,18 +28,22 @@ const styles = theme => ({
 
 
 class App extends Component {
+	componentDidMount(){
+ 	     this.props.fetchApis(this.props.org)
+
+  }
 	static childContextTypes = {
-        organisation: PropTypes.string
+        organisation: PropTypes.string,
+        components : PropTypes.array
     };
 
     getChildContext() {
         return {
-        	organisation: 'testing'
+        	organisation: 'testing',
+        	components : this.props.posts
         };
     }
     render() {
-        //const {classes} = this.props;
-
         return (
 
             <MuiThemeProvider theme={theme}>
@@ -47,6 +55,16 @@ class App extends Component {
 
 App.propTypes = {
     classes: PropTypes.object.isRequired,
+    apis: PropTypes.array.isRequired
 };
 
-export default withStyles(styles)(App);
+function mapStateToProps(state){
+	return {
+        posts: state.posts,
+
+  }
+}
+function  matchDispatchToProps(dispatch){
+    return bindActionCreators({fetchApis: fetchApis}, dispatch);
+}
+export default withRouter(connect(mapStateToProps, matchDispatchToProps)(App));

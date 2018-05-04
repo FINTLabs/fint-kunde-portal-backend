@@ -1,14 +1,16 @@
 import PropTypes from 'prop-types';
 
 class AdaptersApi {
-
+	
   static getAdapters(org) {
+ 
 	  const url='http://localhost:8080/api/adapters/'.concat(org);
 	  return fetch(url, { method: 'GET'})
 	     .then( response => Promise.all([response,response.json()]));
 	}
-  
+
   static updateAdapter(Adapter, org) {
+  
     const request = new Request(`http://localhost:8080/api/adapters/${org}/${Adapter.name}`, {
       method: 'PUT',
       headers: new Headers({
@@ -19,8 +21,6 @@ class AdaptersApi {
       	  note: Adapter.note,
       	  shortDescription:Adapter.shortDescription})
       });
-
-
     return fetch(request).then(response => {
       return response.json();
     }).catch(error => {
@@ -29,6 +29,7 @@ class AdaptersApi {
   }
 
   static createAdapter(Adapter, org) {
+	  
     const request = new Request(`http://localhost:8080/api/adapters/${org}`, {
       method: 'POST',
       headers: {
@@ -40,8 +41,6 @@ class AdaptersApi {
     	  note: Adapter.note,
     	  shortDescription:Adapter.shortDescription})
     });
-
-
     return fetch(request).then(response => {
       return response.json();
     }).catch(error => {
@@ -49,7 +48,26 @@ class AdaptersApi {
     });
   }
 
+  static addAdapterToComponent(Adapter, component, org) {
+	  	  
+	    const request = new Request(`http://localhost:8080/api/components/${component}/${org}/adapters/${Adapter.name}`, {
+	      method: 'POST',
+	      headers: {
+	          'Accept': '*/*',
+	          'Content-Type': 'application/json'
+	        }, 
+	      body: JSON.stringify({
+	    	  name: Adapter.name})
+	    });
+	    return fetch(request).then(response => {
+	      return response.json();
+	    }).catch(error => {
+	      return error;
+	    });
+	  }
+  
   static deleteAdapter(Adapter, org) {
+	  
     const request = new Request(`http://localhost:8080/api/adapters/${org}/${Adapter.name}`, {
       method: 'DELETE'
     });
@@ -61,11 +79,10 @@ class AdaptersApi {
     });
   }
   static deleteAdapterFromComponent(adapter, component, org) {
+	  
 	    const request = new Request(`http://localhost:8080/api/components/${component}/${org}/adapters/${adapter.name}`, {
 	      method: 'DELETE'
 	      });
-
-
 	    return fetch(request).then(response => {
 	      return response.json();
 	    }).catch(error => {

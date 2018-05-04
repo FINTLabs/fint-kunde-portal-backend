@@ -1,9 +1,8 @@
 import React, {Component} from 'react';
-import {withStyles} from "material-ui";
 import PropTypes from 'prop-types';
 import AdaptersContainer from "../containers/AdaptersContainer";
 import {connect} from 'react-redux';
-import { BrowserRouter as Router, Route, Link, withRouter	} from 'react-router-dom';
+import { BrowserRouter as Router, Route, withRouter	} from 'react-router-dom';
 
 
 class Adapters extends Component {
@@ -15,7 +14,7 @@ class Adapters extends Component {
     render() {
 		const org = this.context.organisation;
         return (
-      	      <Route
+      	  <Route
   	      	path="/"
   	      	render={({ state }) => (
   	        <AdaptersContainer org={org} />
@@ -24,10 +23,6 @@ class Adapters extends Component {
         );
     }
 }
-
-Adapters.propTypes = {
-    classes: PropTypes.object.isRequired,
-};
 
 function mapStateToProps(state){
 	return {

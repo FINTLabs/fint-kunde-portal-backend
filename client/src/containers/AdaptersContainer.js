@@ -9,35 +9,33 @@ import {fetchAdapters} from '../actions/adaptersAction';
 import {Grid} from "material-ui";
 
 class AdaptersContainer extends React.Component {
-	constructor(props, context) {
-	    super(props, context);
-	    this.state = {posts: this.props.posts};
+	constructor(props) {
+	    super(props);
+	    this.state = {adapters: this.props.adapters};
 	}
 	
-	componentDidMount(){
+	componentWillMount(){
   	     this.props.fetchAdapters(this.props.org)
 
    }
 
 	render () {
-
-	    if (!this.props.posts) {
-	      return <p>Nothing here yet...</p>;
+	    if (!this.props.adapters) {
+	      return <p>Fetching adapters...</p>;
 	    } else {
 	      return this.renderPosts();
 	    }
 	  }
 
 	renderPosts () {
-	    const adapters = this.props.posts;
-	    const org = this.props.org
+
 	    return (
 	         <Grid container xs={12}>
                 <Grid item xs={5}>
-                	<AdaptersList adapters={adapters} />
+                	<AdaptersList adapters={this.props.adapters} org={this.props.org} />
                 </Grid>
                 <Grid item xs={7}>
-                	<AdapterAdd org={org}/>
+                	<AdapterAdd org={this.props.org}/>
                 </Grid>
             </Grid>
 
@@ -45,13 +43,10 @@ class AdaptersContainer extends React.Component {
   }
 }
 
-AdaptersContainer.propTypes = {
-  adapters: PropTypes.array.isRequired
-};
-
 function mapStateToProps(state){
 	return {
-        posts: state.posts
+        adapters: state.adapters,
+        posts : state.posts
   }
 }
 function  matchDispatchToProps(dispatch){

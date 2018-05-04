@@ -7,12 +7,18 @@ import Button from 'material-ui/Button';
 import Dialog, { DialogActions, DialogContent, DialogTitle,} from 'material-ui/Dialog';
 import TextField from 'material-ui/TextField';
 import PropTypes from 'prop-types';
+import Select from 'material-ui/Select';
+import { MenuItem } from 'material-ui/Menu';
+import {fetchApis} from '../../actions/apisAction';
+import {ListItemIcon, ListItemText } from 'material-ui/List';
+import SelectField from 'material-ui/Select';
 
-class AdapterView extends React.Component {
+class AdapterAddToComponent extends React.Component {
   constructor(props, context) {
     super(props, context);
     this.state = {
-      adapter: Object.assign({}, this.props.location.state.adapter), 
+      adapter: Object.assign({}, this.props.location.state.adapter),
+      posts: this.props.posts,
       isSaving: true
     };
 
@@ -23,6 +29,7 @@ class AdapterView extends React.Component {
   }
 
   componentDidMount() {
+
 	  this.setState({ open: true });
   }
   
@@ -55,6 +62,7 @@ class AdapterView extends React.Component {
 
  state = {
     open: false,
+    value: 10,
  };
  handleClickOpen = () => {
     this.setState({ open: true });
@@ -63,96 +71,72 @@ class AdapterView extends React.Component {
  handleClose = () => {
 	  this.updateAdapter(this.state.adapter, this.context.organisation)
 	  this.setState({ open: false });
- };
- 
+};
+
 static contextTypes = {
     organisation: PropTypes.string,
     components: PropTypes.array
 };
+
+
+	  handleChange = (event, index, value) => {
+			console.log("change")
+			console.log(value)  
+			console.log(index)
+			console.log(event)
+	    this.setState({value});
+	  };
 	render () {
-		console.log("context")
-		console.log(this.context)
+	  let components = this.context.components
       return (
-    		     <div>
-    		        <div>
+    		   <div>
 
     		        <Dialog
+    		          fullWidth
     		          open={this.state.open}
     		          onClose={this.handleClose}
     		          aria-labelledby="form-dialog-title"
     		        >
-    		          <DialogTitle id="form-dialog-title">Oppdater adapteren</DialogTitle>
+    		          <DialogTitle id="form-dialog-title">Legg till adapter til Komponent</DialogTitle>
     		          <DialogContent>
     		              <TextField
 	    		              margin="dense"
-	    		    	      required
 	    		    	      name="name"
 	    		    	      label="Adapter Navn"
 	    		    	      value={this.state.adapter.name}  
 	    		    	      fullWidth
-	    		    	      onChange={this.updateAdapterState}
 	    		              disabled
     		              /> 
-    		        
-  		       
-    		        	<TextField
-		                   autoFocus
-    		        	   name="shortDescription"
-    		        	   label="Kort beskrivelse"
-    		        	   fullWidth
-    		        	   onChange={this.updateAdapterState}
-    		               value={this.state.adapter.shortDescription}  
-    		        	/> 
-    		        	<TextField
-		                   autoFocus
-	 		        	   name="clientId"
-	 		        	   label="Klient Id"
-	 		        	   fullWidth
-	 		        	   onChange={this.updateAdapterState}
-	 		               value={this.state.adapter.clientId}  
-    		        	/>
-    		            <TextField
-		  		    	  	name="note"
-		  		    	  	label="Note"
-		  		    	  	multiline
-		  		            rows="4"
-		  		            onChange={this.updateAdapterState}
-		  		            value={this.state.adapter.note}  
-    		           /> 	   
-      		    	    <TextField
-	  	  		    	  	name="Komponenter"
-	  	  		    	  	label="Komponenter"
-	      		    	    fullWidth
+    		              
+    		              <SelectField
+    		              	  fullWidth
+	    		              value='Komponent'
+	    		              onChange={this.handleChange}
+    		              	>
+		    		          {components.map((component, index) => (
+		    		        		  <MenuItem key={index} label={component.name} value={component.name}>{component.name}</MenuItem>
+		    		        		))}
 
-        		    	/> 
-	        		    	<dl>
-	        		         {this.state.adapter.components.map(component => {
-	        		             return ( <div key={component.dn}>
-	        		                 <dt>{component.substr(3, component.indexOf(',')-3)}</dt>
-	        		                </div>
-	        		               )
-	        		             })
-	        		         }
-	        		      </dl>
+	    		          </SelectField>
     		          </DialogContent>
     		          <DialogActions>
     		            <Button onClick={this.handleClose} color="primary" style={{textTransform: 'none'}}>
     		            Avbryt
     		            </Button>
     		            <Button onClick={this.handleClose}  color="primary" style={{textTransform: 'none'}}>
-    		            Oppdater
+    		            Legg til
     		            </Button>
     		          </DialogActions>
     		        </Dialog>
     		      </div>
-    		</div>
+    		
       ) 		
 
   }
 }
 
 
-AdapterView.propTypes = {
+AdapterAddToComponent.propTypes = {
 
 };
 
@@ -162,17 +146,12 @@ function getAdapterById(adapters, id) {
 }
 
 
-function mapStateToProps(state) {
+function mapStateToProps() {
   let adapter = {name: '', note: '',  shortDescription: ''};
-  const adapterName = state.posts.name;
-  if (adapterName && state.adapters.length > 0 ) {
-    adapter = getAdapterById(state.adapters, state.posts.name);
- 
-  } 
     return {adapter: adapter};
 }
 
 function  matchDispatchToProps(dispatch){
-    return bindActionCreators({updateAdapter : updateAdapter}, dispatch);
+    return bindActionCreators({updateAdapter : updateAdapter, fetchApis: fetchApis}, dispatch);
 }
-export default withRouter(connect(mapStateToProps, matchDispatchToProps)(AdapterView));
+export default withRouter(connect(mapStateToProps, matchDispatchToProps)(AdapterAddToComponent));

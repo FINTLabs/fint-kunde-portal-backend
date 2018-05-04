@@ -11,6 +11,7 @@
     "immutable": "^3.8.2",
     "material-ui": "^1.0.0-beta.41",
     "material-ui-icons": "^1.0.0-beta.36",
+    "material-ui-selectfield": "^1.0.24",
     "prop-types": "^15.6.0",
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
