@@ -98,13 +98,13 @@ export function deleteAdapter(adapter, org) {
 	  }
 	}
 
-export function addAdapterToComponent(adapter, org, component) {
-return function (dispatch) {
-  return AdaptersApi.addAdapterToComponent(adapter, org).then(responseAdapter => {
-    dispatch(addAdapterToComponentSuccess(responseAdapter));
-	    //eslint-disable-next-line
-    location.reload();
-    return responseAdapter;
+export function addAdapterToComponent(adapter, component, org) {
+	return function (dispatch) {
+		return AdaptersApi.addAdapterToComponent(adapter, component, org).then(responseAdapter => {
+			dispatch(addAdapterToComponentSuccess(responseAdapter));
+			//eslint-disable-next-line
+			location.assign("/adapters/adapters");
+			return responseAdapter;
   }).catch(error => {
     throw(error);
   });

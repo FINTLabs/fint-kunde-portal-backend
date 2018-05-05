@@ -6,6 +6,7 @@ import {deleteAdapter, deleteAdapterFromComponent, addAdapterToComponent} from '
 import DashboardIcon from 'material-ui-icons/Home';
 import AdapterView from './AdapterView';
 import AdapterAddToComponent from './AdapterAddToComponent';
+import AdapterAddToComponent2 from './AdapterAddToComponent2';
 import PropTypes from 'prop-types';
 import Button from 'material-ui/Button';
 import {Avatar, CardHeader, Grid } from "material-ui";

@@ -149,11 +149,6 @@ function getAdapterById(adapters, id) {
 
 function mapStateToProps(state) {
   let adapter = {name: '', note: '', shortDescription: ''};
-  const adapterName = state.posts.name;
-  if (adapterName && state.er.length > 0 ) {
-    adapter = getAdapterById(state.adapters, state.posts.name);
- 
-  } 
     return {adapter: adapter};
 }
 

@@ -49,9 +49,9 @@ class AdaptersApi {
   }
 
   static addAdapterToComponent(Adapter, component, org) {
-	  	  
-	    const request = new Request(`http://localhost:8080/api/components/${component}/${org}/adapters/${Adapter.name}`, {
-	      method: 'POST',
+  	  
+	    const request = new Request(`http://localhost:8080/api/components/${component.value}/${org}/adapters/${Adapter.name}`, {
+	      method: 'PUT',
 	      headers: {
 	          'Accept': '*/*',
 	          'Content-Type': 'application/json'

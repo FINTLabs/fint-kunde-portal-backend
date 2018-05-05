@@ -1,4 +1,5 @@
 import React from 'react';
+import Search from '../common/SearchComponent'
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import { updateAdapter } from '../../actions/adaptersAction';
@@ -9,9 +10,19 @@ import TextField from 'material-ui/TextField';
 import PropTypes from 'prop-types';
 import Select from 'material-ui/Select';
 import { MenuItem } from 'material-ui/Menu';
-import {fetchApis} from '../../actions/apisAction';
 import {ListItemIcon, ListItemText } from 'material-ui/List';
 import SelectField from 'material-ui/Select';
+import {Grid} from "material-ui";
+import {green} from 'material-ui/colors';
+
+const buttonstyle = {
+        margin: 1,
+        color: '#fff',
+        backgroundColor: green[500],
+        textDecoration: 'none',
+        textTransform: 'none',
+
+};
 
 class AdapterAddToComponent extends React.Component {
   constructor(props, context) {
@@ -19,17 +30,18 @@ class AdapterAddToComponent extends React.Component {
     this.state = {
       adapter: Object.assign({}, this.props.location.state.adapter),
       posts: this.props.posts,
-      isSaving: true
+      open: true
     };
 
     this.updateAdapterState = this.updateAdapterState.bind(this);
     this.toggleSave = this.toggleSave.bind(this);
     this.updateAdapter = this.updateAdapter.bind(this);
+    this.handleChange = this.handleChange.bind(this);
 
   }
 
   componentDidMount() {
-
+	  this.setState({ value: 1 });
 	  this.setState({ open: true });
   }
   
@@ -62,13 +74,18 @@ class AdapterAddToComponent extends React.Component {
 
  state = {
     open: false,
-    value: 10,
+    value: 1,
  };
  handleClickOpen = () => {
     this.setState({ open: true });
  };
 
  handleClose = () => {
+	  this.setState({ open: false });
+
+};
+
+ handleCloseUpdate = () => {
 	  this.updateAdapter(this.state.adapter, this.context.organisation)
 	  this.setState({ open: false });
 };
@@ -78,58 +95,53 @@ static contextTypes = {
     components: PropTypes.array
 };
 
+handleChange(event, index, value)  {
+   this.setState({Dialog});
 
-	  handleChange = (event, index, value) => {
-			console.log("change")
-			console.log(value)  
-			console.log(index)
-			console.log(event)
-	    this.setState({value});
-	  };
+ }
+SelectedItems(items) {
+
+}
 	render () {
 	  let components = this.context.components
+	    let items = []
+		{this.context.components.map((component, i) => 
+			items[i] = {id: i, value: component.name}
+		)}
       return (
-    		   <div>
+    	<div>
 
-    		        <Dialog
-    		          fullWidth
-    		          open={this.state.open}
-    		          onClose={this.handleClose}
-    		          aria-labelledby="form-dialog-title"
-    		        >
-    		          <DialogTitle id="form-dialog-title">Legg till adapter til Komponent</DialogTitle>
-    		          <DialogContent>
-    		              <TextField
-	    		              margin="dense"
-	    		    	      name="name"
-	    		    	      label="Adapter Navn"
-	    		    	      value={this.state.adapter.name}  
-	    		    	      fullWidth
-	    		              disabled
-    		              /> 
-    		              
-    		              <SelectField
-    		              	  fullWidth
-	    		              value='Komponent'
-	    		              onChange={this.handleChange}
-    		              	>
-		    		          {components.map((component, index) => (
-		    		        		  <MenuItem key={index} label={component.name} value={component.name}>{component.name}</MenuItem>
-		    		        		))}
+        <Dialog
+          fullWidth
+          open={this.state.open}
+          onClose={this.handleClose}
+          aria-labelledby="form-dialog-title"
+        >
+          <DialogTitle id="form-dialog-title">Legg till adapter til Komponent</DialogTitle>
+          <DialogContent>
+              <TextField
+	              margin="dense"
+	    	      name="name"
+	    	      label="Adapter Navn"
+	    	      value='name'  
+	    	      fullWidth
+	              disabled
+              /> 
+		
+		  		<Search items={items}
+                placeholder='..Velg komponent '
+                maxSelected={3}
+                multiple={true}
+                onItemsChanged={this.SelectedItems.bind(this)} />
+	        </DialogContent>
+	          <DialogActions>
+	            <Button onClick={this.handleClose} color="primary" style={{textTransform: 'none'}}>
+	            Avbryt
+	            </Button>
 
-	    		          </SelectField>
-    		          </DialogContent>
-    		          <DialogActions>
-    		            <Button onClick={this.handleClose} color="primary" style={{textTransform: 'none'}}>
-    		            Avbryt
-    		            </Button>
-    		            <Button onClick={this.handleClose}  color="primary" style={{textTransform: 'none'}}>
-    		            Legg til
-    		            </Button>
-    		          </DialogActions>
-    		        </Dialog>
-    		      </div>
-    		
+	          </DialogActions>
+	        </Dialog>
+	 </div>
       ) 		
 
   }
@@ -152,6 +164,6 @@ function mapStateToProps() {
 }
 
 function  matchDispatchToProps(dispatch){
-    return bindActionCreators({updateAdapter : updateAdapter, fetchApis: fetchApis}, dispatch);
+    return bindActionCreators({updateAdapter : updateAdapter}, dispatch);
 }
 export default withRouter(connect(mapStateToProps, matchDispatchToProps)(AdapterAddToComponent));
