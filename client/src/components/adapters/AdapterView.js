@@ -70,8 +70,7 @@ static contextTypes = {
     components: PropTypes.array
 };
 	render () {
-		console.log("context")
-		console.log(this.context)
+
       return (
     		     <div>
     		        <div>

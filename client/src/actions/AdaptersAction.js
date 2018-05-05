@@ -116,9 +116,9 @@ return {type: CREATE_SUCCESS, adapter}
 }
 
 
-export function deleteAdapterFromComponent(adapter, org, component) {
+export function deleteAdapterFromComponent(adapter, component, org) {
 return function(dispatch) {
-  return AdaptersApi.deleteAdapterFromComponent(adapter).then(() => {
+  return AdaptersApi.deleteAdapterFromComponent(adapter, component, org).then(() => {
     dispatch(deleteAdapterFromComponentSuccess(adapter));
   //eslint-disable-next-line
     location.reload();

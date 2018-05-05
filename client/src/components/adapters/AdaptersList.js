@@ -6,7 +6,6 @@ import {deleteAdapter, deleteAdapterFromComponent, addAdapterToComponent} from '
 import DashboardIcon from 'material-ui-icons/Home';
 import AdapterView from './AdapterView';
 import AdapterAddToComponent from './AdapterAddToComponent';
-import AdapterAddToComponent2 from './AdapterAddToComponent2';
 import PropTypes from 'prop-types';
 import Button from 'material-ui/Button';
 import {Avatar, CardHeader, Grid } from "material-ui";
@@ -41,16 +40,16 @@ class AdaptersList extends Component {
 	    this.state = {adapters: this.props.adapters};
 	}
 
- AddAdapterToComponent(adapter, component, org) {
-	    this.props.addAdapterToComponent(adapter, component, this.props.org);
-  }
 
- deleteAdapterFromComponent(adapter, component, org) {
-	    this.props.deleteAdapterFromComponent(adapter, component, this.props.org);
+ deleteAdapterFromComponent(adapter) {
+	if (adapter.component) {
+		 const component = adapter.components[0].substr(3, adapter.components[0].indexOf(',')-3);
+		 this.props.deleteAdapterFromComponent(adapter, component, this.props.org);
+	}
   }
 
  deleteAdapter(adapter) {
-		 this.props.deleteAdapterFromComponent(adapter, this.props.org);
+		 this.props.deleteAdapterFromComponent(adapter);
 		 this.props.deleteAdapter(adapter, this.props.org);
 	}
  
@@ -80,7 +79,7 @@ class AdaptersList extends Component {
 	  	         				<Button style={buttonstyle}>Legg til komponent</Button></Link>
 	         			</Grid>
 	  	         		<Grid item xs={16} sm={3}>
-	         				<Button onClick={() => this.AddAdapterToComponent(adapter)} style={buttonstyle}>Fjern fra komponent</Button>
+	         				<Button onClick={() => this.deleteAdapterFromComponent(adapter)} style={buttonstyle}>Fjern fra komponent</Button>
 	         			</Grid>
 	  	            </Grid>	
   	           </div>
@@ -117,7 +116,7 @@ function mapStateToProps(state){
   }
 }
 function  matchDispatchToProps(dispatch){
-    return bindActionCreators({deleteAdapter : deleteAdapter, deleteAdapterFromComponent: deleteAdapterFromComponent, addAdapterToComponent: addAdapterToComponent}, dispatch);
+    return bindActionCreators({deleteAdapter : deleteAdapter, deleteAdapterFromComponent: deleteAdapterFromComponent}, dispatch);
 }
 
 export default withRouter(connect(mapStateToProps, matchDispatchToProps)(AdaptersList));

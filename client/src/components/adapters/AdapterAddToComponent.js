@@ -1,5 +1,5 @@
 import React from 'react';
-import Search from '../common/SearchComponent'
+import SearchComponent from '../common/SearchComponent'
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import { updateAdapter } from '../../actions/adaptersAction';
@@ -103,6 +103,9 @@ SelectedItems(items) {
 
 }
 	render () {
+		console.log("here")
+		console.log(this.props)
+		console.log(this)
 	  let components = this.context.components
 	    let items = []
 		{this.context.components.map((component, i) => 
@@ -123,18 +126,18 @@ SelectedItems(items) {
 	              margin="dense"
 	    	      name="name"
 	    	      label="Adapter Navn"
-	    	      value='name'  
+	    	      value={this.state.adapter.name}  
 	    	      fullWidth
 	              disabled
               /> 
 		
-		  		<Search items={items}
+		  		<SearchComponent items={items}
                 placeholder='..Velg komponent '
                 maxSelected={3}
                 multiple={true}
                 onItemsChanged={this.SelectedItems.bind(this)} />
 	        </DialogContent>
-	          <DialogActions>
+	        <DialogActions>
 	            <Button onClick={this.handleClose} color="primary" style={{textTransform: 'none'}}>
 	            Avbryt
 	            </Button>

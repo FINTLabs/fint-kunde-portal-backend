@@ -1,4 +1,4 @@
-import Search from '../common/Search'
+import SearchContact from '../common/SearchContact'
 import React, { Component } from 'react'
 import Button from 'material-ui/Button';
 import {Grid} from "material-ui";
@@ -29,7 +29,7 @@ class SearchKontakt extends Component {
 		)}	    
     return (
     		<div>
-    		  	<Search items={items}
+    		  	<SearchContact items={items}
                     placeholder='..Søk etter navn '
                     maxSelected={3}
                     multiple={true}

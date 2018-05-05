@@ -21,7 +21,7 @@ const buttonstyle = {
         textTransform: 'none',
 
 };
-class Search extends Component {
+class SearchContact extends Component {
 
   static get defaultProps () {
     return {
@@ -386,4 +386,4 @@ function mapStateToProps(state) {
 function  matchDispatchToProps(dispatch){
     return bindActionCreators({addTechnicalContact : addTechnicalContact}, dispatch);
 }
-export default withRouter(connect(mapStateToProps, matchDispatchToProps)(Search));
+export default withRouter(connect(mapStateToProps, matchDispatchToProps)(SearchContact));
