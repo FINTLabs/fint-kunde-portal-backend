@@ -68,12 +68,14 @@ export function updateAdapterSuccess(adapter) {
 	  return {type: UPDATE_SUCCESS, adapter}
 	}
 export function updateAdapter(adapter, org) {
-
+	 console.log("update")
+	 console.log(adapter)
+	 console.log(org)
 	  return function (dispatch) {
 	    return AdaptersApi.updateAdapter(adapter, org).then(responseAdapter => {
 	    //  dispatch(updateAdapterSuccess(responseAdapter));
   	    //eslint-disable-next-line
-	      location.assign("/adapters/adapters");
+	    //  location.assign("/adapters/adapters");
 	      return responseAdapter;
 	    }).catch(error => {
 	      throw(error);

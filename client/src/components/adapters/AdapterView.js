@@ -23,16 +23,23 @@ class AdapterView extends React.Component {
   }
 
   componentDidMount() {
+	  console.log("mount")
+	  console.log(this.props)
+	  console.log(this.state)
 	  this.setState({ open: true });
   }
   
   componentWillReceiveProps(nextProps) {
+	  console.log("recive")
+	  console.log(this.props)
+	  console.log(this.state)
     if (this.props.adapter != nextProps.adapter) {
       this.setState({adapter: Object.assign({}, nextProps.adapter)});
 
     }
 
     this.setState({saving: false, isAdding: false});
+    this.setState({open: true});
   }
 
   toggleSave() {
@@ -40,7 +47,7 @@ class AdapterView extends React.Component {
   }
   
   updateAdapter(adapter, org) {
-	    this.props.updateAdapter(this.state.adapter, org);
+	    this.props.updateAdapter(adapter, org);
   }
 
 
@@ -60,11 +67,16 @@ class AdapterView extends React.Component {
     this.setState({ open: true });
  };
 
- handleClose = () => {
+ handleCloseUpdate = () => {
+
 	  this.updateAdapter(this.state.adapter, this.context.organisation)
 	  this.setState({ open: false });
  };
- 
+
+ handleClose = () => {
+	  this.setState({ open: false });
+};
+
 static contextTypes = {
     organisation: PropTypes.string,
     components: PropTypes.array
@@ -138,7 +150,7 @@ static contextTypes = {
     		            <Button onClick={this.handleClose} color="primary" style={{textTransform: 'none'}}>
     		            Avbryt
     		            </Button>
-    		            <Button onClick={this.handleClose}  color="primary" style={{textTransform: 'none'}}>
+    		            <Button onClick={this.handleCloseUpdate}  color="primary" style={{textTransform: 'none'}}>
     		            Oppdater
     		            </Button>
     		          </DialogActions>

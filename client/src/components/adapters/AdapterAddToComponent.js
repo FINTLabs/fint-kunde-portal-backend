@@ -142,8 +142,8 @@ SelectedItems(items) {
 	            Avbryt
 	            </Button>
 
-	          </DialogActions>
-	        </Dialog>
+	        </DialogActions>
+	     </Dialog>
 	 </div>
       ) 		
 

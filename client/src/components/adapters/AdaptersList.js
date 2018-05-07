@@ -37,7 +37,8 @@ class AdaptersList extends Component {
 	constructor(props) {
 	    super(props);
 	    this.deleteAdapter= this.deleteAdapter.bind(this);
-	    this.state = {adapters: this.props.adapters};
+	    this.state = {adapters: this.props.adapters, open : true};
+	    
 	}
 
 
@@ -63,7 +64,7 @@ class AdaptersList extends Component {
                 </Avatar>}/></a>
   			<h3>Adapters</h3>
   			<ul className="list-group">
-  				{this.props.adapters.map((adapter, i) => 
+  				{this.state.adapters.map((adapter, i) => 
   				<div>
 	  	         	<Grid container style={{ lineHeight: '5px' }} spacing={8}>
 	  	         		<Grid item xs={16} sm={4}>
@@ -88,7 +89,7 @@ class AdaptersList extends Component {
 	      <Route
 	      	path="/adapter"
 	      	render={({ state }) => (
-	        <AdapterView adapter={this.state.adapter} />
+	        <AdapterView adapter={this.state.adapter}/>
 	        )}
 	      />
 	      
