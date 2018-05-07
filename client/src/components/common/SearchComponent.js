@@ -7,7 +7,7 @@ import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import { withRouter } from "react-router-dom";
-import { addAdapterToComponent } from '../../actions/adaptersAction';
+import { addAdapterToComponent } from '../../actions/AdaptersAction';
 import Button from 'material-ui/Button';
 import {Grid} from 'material-ui';
 import Icon from 'material-ui/Icon';
@@ -77,7 +77,7 @@ class SearchComponent extends Component {
 	    organisation: PropTypes.string,
 	    components: PropTypes.array
 	};
-  
+
   SearchItemInArrayObjects(items, input, searchKey) {
     var reg = new RegExp(input.split('').join('\\w*').replace(/\W/, ''), 'i')
     return items.filter((item) => {
@@ -231,7 +231,7 @@ class SearchComponent extends Component {
   addAdapterToComponent(adapter,item, organisation) {
 	    this.props.addAdapterToComponent(adapter,item, organisation)
 
- }	
+ }
   handleSelectedItemClick(adapter,item, organisation){
 	  this.addAdapterToComponent(adapter,item, organisation)
 
@@ -341,7 +341,7 @@ class SearchComponent extends Component {
 	                onBlur={this.handleBlur.bind(this)}
 	                onKeyUp={this.handleKeyChange.bind(this)}
 	    			size="45" icon='search'
-	    				style={{height: '35px'}}/> 
+	    				style={{height: '35px'}}/>
     		</div>
     )
   }

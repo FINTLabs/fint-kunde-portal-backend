@@ -1,10 +1,10 @@
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
-import * as actions from '../actions/adaptersAction'
-import {FETCH_REQUEST,FETCH_SUCCESS,url} from '../actions/adaptersAction'
+import * as actions from '../actions/AdaptersAction'
+import {FETCH_REQUEST,FETCH_SUCCESS,url} from '../actions/AdaptersAction'
 import fetchMock from 'fetch-mock';
 import { expectRedux, storeSpy } from 'expect-redux';
-import { createStore } from 'redux'; 
+import { createStore } from 'redux';
 
 const middlewares = [thunk]
 const mockStore = configureMockStore(middlewares)
@@ -13,10 +13,10 @@ describe('my action dispatcher', () => {
   it('eventually dispatches the action', () => {
     // Create store with spy as enhancer
     const store = createStore(state => state, {}, storeSpy);
- 
+
     // Dispatch the action after declaring our expectation
     setTimeout(() => store.dispatch({type: FETCH_REQUEST}), 100);
- 
+
     return expectRedux(store)
       .toDispatchAnAction()
       .ofType(FETCH_REQUEST);

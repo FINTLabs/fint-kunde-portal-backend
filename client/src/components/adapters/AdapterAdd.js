@@ -2,11 +2,11 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
-import { createAdapter } from '../../actions/adaptersAction';
+import { createAdapter } from '../../actions/AdaptersAction';
 import { withRouter } from "react-router-dom";
 import Button from 'material-ui/Button';
 import Dialog, { DialogActions, DialogContent, DialogContentText, DialogTitle,} from 'material-ui/Dialog';
-import TextField from 'material-ui/TextField';	
+import TextField from 'material-ui/TextField';
 import {green} from 'material-ui/colors';
 
 const buttonstyle = {
@@ -22,7 +22,7 @@ class AdapterAdd extends React.Component {
   constructor(props, context) {
     super(props, context);
     this.state = {
-      adapter: Object.assign({}, this.props.location.state), 
+      adapter: Object.assign({}, this.props.location.state),
       isSaving: false,
       isAdding: false
     };
@@ -47,7 +47,7 @@ class AdapterAdd extends React.Component {
 
     this.setState({isAdding: true});
   }
-  
+
   saveAdapter(event) {
 	    this.props.createAdapter(this.state.adapter, this.props.org);
   }
@@ -75,9 +75,9 @@ class AdapterAdd extends React.Component {
 	this.createAdapter(this.state.adapter, this.props.org)
     this.setState({ open: false });
   };
-	  
+
   render() {
-	  
+
       return (
       <div>
         <div>
@@ -92,7 +92,7 @@ class AdapterAdd extends React.Component {
             <DialogContentText>
             Vennligst fyll ut de obligatoriske feltene for å legge til ny adapter
             </DialogContentText>
-            
+
               <TextField
               autoFocus
               margin="dense"
@@ -101,14 +101,14 @@ class AdapterAdd extends React.Component {
     	      label="Adapter Navn"
     	      fullWidth
     	      onChange={this.updateAdapterState}
-          /> 
-              
+          />
+
           	<TextField
           	   name="shortDescription"
           	   label="Kort beskrivelse"
           	   fullWidth
           	   onChange={this.updateAdapterState}
-          	/>        
+          	/>
 
             <TextField
     	  	name="note"
@@ -116,10 +116,10 @@ class AdapterAdd extends React.Component {
     	  	fullWidth
     	  	multiline
             rows="4"
-            onChange={this.updateAdapterState}	
+            onChange={this.updateAdapterState}
     	  />
 
-   
+
           </DialogContent>
 	          <DialogActions>
 	            <Button onClick={this.handleClose} color="primary" style={{textTransform: 'none'}}>

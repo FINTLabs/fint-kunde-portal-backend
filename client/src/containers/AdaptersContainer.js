@@ -5,7 +5,7 @@ import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import AdaptersList from '../components/adapters/AdaptersList';
 import AdapterAdd from '../components/adapters/AdapterAdd';
-import {fetchAdapters} from '../actions/adaptersAction';
+import {fetchAdapters} from '../actions/AdaptersAction';
 import {Grid} from "material-ui";
 
 class AdaptersContainer extends React.Component {
@@ -13,7 +13,7 @@ class AdaptersContainer extends React.Component {
 	    super(props);
 	    this.state = {adapters: this.props.adapters};
 	}
-	
+
 	componentWillMount(){
   	     this.props.fetchAdapters(this.props.org)
 
@@ -31,10 +31,10 @@ class AdaptersContainer extends React.Component {
 
 	    return (
 	         <Grid container xs={12}>
-                <Grid item xs={5}>
+                <Grid item xs={6}>
                 	<AdaptersList adapters={this.props.adapters} org={this.props.org} />
                 </Grid>
-                <Grid item xs={7}>
+                <Grid item xs={6}>
                 	<AdapterAdd org={this.props.org}/>
                 </Grid>
             </Grid>

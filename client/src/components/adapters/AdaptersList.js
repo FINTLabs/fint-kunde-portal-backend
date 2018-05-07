@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import { BrowserRouter as Router, Route, Link, withRouter	} from 'react-router-dom';
-import {deleteAdapter, deleteAdapterFromComponent, addAdapterToComponent} from '../../actions/adaptersAction';
+import {deleteAdapter, deleteAdapterFromComponent, addAdapterToComponent} from '../../actions/AdaptersAction';
 import DashboardIcon from 'material-ui-icons/Home';
 import AdapterView from './AdapterView';
 import AdapterAddToComponent from './AdapterAddToComponent';
@@ -38,7 +38,7 @@ class AdaptersList extends Component {
 	    super(props);
 	    this.deleteAdapter= this.deleteAdapter.bind(this);
 	    this.state = {adapters: this.props.adapters, open : true};
-	    
+
 	}
 
 
@@ -53,7 +53,7 @@ class AdaptersList extends Component {
 		 this.props.deleteAdapterFromComponent(adapter);
 		 this.props.deleteAdapter(adapter, this.props.org);
 	}
- 
+
 	render () {
   	    return (
 	    <Router>
@@ -64,7 +64,7 @@ class AdaptersList extends Component {
                 </Avatar>}/></a>
   			<h3>Adapters</h3>
   			<ul className="list-group">
-  				{this.state.adapters.map((adapter, i) => 
+  				{this.state.adapters.map((adapter, i) =>
   				<div>
 	  	         	<Grid container style={{ lineHeight: '5px' }} spacing={8}>
 	  	         		<Grid item xs={16} sm={4}>
@@ -82,32 +82,32 @@ class AdaptersList extends Component {
 	  	         		<Grid item xs={16} sm={3}>
 	         				<Button onClick={() => this.deleteAdapterFromComponent(adapter)} style={buttonstyle}>Fjern fra komponent</Button>
 	         			</Grid>
-	  	            </Grid>	
+	  	            </Grid>
   	           </div>
   				)}
 	      </ul>
 	      <Route
 	      	path="/adapter"
-	      	render={({ state }) => (
-	        <AdapterView adapter={this.state.adapter}/>
+	      	render={({ props }) => (
+	        <AdapterView adapter={this.props.adapter}/>
 	        )}
 	      />
-	      
+
 	      <Route
 	      	path="/addAdapterToComponent"
-	      	render={({ state }) => (
+	      	render={({ props }) => (
 	        <AdapterAddToComponent adapter={this.state.adapter} components={this.props.posts}/>
 	        )}
 	      />
-	    
-	      
+
+
 	    </div>
 	  </Router>
 	    );
 	  }
 
 }
-	
+
 AdaptersList.propTypes = {
 	  adapters: PropTypes.array.isRequired
 	};

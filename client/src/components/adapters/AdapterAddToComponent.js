@@ -2,7 +2,7 @@ import React from 'react';
 import SearchComponent from '../common/SearchComponent'
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
-import { updateAdapter } from '../../actions/adaptersAction';
+import { updateAdapter } from '../../actions/AdaptersAction';
 import { withRouter } from "react-router-dom";
 import Button from 'material-ui/Button';
 import Dialog, { DialogActions, DialogContent, DialogTitle,} from 'material-ui/Dialog';
@@ -44,7 +44,7 @@ class AdapterAddToComponent extends React.Component {
 	  this.setState({ value: 1 });
 	  this.setState({ open: true });
   }
-  
+
   componentWillReceiveProps(nextProps) {
     if (this.props.adapter != nextProps.adapter) {
       this.setState({adapter: Object.assign({}, nextProps.adapter)});
@@ -57,7 +57,7 @@ class AdapterAddToComponent extends React.Component {
   toggleSave() {
     this.setState({isSaving: true});
   }
-  
+
   updateAdapter(adapter, org) {
 	    this.props.updateAdapter(this.state.adapter, org);
   }
@@ -108,7 +108,7 @@ SelectedItems(items) {
 		console.log(this)
 	  let components = this.context.components
 	    let items = []
-		{this.context.components.map((component, i) => 
+		{this.context.components.map((component, i) =>
 			items[i] = {id: i, value: component.name}
 		)}
       return (
@@ -126,11 +126,11 @@ SelectedItems(items) {
 	              margin="dense"
 	    	      name="name"
 	    	      label="Adapter Navn"
-	    	      value={this.state.adapter.name}  
+	    	      value={this.state.adapter.name}
 	    	      fullWidth
 	              disabled
-              /> 
-		
+              />
+
 		  		<SearchComponent items={items}
                 placeholder='..Velg komponent '
                 maxSelected={3}
@@ -145,7 +145,7 @@ SelectedItems(items) {
 	        </DialogActions>
 	     </Dialog>
 	 </div>
-      ) 		
+      )
 
   }
 }
