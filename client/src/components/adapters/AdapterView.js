@@ -1,7 +1,7 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
-import {updateAdapter} from '../../actions/AdaptersAction';
+import {updateAdapter} from '../../actions/adaptersAction';
 import {withRouter} from "react-router-dom";
 import Button from 'material-ui/Button';
 import Dialog, {DialogActions, DialogContent, DialogTitle,} from 'material-ui/Dialog';
@@ -15,7 +15,8 @@ class AdapterView extends React.Component {
       adapter: Object.assign({}, this.props.location.state.adapter),
       isSaving: true
     };
-
+    console.log("const")
+    console.log(this.props)
     this.updateAdapterState = this.updateAdapterState.bind(this);
     this.toggleSave = this.toggleSave.bind(this);
     this.updateAdapter = this.updateAdapter.bind(this);
@@ -26,13 +27,23 @@ class AdapterView extends React.Component {
     console.log("mount")
     console.log(this.props)
     console.log(this.state)
+    console.log(this)
     this.setState({open: true});
   }
 
+  componentWillMount() {
+	    console.log("will")
+	    console.log(this.props)
+	    console.log(this.state)
+	    console.log(this)
+	    this.setState({open: true});
+	  }
+  
   componentWillReceiveProps(nextProps) {
     console.log("recive")
     console.log(this.props)
     console.log(this.state)
+    console.log(this)
     if (this.props.adapter != nextProps.adapter) {
       this.setState({adapter: Object.assign({}, nextProps.adapter)});
 
@@ -68,7 +79,6 @@ class AdapterView extends React.Component {
   };
 
   handleCloseUpdate = () => {
-
     this.updateAdapter(this.state.adapter, this.context.organisation)
     this.setState({open: false});
   };
@@ -100,7 +110,7 @@ class AdapterView extends React.Component {
                 required
                 name="name"
                 label="Adapter Navn"
-                value={this.state.adapter.name}
+                value={this.props.location.state.adapter.name}
                 fullWidth
                 onChange={this.updateAdapterState}
                 disabled
@@ -113,7 +123,7 @@ class AdapterView extends React.Component {
                 label="Kort beskrivelse"
                 fullWidth
                 onChange={this.updateAdapterState}
-                value={this.state.adapter.shortDescription}
+                value={this.props.location.state.adapter.shortDescription}
               />
               <TextField
                 autoFocus
@@ -121,7 +131,7 @@ class AdapterView extends React.Component {
                 label="Klient Id"
                 fullWidth
                 onChange={this.updateAdapterState}
-                value={this.state.adapter.clientId}
+                value={this.props.location.state.adapter.clientId}
                 disabled
               />
               <TextField
@@ -130,7 +140,7 @@ class AdapterView extends React.Component {
                 multiline
                 rows="4"
                 onChange={this.updateAdapterState}
-                value={this.state.adapter.note}
+                value={this.props.location.state.adapter.note}
               />
               <TextField
                 name="Komponenter"
@@ -139,7 +149,7 @@ class AdapterView extends React.Component {
 
               />
               <dl>
-                {this.state.adapter.components.map(component => {
+                {this.props.location.state.adapter.components.map(component => {
                   return (<div key={component.dn}>
                       <dt>{component.substr(3, component.indexOf(',') - 3)}</dt>
                     </div>
@@ -149,7 +159,7 @@ class AdapterView extends React.Component {
               </dl>
             </DialogContent>
             <DialogActions>
-              <Button onClick={this.handleCloseUpdate} color="primary" style={{textTransform: 'none'}}>
+              <Button onClick={this.handleClose} color="primary" style={{textTransform: 'none'}}>
                 Avbryt
               </Button>
               <Button onClick={this.handleCloseUpdate} color="primary" style={{textTransform: 'none'}}>

@@ -5,7 +5,7 @@ import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import AdaptersList from '../components/adapters/AdaptersList';
 import AdapterAdd from '../components/adapters/AdapterAdd';
-import {fetchAdapters} from '../actions/AdaptersAction';
+import {fetchAdapters} from '../actions/adaptersAction';
 import {Grid} from "material-ui";
 
 class AdaptersContainer extends React.Component {

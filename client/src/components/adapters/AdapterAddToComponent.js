@@ -2,7 +2,7 @@ import React from 'react';
 import SearchComponent from '../common/SearchComponent'
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
-import { updateAdapter } from '../../actions/AdaptersAction';
+import { updateAdapter } from '../../actions/adaptersAction';
 import { withRouter } from "react-router-dom";
 import Button from 'material-ui/Button';
 import Dialog, { DialogActions, DialogContent, DialogTitle,} from 'material-ui/Dialog';
