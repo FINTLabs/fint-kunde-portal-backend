@@ -79,7 +79,7 @@ class AdaptersApi {
     });
   }
   static deleteAdapterFromComponent(adapter, component, org) {
-	  
+
 	    const request = new Request(`http://localhost:8080/api/components/${component}/${org}/adapters/${adapter.name}`, {
 	      method: 'DELETE'
 	      });

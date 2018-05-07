@@ -103,9 +103,7 @@ SelectedItems(items) {
 
 }
 	render () {
-		console.log("here")
-		console.log(this.props)
-		console.log(this)
+
 	  let components = this.context.components
 	    let items = []
 		{this.context.components.map((component, i) =>
@@ -132,10 +130,10 @@ SelectedItems(items) {
               />
 
 		  		<SearchComponent items={items}
-                placeholder='..Velg komponent '
-                maxSelected={3}
-                multiple={true}
-                onItemsChanged={this.SelectedItems.bind(this)} />
+	                placeholder='..Velg komponent '
+	                maxSelected={3}
+	                multiple={true}
+	                onItemsChanged={this.SelectedItems.bind(this)} />
 	        </DialogContent>
 	        <DialogActions>
 	            <Button onClick={this.handleClose} color="primary" style={{textTransform: 'none'}}>

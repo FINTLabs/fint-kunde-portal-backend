@@ -24,27 +24,18 @@ class AdapterView extends React.Component {
   }
 
   componentDidMount() {
-    console.log("mount")
-    console.log(this.props)
-    console.log(this.state)
-    console.log(this)
+
     this.setState({open: true});
   }
 
   componentWillMount() {
-	    console.log("will")
-	    console.log(this.props)
-	    console.log(this.state)
-	    console.log(this)
-	    this.setState({open: true});
-	  }
+
+	this.setState({open: true});
+  }
   
   componentWillReceiveProps(nextProps) {
-    console.log("recive")
-    console.log(this.props)
-    console.log(this.state)
-    console.log(this)
-    if (this.props.adapter != nextProps.adapter) {
+
+	  if (this.props.adapter != nextProps.adapter) {
       this.setState({adapter: Object.assign({}, nextProps.adapter)});
 
     }
@@ -63,12 +54,16 @@ class AdapterView extends React.Component {
 
 
   updateAdapterState(event) {
+
     const field = event.target.name;
-    const adapter = this.state.adapter;
+    const adapter = this.props.location.state.adapter;
     adapter[field] = event.target.value;
     return this.setState({
       value: event.target.value
     });
+    console.log("will")
+    console.log(this.state)
+
   }
 
   state = {

@@ -43,7 +43,7 @@ class AdaptersList extends Component {
 
 
  deleteAdapterFromComponent(adapter) {
-	if (adapter.component) {
+	if (adapter.components) {
 		 const component = adapter.components[0].substr(3, adapter.components[0].indexOf(',')-3);
 		 this.props.deleteAdapterFromComponent(adapter, component, this.props.org);
 	}
@@ -96,7 +96,7 @@ class AdaptersList extends Component {
 	      <Route
 	      	path="/addAdapterToComponent"
 	      	render={({ props }) => (
-	        <AdapterAddToComponent adapter={this.props.adapter} components={this.props.posts}/>
+	        <AdapterAddToComponent adapter={this.props.adapter} />
 	        )}
 	      />
 

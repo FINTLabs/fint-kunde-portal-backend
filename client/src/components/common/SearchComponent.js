@@ -233,6 +233,10 @@ class SearchComponent extends Component {
 
  }
   handleSelectedItemClick(adapter,item, organisation){
+		 console.log("selected")
+		 console.log(adapter)
+		 console.log(item)
+		 console.log(organisation)
 	  this.addAdapterToComponent(adapter,item, organisation)
 
 	}
