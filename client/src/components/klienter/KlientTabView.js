@@ -4,9 +4,12 @@ import SwipeableViews from 'react-swipeable-views';
 import AppBar from 'material-ui/AppBar';
 import Tabs, {Tab} from 'material-ui/Tabs';
 import Typography from 'material-ui/Typography';
-import {FormControl, IconButton, Input, InputAdornment, InputLabel, TextField} from "material-ui";
-import {ContentCopy, GetApp, Refresh} from "material-ui-icons";
+import {FormControl, IconButton, Input, InputAdornment, InputLabel, Snackbar, TextField} from "material-ui";
+import {Close, ContentCopy, Refresh} from "material-ui-icons";
 import withStyles from "material-ui/es/styles/withStyles";
+import {CopyToClipboard} from 'react-copy-to-clipboard';
+import CopyButton from "./CopyButton";
+
 
 function TabContainer({children, dir}) {
   return (
@@ -50,7 +53,11 @@ const styles = theme => ({
   authHeader: {
     marginTop: '10px',
     marginBottom: '20px',
-  }
+  },
+  close: {
+    width: theme.spacing.unit * 4,
+    height: theme.spacing.unit * 4,
+  },
 });
 
 
@@ -79,135 +86,140 @@ class KlientTabView extends React.Component {
     const {classes, theme} = this.props;
 
     return (
-      <div className={classes.root}>
-        <AppBar position="static" color="default">
-          <Tabs
-            value={this.state.value}
-            onChange={this.handleChange}
-            indicatorColor="primary"
-            textColor="primary"
-            fullWidth
-          >
-            <Tab label="Generelt"/>
-            <Tab label="Autentisering"/>
-            <Tab label="OAuth"/>
-            <Tab label="Komponenter"/>
-          </Tabs>
-        </AppBar>
-        <SwipeableViews
-          axis={theme.direction === 'rtl' ? 'x-reverse' : 'x'}
-          index={this.state.value}
-          onChangeIndex={this.handleChangeIndex}
-        >
-          <TabContainer dir={theme.direction}>
-            <TextField
-              autoFocus
-              name="shortDescription"
-              label="Kort beskrivelse"
+
+        <div className={classes.root}>
+
+          <AppBar position="static" color="default">
+            <Tabs
+              value={this.state.value}
+              onChange={this.handleChange}
+              indicatorColor="primary"
+              textColor="primary"
               fullWidth
-              onChange={this.updateKlientState}
-              value={this.state.klient.shortDescription}
-            />
-            <TextField
-              name="note"
-              label="Note"
-              multiline
-              rows="4"
-              onChange={this.updateKlientState}
-              value={this.state.klient.note}
-              fullWidth
-            />
-          </TabContainer>
-          <TabContainer dir={theme.direction}>
-            <FormControl className={classes.authSecret}>
-              <InputLabel htmlFor="name">Brukernavn</InputLabel>
-
-              <Input
-                margin="dense"
-                id="name"
-                name="name"
-                value={this.state.klient.name}
-                onChange={this.updateKlientState}
-                disabled
-                endAdornment={
-                  <InputAdornment position="end">
-                    <IconButton
-                      aria-label="Hent OAuth klient hemmelighet"
-                    >
-                      <ContentCopy/>
-                    </IconButton>
-                  </InputAdornment>
-                }
-              />
-            </FormControl>
-            <FormControl className={classes.authSecret}>
-              <InputLabel htmlFor="adornment-password">Hent nytt passord</InputLabel>
-              <Input
-                disabled
-                margin="dense"
-                id="adornment-password"
-                value=""
-                endAdornment={
-                  <InputAdornment position="end">
-                    <IconButton>
-                      <Refresh/>
-                    </IconButton>
-                    <IconButton>
-                      <ContentCopy/>
-                    </IconButton>
-                  </InputAdornment>
-                }
-              />
-            </FormControl>
-          </TabContainer>
-          <TabContainer dir={theme.direction}>
-
-            <FormControl className={classes.oauthSecret}>
-              <InputLabel htmlFor="name">ID</InputLabel>
-
-              <Input
-                margin="dense"
-                id="id"
-                name="name"
-                value="73F4CBE6-76CA-4152-A0A2-6C77380C2DDB"
-                disabled
-                endAdornment={
-                  <InputAdornment position="end">
-                    <IconButton>
-                      <ContentCopy/>
-                    </IconButton>
-                  </InputAdornment>
-                }
-              />
-            </FormControl>
-            <FormControl className={classes.oauthSecret}
             >
-              <InputLabel htmlFor="adornment-password">Hent hemmelighet</InputLabel>
-              <Input
-                id="adornment-password"
-                disabled
-                margin="dense"
-                value=""
-                endAdornment={
-                  <InputAdornment position="end">
-                    <IconButton>
-                      <Refresh/>
-                    </IconButton>
-                    <IconButton>
-                      <ContentCopy/>
-                    </IconButton>
-                  </InputAdornment>
-                }
+              <Tab label="Generelt"/>
+              <Tab label="Autentisering"/>
+              <Tab label="OAuth"/>
+              <Tab label="Komponenter"/>
+            </Tabs>
+          </AppBar>
+          <SwipeableViews
+            axis={theme.direction === 'rtl' ? 'x-reverse' : 'x'}
+            index={this.state.value}
+            onChangeIndex={this.handleChangeIndex}
+          >
+            <TabContainer dir={theme.direction}>
+              <TextField
+                autoFocus
+                name="shortDescription"
+                label="Kort beskrivelse"
+                fullWidth
+                onChange={this.updateKlientState}
+                value={this.state.klient.shortDescription}
               />
-            </FormControl>
-          </TabContainer>
-          <TabContainer dir={theme.direction}>
-            <div>
-            Her kommer tilknyttning til komponenter
-            </div>
-          </TabContainer>
-        </SwipeableViews>
-      </div>
+              <TextField
+                name="note"
+                label="Note"
+                multiline
+                rows="4"
+                onChange={this.updateKlientState}
+                value={this.state.klient.note}
+                fullWidth
+              />
+            </TabContainer>
+
+            <TabContainer dir={theme.direction}>
+              <FormControl className={classes.authSecret}>
+                <InputLabel htmlFor="name">Brukernavn</InputLabel>
+
+                <Input
+                  margin="dense"
+                  id="name"
+                  name="name"
+                  value={this.state.klient.name}
+                  onChange={this.updateKlientState}
+                  disabled
+                  endAdornment={
+                    <CopyToClipboard text={this.state.klient.name}
+                                     onCopy={() => {this.props.onCopy; console.log(this.state)}}>
+                      <InputAdornment position="end">
+                        <CopyButton/>
+                      </InputAdornment>
+                    </CopyToClipboard>
+                  }
+                />
+
+
+              </FormControl>
+              <FormControl className={classes.authSecret}>
+                <InputLabel htmlFor="adornment-password">Hent nytt passord</InputLabel>
+                <Input
+                  disabled
+                  margin="dense"
+                  id="adornment-password"
+                  value=""
+                  endAdornment={
+                    <InputAdornment position="end">
+                      <IconButton>
+                        <Refresh/>
+                      </IconButton>
+                      <IconButton>
+                        <ContentCopy/>
+                      </IconButton>
+                    </InputAdornment>
+                  }
+                />
+              </FormControl>
+            </TabContainer>
+            <TabContainer dir={theme.direction}>
+
+              <FormControl className={classes.oauthSecret}>
+                <InputLabel htmlFor="name">ID</InputLabel>
+
+                <Input
+                  margin="dense"
+                  id="id"
+                  name="name"
+                  value="73F4CBE6-76CA-4152-A0A2-6C77380C2DDB"
+                  disabled
+                  endAdornment={
+                    <InputAdornment position="end">
+                      <IconButton>
+                        <ContentCopy/>
+                      </IconButton>
+                    </InputAdornment>
+                  }
+                />
+              </FormControl>
+              <FormControl className={classes.oauthSecret}
+              >
+                <InputLabel htmlFor="adornment-password">Hent hemmelighet</InputLabel>
+                <Input
+                  id="adornment-password"
+                  disabled
+                  margin="dense"
+                  value=""
+                  endAdornment={
+                    <InputAdornment position="end">
+                      <IconButton>
+                        <Refresh/>
+                      </IconButton>
+                      <IconButton>
+                        <ContentCopy/>
+                      </IconButton>
+                    </InputAdornment>
+                  }
+                />
+              </FormControl>
+            </TabContainer>
+            <TabContainer dir={theme.direction}>
+              <div>
+                Her kommer tilknyttning til komponenter
+              </div>
+            </TabContainer>
+          </SwipeableViews>
+
+        </div>
     );
   }
 }

@@ -5,8 +5,9 @@ import {updateKlient} from '../../actions/klienterAction';
 import {withRouter} from "react-router-dom";
 import Button from 'material-ui/Button';
 import Dialog, {DialogActions, DialogContent, DialogTitle,} from 'material-ui/Dialog';
-import {withStyles} from "material-ui";
+import {IconButton, Snackbar, withStyles} from "material-ui";
 import KlientTabView from "./KlientTabView";
+import {Close} from "material-ui-icons";
 
 
 const styles = theme => ({
@@ -18,12 +19,14 @@ class KlientView extends React.Component {
     super(props, context);
     this.state = {
       klient: Object.assign({}, this.props.location.state.klient),
-      isSaving: true
+      isSaving: true,
+      copiedToClipboard: false,
     };
 
     this.updateKlientState = this.updateKlientState.bind(this);
     this.toggleSave = this.toggleSave.bind(this);
     this.updateKlient = this.updateKlient.bind(this);
+    this.onCopy = this.onCopy.bind(this);
 
   }
 
@@ -46,6 +49,18 @@ class KlientView extends React.Component {
 
   updateKlient(event) {
     this.props.updateKlient(this.state.klient);
+  }
+
+  handleCopySnackbarClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+
+    this.setState({copiedToClipboard: false});
+  };
+
+  onCopy = () => {
+    this.setState({copiedToClipboard: true});
   }
 
 
@@ -73,11 +88,35 @@ class KlientView extends React.Component {
 
   render() {
 
+    console.log("this.state:");
+    console.log(this.state);
     const {classes} = this.props;
     return (
       <div>
+        <Snackbar
+          anchorOrigin={{
+            vertical: 'top',
+            horizontal: 'left',
+          }}
+          open={this.state.copiedToClipboard}
+          onRequestClose={this.handleCopySnackbarClose}
+          SnackbarContentProps={{
+            'aria-describedby': 'message-id',
+          }}
+          message="Kopiert"
+          action={[
+            <IconButton
+              key="close"
+              aria-label="Close"
+              color="inherit"
+              className={classes.close}
+              onClick={null}
+            >
+              <Close/>
+            </IconButton>,
+          ]}
+        />
         <div>
-
           <Dialog
             open={this.state.open}
             onClose={this.handleClose}
@@ -87,7 +126,7 @@ class KlientView extends React.Component {
           >
             <DialogTitle id="form-dialog-title">Oppdater klienten</DialogTitle>
             <DialogContent>
-              <KlientTabView klient={this.state.klient}/>
+              <KlientTabView klient={this.state.klient} onCopy={this.onCopy}/>
             </DialogContent>
             <DialogActions>
               <Button onClick={this.handleClose} variant="raised" color="primary">
