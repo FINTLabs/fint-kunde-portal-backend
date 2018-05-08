@@ -7,6 +7,7 @@ import KlienterList from '../components/klienter/KlienterList';
 import KlientAdd from '../components/klienter/KlientAdd';
 import {fetchKlienter} from '../actions/klienterAction';
 import {withStyles} from "material-ui";
+import LoadingProgress from "../common/LoadingProgress";
 
 
 const styles = theme => ({
@@ -26,7 +27,7 @@ class KlienterContainer extends React.Component {
 
   render() {
     if (!this.props.posts) {
-      return <p>Nothing here yet...</p>;
+      return <LoadingProgress/>;
     } else {
       return this.renderPosts();
     }

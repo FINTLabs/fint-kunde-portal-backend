@@ -7,6 +7,7 @@ import AdaptersList from '../components/adapters/AdaptersList';
 import AdapterAdd from '../components/adapters/AdapterAdd';
 import {fetchAdapters} from '../actions/AdaptersAction';
 import {Grid} from "material-ui";
+import LoadingProgress from "../common/LoadingProgress";
 
 class AdaptersContainer extends React.Component {
 	constructor(props) {
@@ -15,14 +16,14 @@ class AdaptersContainer extends React.Component {
 	}
 
 	componentWillMount(){
-  	     this.props.fetchAdapters(this.props.org)
+  	     this.props.fetchAdapters("testing")
 
    }
 
 	render () {
 	    if (!this.props.adapters) {
-	      return <p>Fetching adapters...</p>;
-	    } else {
+        return <LoadingProgress/>;
+      } else {
 	      return this.renderPosts();
 	    }
 	  }
@@ -32,7 +33,7 @@ class AdaptersContainer extends React.Component {
 	    return (
 	         <Grid container xs={12}>
                 <Grid item xs={6}>
-                	<AdaptersList adapters={this.props.adapters} org={this.props.org} />
+                	<AdaptersList adapters={this.props.adapters} org="testing" />
                 </Grid>
                 <Grid item xs={6}>
                 	<AdapterAdd org={this.props.org}/>
@@ -53,4 +54,4 @@ function  matchDispatchToProps(dispatch){
     return bindActionCreators({fetchAdapters: fetchAdapters}, dispatch);
 }
 
-export default withRouter(connect(mapStateToProps, matchDispatchToProps)(AdaptersContainer));
+export default connect(mapStateToProps, matchDispatchToProps)(AdaptersContainer);

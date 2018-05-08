@@ -50,28 +50,28 @@ class ApisList extends Component {
 	componentDidMount() {
 		  this.setState({ open: true });
 	  }
-	  
+
 	componentWillReceiveProps(nextProps) {
 	    if (this.props.api != nextProps.api) {
 	      this.setState({api: Object.assign({}, nextProps.api)});
-	
+
 	    }
-	
+
 	    this.setState({saving: false, isAdding: false});
 	  }
-	
+
 	toggleSave() {
 	    this.setState({isSaving: true});
 	  }
-	
+
 	linkComponent(api) {
 	  this.props.linkComponent(api);
-	}  
-	
+	}
+
 	unlinkComponent(event) {
 		  this.props.unlinkComponent(this.state.api);
-	}	
-	
+	}
+
   toggleModal = () => {
 	    this.setState({
 	      isOpen: !this.state.isOpen
@@ -98,7 +98,7 @@ class ApisList extends Component {
 		    //eslint-disable-next-line
 	      location.assign("/apis/apis");
 	  };
-	  
+
 	  handleCloseLink = (api) => {
 		  this.linkComponent(api)
 	      this.setState({ open: false });
@@ -108,19 +108,15 @@ class ApisList extends Component {
 		  this.unlinkComponent(this.state.api)
 	      this.setState({ open: false });
 
-	  };	
+	  };
 
 	render () {
 	  return (
 	    <Router>
 	     <div>
-      		<a href="/" style={{textDecoration:'none'}}><CardHeader	title="Dashboard" avatar={
-                <Avatar style={avtarstyle}>
-                    <DashboardIcon/>
-                </Avatar>}/></a>
   			<h3>Components</h3>
   			<ul className="list-group">
-  				{this.props.apis.map((api, i) => 
+  				{this.props.apis.map((api, i) =>
   				<div>
 	  	         	<Grid container style={{ lineHeight: '5px' }} spacing={24}>
 	  	         		<Grid item xs={12} sm={6}>
@@ -130,14 +126,14 @@ class ApisList extends Component {
 	  	         			<Button bsStyle="primary" onClick={() => this.handleCloseLink(api)} style={buttonstyle}>Link komponenet</Button>
   	         			</Grid>
 	  	         		<Grid item xs={12} sm={2}>
-  	         				
+
 	         			</Grid>
-	  	           </Grid>	
+	  	           </Grid>
   	           </div>
   				)}
 	      </ul>
 
-	      
+
 	      <Route
 	      	path="/api"
 	      	render={({ state }) => (
