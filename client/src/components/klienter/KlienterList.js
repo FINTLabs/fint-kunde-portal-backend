@@ -1,22 +1,54 @@
 import React, {Component} from 'react';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
-import { BrowserRouter as Router, Route, Link, withRouter	} from 'react-router-dom';
+import {BrowserRouter as Router, Link, Route, withRouter} from 'react-router-dom';
 import {deleteKlient} from '../../actions/klienterAction';
 import DashboardIcon from 'material-ui-icons/Home';
 import KlientView from './KlientView';
 import PropTypes from 'prop-types';
-import Button from 'material-ui/Button';
-import {Avatar, CardHeader, Grid} from "material-ui";
+import {
+  Avatar,
+  CardHeader,
+  Divider,
+  IconButton,
+  List,
+  ListItem,
+  ListItemAvatar,
+  ListItemSecondaryAction,
+  ListItemText,
+  Typography,
+  withStyles
+} from "material-ui";
 import {green} from 'material-ui/colors';
+import {Delete, Edit, ImportantDevices} from "material-ui-icons";
 
-const avtarstyle = {
-        margin: 1,
-        color: '#fff',
-        backgroundColor: green[500],
+const styles = theme => ({
+  clientListContainer: {
+    display: 'flex',
+    justifyContent: 'center',
+  },
+  clientList: {
+    width: '75%',
+  },
+  avtarstyle: {
+    margin: 1,
+    color: '#fff',
+    backgroundColor: green[500],
+  },
+  title: {
+    paddingLeft: theme.spacing.unit * 3,
+  },
+  listItem: {
+    borderBottom: '1px dashed lightgray',
+  },
+  itemAvatar: {
+    color: '#fff',
+    backgroundColor: theme.palette.secondary.main,
+  }
+});
 
-};
 
+/*
 const buttonstyle = {
         margin: 1,
         color: '#fff',
@@ -25,20 +57,21 @@ const buttonstyle = {
         textTransform: 'none',
 
 };
+*/
 const linkstyle = {
-        margin: 1,
-        textDecoration: 'none',
-        textTransform: 'none',
-        align: 'left'
+  margin: 1,
+  textDecoration: 'none',
+  textTransform: 'none',
+  align: 'left'
 
 };
 
 class KlientsList extends Component {
-	constructor(props) {
-	    super(props);
-	    this.deleteKlient= this.deleteKlient.bind(this);
-	    this.state = {klienter: this.props.klienter};
-	}
+  constructor(props) {
+    super(props);
+    this.deleteKlient = this.deleteKlient.bind(this);
+    this.state = {klienter: this.props.klienter};
+  }
 
 //  AddKlientToComponent(event) {
 //    this.props.addKlientToComponent(this.state.api);
@@ -47,57 +80,76 @@ class KlientsList extends Component {
 //deleteKlientFromComponent(event) {
 //    this.props.deleteKlientFromComponent(this.state.api);
 //}
-	deleteKlient(klient) {
-		 this.props.deleteKlient(klient)
-	}
-	render () {
-	  return (
-	    <Router>
-	     <div>
-         	<a href="/" style={{textDecoration:'none'}}><CardHeader	title="Dashboard" avatar={
-                    <Avatar style={avtarstyle}>
-                        <DashboardIcon/>
-                    </Avatar>}/></a>
-  			<h3>Klienter</h3>
-  			<ul className="list-group">
-  				{this.props.klienter.map((klient, i) => 
-  				<div>
-	  	         	<Grid container style={{ lineHeight: '5px' }} spacing={24}>
-	  	         		<Grid item xs={12} sm={7}>
-	  	         			<Link to={{pathname: '/klient', state: {klient : klient}}} style={{ textDecoration: 'none' }}><Button style={linkstyle}>{klient.name}</Button></Link>
-	  	         		</Grid>
-	  	         		<Grid item xs={12} sm={5}>
-	  	         			<Button bsStyle="primary" onClick={() => this.deleteKlient(klient)} style={buttonstyle}>Slett</Button>
-	  	         		</Grid>
-	  	           </Grid>	
-  	           </div>
-  				)}
-	      </ul>
-	      <Route
-	      	path="/klient"
-	      	render={({ props }) => (
-	        <KlientView klient={this.props.klient} />
-	        )}
-	      />
-	    </div>
-	  </Router>
-	    );
-	  }
-
-}
-	
-KlientsList.propTypes = {
-	  klienter: PropTypes.array.isRequired
-	};
-
-function mapStateToProps(state){
-	return {
+  deleteKlient(klient) {
+    this.props.deleteKlient(klient)
   }
-}
-function  matchDispatchToProps(dispatch){
-    return bindActionCreators({deleteKlient : deleteKlient}, dispatch);
+
+  render() {
+
+    const {classes} = this.props;
+    return (
+      <Router>
+        <div>
+          <a href="/" style={{textDecoration: 'none'}}><CardHeader title="Dashboard" avatar={
+            <Avatar className={classes.avtarstyle}>
+              <DashboardIcon/>
+            </Avatar>}/></a>
+          <div className={classes.clientListContainer}>
+            <div className={classes.clientList}>
+              <Typography variant="headline" className={classes.title}>Klienter</Typography>
+              <Divider/>
+              <List>
+                {this.props.klienter.map((klient, i) =>
+                  <ListItem className={classes.listItem}>
+                    <ListItemAvatar>
+                      <Avatar className={classes.itemAvatar}>
+                        <ImportantDevices/>
+                      </Avatar>
+                    </ListItemAvatar>
+                    <ListItemText
+                      primary={klient.shortDescription}
+                      secondary={klient.name}
+                    />
+                    <ListItemSecondaryAction>
+                      <Link to={{pathname: '/klient', state: {klient: klient}}} style={{textDecoration: 'none'}}>
+                        <IconButton aria-label="Edit">
+                          <Edit/>
+                        </IconButton>
+                      </Link>
+                      <IconButton aria-label="Delete" onClick={() => this.deleteKlient(klient)}>
+                        <Delete/>
+                      </IconButton>
+                    </ListItemSecondaryAction>
+                  </ListItem>,
+                )}
+              </List>
+            </div>
+          </div>
+          <Route
+            path="/klient"
+            render={({props}) => (
+              <KlientView klient={this.props.klient}/>
+            )}
+          />
+        </div>
+      </Router>
+    );
+  }
+
 }
 
-export default withRouter(connect(mapStateToProps, matchDispatchToProps)(KlientsList));
+KlientsList.propTypes = {
+  klienter: PropTypes.array.isRequired
+};
+
+function mapStateToProps(state) {
+  return {}
+}
+
+function matchDispatchToProps(dispatch) {
+  return bindActionCreators({deleteKlient: deleteKlient}, dispatch);
+}
+
+export default withStyles(styles)(withRouter(connect(mapStateToProps, matchDispatchToProps)(KlientsList)));
 
 

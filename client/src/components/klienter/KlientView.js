@@ -5,19 +5,12 @@ import {updateKlient} from '../../actions/klienterAction';
 import {withRouter} from "react-router-dom";
 import Button from 'material-ui/Button';
 import Dialog, {DialogActions, DialogContent, DialogTitle,} from 'material-ui/Dialog';
-import TextField from 'material-ui/TextField';
-import {Paper, withStyles} from "material-ui";
-import {Refresh} from 'material-ui-icons';
-
+import {withStyles} from "material-ui";
+import KlientTabView from "./KlientTabView";
 
 
 const styles = theme => ({
-  clientSecret: {},
-  oauth: {
-    marginTop: '20px',
-    marginBottom: '10px',
-    padding: '10px',
-  }
+
 });
 
 class KlientView extends React.Component {
@@ -89,57 +82,21 @@ class KlientView extends React.Component {
             open={this.state.open}
             onClose={this.handleClose}
             aria-labelledby="form-dialog-title"
+            maxWidth="md"
+
           >
             <DialogTitle id="form-dialog-title">Oppdater klienten</DialogTitle>
             <DialogContent>
-
-              <TextField
-                margin="dense"
-                required
-                name="name"
-                label="Klient Navn"
-                value={this.state.klient.name}
-                fullWidth
-                onChange={this.updateKlientState}
-                disabled
-              />
-
-
-              <TextField
-                autoFocus
-                name="shortDescription"
-                label="Kort beskrivelse"
-                fullWidth
-                onChange={this.updateKlientState}
-                value={this.state.klient.shortDescription}
-              />
-              <TextField
-                name="note"
-                label="Note"
-                multiline
-                rows="4"
-                onChange={this.updateKlientState}
-                value={this.state.klient.note}
-              />
-              <Paper className={classes.oauth} elevation={4}>
-                <TextField
-                  className={classes.clientSecret}
-                  name="clientSecret"
-                  label="OAuth klient hemmelighet"
-                  fullWidth
-                />
-                <Button variant="fab" mini color="secondary" aria-label="add" className={classes.button}>
-                  <Refresh />
-                </Button>
-              </Paper>
+              <KlientTabView klient={this.state.klient}/>
             </DialogContent>
             <DialogActions>
-              <Button onClick={this.handleClose} color="primary" style={{textTransform: 'none'}}>
+              <Button onClick={this.handleClose} variant="raised" color="primary">
                 Avbryt
               </Button>
-              <Button onClick={this.handleClose} color="primary" style={{textTransform: 'none'}}>
+              <Button onClick={this.handleClose} variant="raised" color="primary">
                 Oppdater
               </Button>
+
             </DialogActions>
           </Dialog>
         </div>

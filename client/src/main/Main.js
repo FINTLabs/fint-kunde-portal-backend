@@ -52,7 +52,7 @@ const styles = theme => ({
   },
   appBar: {
     position: 'absolute',
-    zIndex: theme.zIndex.navDrawer + 1,
+    zIndex: theme.zIndex.drawer + 1,
     transition: theme.transitions.create(['width', 'margin'], {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen,
@@ -121,7 +121,6 @@ const styles = theme => ({
 class Main extends React.Component {
   state = {
     open: false,
-    anchorEl: null,
   };
 
   handleDrawerOpen = () => {
@@ -133,18 +132,8 @@ class Main extends React.Component {
   };
 
 
-  handleMenu = event => {
-    this.setState({anchorEl: event.currentTarget});
-  };
-
-  handleRequestClose = () => {
-    this.setState({anchorEl: null});
-  };
-
   render() {
     const {classes, theme} = this.props;
-    const {anchorEl} = this.state;
-    const open = Boolean(anchorEl);
 
 
     return (

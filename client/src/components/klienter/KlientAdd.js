@@ -3,26 +3,31 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
-import { createKlient } from '../../actions/klienterAction';
-import {withRouter } from "react-router-dom";
+import {createKlient} from '../../actions/klienterAction';
+import {withRouter} from "react-router-dom";
 import Button from 'material-ui/Button';
-import Dialog, { DialogActions, DialogContent, DialogContentText, DialogTitle,} from 'material-ui/Dialog';
-import TextField from 'material-ui/TextField';	
-import {green} from 'material-ui/colors';
+import Dialog, {DialogActions, DialogContent, DialogContentText, DialogTitle,} from 'material-ui/Dialog';
+import TextField from 'material-ui/TextField';
+import {Add} from "material-ui-icons";
+import {withStyles} from "material-ui";
 
-const buttonstyle = {
-        margin: 1,
-        color: '#fff',
-        backgroundColor: green[500],
-        textDecoration: 'none',
-        textTransform: 'none',
+const styles = theme => ({
+  addButton: {
+    margin: 0,
+    top: 100,
+    left: 'auto',
+    bottom: 'auto',
+    right: 50,
+    position: 'fixed',
+  }
 
-};
+});
+
 class KlientAdd extends React.Component {
   constructor(props, context) {
     super(props, context);
     this.state = {
-      klient: Object.assign({}, this.props.location.state), 
+      klient: Object.assign({}, this.props.location.state),
       isSaving: false,
       isAdding: false
     };
@@ -46,10 +51,10 @@ class KlientAdd extends React.Component {
 
     this.setState({isAdding: true});
   }
-  
+
   saveKlient(event) {
 
-	    this.props.createKlient(this.state.klient);
+    this.props.createKlient(this.state.klient);
   }
 
 
@@ -61,84 +66,85 @@ class KlientAdd extends React.Component {
   }
 
   createKlient(klient) {
-	    this.props.createKlient(klient)
+    this.props.createKlient(klient)
   }
 
   state = {
-		    open: false,
-		  };
+    open: false,
+  };
   handleClickOpen = () => {
-	    this.setState({ open: true });
-	  };
+    this.setState({open: true});
+  };
 
-	  handleClose = () => {
-    	this.createKlient(this.state.klient)
-	    this.setState({ open: false });
-	  };
-	  
+  handleClose = () => {
+    this.createKlient(this.state.klient)
+    this.setState({open: false});
+  };
+
   render() {
-	  
-      return (
+
+    const {classes} = this.props;
+    return (
       <div>
         <div>
-        <Button style={buttonstyle} onClick={this.handleClickOpen}>Legg til ny klient</Button>
-        <Dialog
-          open={this.state.open}
-          onClose={this.handleClose}
-          aria-labelledby="form-dialog-title"
-        >
-          <DialogTitle id="form-dialog-title">Ny klient</DialogTitle>
-          <DialogContent>
-            <DialogContentText>
-            Vennligst fyll ut de obligatoriske feltene for å legge til ny klient
-            </DialogContentText>
-            
+          <Button variant="fab" color="secondary"  className={classes.addButton} onClick={this.handleClickOpen}><Add/></Button>
+          <Dialog
+            open={this.state.open}
+            onClose={this.handleClose}
+            aria-labelledby="form-dialog-title"
+          >
+            <DialogTitle id="form-dialog-title">Ny klient</DialogTitle>
+            <DialogContent>
+              <DialogContentText>
+                Vennligst fyll ut de obligatoriske feltene for å legge til ny klient
+              </DialogContentText>
+
               <TextField
-              autoFocus
-              margin="dense"
-    	      required
-    	      name="name"
-    	      label="Klient Navn"
-    	      fullWidth
-    	      onChange={this.updateKlientState}
-          /> 
-              
-          	<TextField
-          	   name="shortDescription"
-          	   label="Kort beskrivelse"
-          	   fullWidth
-          	   onChange={this.updateKlientState}
-          	/>        
+                autoFocus
+                margin="dense"
+                required
+                name="name"
+                label="Klient Navn"
+                fullWidth
+                onChange={this.updateKlientState}
+              />
 
-            <TextField
-    	  	name="note"
-    	  	label="Note"
-    	  	fullWidth	
-    	  	multiline
-            rows="4"
-            onChange={this.updateKlientState}	
-    	  />
+              <TextField
+                name="shortDescription"
+                label="Kort beskrivelse"
+                fullWidth
+                onChange={this.updateKlientState}
+              />
 
-   
-          </DialogContent>
-	          <DialogActions>
-	            <Button onClick={this.handleClose} color="primary" style={{textTransform: 'none'}}>
-	            Avbryt
-	            </Button>
-	            <Button onClick={this.handleClose}  color="primary" style={{textTransform: 'none'}}>
-	            Legg til
-	            </Button>
-	          </DialogActions>
-        </Dialog>
+              <TextField
+                name="note"
+                label="Note"
+                fullWidth
+                multiline
+                rows="4"
+                onChange={this.updateKlientState}
+              />
+
+
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={this.handleClose} color="primary" style={{textTransform: 'none'}}>
+                Avbryt
+              </Button>
+              <Button onClick={this.handleClose} color="primary" style={{textTransform: 'none'}}>
+                Legg til
+              </Button>
+            </DialogActions>
+          </Dialog>
+        </div>
       </div>
-     </div>
-      )
+    )
   }
 }
 
 
 KlientAdd.propTypes = {
-		klienter : PropTypes.array.isRequired
+  klienter: PropTypes.array.isRequired
 };
 
 function getKlientById(klienter, id) {
@@ -150,17 +156,18 @@ function getKlientById(klienter, id) {
 function mapStateToProps(state) {
   let klient = {name: '', note: '', shortDescription: ''};
   const klientName = state.posts.name;
-  if (klientName && state.klienter.length > 0 ) {
+  if (klientName && state.klienter.length > 0) {
     klient = getKlientById(state.klienter, state.posts.name);
- 
-  } 
-    return {klient: klient};
+
+  }
+  return {klient: klient};
 }
 
-function  matchDispatchToProps(dispatch){
-    return bindActionCreators({createKlient : createKlient}, dispatch);
+function matchDispatchToProps(dispatch) {
+  return bindActionCreators({createKlient: createKlient}, dispatch);
 }
-export default withRouter(connect(mapStateToProps, matchDispatchToProps)(KlientAdd));
+
+export default withStyles(styles)(withRouter(connect(mapStateToProps, matchDispatchToProps)(KlientAdd)));
 
 
 

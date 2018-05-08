@@ -6,37 +6,41 @@ import {bindActionCreators} from 'redux';
 import KlienterList from '../components/klienter/KlienterList';
 import KlientAdd from '../components/klienter/KlientAdd';
 import {fetchKlienter} from '../actions/klienterAction';
-import {Grid} from "material-ui";
+import {withStyles} from "material-ui";
+
+
+const styles = theme => ({
+  root: {}
+});
 
 class KlienterContainer extends React.Component {
-	constructor(props) {
-	    super(props);
-	    this.state = {posts: this.props.posts};
-	}
-	componentDidMount(){
-  	     this.props.fetchKlienter()
+  constructor(props) {
+    super(props);
+    this.state = {posts: this.props.posts};
+  }
 
-   }
-	render () {
-	    if (!this.props.posts) {
-	      return <p>Nothing here yet...</p>;
-	    } else {
-	      return this.renderPosts();
-	    }
-	  }
+  componentDidMount() {
+    this.props.fetchKlienter()
 
-	renderPosts () {
-	    const klienter = this.props.posts;
-	    return (
-	         <Grid container xs={12}>
-                <Grid item xs={5}>
-                	<KlienterList klienter={klienter} />
-                </Grid>
-                <Grid item xs={7}>
-                	<KlientAdd />
-                </Grid>
-            </Grid>
-  
+  }
+
+  render() {
+    if (!this.props.posts) {
+      return <p>Nothing here yet...</p>;
+    } else {
+      return this.renderPosts();
+    }
+  }
+
+  renderPosts() {
+    const {classes} = this.props;
+    const klienter = this.props.posts;
+    return (
+      <div className={classes.root}>
+        <KlienterList klienter={klienter}/>
+        <KlientAdd/>
+      </div>
+
 
     );
   }
@@ -46,13 +50,14 @@ KlienterContainer.propTypes = {
   klienter: PropTypes.array.isRequired
 };
 
-function mapStateToProps(state){
-	return {
-        posts: state.posts
+function mapStateToProps(state) {
+  return {
+    posts: state.posts
   }
 }
-function  matchDispatchToProps(dispatch){
-    return bindActionCreators({fetchKlienter: fetchKlienter}, dispatch);
+
+function matchDispatchToProps(dispatch) {
+  return bindActionCreators({fetchKlienter: fetchKlienter}, dispatch);
 }
 
-export default withRouter(connect(mapStateToProps, matchDispatchToProps)(KlienterContainer));
+export default withStyles(styles)(withRouter(connect(mapStateToProps, matchDispatchToProps)(KlienterContainer)));
