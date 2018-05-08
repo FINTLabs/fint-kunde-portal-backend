@@ -1,12 +1,13 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
-import {updateAdapter} from '../../actions/adaptersAction';
-import {withRouter} from "react-router-dom";
+import {updateAdapter, deleteAdapterFromComponent} from '../../actions/adaptersAction';
+import { BrowserRouter as Router, Route, Link, withRouter	} from 'react-router-dom';
 import Button from 'material-ui/Button';
 import Dialog, {DialogActions, DialogContent, DialogTitle,} from 'material-ui/Dialog';
 import TextField from 'material-ui/TextField';
 import PropTypes from 'prop-types';
+import AdapterAddToComponent from './AdapterAddToComponent';
 
 class AdapterView extends React.Component {
   constructor(props, context) {
@@ -15,11 +16,10 @@ class AdapterView extends React.Component {
       adapter: Object.assign({}, this.props.location.state.adapter),
       isSaving: true
     };
-    console.log("const")
-    console.log(this.props)
     this.updateAdapterState = this.updateAdapterState.bind(this);
     this.toggleSave = this.toggleSave.bind(this);
     this.updateAdapter = this.updateAdapter.bind(this);
+    this.deleteAdapterFromComponent = this.deleteAdapterFromComponent.bind(this);
 
   }
 
@@ -52,6 +52,12 @@ class AdapterView extends React.Component {
     this.props.updateAdapter(adapter, org);
   }
 
+  deleteAdapterFromComponent(adapter, org) {
+		 if (adapter.components[0] != null) {
+			 const component = adapter.components[0].substr(3, adapter.components[0].indexOf(',')-3);
+			 this.props.deleteAdapterFromComponent(adapter, component, org);
+		}
+  }
 
   updateAdapterState(event) {
 
@@ -61,8 +67,6 @@ class AdapterView extends React.Component {
     return this.setState({
       value: event.target.value
     });
-    console.log("will")
-    console.log(this.state)
 
   }
 
@@ -73,11 +77,15 @@ class AdapterView extends React.Component {
     this.setState({open: true});
   };
 
-  handleCloseUpdate = () => {
-    this.updateAdapter(this.state.adapter, this.context.organisation)
+  handleCloseDelete = () => {
+	this.deleteAdapterFromComponent(this.state.adapter, this.context.organisation)
     this.setState({open: false});
   };
 
+  handleCloseUpdate = () => {
+	    this.updateAdapter(this.state.adapter, this.context.organisation)
+	    this.setState({open: false});
+  };
   handleClose = () => {
     this.setState({open: false});
   };
@@ -90,6 +98,7 @@ class AdapterView extends React.Component {
   render() {
 
     return (
+    <Router>		
       <div>
         <div>
 
@@ -160,10 +169,22 @@ class AdapterView extends React.Component {
               <Button onClick={this.handleCloseUpdate} color="primary" style={{textTransform: 'none'}}>
                 Oppdater
               </Button>
+              <Link to={{pathname: '/addAdapterToComponent', state: {adapter : this.props.location.state.adapter}}} style={{ textDecoration: 'none' }}>
+   				<Button color="primary" style={{textTransform: 'none'}}>Legg til komponent</Button></Link>
+              <Button onClick={this.handleCloseDelete} color="primary" style={{textTransform: 'none'}}>
+                Fjern fra komponent
+              </Button>                 
             </DialogActions>
           </Dialog>
         </div>
+	      <Route
+	      	path="/addAdapterToComponent"
+	      	render={({ props }) => (
+	        <AdapterAddToComponent adapter={this.props.location.state.adapter} />
+	        )}
+	      />
       </div>
+	 </Router>     
     )
 
   }
@@ -189,7 +210,7 @@ function mapStateToProps(state) {
 }
 
 function matchDispatchToProps(dispatch) {
-  return bindActionCreators({updateAdapter: updateAdapter}, dispatch);
+  return bindActionCreators({updateAdapter: updateAdapter, deleteAdapterFromComponent: deleteAdapterFromComponent}, dispatch);
 }
 
 export default withRouter(connect(mapStateToProps, matchDispatchToProps)(AdapterView));

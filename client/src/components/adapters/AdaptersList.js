@@ -43,7 +43,7 @@ class AdaptersList extends Component {
 
 
  deleteAdapterFromComponent(adapter) {
-	if (adapter.components) {
+	 if (adapter.components[0] != null) {
 		 const component = adapter.components[0].substr(3, adapter.components[0].indexOf(',')-3);
 		 this.props.deleteAdapterFromComponent(adapter, component, this.props.org);
 	}
@@ -75,13 +75,6 @@ class AdaptersList extends Component {
 	  	         			<Button  onClick={() => this.deleteAdapter(adapter)} style={buttonstyle}>Slett</Button>
 	  	         		</Grid>
 
-	  	         		<Grid item xs={16} sm={3}>
-	  	         			<Link to={{pathname: '/addAdapterToComponent', state: {adapter : adapter}}} style={{ textDecoration: 'none' }}>
-	  	         				<Button style={buttonstyle}>Legg til komponent</Button></Link>
-	         			</Grid>
-	  	         		<Grid item xs={16} sm={3}>
-	         				<Button onClick={() => this.deleteAdapterFromComponent(adapter)} style={buttonstyle}>Fjern fra komponent</Button>
-	         			</Grid>
 	  	            </Grid>
   	           </div>
   				)}
@@ -96,7 +89,7 @@ class AdaptersList extends Component {
 	      <Route
 	      	path="/addAdapterToComponent"
 	      	render={({ props }) => (
-	        <AdapterAddToComponent adapter={this.props.adapter} />
+	        <AdapterAddToComponent adapter={this.props.adapter} org={this.props.org}/>
 	        )}
 	      />
 
