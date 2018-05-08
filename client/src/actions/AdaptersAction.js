@@ -71,9 +71,9 @@ export function updateAdapter(adapter, org) {
 
 	  return function (dispatch) {
 	    return AdaptersApi.updateAdapter(adapter, org).then(responseAdapter => {
-	    //  dispatch(updateAdapterSuccess(responseAdapter));
+	     dispatch(updateAdapterSuccess(responseAdapter));
   	    //eslint-disable-next-line
-	    //  location.assign("/adapters/adapters");
+	      location.reload();
 	      return responseAdapter;
 	    }).catch(error => {
 	      throw(error);

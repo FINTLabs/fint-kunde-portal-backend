@@ -10,22 +10,24 @@ class AdaptersApi {
 	}
 
   static updateAdapter(Adapter, org) {
-  
-    const request = new Request(`http://localhost:8080/api/adapters/${org}/${Adapter.name}`, {
-      method: 'PUT',
-      headers: new Headers({
-          'Content-Type': 'application/json'
-        }), 
-        body: JSON.stringify({
-      	  name: Adapter.name,
-      	  note: Adapter.note,
-      	  shortDescription:Adapter.shortDescription})
-      });
-    return fetch(request).then(response => {
-      return response.json();
-    }).catch(error => {
-      return error;
-    });
+  console.log("test")
+  console.log(Adapter)
+  console.log(org)
+//    const request = new Request(`http://localhost:8080/api/adapters/${org}/${Adapter.name}`, {
+//      method: 'PUT',
+//      headers: new Headers({
+//          'Content-Type': 'application/json'
+//        }), 
+//        body: JSON.stringify({
+//      	  name: Adapter.name,
+//      	  note: Adapter.note,
+//      	  shortDescription:Adapter.shortDescription})
+//      });
+//    return fetch(request).then(response => {
+//      return response.json();
+//    }).catch(error => {
+//      return error;
+//    });
   }
 
   static createAdapter(Adapter, org) {

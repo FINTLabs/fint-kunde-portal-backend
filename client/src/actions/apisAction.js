@@ -212,38 +212,3 @@ export function unsetLegalContact(kontakt) {
 	    });
 	  };
 	}
-
-//export function addKlientToComponent(api) {
-//	  return function (dispatch) {
-//	    return ApisApi.addKlient(api).then(responseApi => {
-//	      dispatch(addKlientToComponentSuccess(responseApi));
-//		    //eslint-disable-next-line
-//	      location.reload();
-//	      return responseApi;
-//	    }).catch(error => {
-//	      throw(error);
-//	    });
-//	  };
-//}
-//
-//export function addKlientToComponentSuccess(api) {
-//	  return {type: LINK_SUCCESS, api}
-//}
-//
-//
-//export function deleteKlientFromComponent(api) {
-//	  return function(dispatch) {
-//	    return ApisApi.deleteKlient(api).then(() => {
-//	      dispatch(deleteKlientFromComponentSuccess(api));
-//	    //eslint-disable-next-line
-//	      location.reload();
-//	      return;
-//	    }).catch(error => {
-//	      throw(error);
-//	    })
-//	  }
-//	}
-//export function deleteKlientFromComponentSuccess(api) {
-//	  return {type: DELETE_SUCCESS, api}
-//}
-//

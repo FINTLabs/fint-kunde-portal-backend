@@ -1,118 +1,140 @@
 import React, {Component} from 'react';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
-import { BrowserRouter as Router, Route, Link, withRouter	} from 'react-router-dom';
-import {deleteAdapter, deleteAdapterFromComponent, addAdapterToComponent} from '../../actions/AdaptersAction';
+import {BrowserRouter as Router, Link, Route, withRouter} from 'react-router-dom';
+import {deleteAdapter} from '../../actions/AdaptersAction';
 import DashboardIcon from 'material-ui-icons/Home';
 import AdapterView from './AdapterView';
-import AdapterAddToComponent from './AdapterAddToComponent';
 import PropTypes from 'prop-types';
-import Button from 'material-ui/Button';
-import {Avatar, CardHeader, Grid } from "material-ui";
+import {
+  Avatar,
+  CardHeader,
+  Divider,
+  IconButton,
+  List,
+  ListItem,
+  ListItemAvatar,
+  ListItemSecondaryAction,
+  ListItemText,
+  Typography,
+  withStyles
+} from "material-ui";
 import {green} from 'material-ui/colors';
+import {Delete, Edit, ImportantDevices} from "material-ui-icons";
 
-const avtarstyle = {
-        margin: 1,
-        color: '#fff',
-        backgroundColor: green[500],
+const styles = theme => ({
+  clientListContainer: {
+    display: 'flex',
+    justifyContent: 'center',
+  },
+  clientList: {
+    width: '75%',
+  },
+  avtarstyle: {
+    margin: 1,
+    color: '#fff',
+    backgroundColor: green[500],
+  },
+  title: {
+    paddingLeft: theme.spacing.unit * 3,
+  },
+  listItem: {
+    borderBottom: '1px dashed lightgray',
+  },
+  itemAvatar: {
+    color: '#fff',
+    backgroundColor: theme.palette.secondary.main,
+  }
+});
 
-};
-
-const buttonstyle = {
-        margin: 1,
-        color: '#fff',
-        backgroundColor: green[500],
-        textDecoration: 'none',
-        textTransform: 'none',
-
-};
 const linkstyle = {
-        margin: 1,
-        textDecoration: 'none',
-        textTransform: 'none',
-        align: 'left'
+  margin: 1,
+  textDecoration: 'none',
+  textTransform: 'none',
+  align: 'left'
 
 };
+
 class AdaptersList extends Component {
-	constructor(props) {
-	    super(props);
-	    this.deleteAdapter= this.deleteAdapter.bind(this);
-	    this.state = {adapters: this.props.adapters, open : true};
-
-	}
-
-
- deleteAdapterFromComponent(adapter) {
-	 if (adapter.components[0] != null) {
-		 const component = adapter.components[0].substr(3, adapter.components[0].indexOf(',')-3);
-		 this.props.deleteAdapterFromComponent(adapter, component, this.props.org);
-	}
+  constructor(props) {
+    super(props);
+    this.deleteAdapter = this.deleteAdapter.bind(this);
+    this.state = {adapters: this.props.adapters};
   }
 
- deleteAdapter(adapter) {
-		 this.props.deleteAdapterFromComponent(adapter);
-		 this.props.deleteAdapter(adapter, this.props.org);
-	}
+  deleteAdapter(adapter) {
+	  this.props.deleteAdapter(adapter, this.props.org);
+  }
 
-	render () {
-  	    return (
-	    <Router>
-	     <div>
-      		<a href="/" style={{textDecoration:'none'}}><CardHeader	title="Dashboard" avatar={
-                <Avatar style={avtarstyle}>
-                    <DashboardIcon/>
-                </Avatar>}/></a>
-  			<h3>Adapters</h3>
-  			<ul className="list-group">
-  				{this.state.adapters.map((adapter, i) =>
-  				<div>
-	  	         	<Grid container style={{ lineHeight: '5px' }} spacing={8}>
-	  	         		<Grid item xs={16} sm={4}>
-	  	         		<Link to={{pathname: '/adapter', state: {adapter : adapter}}} style={{ textDecoration: 'none' }}>
-	  	         				<Button style={linkstyle}>{adapter.name}</Button></Link>
-	  	         		</Grid>
-	  	         		<Grid item xs={16} sm={2}>
-	  	         			<Button  onClick={() => this.deleteAdapter(adapter)} style={buttonstyle}>Slett</Button>
-	  	         		</Grid>
+  render() {
 
-	  	            </Grid>
-  	           </div>
-  				)}
-	      </ul>
-	      <Route
-	      	path="/adapter"
-	      	render={({ props }) => (
-	        <AdapterView adapter={this.props.adapter}/>
-	        )}
-	      />
-
-	      <Route
-	      	path="/addAdapterToComponent"
-	      	render={({ props }) => (
-	        <AdapterAddToComponent adapter={this.props.adapter} org={this.props.org}/>
-	        )}
-	      />
-
-
-	    </div>
-	  </Router>
-	    );
-	  }
+    const {classes} = this.props;
+    return (
+      <Router>
+        <div>
+          <a href="/" style={{textDecoration: 'none'}}><CardHeader title="Dashboard" avatar={
+            <Avatar className={classes.avtarstyle}>
+              <DashboardIcon/>
+            </Avatar>}/></a>
+          <div className={classes.clientListContainer}>
+            <div className={classes.clientList}>
+              <Typography variant="headline" className={classes.title}>Adapters</Typography>
+              <Divider/>
+              <List>
+                {this.state.adapters.map((adapter, i) =>
+                  <ListItem className={classes.listItem}>
+                    <ListItemAvatar>
+                      <Avatar className={classes.itemAvatar}>
+                        <ImportantDevices/>
+                      </Avatar>
+                    </ListItemAvatar>
+                    <ListItemText
+                      primary={adapter.shortDescription}
+                      secondary={adapter.name}
+                    />
+                    <ListItemSecondaryAction>
+                      <Link to={{pathname: '/adapter', state: {adapter: adapter}}} style={{textDecoration: 'none'}}>
+                        <IconButton aria-label="Edit">
+                          <Edit/>
+                        </IconButton>
+                      </Link>
+                      <IconButton aria-label="Delete" onClick={() => this.deleteAdapter(adapter)}>
+                        <Delete/>
+                      </IconButton>
+                    </ListItemSecondaryAction>
+                  </ListItem>,
+                )}
+              </List>
+            </div>
+          </div>
+          <Route
+            path="/adapter"
+            render={({props}) => (
+              <AdapterView adapter={this.props.adapter}/>
+            )}
+          />
+        </div>
+      </Router>
+    );
+  }
 
 }
 
 AdaptersList.propTypes = {
-	  adapters: PropTypes.array.isRequired
-	};
+  klienter: PropTypes.array.isRequired
+};
 
-function mapStateToProps(state){
-	return {
-  }
-}
-function  matchDispatchToProps(dispatch){
-    return bindActionCreators({deleteAdapter : deleteAdapter, deleteAdapterFromComponent: deleteAdapterFromComponent}, dispatch);
+function mapStateToProps(state) {
+  return {}
 }
 
-export default withRouter(connect(mapStateToProps, matchDispatchToProps)(AdaptersList));
+function matchDispatchToProps(dispatch) {
+  return bindActionCreators({deleteAdapter: deleteAdapter}, dispatch);
+}
+
+export default withStyles(styles)(withRouter(connect(mapStateToProps, matchDispatchToProps)(AdaptersList)));
+
+
+
 
 
