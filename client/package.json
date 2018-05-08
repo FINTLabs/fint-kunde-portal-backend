@@ -16,6 +16,7 @@
     "material-ui-selectfield": "^1.0.24",
     "prop-types": "^15.6.0",
     "react": "^16.2.0",
+    "react-copy-to-clipboard": "^5.0.1",
     "react-dom": "^16.2.0",
     "react-form-validator-core": "^0.4.4",
     "react-inline-grid": "^0.5.3",
