@@ -8,7 +8,7 @@ import { BrowserRouter as Router, Route,  Link, withRouter } from "react-router-
 import createHistory from 'history/createBrowserHistory';
 import { Redirect } from 'react-router';
 import Button from 'material-ui/Button';
-import {fetchKontakter, createKontakt} from '../../actions/KontakterAction';
+import {fetchKontakter, createKontakt} from '../../actions/kontakter';
 import {green} from 'material-ui/colors';
 import {Add} from "material-ui-icons";
 import {Search} from "material-ui-icons";
