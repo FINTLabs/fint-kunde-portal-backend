@@ -50,6 +50,8 @@ class AdapterView extends React.Component {
 
   updateAdapter(adapter, org) {
     this.props.updateAdapter(adapter, org);
+    console.log("back")
+
   }
 
   deleteAdapterFromComponent(adapter, org) {

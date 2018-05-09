@@ -47,7 +47,7 @@ export function fetchAdapters(org) {
 
 
 export function createAdapter(adapter, org) {
-	
+ 	
 	return function (dispatch) {
 	    return AdaptersApi.createAdapter(adapter, org).then(responseAdapter => {
 	      dispatch(createAdapterSuccess(responseAdapter));
@@ -71,11 +71,14 @@ export function updateAdapter(adapter, org) {
 
 	  return function (dispatch) {
 	    return AdaptersApi.updateAdapter(adapter, org).then(responseAdapter => {
-	     dispatch(updateAdapterSuccess(responseAdapter));
-  	    //eslint-disable-next-line
-	      location.reload();
-	      return;
+		     dispatch(updateAdapterSuccess(responseAdapter));
+	  	    //eslint-disable-next-line
+//		     location.assign("/adapters/adapters");
+			 return responseAdapter;
+
 	    }).catch(error => {
+	    	console.log("error")
+	    	console.log(error)
 	      throw(error);
 	    });
 	  };
@@ -99,9 +102,7 @@ export function deleteAdapter(adapter, org) {
 	}
 
 export function addAdapterToComponent(adapter, component, org) {
-
 	return function (dispatch) {
-
 		return AdaptersApi.addAdapterToComponent(adapter, component, org).then(responseAdapter => {
 			dispatch(addAdapterToComponentSuccess(responseAdapter));
 			//eslint-disable-next-line

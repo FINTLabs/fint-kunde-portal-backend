@@ -63,8 +63,7 @@ class App extends Component {
 }
 
 App.propTypes = {
-  classes: PropTypes.object.isRequired,
-  apis: PropTypes.array.isRequired
+
 };
 
 function mapStateToProps(state) {

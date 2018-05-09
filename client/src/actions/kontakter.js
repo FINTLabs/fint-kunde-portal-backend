@@ -74,7 +74,7 @@ export function updateKontakt(kontakt) {
 	    return KontakterApi.updateKontakt(kontakt).then(responseKontakt => {
 	    //  dispatch(updateKontakterSuccess(responseKontakter));
   	    //eslint-disable-next-line
-	      location.assign("/kontakter/kontakter");
+	      location.reload("/kontakter/kontakter");
 	      return responseKontakt;
 	    }).catch(error => {
 	      throw(error);

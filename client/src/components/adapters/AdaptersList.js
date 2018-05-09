@@ -66,16 +66,13 @@ class AdaptersList extends Component {
 	  this.props.deleteAdapter(adapter, this.props.org);
   }
 
+  
   render() {
 
     const {classes} = this.props;
     return (
       <Router>
         <div>
-          <a href="/" style={{textDecoration: 'none'}}><CardHeader title="Dashboard" avatar={
-            <Avatar className={classes.avtarstyle}>
-              <DashboardIcon/>
-            </Avatar>}/></a>
           <div className={classes.clientListContainer}>
             <div className={classes.clientList}>
               <Typography variant="headline" className={classes.title}>Adapters</Typography>
