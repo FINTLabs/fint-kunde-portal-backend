@@ -5,8 +5,12 @@ import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import AdaptersList from '../components/adapters/AdaptersList';
 import AdapterAdd from '../components/adapters/AdapterAdd';
-import {fetchAdapters} from '../actions/AdaptersAction';
+import {fetchAdapters} from '../actions/adapters';
 import {Grid} from "material-ui";
+
+const styles = theme => ({
+	  root: {}
+	});
 
 class AdaptersContainer extends React.Component {
 	constructor(props) {
@@ -28,7 +32,7 @@ class AdaptersContainer extends React.Component {
 	  }
 
 	renderPosts () {
-
+	    const {classes} = this.props;
 	    return (
 	         <Grid container xs={12}>
                 <Grid item xs={6}>

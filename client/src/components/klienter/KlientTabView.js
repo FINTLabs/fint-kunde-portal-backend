@@ -82,6 +82,18 @@ class KlientTabView extends React.Component {
     this.setState({value: index});
   };
 
+  updateKlientState(event) {
+	  console.log("here")
+	  console.log(this.state)
+	  console.log(this.props)
+	    const field = event.target.name;
+	    const klient = this.state.klient;
+	    klient[field] = event.target.value;
+	    return this.setState({
+	      value: event.target.value
+	    });
+	  }
+  
   render() {
     const {classes, theme} = this.props;
 
@@ -141,7 +153,7 @@ class KlientTabView extends React.Component {
                   disabled
                   endAdornment={
                     <CopyToClipboard text={this.state.klient.name}
-                                     onCopy={() => {this.props.onCopy; console.log(this.state)}}>
+                                     onCopy={() => {this.props.onCopy; console.log(this.state.klient.name)}}>
                       <InputAdornment position="end">
                         <CopyButton/>
                       </InputAdornment>

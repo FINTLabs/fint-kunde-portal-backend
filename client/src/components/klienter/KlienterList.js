@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import {BrowserRouter as Router, Link, Route, withRouter} from 'react-router-dom';
-import {deleteKlient} from '../../actions/klienterAction';
+import {deleteKlient} from '../../actions/klienter';
 import DashboardIcon from 'material-ui-icons/Home';
 import KlientView from './KlientView';
 import PropTypes from 'prop-types';
@@ -47,17 +47,6 @@ const styles = theme => ({
   }
 });
 
-
-/*
-const buttonstyle = {
-        margin: 1,
-        color: '#fff',
-        backgroundColor: green[500],
-        textDecoration: 'none',
-        textTransform: 'none',
-
-};
-*/
 const linkstyle = {
   margin: 1,
   textDecoration: 'none',
@@ -73,13 +62,7 @@ class KlientsList extends Component {
     this.state = {klienter: this.props.klienter};
   }
 
-//  AddKlientToComponent(event) {
-//    this.props.addKlientToComponent(this.state.api);
-//}
-//
-//deleteKlientFromComponent(event) {
-//    this.props.deleteKlientFromComponent(this.state.api);
-//}
+
   deleteKlient(klient) {
     this.props.deleteKlient(klient)
   }

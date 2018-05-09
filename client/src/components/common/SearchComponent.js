@@ -7,7 +7,7 @@ import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import { withRouter } from "react-router-dom";
-import { addAdapterToComponent } from '../../actions/AdaptersAction';
+import { addAdapterToComponent } from '../../actions/adapters';
 import Button from 'material-ui/Button';
 import {Grid} from 'material-ui';
 import Icon from 'material-ui/Icon';

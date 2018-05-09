@@ -1,7 +1,7 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
-import {updateAdapter, deleteAdapterFromComponent} from '../../actions/AdaptersAction';
+import {updateAdapter, deleteAdapterFromComponent} from '../../actions/adapters';
 import { BrowserRouter as Router, Route, Link, withRouter	} from 'react-router-dom';
 import Button from 'material-ui/Button';
 import Dialog, {DialogActions, DialogContent, DialogTitle,} from 'material-ui/Dialog';
@@ -60,7 +60,6 @@ class AdapterView extends React.Component {
   }
 
   updateAdapterState(event) {
-
     const field = event.target.name;
     const adapter = this.props.location.state.adapter;
     adapter[field] = event.target.value;

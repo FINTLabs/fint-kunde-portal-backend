@@ -2,11 +2,12 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
-import {createAdapter} from '../../actions/adapters';
-import {withRouter} from "react-router-dom";
+import { createAdapter } from '../../actions/AdaptersAction';
+import { withRouter } from "react-router-dom";
 import Button from 'material-ui/Button';
-import Dialog, {DialogActions, DialogContent, DialogContentText, DialogTitle,} from 'material-ui/Dialog';
+import Dialog, { DialogActions, DialogContent, DialogContentText, DialogTitle,} from 'material-ui/Dialog';
 import TextField from 'material-ui/TextField';
+import {green} from 'material-ui/colors';
 import {Add} from "material-ui-icons";
 import {withStyles} from "material-ui";
 
@@ -38,7 +39,8 @@ class AdapterAdd extends React.Component {
 
 
   componentWillReceiveProps(nextProps) {
-    if (this.props.adapter != nextProps.adapter) {
+	  console.log(this.props.org)
+    if (this.props.adapter !== nextProps.adapter) {
       this.setState({adapter: Object.assign({}, nextProps.adapter)});
 
     }
@@ -53,7 +55,7 @@ class AdapterAdd extends React.Component {
 
   saveAdapter(event) {
 	    this.props.createAdapter(this.state.adapter, this.props.org);
-}
+  }
 
 
   updateAdapterState(event) {
@@ -65,27 +67,27 @@ class AdapterAdd extends React.Component {
 
   createAdapter(adapter, org) {
 	    this.props.createAdapter(adapter,this.props.org)
-}
+  }
 
   state = {
-    open: false,
-  };
+		    open: false,
+		  };
   handleClickOpen = () => {
-    this.setState({open: true});
-  };
+	    this.setState({ open: true });
+	  };
 
   handleClose = () => {
-    this.createAdapter(this.state.adapter)
-    this.setState({open: false});
+	this.createAdapter(this.state.adapter, this.props.org)
+    this.setState({ open: false });
   };
 
   render() {
-    const {classes} = this.props;
-    return (
+	  const {classes} = this.props;
+      return (
       <div>
         <div>
-          <Button variant="fab" color="secondary"  className={classes.addButton} onClick={this.handleClickOpen}><Add/></Button>
-          <Dialog
+        <Button variant="fab" color="secondary"  className={classes.addButton} onClick={this.handleClickOpen}><Add/></Button>
+        <Dialog
           open={this.state.open}
           onClose={this.handleClose}
           aria-labelledby="form-dialog-title"
@@ -133,9 +135,9 @@ class AdapterAdd extends React.Component {
 	            </Button>
 	          </DialogActions>
         </Dialog>
-        </div>
       </div>
-    )
+     </div>
+      )
   }
 }
 
@@ -158,12 +160,4 @@ function mapStateToProps(state) {
 function  matchDispatchToProps(dispatch){
     return bindActionCreators({createAdapter : createAdapter}, dispatch);
 }
-
-export default withStyles(styles)(withRouter(connect(mapStateToProps, matchDispatchToProps)(AdapterAdd)));
-
-
-
-
-
-
-
+export default withRouter(connect(mapStateToProps, matchDispatchToProps)(AdapterAdd));

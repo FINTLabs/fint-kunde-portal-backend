@@ -1,7 +1,7 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
-import { updateKontakt } from '../../actions/kontakterAction';
+import { updateKontakt } from '../../actions/kontakter';
 import { withRouter } from "react-router-dom";
 import Button from 'material-ui/Button';
 import Dialog, { DialogActions, DialogContent, DialogTitle,} from 'material-ui/Dialog';

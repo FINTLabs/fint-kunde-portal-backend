@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 import {BrowserRouter as Router, Link, Route, withRouter} from 'react-router-dom';
-import {deleteAdapter} from '../../actions/AdaptersAction';
+import {deleteAdapter} from '../../actions/adapters';
 import DashboardIcon from 'material-ui-icons/Home';
 import AdapterView from './AdapterView';
 import PropTypes from 'prop-types';

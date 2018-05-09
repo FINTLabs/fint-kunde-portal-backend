@@ -74,7 +74,7 @@ export function updateAdapter(adapter, org) {
 	     dispatch(updateAdapterSuccess(responseAdapter));
   	    //eslint-disable-next-line
 	      location.reload();
-	      return responseAdapter;
+	      return;
 	    }).catch(error => {
 	      throw(error);
 	    });

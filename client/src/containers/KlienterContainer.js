@@ -5,7 +5,7 @@ import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import KlienterList from '../components/klienter/KlienterList';
 import KlientAdd from '../components/klienter/KlientAdd';
-import {fetchKlienter} from '../actions/klienterAction';
+import {fetchKlienter} from '../actions/klienter';
 import {withStyles} from "material-ui";
 
 
