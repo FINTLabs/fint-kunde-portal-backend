@@ -48,30 +48,26 @@ class KontakterList extends Component {
 	}
     componentDidMount(){
   	   this.props.fetchLegalContact();
-	   
+
     }
 
 	removeTechnicalContact(kontakt) {
 		 this.props.removeTechnicalContact(kontakt)
 	}
-	
+
 	unsetLegalContact(kontakt) {
 		 this.props.unsetLegalContact(kontakt)
 	}
-	
+
 	setLegalContact(kontakt) {
 		 this.props.setLegalContact(kontakt)
-	}	
+	}
 	render () {
 	  return (
 	    <Router>
 	     <div>
-      		<a href="/" style={{textDecoration:'none'}}><CardHeader	title="Dashboard" avatar={
-                <Avatar style={avtarstyle}>
-                    <DashboardIcon/>
-                </Avatar>}/></a>
   			<h3>Kontakter</h3>
-  			<LegalKontakt />  
+  			<LegalKontakt />
   		<Table >
           <TableHead>
               <TextField id="text-field-default" defaultValue="Teknisk Kontakter"/>
@@ -104,7 +100,7 @@ class KontakterList extends Component {
 	  }
 
 }
-	
+
 KontakterList.propTypes = {
 	  kontakter: PropTypes.array.isRequired
 	};

@@ -3,7 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@material-ui/icons": "^1.0.0-beta.43",
     "axios": "^0.18.0",
+    "classnames": "^2.2.5",
     "expect": "^23.0.0-alpha.0",
     "expect-redux": "^3.1.1",
     "fetchmock": "^1.0.1",
