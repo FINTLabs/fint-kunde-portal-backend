@@ -1,7 +1,8 @@
 class AdaptersApi {
 
   static getAdapters(org) {
-
+console.log("org")
+console.log(org)
     const url = 'http://localhost:8080/api/adapters/'.concat(org);
     return fetch(url, {method: 'GET'})
       .then(response => Promise.all([response, response.json()]));

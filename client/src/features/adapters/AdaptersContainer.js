@@ -1,12 +1,13 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
-import {Grid} from "material-ui";
+import {withStyles} from "material-ui";
 import LoadingProgress from "../../common/LoadingProgress";
-import {fetchAdapters} from "../../data/redux/actions/adapters";
 import AdaptersList from "./AdaptersList";
 import AdapterAdd from "./AdapterAdd";
-import withStyles from "material-ui/es/styles/withStyles";
+import {createAdapter, deleteAdapter, fetchAdapters, updateAdapter} from "../../data/redux/actions/adapters";
+
 
 const styles = () => ({
   root: {}
@@ -15,45 +16,64 @@ const styles = () => ({
 class AdaptersContainer extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {adapters: this.props.adapters};
-  }
 
-  componentWillMount() {
-    this.props.fetchAdapters("testing")
-  }
-
-  render() {
-    if (!this.props.adapters) {
-      return <LoadingProgress/>;
-    } else {
-      return this.renderPosts();
+    this.state = {
+      adapterAdded: false,
     }
   }
 
-  renderPosts() {
+  componentDidMount() {
+    this.props.fetchAdapters(this.context.organisation)
+  }
+  
+  static contextTypes = {
+	    organisation: PropTypes.string,
+	    components: PropTypes.array
+	  };
+  
+  render() {
+	    if (!this.props.adapters) {
+	      return <LoadingProgress/>;
+	    } else {
+	      return this.renderAdapters();
+	    }
+	  }
+
+  renderAdapters() {
+    const {classes} = this.props;
     return (
-      <Grid container xs={12}>
-        <Grid item xs={6}>
-          <AdaptersList adapters={this.props.adapters} org="testing"/>
-        </Grid>
-        <Grid item xs={6}>
-          <AdapterAdd org={this.props.org}/>
-        </Grid>
-      </Grid>
+      <div className={classes.root}>
+        <AdaptersList adapters={this.props.adapters}
+        			  updateAdapter={this.props.updateAdapter}
+                      deleteAdapter={this.props.deleteAdapter}
+
+        />
+        <AdapterAdd
+          createAdapter={this.props.createAdapter}
+        />
+      </div>
 
     );
   }
 }
 
+AdaptersContainer.propTypes = {
+
+};
+
 function mapStateToProps(state) {
   return {
-    adapters: state.adapters,
-    posts: state.posts
+    adapters: state.adapters
   }
 }
 
-function matchDispatchToProps(dispatch) {
-  return bindActionCreators({fetchAdapters: fetchAdapters}, dispatch);
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators({
+    fetchAdapters: fetchAdapters,
+    updateAdapter: updateAdapter,
+    deleteAdapter: deleteAdapter,
+    createAdapter: createAdapter,
+  }, dispatch);
 }
 
-export default withStyles(styles)(connect(mapStateToProps, matchDispatchToProps)(AdaptersContainer));
+export default withStyles(styles)(connect(mapStateToProps, mapDispatchToProps)(AdaptersContainer));

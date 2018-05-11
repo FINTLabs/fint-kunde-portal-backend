@@ -1,7 +1,4 @@
 import React, {Component} from 'react';
-import {bindActionCreators} from 'redux';
-import {connect} from 'react-redux';
-import {BrowserRouter as Router, Link, Route, withRouter} from 'react-router-dom';
 import AdapterView from './AdapterView';
 import PropTypes from 'prop-types';
 import {
@@ -18,14 +15,14 @@ import {
 } from "material-ui";
 import {green} from 'material-ui/colors';
 import {Delete, Edit, ImportantDevices} from "material-ui-icons";
-import {deleteAdapter} from "../../data/redux/actions/adapters";
+import AutoHideNotification from "../../common/AutoHideNotification";
 
 const styles = theme => ({
-  clientListContainer: {
+  adapterListContainer: {
     display: 'flex',
     justifyContent: 'center',
   },
-  clientList: {
+  adapterList: {
     width: '75%',
   },
   avtarstyle: {
@@ -48,80 +45,92 @@ const styles = theme => ({
 class AdaptersList extends Component {
   constructor(props) {
     super(props);
-    this.deleteAdapter = this.deleteAdapter.bind(this);
-    this.state = {adapters: this.props.adapters};
+    this.state = {
+      adapters: this.props.adapters,
+      adapterToEdit: null,
+      open: false,
+      adapterDeleted: false,
+      adapterDeletedName: null,
+    };
+
   }
 
-  deleteAdapter(adapter) {
-    this.props.deleteAdapter(adapter, this.props.org);
-  }
+  editAdapter = (adapter) => {
+    this.setState({
+      open: true,
+      adapterToEdit: adapter,
+    });
+  };
 
+  onCloseEdit = () => {
+    this.setState({open: false});
+  };
 
-  render() {
+  updateAdapter = (adapter) => {
+    this.props.updateAdapter(adapter);
+  };
 
+  deleteAdapter = (adapter) => {
+    this.setState({
+      adapterDeleted: true,
+      adapterDeletedName: adapter.name,
+    });
+    this.props.deleteAdapter(adapter);
+  };
+
+ render() {
     const {classes} = this.props;
     return (
-      <Router>
-        <div>
-          <div className={classes.clientListContainer}>
-            <div className={classes.clientList}>
-              <Typography variant="headline" className={classes.title}>Adapters</Typography>
-              <Divider/>
-              <List>
-                {this.state.adapters.map((adapter, i) =>
-                  <ListItem className={classes.listItem}>
-                    <ListItemAvatar>
-                      <Avatar className={classes.itemAvatar}>
-                        <ImportantDevices/>
-                      </Avatar>
-                    </ListItemAvatar>
-                    <ListItemText
-                      primary={adapter.shortDescription}
-                      secondary={adapter.name}
-                    />
-                    <ListItemSecondaryAction>
-                      <Link to={{pathname: '/adapter', state: {adapter: adapter}}} style={{textDecoration: 'none'}}>
-                        <IconButton aria-label="Edit">
-                          <Edit/>
-                        </IconButton>
-                      </Link>
-                      <IconButton aria-label="Delete" onClick={() => this.deleteAdapter(adapter)}>
-                        <Delete/>
-                      </IconButton>
-                    </ListItemSecondaryAction>
-                  </ListItem>,
-                )}
-              </List>
-            </div>
+      <div>
+        <AutoHideNotification
+          showNotification={this.state.adapterDeleted}
+          message={`Adapter ${this.state.adapterDeletedName} ble slettet!`}
+
+        />
+        <div className={classes.adapterListContainer}>
+          <div className={classes.adapterList}>
+            <Typography variant="headline" className={classes.title}>Adapterer</Typography>
+            <Divider/>
+            <List>
+              {this.props.adapters.map((adapter) =>
+                <ListItem className={classes.listItem} key={adapter.name}>
+                  <ListItemAvatar>
+                    <Avatar className={classes.itemAvatar}>
+                      <ImportantDevices/>
+                    </Avatar>
+                  </ListItemAvatar>
+                  <ListItemText
+                    primary={adapter.shortDescription}
+                    secondary={adapter.name}
+                  />
+                  <ListItemSecondaryAction>
+                    <IconButton aria-label="Edit" onClick={() => this.editAdapter(adapter)}>
+                      <Edit/>
+                    </IconButton>
+                    <IconButton aria-label="Delete" onClick={() => this.deleteAdapter(adapter)}>
+                      <Delete/>
+                    </IconButton>
+                  </ListItemSecondaryAction>
+                </ListItem>,
+              )}
+            </List>
           </div>
-          <Route
-            path="/adapter"
-            render={({props}) => (
-              <AdapterView adapter={this.props.adapter}/>
-            )}
-          />
         </div>
-      </Router>
+        <AdapterView
+	        open={this.state.open}
+	        adapter={this.state.adapterToEdit}
+	        onClose={this.onCloseEdit}
+	        updateAdapter={this.updateAdapter}
+      />
+      </div>
     );
   }
 
 }
 
 AdaptersList.propTypes = {
-  klienter: PropTypes.array.isRequired
+	adapters: PropTypes.array.isRequired
 };
 
-function mapStateToProps(state) {
-  return {}
-}
-
-function matchDispatchToProps(dispatch) {
-  return bindActionCreators({deleteAdapter: deleteAdapter}, dispatch);
-}
-
-export default withStyles(styles)(withRouter(connect(mapStateToProps, matchDispatchToProps)(AdaptersList)));
-
-
-
-
+export default withStyles(styles)(AdaptersList);
 
