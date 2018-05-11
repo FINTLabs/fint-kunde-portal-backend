@@ -1,7 +1,7 @@
 class KontakterApi {
 
   static fetchKontakter() {
-    const request = new Request(`http://localhost:8080/api/contacts`, {
+    const request = new Request(`/api/contacts`, {
       method: 'GET'
     });
 
@@ -13,13 +13,13 @@ class KontakterApi {
   }
 
   static getKontakter() {
-	  const url='http://localhost:8080/api/contacts';
+	  const url='/api/contacts';
 	  return fetch(url, { method: 'GET'})
 	     .then( response => Promise.all([response,response.json()]));
 	}
 
   static updateKontakt(Kontakt) {
-    const request = new Request(`http://localhost:8080/api/contacts/${Kontakt.nin}`, {
+    const request = new Request(`/api/contacts/${Kontakt.nin}`, {
       method: 'PUT',
       headers: new Headers({
           'Content-Type': 'application/json'
@@ -42,7 +42,7 @@ class KontakterApi {
 
 
   static createKontakt(Kontakt) {
-    const request = new Request(`http://localhost:8080/api/contacts`, {
+    const request = new Request(`/api/contacts`, {
       method: 'POST',
       headers: {
           'Accept': '*/*',
@@ -65,7 +65,7 @@ class KontakterApi {
   }
 
   static deleteKontakt(Kontakt) {
-    const request = new Request(`http://localhost:8080/api/contacts/${Kontakt.nin}`, {
+    const request = new Request(`/api/contacts/${Kontakt.nin}`, {
       method: 'DELETE'
     });
 
