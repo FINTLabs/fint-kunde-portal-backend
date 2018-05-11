@@ -1,7 +1,7 @@
 class KlienterApi {
 
   static fetchKlienter() {
-    const request = new Request(`http://localhost:8080/api/clients/testing`, {
+    const request = new Request(`/api/clients/testing`, {
       method: 'GET'
     });
 
@@ -13,13 +13,13 @@ class KlienterApi {
   }
 
   static getKlienter() {
-	  const url='http://localhost:8080/api/clients/testing';
+	  const url='/api/clients/testing';
 	  return fetch(url, { method: 'GET'})
 	     .then( response => Promise.all([response,response.json()]));
 	}
 
   static updateClient(client) {
-    const request = new Request(`http://localhost:8080/api/clients/testing/${client.name}`, {
+    const request = new Request(`/api/clients/testing/${client.name}`, {
       method: 'PUT',
       headers: new Headers({
           'Content-Type': 'application/json'
@@ -39,7 +39,7 @@ class KlienterApi {
   }
 
   static createKlient(Klient) {
-    const request = new Request(`http://localhost:8080/api/clients/testing`, {
+    const request = new Request(`/api/clients/testing`, {
       method: 'POST',
       headers: {
           'Accept': '*/*',
@@ -60,7 +60,7 @@ class KlienterApi {
   }
 
   static deleteKlient(Klient) {
-    const request = new Request(`http://localhost:8080/api/clients/testing/${Klient.name}`, {
+    const request = new Request(`/api/clients/testing/${Klient.name}`, {
       method: 'DELETE'
     });
 

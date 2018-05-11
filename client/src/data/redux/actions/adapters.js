@@ -88,8 +88,8 @@ export function deleteAdapter(adapter, org) {
 	  return function(dispatch) {
 	    return AdaptersApi.deleteAdapter(adapter, org).then(() => {
 	      dispatch(deleteAdapterSuccess(adapter));
-	      //eslint-disable-next-line
-	      location.reload();
+        //eslint-disable-next-line
+        location.reload();
 	      return;
 	    }).catch(error => {
 	      throw(error);

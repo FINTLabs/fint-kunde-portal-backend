@@ -1,16 +1,15 @@
 class AdaptersApi {
 
   static getAdapters(org) {
-console.log("org")
-console.log(org)
-    const url = 'http://localhost:8080/api/adapters/'.concat(org);
+
+    const url = '/api/adapters/'.concat(org);
     return fetch(url, {method: 'GET'})
       .then(response => Promise.all([response, response.json()]));
   }
 
   static updateAdapter(Adapter, org) {
 
-    const request = new Request(`http://localhost:8080/api/adapters/${org}/${Adapter.name}`, {
+    const request = new Request(`/api/adapters/${org}/${Adapter.name}`, {
       method: 'PUT',
       headers: {
         'Accept': '*/*',
@@ -31,7 +30,7 @@ console.log(org)
 
   static createAdapter(Adapter, org) {
 
-    const request = new Request(`http://localhost:8080/api/adapters/${org}`, {
+    const request = new Request(`/api/adapters/${org}`, {
       method: 'POST',
       headers: {
         'Accept': '*/*',
@@ -52,7 +51,7 @@ console.log(org)
 
   static addAdapterToComponent(Adapter, component, org) {
 
-    const request = new Request(`http://localhost:8080/api/components/${component.value}/${org}/adapters/${Adapter.name}`, {
+    const request = new Request(`/api/components/${component.value}/${org}/adapters/${Adapter.name}`, {
       method: 'PUT',
       headers: {
         'Accept': '*/*',
@@ -70,7 +69,7 @@ console.log(org)
   }
 
   static deleteAdapter(Adapter, org) {
-    const request = new Request(`http://localhost:8080/api/adapters/${org}/${Adapter.name}`, {
+    const request = new Request(`/api/adapters/${org}/${Adapter.name}`, {
       method: 'DELETE'
     });
 
@@ -83,7 +82,7 @@ console.log(org)
 
   static deleteAdapterFromComponent(adapter, component, org) {
 
-    const request = new Request(`http://localhost:8080/api/components/${component}/${org}/adapters/${adapter.name}`, {
+    const request = new Request(`/api/components/${component}/${org}/adapters/${adapter.name}`, {
       method: 'DELETE'
     });
     return fetch(request).then(response => {

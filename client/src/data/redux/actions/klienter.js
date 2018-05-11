@@ -8,6 +8,10 @@ import {
   UPDATE_CLIENT_SUCCESS
 } from "./actionTypes";
 
+// TODO:
+// - Should we split this in to files?
+// - Rename all norwegian names to eng.
+
 function fetchClientRequest() {
   return {
     type: FETCH_CLIENT_REQUEST
@@ -27,6 +31,23 @@ function fetchClientError() {
   }
 }
 
+export function createKlientSuccess(client) {
+  return {type: CREATE_CLIENT_SUCCESS, client}
+}
+
+export function updateKlientSuccess(klient) {
+  return {type: UPDATE_CLIENT_SUCCESS, klient}
+}
+
+
+export function addKlientToComponentSuccess(klient) {
+  return {type: CREATE_CLIENT_SUCCESS, klient}
+}
+
+export function deleteKlientFromComponentSuccess(klient) {
+  return {type: DELETE_CLIENT_SUCCESS, klient}
+}
+
 export function fetchKlienter() {
 
   return (dispatch) => {
@@ -42,7 +63,6 @@ export function fetchKlienter() {
   }
 }
 
-
 export function createKlient(klient) {
   return function (dispatch) {
     return KlienterApi.createKlient(klient).then(responseKlient => {
@@ -52,14 +72,6 @@ export function createKlient(klient) {
       throw(error);
     });
   };
-}
-
-export function createKlientSuccess(client) {
-  return {type: CREATE_CLIENT_SUCCESS, client}
-}
-
-export function updateKlientSuccess(klient) {
-  return {type: UPDATE_CLIENT_SUCCESS, klient}
 }
 
 export function updateClient(client) {
@@ -87,6 +99,7 @@ export function deleteKlient(klient) {
   }
 }
 
+
 export function addKlientToComponent(klient) {
   return function (dispatch) {
     return KlienterApi.addKlient(klient).then(responseKlient => {
@@ -98,11 +111,6 @@ export function addKlientToComponent(klient) {
   };
 }
 
-export function addKlientToComponentSuccess(klient) {
-  return {type: CREATE_CLIENT_SUCCESS, klient}
-}
-
-
 export function deleteKlientFromComponent(klient) {
   return function (dispatch) {
     return KlienterApi.deleteKlientFromComponent(klient).then(() => {
@@ -112,9 +120,5 @@ export function deleteKlientFromComponent(klient) {
       throw(error);
     })
   }
-}
-
-export function deleteKlientFromComponentSuccess(klient) {
-  return {type: DELETE_CLIENT_SUCCESS, klient}
 }
 
