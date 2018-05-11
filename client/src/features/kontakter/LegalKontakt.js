@@ -8,7 +8,7 @@ import TextField from 'material-ui/TextField';
 import {Grid} from "material-ui";
 import Table, {TableHead} from 'material-ui/Table';
 import {green} from 'material-ui/colors';
-import {fetchLegalContact, unsetLegalContact} from "../../data/redux/actions/apisAction";
+import {fetchLegalContact, unsetLegalContact} from "../../data/redux/actions/components";
 
 const buttonstyle = {
   margin: 1,

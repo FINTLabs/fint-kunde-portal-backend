@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
-import {fetchTechnicalContacts} from '../../data/redux/actions/apisAction';
+import {fetchTechnicalContacts} from '../../data/redux/actions/components';
 import {Grid} from "material-ui";
 import LoadingProgress from "../../common/LoadingProgress";
 import KontakterList from "./KontakterList";

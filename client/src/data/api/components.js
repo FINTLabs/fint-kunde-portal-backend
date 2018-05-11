@@ -1,6 +1,6 @@
-class ApisApi {
+class components {
 
-  static getApis() {
+  static getComponents() {
 	  const url='/api/components';
 	  return fetch(url, { method: 'GET'})
 	     .then( response => Promise.all([response,response.json()]));
@@ -134,4 +134,4 @@ static unsetLegalContact(kontakt) {
     });
   }
 }
-export default ApisApi;
+export default components;

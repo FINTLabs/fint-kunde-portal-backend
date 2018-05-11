@@ -14,7 +14,7 @@ class AdapterAddToComponent extends React.Component {
   constructor(props, context) {
     super(props, context);
     this.state = {
-      adapter: Object.assign({}, this.props.location.state.adapter),
+      adapter: Object.assign({}, this.props.adapter),
       posts: this.props.posts,
       open: true
     };
@@ -71,11 +71,6 @@ class AdapterAddToComponent extends React.Component {
 
   };
 
-  handleCloseUpdate = () => {
-    this.updateAdapter(this.state.adapter, this.context.organisation)
-    this.setState({open: false});
-  };
-
   static contextTypes = {
     organisation: PropTypes.string,
     components: PropTypes.array
@@ -92,7 +87,6 @@ class AdapterAddToComponent extends React.Component {
 
   render() {
 
-    //let components = this.context.components
     let items = []
 
     this.context.components.map((component, i) =>
@@ -140,14 +134,6 @@ class AdapterAddToComponent extends React.Component {
 
 
 AdapterAddToComponent.propTypes = {};
-
-/*
-function getAdapterById(adapters, id) {
-  let adapter = adapters.find(adapter => adapter.id == id)
-  return Object.assign({}, adapter)
-}
-*/
-
 
 function mapStateToProps() {
   let adapter = {name: '', note: '', shortDescription: ''};

@@ -4,7 +4,7 @@ import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import {Grid, withStyles} from "material-ui";
 import LoadingProgress from "../../common/LoadingProgress";
-import {fetchApis} from "../../data/redux/actions/apisAction";
+import {fetchComponents} from "../../data/redux/actions/components";
 import ApisList from "./ApisList";
 import OrgList from "./OrgList";
 
@@ -64,7 +64,7 @@ function mapStateToProps(state) {
 }
 
 function matchDispatchToProps(dispatch) {
-  return bindActionCreators({fetchApis: fetchApis}, dispatch);
+  return bindActionCreators({fetchComponents: fetchComponents}, dispatch);
 }
 
 export default withStyles(styles)(connect(mapStateToProps, matchDispatchToProps)(ApisContainer));

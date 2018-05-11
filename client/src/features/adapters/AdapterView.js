@@ -2,8 +2,10 @@ import React from 'react';
 import Button from 'material-ui/Button';
 import Dialog, {DialogActions, DialogContent, DialogTitle,} from 'material-ui/Dialog';
 import {withStyles} from "material-ui";
+import {BrowserRouter as Router, Link, Route, withRouter} from 'react-router-dom';
 import AdapterTabView from "./AdapterTabView";
 import PropTypes from 'prop-types';
+import AdapterAddToComponent from './AdapterAddToComponent';
 const styles = () => ({});
 
 class AdapterView extends React.Component {
@@ -46,12 +48,12 @@ class AdapterView extends React.Component {
   };
 
   handleCloseAddAdapter = () => {
-    this.props.addAdapterToComonent(this.state.adapter);
+    this.props.addAdapterToComponent(this.state.adapter);
     this.props.onClose();
   };  
 
   handleCloseRemoveAdapter = () => {
-    this.props.deleteAdapterFromComonent(this.state.adapter);
+    this.props.deleteAdapterFromComponent(this.state.adapter);
     this.props.onClose();
   }; 
   
@@ -77,10 +79,10 @@ class AdapterView extends React.Component {
  };
 
   render() {
-    return (
-      <div>
-
-        <div>
+	    return (
+	      <Router>
+	        <div>
+	          <div>
           <Dialog
             open={this.props.open}
             onClose={this.handleClose}
@@ -101,16 +103,25 @@ class AdapterView extends React.Component {
               <Button onClick={this.handleClose} variant="raised" color="primary">
                 Oppdater
               </Button>
-              <Button onClick={this.handleCloseAddAdapter} variant="raised" color="primary">
-                Legg til adapter til komponent 
-              </Button>                
+                <Link to={{pathname: '/addAdapterToComponent', state: {adapter: this.state.adapter}}}
+	                style={{textDecoration: 'none'}}>
+		            <Button variant="raised" color="primary" >Legg til komponent</Button></Link>
+            
               <Button onClick={this.handleCloseRemoveAdapter} variant="raised" color="primary">
-              	fjern adapter fra komponent 
+              	fjern fra komponent 
               </Button>   
             </DialogActions>
           </Dialog>
         </div>
-      </div>
+        <Route
+	        path="/addAdapterToComponent"
+	        render={({props}) => (
+	          <AdapterAddToComponent adapter={this.state.adapter}/>
+	        )}
+	      />
+        </div>
+      </Router>
+        
     )
 
   }

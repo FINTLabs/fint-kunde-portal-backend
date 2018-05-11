@@ -7,7 +7,7 @@ import ApiView from './ApiView';
 import {Grid} from "material-ui";
 import Button from 'material-ui/Button';
 import {green} from 'material-ui/colors';
-import {fetchOrganisation, unlinkComponent} from "../../data/redux/actions/apisAction";
+import {fetchOrganisation, unlinkComponent} from "../../data/redux/actions/components";
 
 const buttonstyle = {
   margin: 1,

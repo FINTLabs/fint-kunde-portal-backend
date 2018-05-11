@@ -4,12 +4,21 @@ import {
   FETCH_CLIENT_REQUEST,
   FETCH_CLIENT_SUCCESS,
   UPDATE_CLIENT_SUCCESS,
+  
   CREATE_ADAPTER_SUCCESS,
   DELETE_ADAPTER_SUCCESS,
   FETCH_ADAPTERS_ERROR,
   FETCH_ADAPTERS_REQUEST,
   FETCH_ADAPTERS_SUCCESS,
-  UPDATE_ADAPTER_SUCCESS
+  UPDATE_ADAPTER_SUCCESS,
+  
+  CREATE_COMPONENT_SUCCESS,
+  DELETE_COMPONENT_SUCCESS,
+  FETCH_COMPONENTS_ERROR,
+  FETCH_COMPONENTS_REQUEST,
+  FETCH_COMPONENTS_SUCCESS,
+  UPDATE_COMPONENTS_SUCCESS
+  
 } from "../actions/actionTypes";
 
 const allReducer = (state = {}, action) => {
@@ -24,6 +33,7 @@ const allReducer = (state = {}, action) => {
       return {...state, clients: [...state.clients, action.client]};
     case DELETE_CLIENT_SUCCESS:
       return {...state, clients: state.clients.filter(client => action.client !== client)};
+      
     case FETCH_ADAPTERS_SUCCESS:
       return {...state, adapters: action.payload};
     case UPDATE_ADAPTER_SUCCESS:
@@ -33,13 +43,18 @@ const allReducer = (state = {}, action) => {
     case DELETE_ADAPTER_SUCCESS:
      return {...state, adapters: state.adapters.filter(adapter => action.adapter !== adapter)};
 
-    case "FETCHTECHNICALCONTACTS_SUCCESS":
+    case FETCH_COMPONENTS_REQUEST:
+        return state;
+    case FETCH_COMPONENTS_SUCCESS:
+        return {...state, components: action.payload};
+        
+    case "FETCH_TECHNICALCONTACTS_SUCCESS":
       return {...state, technicalContacts: action.payload};
     case "FETCHLEGALCONTACT_SUCCESS":
       return {...state, legalContact: action.payload};
-    case "FETCHORG_REQUEST":
+    case "FETCH_ORG_REQUEST":
       return state;
-    case "FETCHORG_SUCCESS":
+    case "FETCH_ORG_SUCCESS":
       return {...state, organisation: action.payload};
 
     case "UPDATE_REQUEST":

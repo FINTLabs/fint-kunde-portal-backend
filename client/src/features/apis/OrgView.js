@@ -5,7 +5,7 @@ import {withRouter} from "react-router-dom";
 import Button from 'material-ui/Button';
 import Dialog, {DialogActions, DialogContent, DialogTitle,} from 'material-ui/Dialog';
 import TextField from 'material-ui/TextField';
-import {linkComponent, unlinkComponent} from "../../data/redux/actions/apisAction";
+import {linkComponent, unlinkComponent} from "../../data/redux/actions/components";
 
 class OrgView extends React.Component {
   constructor(props, context) {

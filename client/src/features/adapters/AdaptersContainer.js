@@ -46,6 +46,8 @@ class AdaptersContainer extends React.Component {
 	  }
 
   renderAdapters() {
+	  console.log("this1")
+	  console.log(this.context)
     const {classes} = this.props;
     return (
       <div className={classes.root}>

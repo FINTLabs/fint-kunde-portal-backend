@@ -11,7 +11,7 @@ import Button from 'material-ui/Button';
 import {Grid} from 'material-ui';
 import Icon from 'material-ui/Icon';
 import {green} from 'material-ui/colors';
-import {addTechnicalContact} from "../../data/redux/actions/apisAction";
+import {addTechnicalContact} from "../../data/redux/actions/components";
 
 const buttonstyle = {
   margin: 1,

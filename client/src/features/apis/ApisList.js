@@ -7,7 +7,7 @@ import PropTypes from 'prop-types';
 import Button from 'material-ui/Button';
 import {Grid} from "material-ui";
 import {green} from 'material-ui/colors';
-import {fetchApis, linkComponent, unlinkComponent} from "../../data/redux/actions/apisAction";
+import {fetchComponents, linkComponent, unlinkComponent} from "../../data/redux/actions/components";
 
 
 const buttonstyle = {
@@ -142,7 +142,7 @@ function mapStateToProps(state) {
 
 function matchDispatchToProps(dispatch) {
   return bindActionCreators({
-    fetchApis: fetchApis,
+	fetchComponents: fetchComponents,
     linkComponent: linkComponent,
     unlinkComponent: unlinkComponent
   }, dispatch);

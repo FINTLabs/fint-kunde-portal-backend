@@ -15,7 +15,7 @@ import {
   removeTechnicalContact,
   setLegalContact,
   unsetLegalContact
-} from "../../data/redux/actions/apisAction";
+} from "../../data/redux/actions/components";
 
 
 const buttonstyle = {

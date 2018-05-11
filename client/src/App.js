@@ -6,7 +6,7 @@ import Main from "./main/Main";
 import {bindActionCreators} from 'redux';
 import {withRouter} from "react-router-dom";
 import {connect} from 'react-redux';
-import {fetchApis} from "./data/redux/actions/apisAction";
+import {fetchComponents} from "./data/redux/actions/components";
 
 const theme = createMuiTheme({
   palette: {
@@ -25,20 +25,10 @@ const theme = createMuiTheme({
   },
 });
 
-
-/*
-const styles = theme => ({
-  root: {
-    marginTop: theme.spacing.unit * 3,
-    width: '100%',
-  }
-});
-*/
-
-
 class App extends Component {
+	
   componentDidMount() {
-    this.props.fetchApis(this.props.org)
+    this.props.fetchComponents(this.props.org)
 
   }
 
@@ -50,13 +40,13 @@ class App extends Component {
   getChildContext() {
     return {
       organisation: 'testing',
-      components: this.props.posts
+      components: this.props.components
     };
   }
 
   render() {
-    return (
 
+    return (
       <MuiThemeProvider theme={theme}>
         <Main/>
       </MuiThemeProvider>
@@ -76,7 +66,7 @@ function mapStateToProps(state) {
 }
 
 function matchDispatchToProps(dispatch) {
-  return bindActionCreators({fetchApis: fetchApis}, dispatch);
+  return bindActionCreators({fetchComponents: fetchComponents}, dispatch);
 }
 
 export default withRouter(connect(mapStateToProps, matchDispatchToProps)(App));
