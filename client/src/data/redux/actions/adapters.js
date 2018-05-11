@@ -1,17 +1,12 @@
 import AdaptersApi from "../../api/AdaptersApi";
-
-export const FETCH_ADAPTERS_REQUEST="FETCH_ADAPTERS_REQUEST";
-export const FETCH_ADAPTERS_SUCCESS="FETCH_ADAPTERS_SUCCESS";
-export const FETCH_ADAPTERS_ERROR="FETCH_ADAPTERS_ERROR";
-export const UPDATE_REQUEST="UPDATE_REQUEST";
-export const UPDATE_SUCCESS = 'UPDATE_SUCCESS';
-export const UPDATE_ERROR="UPDATE_ERROR";
-export const CREATE_REQUEST="CREATE_REQUEST";
-export const CREATE_SUCCESS = 'CREATE_SUCCESS';
-export const CREATE_ERROR="CREATE_ERROR";
-export const DELETE_REQUEST="DELETE_REQUEST";
-export const DELETE_SUCCESS = 'DELETE_SUCCESS';
-export const DELETE_ERROR="DELETE_ERROR";
+import {
+	  CREATE_ADAPTER_SUCCESS,
+	  DELETE_ADAPTER_SUCCESS,
+	  FETCH_ADAPTERS_ERROR,
+	  FETCH_ADAPTERS_REQUEST,
+	  FETCH_ADAPTERS_SUCCESS,
+	  UPDATE_ADAPTER_SUCCESS
+	} from "./actionTypes";
 
 function fetchAdaptersRequest(){
   return {
@@ -48,7 +43,6 @@ export function fetchAdapters(org) {
 
 
 export function createAdapter(adapter, org) {
-
 	return function (dispatch) {
 	    return AdaptersApi.createAdapter(adapter, org).then(responseAdapter => {
 	      dispatch(createAdapterSuccess(responseAdapter));
@@ -60,21 +54,17 @@ export function createAdapter(adapter, org) {
 }
 
 export function createAdapterSuccess(adapter) {
-	  return {type: CREATE_SUCCESS, adapter}
+	  return {type: CREATE_ADAPTER_SUCCESS, adapter}
 }
 
 export function updateAdapterSuccess(adapter) {
-	  return {type: UPDATE_SUCCESS, adapter}
+	  return {type: UPDATE_ADAPTER_SUCCESS, adapter}
 	}
 export function updateAdapter(adapter, org) {
-
 	  return function (dispatch) {
 	    return AdaptersApi.updateAdapter(adapter, org).then(responseAdapter => {
 		     dispatch(updateAdapterSuccess(responseAdapter));
-	  	    //eslint-disable-next-line
-		     location.assign("/adapters/adapters");
 			 return responseAdapter;
-
 	    }).catch(error => {
 	      throw(error);
 	    });
@@ -82,7 +72,7 @@ export function updateAdapter(adapter, org) {
 	}
 
 export function deleteAdapterSuccess(adapter) {
-	  return {type: DELETE_SUCCESS, adapter}
+	  return {type: DELETE_ADAPTER_SUCCESS, adapter}
 	}
 export function deleteAdapter(adapter, org) {
 	  return function(dispatch) {
@@ -111,7 +101,7 @@ export function addAdapterToComponent(adapter, component, org) {
 }
 
 export function addAdapterToComponentSuccess(adapter) {
-	return {type: CREATE_SUCCESS, adapter}
+	return {type: CREATE_ADAPTER_SUCCESS, adapter}
 }
 
 
@@ -129,5 +119,5 @@ export function deleteAdapterFromComponent(adapter, component, org) {
 }
 }
 export function deleteAdapterFromComponentSuccess(adapter) {
-	return {type: DELETE_SUCCESS, adapter}
+	return {type: DELETE_ADAPTER_SUCCESS, adapter}
 }

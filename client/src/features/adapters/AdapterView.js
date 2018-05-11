@@ -1,9 +1,9 @@
 import React from 'react';
 import Button from 'material-ui/Button';
 import Dialog, {DialogActions, DialogContent, DialogTitle,} from 'material-ui/Dialog';
-import {Snackbar, withStyles} from "material-ui";
-import TextField from 'material-ui/TextField';
+import {withStyles} from "material-ui";
 import AdapterTabView from "./AdapterTabView";
+import PropTypes from 'prop-types';
 const styles = () => ({});
 
 class AdapterView extends React.Component {
@@ -45,6 +45,16 @@ class AdapterView extends React.Component {
     this.props.onClose();
   };
 
+  handleCloseAddAdapter = () => {
+    this.props.addAdapterToComonent(this.state.adapter);
+    this.props.onClose();
+  };  
+
+  handleCloseRemoveAdapter = () => {
+    this.props.deleteAdapterFromComonent(this.state.adapter);
+    this.props.onClose();
+  }; 
+  
   handleCancel = () => {
     this.props.onClose();
   };
@@ -64,11 +74,9 @@ class AdapterView extends React.Component {
 	    return this.setState({
 	      value: event.target.value
 	    });
-	  };
-	  
+ };
+
   render() {
-	  console.log("this")
-	  console.log(this)
     return (
       <div>
 
@@ -93,7 +101,12 @@ class AdapterView extends React.Component {
               <Button onClick={this.handleClose} variant="raised" color="primary">
                 Oppdater
               </Button>
-
+              <Button onClick={this.handleCloseAddAdapter} variant="raised" color="primary">
+                Legg til adapter til komponent 
+              </Button>                
+              <Button onClick={this.handleCloseRemoveAdapter} variant="raised" color="primary">
+              	fjern adapter fra komponent 
+              </Button>   
             </DialogActions>
           </Dialog>
         </div>

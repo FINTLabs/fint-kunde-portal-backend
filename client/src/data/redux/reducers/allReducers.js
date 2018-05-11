@@ -3,7 +3,13 @@ import {
   DELETE_CLIENT_SUCCESS,
   FETCH_CLIENT_REQUEST,
   FETCH_CLIENT_SUCCESS,
-  UPDATE_CLIENT_SUCCESS
+  UPDATE_CLIENT_SUCCESS,
+  CREATE_ADAPTER_SUCCESS,
+  DELETE_ADAPTER_SUCCESS,
+  FETCH_ADAPTERS_ERROR,
+  FETCH_ADAPTERS_REQUEST,
+  FETCH_ADAPTERS_SUCCESS,
+  UPDATE_ADAPTER_SUCCESS
 } from "../actions/actionTypes";
 
 const allReducer = (state = {}, action) => {
@@ -18,9 +24,15 @@ const allReducer = (state = {}, action) => {
       return {...state, clients: [...state.clients, action.client]};
     case DELETE_CLIENT_SUCCESS:
       return {...state, clients: state.clients.filter(client => action.client !== client)};
-
-    case "FETCH_ADAPTERS_SUCCESS":
+    case FETCH_ADAPTERS_SUCCESS:
       return {...state, adapters: action.payload};
+    case UPDATE_ADAPTER_SUCCESS:
+      return state;
+    case CREATE_ADAPTER_SUCCESS:
+     return {...state, adapters: [...state.adapters, action.adapter]};
+    case DELETE_ADAPTER_SUCCESS:
+     return {...state, adapters: state.adapters.filter(adapter => action.adapter !== adapter)};
+
     case "FETCHTECHNICALCONTACTS_SUCCESS":
       return {...state, technicalContacts: action.payload};
     case "FETCHLEGALCONTACT_SUCCESS":

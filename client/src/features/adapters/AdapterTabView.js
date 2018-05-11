@@ -1,15 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import SwipeableViews from 'react-swipeable-views';
-import AppBar from 'material-ui/AppBar';
-import Tabs, {Tab} from 'material-ui/Tabs';
 import Typography from 'material-ui/Typography';
-import {FormControl, IconButton, Input, InputAdornment, InputLabel, TextField} from "material-ui";
-import {ContentCopy, Refresh} from "material-ui-icons";
+import {TextField} from "material-ui";
 import withStyles from "material-ui/es/styles/withStyles";
-import {CopyToClipboard} from 'react-copy-to-clipboard';
-import CopyButton from "../../common/CopyButton";
-
 
 function TabContainer({children, dir}) {
   return (

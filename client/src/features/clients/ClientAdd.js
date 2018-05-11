@@ -129,9 +129,8 @@ class ClientAdd extends React.Component {
 
 
 ClientAdd.propTypes = {
-  //klienter: PropTypes.array.isRequired
+ 
 };
-
 
 export default withStyles(styles)(ClientAdd);
 

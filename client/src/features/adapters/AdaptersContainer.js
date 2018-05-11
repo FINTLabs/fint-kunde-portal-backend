@@ -6,7 +6,13 @@ import {withStyles} from "material-ui";
 import LoadingProgress from "../../common/LoadingProgress";
 import AdaptersList from "./AdaptersList";
 import AdapterAdd from "./AdapterAdd";
-import {createAdapter, deleteAdapter, fetchAdapters, updateAdapter} from "../../data/redux/actions/adapters";
+import {addAdapterToComponent, 
+	deleteAdapterFromComponent, 
+	createAdapter, 
+	deleteAdapter, 
+	fetchAdapters, 
+	updateAdapter} 
+	from "../../data/redux/actions/adapters";
 
 
 const styles = () => ({
@@ -46,6 +52,8 @@ class AdaptersContainer extends React.Component {
         <AdaptersList adapters={this.props.adapters}
         			  updateAdapter={this.props.updateAdapter}
                       deleteAdapter={this.props.deleteAdapter}
+        			  addAdapterToComponent={this.props.addAdapterToComponent}
+        			  deleteAdapterFromComponent={this.props.deleteAdapterfromComponent}
 
         />
         <AdapterAdd
@@ -73,6 +81,8 @@ function mapDispatchToProps(dispatch) {
     updateAdapter: updateAdapter,
     deleteAdapter: deleteAdapter,
     createAdapter: createAdapter,
+    deleteAdapterFromComponent: deleteAdapterFromComponent,
+    addAdapterToComponent : addAdapterToComponent,
   }, dispatch);
 }
 

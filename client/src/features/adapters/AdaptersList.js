@@ -67,17 +67,28 @@ class AdaptersList extends Component {
   };
 
   updateAdapter = (adapter) => {
-    this.props.updateAdapter(adapter);
+    this.props.updateAdapter(adapter, this.context.organisation);
   };
 
+  addAdapterToComponent = (adapter) => {
+    this.props.addAdapterToComponent(adapter, this.context.organisation);
+  };
+  deleteAdapterFromComponent = (adapter) => {
+    this.props.deleteAdapterfromComponent(adapter, this.context.organisation);
+  };	
+	  
   deleteAdapter = (adapter) => {
     this.setState({
       adapterDeleted: true,
       adapterDeletedName: adapter.name,
     });
-    this.props.deleteAdapter(adapter);
+    this.props.deleteAdapter(adapter, this.context.organisation);
   };
 
+  static contextTypes = {
+	    organisation: PropTypes.string,
+	    components: PropTypes.array
+  };
  render() {
     const {classes} = this.props;
     return (
@@ -121,6 +132,8 @@ class AdaptersList extends Component {
 	        adapter={this.state.adapterToEdit}
 	        onClose={this.onCloseEdit}
 	        updateAdapter={this.updateAdapter}
+        	addAdapterToComponent={this.addAdapterToComponent}
+        	deleteAdapterFromComponent={this.deleteAdapterfromComponent}
       />
       </div>
     );

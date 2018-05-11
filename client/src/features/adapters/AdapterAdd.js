@@ -1,14 +1,11 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import {connect} from 'react-redux';
-import {bindActionCreators} from 'redux';
-import {withRouter} from "react-router-dom";
 import Button from 'material-ui/Button';
 import Dialog, {DialogActions, DialogContent, DialogContentText, DialogTitle,} from 'material-ui/Dialog';
 import TextField from 'material-ui/TextField';
 import {Add} from "material-ui-icons";
 import {withStyles} from "material-ui";
-import {createAdapter} from "../../data/redux/actions/adapters";
+import AutoHideNotification from "../../common/AutoHideNotification";
+import PropTypes from 'prop-types';
 
 const styles = theme => ({
   addButton: {
@@ -26,75 +23,70 @@ class AdapterAdd extends React.Component {
   constructor(props, context) {
     super(props, context);
     this.state = {
-      adapter: Object.assign({}, this.props.location.state),
-      isSaving: false,
-      isAdding: false
+      adapter: {},
+      showAdapterAdd: false,
+      adapterAdded: false,
+      adapterAddedName: null,
     };
-    this.createAdapter = this.createAdapter.bind(this);
-    this.updateAdapterState = this.updateAdapterState.bind(this);
-    this.toggleAdd = this.toggleAdd.bind(this);
-    this.saveAdapter = this.saveAdapter.bind(this);
   }
 
 
-  componentWillReceiveProps(nextProps, contextProps) {
-    if (this.props.adapter !== nextProps.adapter) {
-      this.setState({adapter: Object.assign({}, nextProps.adapter)});
+  updateAdapterState = (event) => {
 
-    }
-
-    this.setState({saving: false, isAdding: false});
-  }
-
-  toggleAdd() {
-
-    this.setState({isAdding: true});
-  }
-
-  saveAdapter(event) {
-    this.props.createAdapter(this.state.adapter, this.props.org);
-  }
-
-
-  updateAdapterState(event) {
     const field = event.target.name;
+
     const adapter = this.state.adapter;
     adapter[field] = event.target.value;
     return this.setState({adapter: adapter});
-  }
-
-  createAdapter(adapter, org) {
-    this.props.createAdapter(adapter, this.props.org)
-  }
-
-  state = {
-    open: false,
-  };
-  handleClickOpen = () => {
-    this.setState({open: true});
   };
 
   handleClose = () => {
-    this.createAdapter(this.state.adapter)
-    this.setState({open: false});
+    this.props.createAdapter(this.state.adapter, this.context.organisation).then(() => {
+      this.setState({
+        adapterAdded: false,
+        adapterAddedName: null,
+      })
+    });
+
+    this.setState({
+      showAdapterAdd: false,
+      adapterAdded: true,
+      adapterAddedName: this.state.adapter.name,
+    });
   };
 
+  openAddDialog = () => {
+    this.setState({showAdapterAdd: true, adapterAdded: false});
+  };
+
+  handleCancel = () => {
+    this.setState({showAdapterAdd: false, adapterAdded: false});
+  };
+
+  static contextTypes = {
+	    organisation: PropTypes.string,
+	    components: PropTypes.array
+ };
   render() {
     const {classes} = this.props;
     return (
       <div>
+        <AutoHideNotification
+          showNotification={this.state.adapterAdded}
+          message={`Adapter ${this.state.adapterAddedName} ble lagt til!`}
+        />
         <div>
           <Button variant="fab" color="secondary" className={classes.addButton}
-                  onClick={this.handleClickOpen}><Add/></Button>
+                  onClick={this.openAddDialog}><Add/></Button>
           <Dialog
-            open={this.state.open}
+            open={this.state.showAdapterAdd}
             onClose={this.handleClose}
             aria-labelledby="form-dialog-title"
           >
-            <DialogTitle id="form-dialog-title">Ny adapter</DialogTitle>
+            <DialogTitle id="form-dialog-title">Ny Adapter</DialogTitle>
             <DialogContent>
               <DialogContentText>
-                Vennligst fyll ut de obligatoriske feltene for å legge til ny adapter
+                Vennligst fyll ut de obligatoriske feltene for å legge til ny klient
               </DialogContentText>
 
               <TextField
@@ -121,12 +113,10 @@ class AdapterAdd extends React.Component {
                 multiline
                 rows="4"
                 onChange={this.updateAdapterState}
-              />
-
-
-            </DialogContent>
-            <DialogActions>
-              <Button onClick={this.handleClose} color="primary" style={{textTransform: 'none'}}>
+              /> 
+              </DialogContent>
+              <DialogActions>
+              <Button onClick={this.handleCancel} color="primary" style={{textTransform: 'none'}}>
                 Avbryt
               </Button>
               <Button onClick={this.handleClose} color="primary" style={{textTransform: 'none'}}>
@@ -142,27 +132,15 @@ class AdapterAdd extends React.Component {
 
 
 AdapterAdd.propTypes = {
-  adapters: PropTypes.array.isRequired
+ 
 };
 
-/*
-function getAdapterById(adapters, id) {
-  let adapter = adapters.find(adapter => adapter.id === id)
-  return Object.assign({}, adapter)
-}
-*/
+export default withStyles(styles)(AdapterAdd);
 
 
-function mapStateToProps(state) {
-  let adapter = {name: '', note: '', shortDescription: ''};
-  return {adapter: adapter};
-}
 
-function matchDispatchToProps(dispatch) {
-  return bindActionCreators({createAdapter: createAdapter}, dispatch);
-}
 
-export default withStyles(styles)(withRouter(connect(mapStateToProps, matchDispatchToProps)(AdapterAdd)));
+
 
 
 
