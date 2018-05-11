@@ -1,13 +1,12 @@
 import React from 'react';
-import Organisations from "../../organisations/Organisations";
-import Support from "../../support/Support";
-import Logs from "../../logs/Logs";
-import KlienterContainer from "../../containers/KlienterContainer";
-import Dashboard from "../../dashboard/Dashboard";
 import {Route} from "react-router-dom";
-import AdaptersContainer from "../../containers/AdaptersContainer";
-import KontakterContainer from "../../containers/KontakterContainer";
-import ApisContainer from "../../containers/ApisContainer";
+import AdaptersContainer from "../../features/adapters/AdaptersContainer";
+import KontakterContainer from "../../features/kontakter/KontakterContainer";
+import ApisContainer from "../../features/apis/ApisContainer";
+import ClientsContainer from "../../features/clients/ClientsContainer";
+import Logs from "../../features/logs/Logs";
+import Dashboard from "../../features/dashboard/Dashboard";
+import Support from "../../features/support/Support";
 
 
 class Routes extends React.Component {
@@ -16,7 +15,7 @@ class Routes extends React.Component {
     return (
       <div>
         <Route exact path='/' component={Dashboard}/>
-        <Route path='/clients' component={KlienterContainer}/>
+        <Route path='/clients' component={ClientsContainer}/>
         <Route path='/adapters' component={AdaptersContainer}/>
         <Route path='/contacts' component={KontakterContainer}/>
         <Route path='/apis' component={ApisContainer}/>

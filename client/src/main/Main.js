@@ -1,5 +1,3 @@
-/* eslint-disable flowtype/require-valid-file-annotation */
-
 import React from 'react';
 import PropTypes from 'prop-types';
 import {withStyles} from 'material-ui/styles';
@@ -15,15 +13,13 @@ const styles = theme => ({
     zIndex: 1,
     overflow: 'hidden',
   },
-
-
 });
 
 class Main extends React.Component {
 
 
   render() {
-    const {classes, theme} = this.props;
+    const {classes} = this.props;
 
 
     return (

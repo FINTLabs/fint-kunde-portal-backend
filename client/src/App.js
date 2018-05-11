@@ -1,13 +1,12 @@
 import React, {Component} from 'react';
 import './App.css';
 import {createMuiTheme, MuiThemeProvider} from "material-ui";
-import {grey, red} from 'material-ui/colors';
 import PropTypes from 'prop-types';
 import Main from "./main/Main";
-import {fetchApis} from './actions/apisAction';
 import {bindActionCreators} from 'redux';
 import {withRouter} from "react-router-dom";
 import {connect} from 'react-redux';
+import {fetchApis} from "./data/redux/actions/apisAction";
 
 const theme = createMuiTheme({
   palette: {
@@ -26,12 +25,15 @@ const theme = createMuiTheme({
   },
 });
 
+
+/*
 const styles = theme => ({
   root: {
     marginTop: theme.spacing.unit * 3,
     width: '100%',
   }
 });
+*/
 
 
 class App extends Component {

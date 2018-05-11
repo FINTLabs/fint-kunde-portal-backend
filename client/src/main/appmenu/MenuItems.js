@@ -1,7 +1,6 @@
 import React from 'react';
 import {ListItem, ListItemIcon, ListItemText} from 'material-ui/List';
 import DashboardIcon from '@material-ui/icons/Dashboard';
-import DomainIcon from '@material-ui/icons/Domain';
 import ClientIcon from '@material-ui/icons/ImportantDevices';
 import ApiIcon from '@material-ui/icons/WebAsset';
 import AdapterIcon from '@material-ui/icons/Link';
@@ -12,7 +11,7 @@ import DocumentationIcon from '@material-ui/icons/Book';
 import {Link} from "react-router-dom";
 
 const menuLink = {
-    textDecoration: 'none'
+  textDecoration: 'none'
 };
 
 export const MENU_ITEMS = (

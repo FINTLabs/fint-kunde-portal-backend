@@ -12,7 +12,7 @@ import IconButton from 'material-ui/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
-import {MENU_ITEMS, otherMailFolderListItems} from './MenuItems';
+import {MENU_ITEMS} from './MenuItems';
 import Routes from "../routes/Routes";
 
 const drawerWidth = 240;
