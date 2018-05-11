@@ -44,8 +44,6 @@ class LegalKontakt extends Component {
 
 
   render() {
-    console.log("props")
-    console.log(this.state)
     if (!this.props.legalContact) {
       return (
         <div>
@@ -60,9 +58,6 @@ class LegalKontakt extends Component {
 
   renderPosts() {
     const legalContact = this.props.legalContact;
-    console.log("legalcontact")
-    console.log(this.props.legalContact)
-    console.log(legalContact)
     return (
       <Router>
         <div>

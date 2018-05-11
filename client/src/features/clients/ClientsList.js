@@ -80,8 +80,6 @@ class ClientsList extends Component {
 
   render() {
     const {classes} = this.props;
-    console.log("clientlist render");
-    console.log(JSON.stringify(this.props.klienter));
     return (
       <div>
         <AutoHideNotification

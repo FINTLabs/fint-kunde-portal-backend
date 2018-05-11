@@ -29,7 +29,6 @@ class ClientView extends React.Component {
 
   onCopy = () => {
     this.setState({copiedToClipboard: true});
-    console.log("copierad!!!");
   }
 
 

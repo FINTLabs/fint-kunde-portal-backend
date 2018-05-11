@@ -31,7 +31,6 @@ class ClientAdd extends React.Component {
 
 
   updateKlientState = (event) => {
-    console.log(`event: ${event}`);
 
     const field = event.target.name;
 

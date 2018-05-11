@@ -96,7 +96,6 @@ export function fetchLegalContact() {
   	dispatch(fetchPostsRequest());
     return ApisApi.getLegalContact().then(([response, json]) =>{
     	if(response.status === 200){
-			console.log(json)
     		dispatch(fetchLegalContactSuccess(json));
       }
       else{

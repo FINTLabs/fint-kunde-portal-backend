@@ -39,7 +39,6 @@ class AdapterAdd extends React.Component {
 
 
   componentWillReceiveProps(nextProps) {
-	  console.log(this.props.org)
     if (this.props.adapter !== nextProps.adapter) {
       this.setState({adapter: Object.assign({}, nextProps.adapter)});
 

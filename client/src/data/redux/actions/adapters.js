@@ -78,8 +78,6 @@ export function updateAdapter(adapter, org) {
 			 return responseAdapter;
 
 	    }).catch(error => {
-	    	console.log("error")
-	    	console.log(error)
 	      throw(error);
 	    });
 	  };
@@ -91,9 +89,7 @@ export function deleteAdapterSuccess(adapter) {
 export function deleteAdapter(adapter, org) {
 	  return function(dispatch) {
 	    return AdaptersApi.deleteAdapter(adapter, org).then(() => {
-	      console.log(`Deleted ${adapter.name}`)
 	      dispatch(deleteAdapterSuccess(adapter));
-	    //eslint-disable-next-line
 	      location.reload();
 	      return;
 	    }).catch(error => {

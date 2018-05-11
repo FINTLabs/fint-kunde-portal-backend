@@ -65,8 +65,6 @@ class ClientTabView extends React.Component {
 
   constructor(props) {
     super(props);
-    console.log("frode2");
-    console.log(this.props);
     this.state = {
       value: 0,
     };

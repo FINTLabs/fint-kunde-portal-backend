@@ -10,7 +10,6 @@ class AutoHideNotification extends React.Component {
   constructor(props) {
     super(props);
 
-    console.log(props.open);
     this.state = {
       open: props.showNotification,
     }
@@ -36,7 +35,6 @@ class AutoHideNotification extends React.Component {
   };
 
   render() {
-    console.log("render autohidenotification");
     return (
       <Snackbar
         anchorOrigin={{

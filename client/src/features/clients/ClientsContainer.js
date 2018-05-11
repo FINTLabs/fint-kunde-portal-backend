@@ -56,7 +56,6 @@ ClientsContainer.propTypes = {
 };
 
 function mapStateToProps(state) {
-  console.log("mapStateToProps");
   return {
     clients: state.clients
   }

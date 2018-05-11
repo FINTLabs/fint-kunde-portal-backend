@@ -28,8 +28,6 @@ const allReducer = (state = {}, action) => {
     case "FETCHORG_REQUEST":
       return state;
     case "FETCHORG_SUCCESS":
-      console.log("fetch");
-      console.log(action.payload);
       return {...state, organisation: action.payload};
 
     case "UPDATE_REQUEST":
@@ -54,8 +52,6 @@ const allReducer = (state = {}, action) => {
       const newState = Object.assign([], state);
       const indexOfAdapterToUpdate = state.posts.findIndex(({id}) => id === action.payload);
       newState.splice(indexOfAdapterToUpdate, 1);
-      console.log("newState");
-      console.log(newState)
       return newState;
     }
     default:

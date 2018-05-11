@@ -88,7 +88,6 @@ export function deleteKontaktSuccess(kontakt) {
 export function deleteKontakt(kontakt) {
 	  return function(dispatch) {
 	    return KontakterApi.deleteKontakt(kontakt).then(() => {
-	      console.log(`Deleted ${kontakt.id}`)
 	      dispatch(deleteKontaktSuccess(kontakt));
 	    //eslint-disable-next-line
 	      location.assign("/kontakter/kontakter");
@@ -113,7 +112,6 @@ export function createKontakter(kontakter) {
 export function deleteKontakter(kontakter) {
   return function(dispatch) {
     return KontakterApi.deleteKontakter(kontakter).then(() => {
-      console.log(`Deleted ${kontakter.name}`)
       dispatch(deleteKontaktSuccess(kontakter));
       return;
     }).catch(error => {

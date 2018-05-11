@@ -17,7 +17,7 @@ class ApisApi {
 	  return fetch(url, { method: 'GET'})
 	     .then( response => Promise.all([response,response.json()]));
 	}
-  
+
   static getOrganisation() {
 	  const url='http://localhost:8080/api/organisations/testing/';
 	  return fetch(url, { method: 'GET'})
@@ -29,7 +29,7 @@ class ApisApi {
       method: 'PUT',
       headers: new Headers({
           'Content-Type': 'application/json'
-        }), 
+        }),
         body: JSON.stringify({
       	  name: api.name})
       });
@@ -47,7 +47,7 @@ class ApisApi {
 	      method: 'DELETE',
 	      headers: new Headers({
 	          'Content-Type': 'application/json'
-	        }), 
+	        }),
 	        body: JSON.stringify({
 	      	  name: api.name})
 	      });
@@ -59,14 +59,14 @@ class ApisApi {
 	      return error;
 	    });
   }
-  
+
 
 static addTechnicalContact(nin) {
 	    const request = new Request(`http://localhost:8080/api/organisations/testing/contacts/technical/${nin}`, {
 	      method: 'PUT',
 	      headers: new Headers({
 	          'Content-Type': 'application/json'
-	        }), 
+	        }),
 	        body: JSON.stringify({
 		  	  nin: nin})
 	      });
@@ -85,7 +85,7 @@ static removeTechnicalContact(kontakt) {
       method: 'DELETE',
       headers: new Headers({
           'Content-Type': 'application/json'
-        }), 
+        }),
         body: JSON.stringify({
 	  	  nin: kontakt.nin})
       });
@@ -99,13 +99,11 @@ static removeTechnicalContact(kontakt) {
   }
 
 static setLegalContact(kontakt) {
-	console.log("nin")
-	console.log(kontakt.nin)
     const request = new Request(`http://localhost:8080/api/organisations/testing/contacts/legal/${kontakt.nin}`, {
       method: 'PUT',
       headers: new Headers({
           'Content-Type': 'application/json'
-        }), 
+        }),
         body: JSON.stringify({
       	  name: kontakt.nin})
       });
@@ -119,13 +117,11 @@ static setLegalContact(kontakt) {
   }
 
 static unsetLegalContact(kontakt) {
-	console.log("nin")
-	console.log(kontakt.nin)
     const request = new Request(`http://localhost:8080/api/organisations/testing/contacts/legal/${kontakt.nin}`, {
       method: 'DELETE',
       headers: new Headers({
           'Content-Type': 'application/json'
-        }), 
+        }),
         body: JSON.stringify({
       	  name: kontakt.nin})
       });
