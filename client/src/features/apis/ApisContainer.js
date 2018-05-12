@@ -15,20 +15,21 @@ class ApisContainer extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      posts: this.props.posts,
+    		components: this.props.components,
     };
 
   }
 
-  componentDidMount() {
-    this.props.fetchApis();
+  componentWillMount() {
+    this.props.fetchComponents();
 
   }
 
 
   render() {
 
-    if (!this.props.posts) {
+    if (!this.props.components) {
+    	console.log(this.props)
       return <LoadingProgress/>;
     } else {
       return this.renderPosts();
@@ -36,7 +37,7 @@ class ApisContainer extends React.Component {
   }
 
   renderPosts() {
-    const apis = this.props.posts;
+    const apis = this.props.components;
 
     return (
       <Grid container xs={12}>
@@ -58,7 +59,7 @@ ApisContainer.propTypes = {
 
 function mapStateToProps(state) {
   return {
-    posts: state.posts,
+    components: state.components,
 
   }
 }

@@ -81,22 +81,17 @@ static addTechnicalContact(nin) {
 
 
 static removeTechnicalContact(kontakt) {
+
     const request = new Request(`/api/organisations/testing/contacts/technical/${kontakt.nin}`, {
-      method: 'DELETE',
-      headers: new Headers({
-          'Content-Type': 'application/json'
-        }),
-        body: JSON.stringify({
-	  	  nin: kontakt.nin})
+        method: 'DELETE'
       });
 
-
-    return fetch(request).then(response => {
-      return response.json();
-    }).catch(error => {
-      return error;
-    });
-  }
+      return fetch(request).then(response => {
+        return response.json();
+      }).catch(error => {
+        return error;
+      });
+    }
 
 static setLegalContact(kontakt) {
     const request = new Request(`/api/organisations/testing/contacts/legal/${kontakt.nin}`, {

@@ -57,6 +57,7 @@ saveKontakt(event) {
 }
 
 createKontakt(kontakt) {
+	console.log(kontakt)
     this.props.createKontakt(kontakt)
   }
 

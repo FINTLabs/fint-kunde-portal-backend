@@ -74,7 +74,6 @@ function fetchLegalContactError() {
 	  }
 	}
 
-
 export function fetchComponents() {
 
 	return (dispatch) => {

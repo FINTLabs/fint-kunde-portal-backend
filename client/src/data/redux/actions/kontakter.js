@@ -1,8 +1,12 @@
 import KontakterApi from "../../api/KontakterApi";
 
-export const FETCH_REQUEST="FETCH_REQUEST";
-export const FETCH_SUCCESS="FETCH_SUCCESS";
-export const FETCH_ERROR="FETCH_ERROR";
+import {
+	  FETCH_CONTACTS_REQUEST,
+	  FETCH_CONTACTS_SUCCESS,
+	  FETCH_CONTACTS_ERROR
+	  
+	} from "../actions/actionTypes";
+	
 export const UPDATE_REQUEST="UPDATE_REQUEST";
 export const UPDATE_SUCCESS = 'UPDATE_SUCCESS';
 export const UPDATE_ERROR="UPDATE_ERROR";
@@ -13,35 +17,35 @@ export const DELETE_REQUEST="DELETE_REQUEST";
 export const DELETE_SUCCESS = 'DELETE_SUCCESS';
 export const DELETE_ERROR="DELETE_ERROR";
 
-function fetchPostsRequest(){
+function fetchContactsRequest(){
 	  return {
-	    type: FETCH_REQUEST
+	    type: FETCH_CONTACTS_REQUEST
 	  }
 	}
 
-	function fetchPostsSuccess(payload) {
+	function fetchContactsSuccess(payload) {
 	  return {
-	    type: FETCH_SUCCESS,
+	    type: FETCH_CONTACTS_SUCCESS,
 	    payload
 	  }
 	}
 
-	function fetchPostsError() {
+	function fetchContactsError() {
 	  return {
-	    type: FETCH_ERROR
+	    type: FETCH_CONTACTS_ERROR
 	  }
 	}
 
 export function fetchKontakter() {
 
 	return (dispatch) => {
-  	dispatch(fetchPostsRequest());
+  	dispatch(fetchContactsRequest());
     return KontakterApi.getKontakter().then(([response, json]) =>{
     	if(response.status === 200){
-        dispatch(fetchPostsSuccess(json));
+        dispatch(fetchContactsSuccess(json));
       }
       else{
-        dispatch(fetchPostsError());
+        dispatch(fetchContactsError());
       }
     })
   }

@@ -76,7 +76,9 @@ class AdaptersList extends Component {
   deleteAdapterFromComponent = (adapter) => {
     this.props.deleteAdapterfromComponent(adapter, this.context.organisation);
   };	
-	  
+  fetchComponents = () => {
+	    this.props.fetchComponents();
+  };	  
   deleteAdapter = (adapter) => {
     this.setState({
       adapterDeleted: true,
@@ -85,10 +87,6 @@ class AdaptersList extends Component {
     this.props.deleteAdapter(adapter, this.context.organisation);
   };
 
-  static contextTypes = {
-	    organisation: PropTypes.string,
-	    components: PropTypes.array
-  };
  render() {
     const {classes} = this.props;
     return (
@@ -134,6 +132,7 @@ class AdaptersList extends Component {
 	        updateAdapter={this.updateAdapter}
         	addAdapterToComponent={this.addAdapterToComponent}
         	deleteAdapterFromComponent={this.deleteAdapterfromComponent}
+        	fetchComponents={this.fetchComponents}
       />
       </div>
     );

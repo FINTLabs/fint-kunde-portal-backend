@@ -16,7 +16,7 @@ const buttonstyle = {
 class SearchKontakt extends Component {
   constructor(props) {
     super(props);
-    this.state = {kontakter: this.props.kontakter};
+    this.state = {kontakter: this.props.contacts};
   }
 
   SelectedItems(items) {
@@ -26,7 +26,7 @@ class SearchKontakt extends Component {
   render() {
     let items = [];
 
-    this.props.kontakter.map((kontakt, i) =>
+    this.props.contacts.map((kontakt, i) =>
       items[i] = {id: i, value: kontakt.firstName + " " + kontakt.lastName, nin: kontakt.dn}
     );
 

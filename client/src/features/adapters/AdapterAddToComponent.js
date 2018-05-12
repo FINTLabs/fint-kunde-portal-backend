@@ -7,57 +7,27 @@ import Button from 'material-ui/Button';
 import Dialog, {DialogActions, DialogContent, DialogTitle,} from 'material-ui/Dialog';
 import TextField from 'material-ui/TextField';
 import PropTypes from 'prop-types';
-import {updateAdapter} from "../../data/redux/actions/adapters";
+import LoadingProgress from "../../common/LoadingProgress";
+import {fetchComponents} from "../../data/redux/actions/components";
+
+const styles = theme => ({});
 
 
 class AdapterAddToComponent extends React.Component {
-  constructor(props, context) {
-    super(props, context);
+  constructor(props) {
+    super(props);
     this.state = {
-      adapter: Object.assign({}, this.props.adapter),
-      posts: this.props.posts,
-      open: true
+    		adapter: Object.assign({}, this.props.adapter),
+    		components: this.props.components,
+    		open: true
     };
 
-    this.updateAdapterState = this.updateAdapterState.bind(this);
-    this.toggleSave = this.toggleSave.bind(this);
-    this.updateAdapter = this.updateAdapter.bind(this);
-    this.handleChange = this.handleChange.bind(this);
-
   }
 
-  componentDidMount() {
-    this.setState({value: 1});
-    this.setState({open: true});
+  componentWillMount() {
+    this.props.fetchComponents();
+
   }
-
-  componentWillReceiveProps(nextProps, nextContext) {
-    if (this.props.adapter !== nextProps.adapter) {
-      this.setState({adapter: Object.assign({}, nextProps.adapter)});
-
-    }
-
-    this.setState({saving: false, isAdding: false});
-  }
-
-  toggleSave() {
-    this.setState({isSaving: true});
-  }
-
-  updateAdapter(adapter, org) {
-    this.props.updateAdapter(this.state.adapter, org);
-  }
-
-
-  updateAdapterState(event) {
-    const field = event.target.name;
-    const adapter = this.state.adapter;
-    adapter[field] = event.target.value;
-    return this.setState({
-      value: event.target.value
-    });
-  }
-
   state = {
     open: false,
     value: 1,
@@ -87,15 +57,25 @@ class AdapterAddToComponent extends React.Component {
 
   render() {
 
+    if (!this.props.components) {
+    	console.log(this.props)
+      return <LoadingProgress/>;
+    } else {
+      return this.renderComponents();
+    }
+  }
+
+  renderComponents() {
+		
+	  console.log("this1")
+	  console.log(this)
     let items = []
 
-    this.context.components.map((component, i) =>
+    this.props.components.map((component, i) =>
       items[i] = {id: i, value: component.name}
     );
-
     return (
       <div>
-
         <Dialog
           fullWidth
           open={this.state.open}
@@ -126,22 +106,24 @@ class AdapterAddToComponent extends React.Component {
 
           </DialogActions>
         </Dialog>
-      </div>
-    )
+      </div> 		
+    );
+  }
+}
+
+AdapterAddToComponent.propTypes = {
+
+};
+
+function mapStateToProps(state) {
+  return {
+    components: state.components,
 
   }
 }
 
-
-AdapterAddToComponent.propTypes = {};
-
-function mapStateToProps() {
-  let adapter = {name: '', note: '', shortDescription: ''};
-  return {adapter: adapter};
-}
-
 function matchDispatchToProps(dispatch) {
-  return bindActionCreators({updateAdapter: updateAdapter}, dispatch);
+  return bindActionCreators({fetchComponents: fetchComponents}, dispatch);
 }
 
-export default withRouter(connect(mapStateToProps, matchDispatchToProps)(AdapterAddToComponent));
+export default connect(mapStateToProps, matchDispatchToProps)(AdapterAddToComponent);

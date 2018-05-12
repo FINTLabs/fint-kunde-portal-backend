@@ -65,10 +65,12 @@ class AdapterView extends React.Component {
     if (reason === 'clickaway') {
       return;
     }
-
     this.setState({copiedToClipboard: false});
   };
   
+  fetchComponents = () => {
+	    this.props.fetchComponents();
+ };	  
   updateAdapterState = (event) => {
 	    const field = event.target.name;
 	    const adapter = this.state.adapter;
@@ -116,7 +118,10 @@ class AdapterView extends React.Component {
         <Route
 	        path="/addAdapterToComponent"
 	        render={({props}) => (
-	          <AdapterAddToComponent adapter={this.state.adapter}/>
+	          <AdapterAddToComponent 
+	          	adapter={this.state.adapter}
+	            fetchComponents={this.fetchComponents}
+	          />
 	        )}
 	      />
         </div>

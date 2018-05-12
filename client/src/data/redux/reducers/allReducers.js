@@ -17,7 +17,10 @@ import {
   FETCH_COMPONENTS_ERROR,
   FETCH_COMPONENTS_REQUEST,
   FETCH_COMPONENTS_SUCCESS,
-  UPDATE_COMPONENTS_SUCCESS
+  UPDATE_COMPONENTS_SUCCESS,
+  
+  FETCH_CONTACTS_REQUEST,
+  FETCH_CONTACTS_SUCCESS
   
 } from "../actions/actionTypes";
 
@@ -47,6 +50,11 @@ const allReducer = (state = {}, action) => {
         return state;
     case FETCH_COMPONENTS_SUCCESS:
         return {...state, components: action.payload};
+ 
+    case FETCH_CONTACTS_REQUEST:
+        return state;
+    case FETCH_CONTACTS_SUCCESS:
+        return {...state, contacts: action.payload};
         
     case "FETCH_TECHNICALCONTACTS_SUCCESS":
       return {...state, technicalContacts: action.payload};
@@ -70,10 +78,7 @@ const allReducer = (state = {}, action) => {
     }
 
     case "CREATE_SUCCESS": {
-      const newState = Object.assign([], state);
-      const indexOfAdapterToSave = state.posts.findIndex(({id}) => id === action.payload);
-      newState.splice(indexOfAdapterToSave, 1);
-      return newState;
+    	return {...state, technicalContacts: action.payload};
     }
     case "UPDATE_SUCCESS": {
       const newState = Object.assign([], state);

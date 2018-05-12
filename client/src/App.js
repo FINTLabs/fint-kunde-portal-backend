@@ -6,7 +6,6 @@ import Main from "./main/Main";
 import {bindActionCreators} from 'redux';
 import {withRouter} from "react-router-dom";
 import {connect} from 'react-redux';
-import {fetchComponents} from "./data/redux/actions/components";
 
 const theme = createMuiTheme({
   palette: {
@@ -26,21 +25,14 @@ const theme = createMuiTheme({
 });
 
 class App extends Component {
-	
-  componentDidMount() {
-    this.props.fetchComponents(this.props.org)
-
-  }
 
   static childContextTypes = {
     organisation: PropTypes.string,
-    components: PropTypes.array
   };
 
   getChildContext() {
     return {
       organisation: 'testing',
-      components: this.props.components
     };
   }
 
@@ -58,15 +50,4 @@ App.propTypes = {
 
 };
 
-function mapStateToProps(state) {
-  return {
-    posts: state.posts,
-
-  }
-}
-
-function matchDispatchToProps(dispatch) {
-  return bindActionCreators({fetchComponents: fetchComponents}, dispatch);
-}
-
-export default withRouter(connect(mapStateToProps, matchDispatchToProps)(App));
+export default (App);

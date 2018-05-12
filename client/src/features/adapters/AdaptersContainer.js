@@ -6,6 +6,7 @@ import {withStyles} from "material-ui";
 import LoadingProgress from "../../common/LoadingProgress";
 import AdaptersList from "./AdaptersList";
 import AdapterAdd from "./AdapterAdd";
+import {fetchComponents} from "../../data/redux/actions/components";
 import {addAdapterToComponent, 
 	deleteAdapterFromComponent, 
 	createAdapter, 
@@ -34,7 +35,6 @@ class AdaptersContainer extends React.Component {
   
   static contextTypes = {
 	    organisation: PropTypes.string,
-	    components: PropTypes.array
 	  };
   
   render() {
@@ -46,16 +46,16 @@ class AdaptersContainer extends React.Component {
 	  }
 
   renderAdapters() {
-	  console.log("this1")
-	  console.log(this.context)
     const {classes} = this.props;
     return (
       <div className={classes.root}>
         <AdaptersList adapters={this.props.adapters}
+        			  components={this.props.components}
         			  updateAdapter={this.props.updateAdapter}
                       deleteAdapter={this.props.deleteAdapter}
         			  addAdapterToComponent={this.props.addAdapterToComponent}
         			  deleteAdapterFromComponent={this.props.deleteAdapterfromComponent}
+        			  fetchComponents={this.props.fetchComponents}
 
         />
         <AdapterAdd
@@ -80,6 +80,7 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
   return bindActionCreators({
     fetchAdapters: fetchAdapters,
+    fetchComponents : fetchComponents,
     updateAdapter: updateAdapter,
     deleteAdapter: deleteAdapter,
     createAdapter: createAdapter,

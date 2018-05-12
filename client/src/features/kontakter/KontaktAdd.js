@@ -14,6 +14,7 @@ class KontaktAdd extends React.Component {
   constructor(props, context) {
     super(props, context);
     this.state = {
+    		contacts: this.props.contacts,
       kontakt: Object.assign({}, this.props.location.state),
       isSaving: false,
       isAdding: false
@@ -67,12 +68,11 @@ class KontaktAdd extends React.Component {
     this.setState({open: false});
   };
 
-
   render() {
     return (
       <Router>
         <div>
-          <Link to={{pathname: '/searchKontakt', state: {kontakter: this.props.posts}}}
+          <Link to={{pathname: '/searchKontakt', state: {kontakter: this.props.contacts}}}
                 style={{textDecoration: 'none'}}>
             <Button variant="fab" color="secondary"><Search/></Button></Link>
 
@@ -150,7 +150,7 @@ class KontaktAdd extends React.Component {
           <Route
             path="/searchKontakt"
             render={({state}) => (
-              <SearchKontakt kontakter={this.props.posts}/>
+              <SearchKontakt kontakter={this.props.contacts}/>
             )}
           />
 
