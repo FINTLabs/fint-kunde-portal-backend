@@ -1,4 +1,4 @@
-class KlienterApi {
+class ClientApi {
 
   static fetchKlienter() {
     const request = new Request(`/api/clients/testing`, {
@@ -72,4 +72,4 @@ class KlienterApi {
   }
 }
 
-export default KlienterApi;
+export default ClientApi;

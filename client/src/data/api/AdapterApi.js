@@ -1,4 +1,4 @@
-class AdaptersApi {
+class AdapterApi {
 
   static getAdapters(org) {
 
@@ -93,4 +93,4 @@ class AdaptersApi {
   }
 }
 
-export default AdaptersApi;
+export default AdapterApi;

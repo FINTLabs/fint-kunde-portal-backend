@@ -5,7 +5,7 @@ import {withStyles} from "material-ui";
 import LoadingProgress from "../../common/LoadingProgress";
 import KlienterList from "./ClientsList";
 import ClientAdd from "./ClientAdd";
-import {createKlient, deleteKlient, fetchKlienter, updateClient} from "../../data/redux/actions/klienter";
+import {createKlient, deleteKlient, fetchKlienter, updateClient} from "../../data/redux/dispatchers/client";
 
 
 const styles = () => ({
@@ -15,7 +15,6 @@ const styles = () => ({
 class ClientsContainer extends React.Component {
   constructor(props) {
     super(props);
-
     this.state = {
       clientAdded: false,
     }
@@ -56,8 +55,9 @@ ClientsContainer.propTypes = {
 };
 
 function mapStateToProps(state) {
+
   return {
-    clients: state.clients
+    clients: state.client.clients
   }
 }
 

@@ -3,9 +3,6 @@ import './App.css';
 import {createMuiTheme, MuiThemeProvider} from "material-ui";
 import PropTypes from 'prop-types';
 import Main from "./main/Main";
-import {bindActionCreators} from 'redux';
-import {withRouter} from "react-router-dom";
-import {connect} from 'react-redux';
 
 const theme = createMuiTheme({
   palette: {
@@ -25,6 +22,9 @@ const theme = createMuiTheme({
 });
 
 class App extends Component {
+  componentDidMount() {
+    //this.props.fetchApis(this.props.org)
+  }
 
   static childContextTypes = {
     organisation: PropTypes.string,
@@ -46,8 +46,11 @@ class App extends Component {
   }
 }
 
-App.propTypes = {
-
-};
+App.propTypes = {};
 
 export default (App);
+
+
+
+
+

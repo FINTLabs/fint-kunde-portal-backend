@@ -2,13 +2,12 @@ import React from 'react';
 import SearchComponent from '../common/SearchComponent'
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
-import {withRouter} from "react-router-dom";
 import Button from 'material-ui/Button';
 import Dialog, {DialogActions, DialogContent, DialogTitle,} from 'material-ui/Dialog';
 import TextField from 'material-ui/TextField';
 import PropTypes from 'prop-types';
 import LoadingProgress from "../../common/LoadingProgress";
-import {fetchComponents} from "../../data/redux/actions/components";
+import {fetchComponents} from "../../data/redux/dispatchers/component";
 
 const styles = theme => ({});
 
@@ -17,9 +16,9 @@ class AdapterAddToComponent extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-    		adapter: Object.assign({}, this.props.adapter),
-    		components: this.props.components,
-    		open: true
+      adapter: Object.assign({}, this.props.adapter),
+      components: this.props.components,
+      open: true
     };
 
   }
@@ -28,6 +27,7 @@ class AdapterAddToComponent extends React.Component {
     this.props.fetchComponents();
 
   }
+
   state = {
     open: false,
     value: 1,
@@ -58,7 +58,7 @@ class AdapterAddToComponent extends React.Component {
   render() {
 
     if (!this.props.components) {
-    	console.log(this.props)
+      console.log(this.props)
       return <LoadingProgress/>;
     } else {
       return this.renderComponents();
@@ -66,9 +66,9 @@ class AdapterAddToComponent extends React.Component {
   }
 
   renderComponents() {
-		
-	  console.log("this1")
-	  console.log(this)
+
+    console.log("this1")
+    console.log(this)
     let items = []
 
     this.props.components.map((component, i) =>
@@ -106,14 +106,12 @@ class AdapterAddToComponent extends React.Component {
 
           </DialogActions>
         </Dialog>
-      </div> 		
+      </div>
     );
   }
 }
 
-AdapterAddToComponent.propTypes = {
-
-};
+AdapterAddToComponent.propTypes = {};
 
 function mapStateToProps(state) {
   return {

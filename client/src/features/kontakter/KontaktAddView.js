@@ -2,13 +2,13 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
-import {createKontakt} from '../../actions/kontakter';
 import {withRouter} from "react-router-dom";
 import Button from 'material-ui/Button';
 import Dialog, {DialogActions, DialogContent, DialogContentText, DialogTitle,} from 'material-ui/Dialog';
 import TextField from 'material-ui/TextField';
 import {Add} from "material-ui-icons";
 import {withStyles} from "material-ui";
+import {createKontakt} from "../../data/redux/actions/kontakter";
 
 const styles = theme => ({
 addButton: {
@@ -38,7 +38,7 @@ constructor(props, context) {
 
 
 componentWillReceiveProps(nextProps) {
-  if (this.props.kontakt != nextProps.kontakt) {
+  if (this.props.kontakt !== nextProps.kontakt) {
     this.setState({kontakt: Object.assign({}, nextProps.kontakt)});
 
   }
@@ -53,12 +53,11 @@ toggleAdd() {
 
 saveKontakt(event) {
 
-  this.props.createKontakt(this.state.kontakt);
+  this.props.createContact(this.state.kontakt);
 }
 
 createKontakt(kontakt) {
-	console.log(kontakt)
-    this.props.createKontakt(kontakt)
+    this.props.createContact(kontakt)
   }
 
 updateKontaktState(event) {
@@ -71,7 +70,7 @@ updateKontaktState(event) {
 }
 
 createKlient(kontakt) {
-  this.props.createKontakt(kontakt)
+  this.props.createContact(kontakt)
 }
 
 state = {
@@ -112,10 +111,10 @@ render() {
 		  	        required
 	  	            fullWidth
 	            	onChange={this.updateKontaktState}
-		            value={this.state.kontakt.nin}  
+		            value={this.state.kontakt.nin}
 		        	type='password'
 		        	disabled
-	  	         /> 
+	  	         />
 	            <TextField
 		            name="firstName"
 		            label="First Name"
@@ -124,15 +123,15 @@ render() {
 	  	            fullWidth
 	            	onChange={this.updateKontaktState}
 		            value={this.state.kontakt.firstName}
-	            /> 
-	       
+	            />
+
 	           <TextField
 	             name="lastName"
 	             label="Last Name"
 	  	         required
 	             fullWidth
 	        	 onChange={this.updateKontaktState}
-		         value={this.state.kontakt.lastName}   
+		         value={this.state.kontakt.lastName}
 	           />
 
 	           <TextField
@@ -150,8 +149,8 @@ render() {
 	      		required
 	      		fullWidth
 	      		onChange={this.updateKontaktState}
-		        value={this.state.kontakt.mobile}    
-	          />     		   
+		        value={this.state.kontakt.mobile}
+	          />
 
           </DialogContent>
           <DialogActions>

@@ -5,7 +5,7 @@ import {withRouter} from "react-router-dom";
 import Button from 'material-ui/Button';
 import Dialog, {DialogActions, DialogContent, DialogTitle,} from 'material-ui/Dialog';
 import TextField from 'material-ui/TextField';
-import {updateKontakt} from "../../data/redux/actions/kontakter";
+import {updateContact} from "../../data/redux/dispatchers/contact";
 
 class KontaktView extends React.Component {
   constructor(props, context) {
@@ -39,7 +39,7 @@ class KontaktView extends React.Component {
   }
 
   updateKontakt(event) {
-    this.props.updateKontakt(this.state.kontakt);
+    this.props.updateContact(this.state.kontakt);
   }
 
 
@@ -161,7 +161,7 @@ function mapStateToProps(state) {
 }
 
 function matchDispatchToProps(dispatch) {
-  return bindActionCreators({updateKontakt: updateKontakt}, dispatch);
+  return bindActionCreators({updateKontakt: updateContact}, dispatch);
 }
 
 export default withRouter(connect(mapStateToProps, matchDispatchToProps)(KontaktView));

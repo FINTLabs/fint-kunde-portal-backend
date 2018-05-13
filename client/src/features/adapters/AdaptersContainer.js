@@ -6,14 +6,15 @@ import {withStyles} from "material-ui";
 import LoadingProgress from "../../common/LoadingProgress";
 import AdaptersList from "./AdaptersList";
 import AdapterAdd from "./AdapterAdd";
-import {fetchComponents} from "../../data/redux/actions/components";
-import {addAdapterToComponent, 
-	deleteAdapterFromComponent, 
-	createAdapter, 
-	deleteAdapter, 
-	fetchAdapters, 
-	updateAdapter} 
-	from "../../data/redux/actions/adapters";
+import {fetchComponents} from "../../data/redux/dispatchers/component";
+import {
+  addAdapterToComponent,
+  createAdapter,
+  deleteAdapter,
+  deleteAdapterFromComponent,
+  fetchAdapters,
+  updateAdapter
+} from "../../data/redux/dispatchers/adapter";
 
 
 const styles = () => ({
@@ -32,30 +33,30 @@ class AdaptersContainer extends React.Component {
   componentDidMount() {
     this.props.fetchAdapters(this.context.organisation)
   }
-  
+
   static contextTypes = {
-	    organisation: PropTypes.string,
-	  };
-  
+    organisation: PropTypes.string,
+  };
+
   render() {
-	    if (!this.props.adapters) {
-	      return <LoadingProgress/>;
-	    } else {
-	      return this.renderAdapters();
-	    }
-	  }
+    if (!this.props.adapters) {
+      return <LoadingProgress/>;
+    } else {
+      return this.renderAdapters();
+    }
+  }
 
   renderAdapters() {
     const {classes} = this.props;
     return (
       <div className={classes.root}>
         <AdaptersList adapters={this.props.adapters}
-        			  components={this.props.components}
-        			  updateAdapter={this.props.updateAdapter}
+                      components={this.props.components}
+                      updateAdapter={this.props.updateAdapter}
                       deleteAdapter={this.props.deleteAdapter}
-        			  addAdapterToComponent={this.props.addAdapterToComponent}
-        			  deleteAdapterFromComponent={this.props.deleteAdapterfromComponent}
-        			  fetchComponents={this.props.fetchComponents}
+                      addAdapterToComponent={this.props.addAdapterToComponent}
+                      deleteAdapterFromComponent={this.props.deleteAdapterfromComponent}
+                      fetchComponents={this.props.fetchComponents}
 
         />
         <AdapterAdd
@@ -67,25 +68,23 @@ class AdaptersContainer extends React.Component {
   }
 }
 
-AdaptersContainer.propTypes = {
-
-};
+AdaptersContainer.propTypes = {};
 
 function mapStateToProps(state) {
   return {
-    adapters: state.adapters
+    adapters: state.adapter.adapters,
   }
 }
 
 function mapDispatchToProps(dispatch) {
   return bindActionCreators({
     fetchAdapters: fetchAdapters,
-    fetchComponents : fetchComponents,
+    fetchComponents: fetchComponents,
     updateAdapter: updateAdapter,
     deleteAdapter: deleteAdapter,
     createAdapter: createAdapter,
     deleteAdapterFromComponent: deleteAdapterFromComponent,
-    addAdapterToComponent : addAdapterToComponent,
+    addAdapterToComponent: addAdapterToComponent,
   }, dispatch);
 }
 

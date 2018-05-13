@@ -18,11 +18,11 @@ import {Delete, Edit, ImportantDevices} from "material-ui-icons";
 import AutoHideNotification from "../../common/AutoHideNotification";
 
 const styles = theme => ({
-  adapterListContainer: {
+  root: {
     display: 'flex',
     justifyContent: 'center',
   },
-  adapterList: {
+  componentList: {
     width: '75%',
   },
   avtarstyle: {
@@ -75,10 +75,10 @@ class AdaptersList extends Component {
   };
   deleteAdapterFromComponent = (adapter) => {
     this.props.deleteAdapterfromComponent(adapter, this.context.organisation);
-  };	
+  };
   fetchComponents = () => {
-	    this.props.fetchComponents();
-  };	  
+    this.props.fetchComponents();
+  };
   deleteAdapter = (adapter) => {
     this.setState({
       adapterDeleted: true,
@@ -87,7 +87,7 @@ class AdaptersList extends Component {
     this.props.deleteAdapter(adapter, this.context.organisation);
   };
 
- render() {
+  render() {
     const {classes} = this.props;
     return (
       <div>
@@ -123,17 +123,18 @@ class AdaptersList extends Component {
                 </ListItem>,
               )}
             </List>
+
           </div>
         </div>
         <AdapterView
-	        open={this.state.open}
-	        adapter={this.state.adapterToEdit}
-	        onClose={this.onCloseEdit}
-	        updateAdapter={this.updateAdapter}
-        	addAdapterToComponent={this.addAdapterToComponent}
-        	deleteAdapterFromComponent={this.deleteAdapterfromComponent}
-        	fetchComponents={this.fetchComponents}
-      />
+          open={this.state.open}
+          adapter={this.state.adapterToEdit}
+          onClose={this.onCloseEdit}
+          updateAdapter={this.updateAdapter}
+          addAdapterToComponent={this.addAdapterToComponent}
+          deleteAdapterFromComponent={this.deleteAdapterfromComponent}
+          fetchComponents={this.fetchComponents}
+        />
       </div>
     );
   }
@@ -141,7 +142,7 @@ class AdaptersList extends Component {
 }
 
 AdaptersList.propTypes = {
-	adapters: PropTypes.array.isRequired
+  adapters: PropTypes.array.isRequired
 };
 
 export default withStyles(styles)(AdaptersList);

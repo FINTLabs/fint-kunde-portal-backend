@@ -7,7 +7,7 @@ import Button from 'material-ui/Button';
 import {Add, Search} from "material-ui-icons";
 import Dialog, {DialogActions, DialogContent, DialogContentText, DialogTitle,} from 'material-ui/Dialog';
 import TextField from 'material-ui/TextField';
-import {createKontakt, fetchKontakter} from "../../data/redux/actions/kontakter";
+import {createContact, fetchContacts} from "../../data/redux/dispatchers/contact";
 
 
 class KontaktAdd extends React.Component {
@@ -31,7 +31,7 @@ class KontaktAdd extends React.Component {
   }
 
   componentDidMount() {
-    this.props.fetchKontakter();
+    this.props.fetchContacts();
 
   }
 
@@ -42,11 +42,11 @@ class KontaktAdd extends React.Component {
 
   saveKontakt(event) {
 
-    this.props.createKontakt(this.state.kontakt);
+    this.props.createContact(this.state.kontakt);
   }
 
   createKontakt(kontakt) {
-    this.props.createKontakt(kontakt)
+    this.props.createContact(kontakt)
   }
 
   updateKontaktState(event) {
@@ -162,6 +162,7 @@ class KontaktAdd extends React.Component {
 }
 
 function mapStateToProps(state) {
+  console.log(`contacts: ${JSON.stringify(state)}`);
   return {
     posts: state.posts
   }
@@ -169,8 +170,8 @@ function mapStateToProps(state) {
 
 function matchDispatchToProps(dispatch) {
   return bindActionCreators({
-    fetchKontakter: fetchKontakter,
-    createKontakt: createKontakt
+    fetchContacts : fetchContacts,
+    createKontakt: createContact
   }, dispatch);
 }
 

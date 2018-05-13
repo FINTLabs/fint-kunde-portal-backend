@@ -1,4 +1,4 @@
-import allReducer from '../reducers/index';
+import allReducer from './index';
 import expect from 'expect';
 
 describe('allReducer', function() {

@@ -1,12 +1,11 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
-import {fetchTechnicalContacts} from '../../data/redux/actions/components';
 import {Grid} from "material-ui";
 import LoadingProgress from "../../common/LoadingProgress";
 import KontakterList from "./KontakterList";
 import KontaktAdd from "./KontaktAdd";
+import {fetchTechnicalContacts} from "../../data/redux/dispatchers/organisation";
 
 class KontakterContainer extends React.Component {
   constructor(props) {
@@ -45,13 +44,13 @@ class KontakterContainer extends React.Component {
 }
 
 KontakterContainer.propTypes = {
-  kontakter: PropTypes.array.isRequired
+  //kontakter: PropTypes.array.isRequired
 };
 
 function mapStateToProps(state) {
+  console.log(`contacts1: ${JSON.stringify(state.organisation.technicalContacts)}`);
   return {
-    posts: state.posts,
-    technicalContacts: state.technicalContacts
+    technicalContacts: state.organisation.technicalContacts
   }
 }
 

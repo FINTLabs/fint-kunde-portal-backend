@@ -18,11 +18,11 @@ import {Delete, Edit, ImportantDevices} from "material-ui-icons";
 import AutoHideNotification from "../../common/AutoHideNotification";
 
 const styles = theme => ({
-  clientListContainer: {
+  root: {
     display: 'flex',
     justifyContent: 'center',
   },
-  clientList: {
+  componentList: {
     width: '75%',
   },
   avtarstyle: {
@@ -32,6 +32,7 @@ const styles = theme => ({
   },
   title: {
     paddingLeft: theme.spacing.unit * 3,
+    paddingBottom: theme.spacing.unit ,
   },
   listItem: {
     borderBottom: '1px dashed lightgray',
@@ -87,8 +88,8 @@ class ClientsList extends Component {
           message={`Klient ${this.state.clientDeletedName} ble slettet!`}
 
         />
-        <div className={classes.clientListContainer}>
-          <div className={classes.clientList}>
+        <div className={classes.root}>
+          <div className={classes.componentList}>
             <Typography variant="headline" className={classes.title}>Klienter</Typography>
             <Divider/>
             <List>

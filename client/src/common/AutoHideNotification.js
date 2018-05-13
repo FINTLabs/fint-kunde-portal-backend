@@ -1,5 +1,6 @@
 import React from 'react';
 import {Snackbar, withStyles} from "material-ui";
+import PropTypes from 'prop-types';
 
 const styles = () => {
 
@@ -31,7 +32,7 @@ class AutoHideNotification extends React.Component {
     }
 
     this.setState({open: false});
-    //this.props.onClose();
+    this.props.onClose();
   };
 
   render() {
@@ -52,6 +53,12 @@ class AutoHideNotification extends React.Component {
     );
   }
 }
+
+AutoHideNotification.propTypes = {
+  showNotification: PropTypes.bool.isRequired,
+  message: PropTypes.string.isRequired,
+  onClose: PropTypes.func.isRequired,
+};
 
 export default withStyles(styles)(AutoHideNotification);
 

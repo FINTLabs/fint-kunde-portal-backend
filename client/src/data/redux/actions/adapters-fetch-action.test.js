@@ -1,7 +1,7 @@
 import configureMockStore from 'redux-mock-store'
 import thunk from 'redux-thunk'
-import * as actions from './adapters'
-import {FETCH_REQUEST,FETCH_SUCCESS,url} from './adapters'
+import * as actions from './adapter'
+import {FETCH_REQUEST,FETCH_SUCCESS,url} from './adapter'
 import fetchMock from 'fetch-mock';
 import { expectRedux, storeSpy } from 'expect-redux';
 import { createStore } from 'redux';

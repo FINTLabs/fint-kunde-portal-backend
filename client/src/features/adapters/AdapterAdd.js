@@ -6,6 +6,7 @@ import {Add} from "material-ui-icons";
 import {withStyles} from "material-ui";
 import AutoHideNotification from "../../common/AutoHideNotification";
 import PropTypes from 'prop-types';
+import {createAdapter} from "../../data/redux/dispatchers/adapter";
 
 const styles = theme => ({
   addButton: {
@@ -113,7 +114,7 @@ class AdapterAdd extends React.Component {
                 multiline
                 rows="4"
                 onChange={this.updateAdapterState}
-              /> 
+              />
               </DialogContent>
               <DialogActions>
               <Button onClick={this.handleCancel} color="primary" style={{textTransform: 'none'}}>
@@ -132,7 +133,7 @@ class AdapterAdd extends React.Component {
 
 
 AdapterAdd.propTypes = {
- 
+
 };
 
 export default withStyles(styles)(AdapterAdd);

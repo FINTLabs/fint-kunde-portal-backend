@@ -1,12 +1,20 @@
-import {createStore, applyMiddleware} from 'redux';
+import {applyMiddleware, combineReducers, createStore} from 'redux';
 import thunkMiddleware from 'redux-thunk';
 import {createLogger} from 'redux-logger';
-import allReducers from "../reducers/allReducers";
+import component from "../reducers/component";
+import client from "../reducers/client";
+import organisation from "../reducers/organisation";
+import adapter from "../reducers/adapter";
 
 const logger = createLogger();
 const store = createStore(
-    allReducers,
-    applyMiddleware(thunkMiddleware, logger)
+  combineReducers({
+    client,
+    component,
+    organisation,
+    adapter,
+  }),
+  applyMiddleware(thunkMiddleware, logger)
 );
 
-export default store
+export default store;
