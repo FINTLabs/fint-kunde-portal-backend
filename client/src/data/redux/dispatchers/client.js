@@ -1,7 +1,9 @@
 import {
   addKlientToComponentSuccess,
   createKlientSuccess,
-  deleteKlientFromComponentSuccess, fetchClientError, fetchClientSuccess,
+  deleteKlientFromComponentSuccess,
+  fetchClientError,
+  fetchClientSuccess,
   updateKlientSuccess
 } from "../actions/client";
 import {DELETE_CLIENT_SUCCESS} from "../actions/types";

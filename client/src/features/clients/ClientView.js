@@ -8,6 +8,32 @@ import ClientTabView from "./ClientTabView";
 const styles = () => ({});
 
 class ClientView extends React.Component {
+  onCopy = () => {
+    this.setState({copiedToClipboard: true});
+  }
+  updateClientState = (event) => {
+    const field = event.target.name;
+    const client = this.state.client;
+    client[field] = event.target.value;
+    return this.setState({
+      value: event.target.value
+    });
+  };
+  handleClose = () => {
+    this.props.updateAdapter(this.state.client);
+    this.props.onClose();
+  };
+  handleCancel = () => {
+    this.props.onClose();
+  };
+  handleCopySnackbarClose = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+
+    this.setState({copiedToClipboard: false});
+  };
+
   constructor(props, context) {
     super(props, context);
     this.state = {
@@ -26,37 +52,6 @@ class ClientView extends React.Component {
 
     return null;
   }
-
-  onCopy = () => {
-    this.setState({copiedToClipboard: true});
-  }
-
-
-  updateClientState = (event) => {
-    const field = event.target.name;
-    const client = this.state.client;
-    client[field] = event.target.value;
-    return this.setState({
-      value: event.target.value
-    });
-  };
-
-  handleClose = () => {
-    this.props.updateClient(this.state.client);
-    this.props.onClose();
-  };
-
-  handleCancel = () => {
-    this.props.onClose();
-  };
-
-  handleCopySnackbarClose = (event, reason) => {
-    if (reason === 'clickaway') {
-      return;
-    }
-
-    this.setState({copiedToClipboard: false});
-  };
 
   render() {
     return (

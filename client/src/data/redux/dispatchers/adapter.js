@@ -1,20 +1,22 @@
 import AdapterApi from "../../api/AdapterApi";
 import {
-  addAdapterToComponentSuccess,
   createAdapterSuccess,
   deleteAdapterSuccess,
   fetchAdapersSuccess,
-  fetchAdaptersError, removeAdapterFromComponentSuccess,
+  fetchAdaptersError,
   updateAdapterSuccess
 } from "../actions/adapter";
+import {fetchComponents} from "./component";
 
 
 export function deleteAdapterFromComponent(adapter, component, org) {
 
   return function (dispatch) {
     return AdapterApi.deleteAdapterFromComponent(adapter, component, org).then(() => {
-      dispatch(removeAdapterFromComponentSuccess(adapter));
-      return;
+      //dispatch(removeAdapterFromComponentSuccess(adapter));
+      fetchAdapters(org);
+      fetchComponents();
+      //return;
     }).catch(error => {
       throw(error);
     })
@@ -35,8 +37,10 @@ export function deleteAdapter(adapter, org) {
 export function addAdapterToComponent(adapter, component, org) {
   return function (dispatch) {
     return AdapterApi.addAdapterToComponent(adapter, component, org).then(responseAdapter => {
-      dispatch(addAdapterToComponentSuccess(responseAdapter));
-      return responseAdapter;
+      //dispatch(addAdapterToComponentSuccess(responseAdapter));
+      fetchAdapters(org);
+      fetchComponents();
+      //return responseAdapter;
     }).catch(error => {
       throw(error);
     });

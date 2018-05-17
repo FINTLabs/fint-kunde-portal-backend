@@ -1,4 +1,3 @@
-import ClientApi from '../../api/ClientApi';
 import {
   CREATE_CLIENT_SUCCESS,
   DELETE_CLIENT_SUCCESS,

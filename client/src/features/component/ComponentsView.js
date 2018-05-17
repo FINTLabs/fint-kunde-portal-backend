@@ -1,7 +1,7 @@
 import React from 'react';
 import Button from 'material-ui/Button';
 import Dialog, {DialogActions, DialogContent, DialogTitle,} from 'material-ui/Dialog';
-import {Divider, Table, TableCell, TableRow, withStyles} from "material-ui";
+import {Table, TableCell, TableRow, withStyles} from "material-ui";
 import PropTypes from 'prop-types';
 
 
@@ -19,13 +19,16 @@ const styles = (theme) => ({
 });
 
 class ComponentsView extends React.Component {
+  handleClose = () => {
+    this.setState({open: false});
+    this.props.onClose();
+  };
+
   constructor(props) {
     super(props);
     this.state = {
       open: props.show,
     };
-    console.log("table");
-    console.log(props.component);
   }
 
   static getDerivedStateFromProps(nextProps, prevState) {
@@ -36,11 +39,6 @@ class ComponentsView extends React.Component {
     }
     return null;
   }
-
-  handleClose = () => {
-    this.setState({open: false});
-    this.props.onClose();
-  };
 
   render() {
     const {classes} = this.props;
@@ -55,7 +53,8 @@ class ComponentsView extends React.Component {
             aria-labelledby="form-dialog-title"
             maxWidth="md"
           >
-            <DialogTitle id="form-dialog-title" className={classes.dialogTitle}>Komponent: {component.description}</DialogTitle>
+            <DialogTitle id="form-dialog-title"
+                         className={classes.dialogTitle}>Komponent: {component.description}</DialogTitle>
             <DialogContent>
 
               <Table className={classes.table}>
@@ -79,16 +78,19 @@ class ComponentsView extends React.Component {
                 </TableRow>
                 <TableRow>
                   <TableCell variant='head' className={classes.endpointsCell}>Produksjon</TableCell>
-                  <TableCell variant='body'><a target="_blank" href={`https://api.felleskomponent.no${component.basePath}`}>https://api.felleskomponent.no{component.basePath}</a></TableCell>
+                  <TableCell variant='body'><a target="_blank"
+                                               href={`https://api.felleskomponent.no${component.basePath}`}>https://api.felleskomponent.no{component.basePath}</a></TableCell>
                 </TableRow>
                 <TableRow>
                   <TableCell variant='head' className={classes.endpointsCell}>Beta</TableCell>
-                  <TableCell variant='body'><a target="_blank" href={`https://beta.felleskomponent.no${component.basePath}`}>https://beta.felleskomponent.no{component.basePath}</a></TableCell>
+                  <TableCell variant='body'><a target="_blank"
+                                               href={`https://beta.felleskomponent.no${component.basePath}`}>https://beta.felleskomponent.no{component.basePath}</a></TableCell>
                 </TableRow>
                 <TableRow>
 
                   <TableCell variant='head' className={classes.endpointsCell}>Play-with-FINT</TableCell>
-                  <TableCell variant='body'><a target="_blank" href={`https://play-with-fint.felleskomponent.no${component.basePath}`}>https://play-with-fint.felleskomponent.no{component.basePath}</a></TableCell>
+                  <TableCell variant='body'><a target="_blank"
+                                               href={`https://play-with-fint.felleskomponent.no${component.basePath}`}>https://play-with-fint.felleskomponent.no{component.basePath}</a></TableCell>
                 </TableRow>
                 <TableRow>
                   <TableCell variant='head' colSpan={2} className={classes.endpointMainTitle}>Swagger</TableCell>
@@ -96,17 +98,20 @@ class ComponentsView extends React.Component {
                 <TableRow>
 
                   <TableCell variant='head' className={classes.endpointsCell}>Produksjon</TableCell>
-                  <TableCell variant='body'><a target="_blank" href={`https://api.felleskomponent.no${component.basePath}/swagger-ui.html`}>https://api.felleskomponent.no{component.basePath}/swagger-ui.html</a></TableCell>
+                  <TableCell variant='body'><a target="_blank"
+                                               href={`https://api.felleskomponent.no${component.basePath}/swagger-ui.html`}>https://api.felleskomponent.no{component.basePath}/swagger-ui.html</a></TableCell>
                 </TableRow>
                 <TableRow>
 
                   <TableCell variant='head' className={classes.endpointsCell}>Beta</TableCell>
-                  <TableCell variant='body'><a target="_blank" href={`https://beta.felleskomponent.no${component.basePath}/swagger-ui.html`}>https://beta.felleskomponent.no{component.basePath}/swagger-ui.html</a></TableCell>
+                  <TableCell variant='body'><a target="_blank"
+                                               href={`https://beta.felleskomponent.no${component.basePath}/swagger-ui.html`}>https://beta.felleskomponent.no{component.basePath}/swagger-ui.html</a></TableCell>
                 </TableRow>
                 <TableRow>
 
                   <TableCell variant='head' className={classes.endpointsCell}>Play-with-FINT</TableCell>
-                  <TableCell variant='body'><a target="_blank" href={`https://play-with-fint.felleskomponent.no${component.basePath}/swagger-ui.html`}>https://play-with-fint.felleskomponent.no{component.basePath}/swagger-ui.html</a></TableCell>
+                  <TableCell variant='body'><a target="_blank"
+                                               href={`https://play-with-fint.felleskomponent.no${component.basePath}/swagger-ui.html`}>https://play-with-fint.felleskomponent.no{component.basePath}/swagger-ui.html</a></TableCell>
                 </TableRow>
               </Table>
             </DialogContent>

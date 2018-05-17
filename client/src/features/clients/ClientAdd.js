@@ -6,7 +6,7 @@ import {Add} from "material-ui-icons";
 import {withStyles} from "material-ui";
 import AutoHideNotification from "../../common/AutoHideNotification";
 
-const styles = theme => ({
+const styles = () => ({
   addButton: {
     margin: 0,
     top: 100,
@@ -19,17 +19,6 @@ const styles = theme => ({
 });
 
 class ClientAdd extends React.Component {
-  constructor(props, context) {
-    super(props, context);
-    this.state = {
-      client: {},
-      showClientAdd: false,
-      clientAdded: false,
-      clientAddedName: null,
-    };
-  }
-
-
   updateKlientState = (event) => {
 
     const field = event.target.name;
@@ -38,7 +27,6 @@ class ClientAdd extends React.Component {
     client[field] = event.target.value;
     return this.setState({client: client});
   };
-
   handleClose = () => {
     this.props.createClient(this.state.client).then(() => {
       this.setState({
@@ -53,14 +41,22 @@ class ClientAdd extends React.Component {
       clientAddedName: this.state.client.name,
     });
   };
-
   openAddDialog = () => {
     this.setState({showClientAdd: true, clientAdded: false});
   };
-
   handleCancel = () => {
     this.setState({showClientAdd: false, clientAdded: false});
   };
+
+  constructor(props, context) {
+    super(props, context);
+    this.state = {
+      client: {},
+      showClientAdd: false,
+      clientAdded: false,
+      clientAddedName: null,
+    };
+  }
 
   render() {
     const {classes} = this.props;
@@ -89,7 +85,7 @@ class ClientAdd extends React.Component {
                 margin="dense"
                 required
                 name="name"
-                label="Klient Navn"
+                label="Navn"
                 fullWidth
                 onChange={this.updateKlientState}
               />
@@ -97,6 +93,7 @@ class ClientAdd extends React.Component {
               <TextField
                 name="shortDescription"
                 label="Kort beskrivelse"
+                required
                 fullWidth
                 onChange={this.updateKlientState}
               />
@@ -105,6 +102,7 @@ class ClientAdd extends React.Component {
                 name="note"
                 label="Note"
                 fullWidth
+                required
                 multiline
                 rows="4"
                 onChange={this.updateKlientState}
@@ -113,10 +111,10 @@ class ClientAdd extends React.Component {
 
             </DialogContent>
             <DialogActions>
-              <Button onClick={this.handleCancel} color="primary" style={{textTransform: 'none'}}>
+              <Button onClick={this.handleCancel} variant="raised" color="primary" style={{textTransform: 'none'}}>
                 Avbryt
               </Button>
-              <Button onClick={this.handleClose} color="primary" style={{textTransform: 'none'}}>
+              <Button onClick={this.handleClose} variant="raised" color="primary" style={{textTransform: 'none'}}>
                 Legg til
               </Button>
             </DialogActions>
@@ -128,9 +126,7 @@ class ClientAdd extends React.Component {
 }
 
 
-ClientAdd.propTypes = {
- 
-};
+ClientAdd.propTypes = {};
 
 export default withStyles(styles)(ClientAdd);
 

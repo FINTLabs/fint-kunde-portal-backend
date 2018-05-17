@@ -93,6 +93,11 @@ const styles = theme => ({
       marginTop: 64,
     },
   },
+  logo: {
+    height: '8%',
+    width: '8%',
+    marginRight: theme.spacing.unit * 4,
+  }
 });
 
 class AppMenu extends React.Component {
@@ -126,8 +131,9 @@ class AppMenu extends React.Component {
             >
               <MenuIcon/>
             </IconButton>
+            <img src="fint.svg" alt="logo" className={classes.logo}/>
             <Typography variant="title" color="inherit" noWrap>
-              FINT Kunde Portal
+              Kunde Portal
             </Typography>
           </Toolbar>
         </AppBar>

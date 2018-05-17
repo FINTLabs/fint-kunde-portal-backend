@@ -8,17 +8,17 @@ const styles = theme => ({});
 
 class Logs extends Component {
 
-    render() {
-        //const {classes} = this.props;
+  render() {
+    //const {classes} = this.props;
 
-        return (
-            <h1>Logs</h1>
-        );
-    }
+    return (
+      <h1>Logs</h1>
+    );
+  }
 }
 
 Logs.propTypes = {
-    classes: PropTypes.object.isRequired,
+  classes: PropTypes.object.isRequired,
 };
 
 export default withStyles(styles)(Logs);

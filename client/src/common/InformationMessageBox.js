@@ -1,15 +1,27 @@
 import React from 'react';
 import Button from 'material-ui/Button';
-import Dialog, {
-  DialogActions,
-  DialogContent,
-  DialogContentText,
-  DialogTitle,
-} from 'material-ui/Dialog';
+import Dialog, {DialogActions, DialogContent, DialogContentText, DialogTitle,} from 'material-ui/Dialog';
 import PropTypes from 'prop-types';
+import InformationIcon from '@material-ui/icons/Info';
+import {withStyles} from "material-ui";
 
 
-class MessageDialog extends React.Component {
+const styles = (theme) => ({
+  icon: {
+    color: theme.palette.secondary.main,
+    fontSize: '80px',
+    float: 'left',
+    marginRight: theme.spacing.unit * 2,
+  },
+  text: {}
+});
+
+class WarningMessageBox extends React.Component {
+  handleClose = (result) => {
+    this.setState({open: false});
+    this.props.onClose(result);
+  };
+
   constructor(props) {
     super(props);
     this.state = {
@@ -27,12 +39,8 @@ class MessageDialog extends React.Component {
     return null;
   }
 
-  handleClose = (result) => {
-    this.setState({ open: false });
-    this.props.onClose(result);
-  };
-
   render() {
+    const {classes} = this.props;
     return (
       <div>
         <Dialog
@@ -42,17 +50,18 @@ class MessageDialog extends React.Component {
           aria-describedby="alert-dialog-description"
         >
           <DialogTitle id="alert-dialog-title">{"Komponent"}</DialogTitle>
-          <DialogContent>
-            <DialogContentText id="alert-dialog-description">
+          <DialogContent className={classes.content}>
+            <InformationIcon className={classes.icon}/>
+            <DialogContentText className={classes.text} id="alert-dialog-description">
               {this.props.message}
             </DialogContentText>
           </DialogContent>
           <DialogActions>
-            <Button onClick={() => this.handleClose(false)} color="primary">
-              Nei
-            </Button>
             <Button onClick={() => this.handleClose(true)} color="primary" autoFocus>
               Ja
+            </Button>
+            <Button onClick={() => this.handleClose(false)} color="primary">
+              Nei
             </Button>
           </DialogActions>
         </Dialog>
@@ -61,9 +70,9 @@ class MessageDialog extends React.Component {
   }
 }
 
-MessageDialog.propTypes = {
+WarningMessageBox.propTypes = {
   message: PropTypes.string.isRequired,
   show: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
 };
-export default MessageDialog;
+export default withStyles(styles)(WarningMessageBox);

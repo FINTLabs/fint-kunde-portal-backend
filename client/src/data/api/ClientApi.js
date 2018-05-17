@@ -13,22 +13,23 @@ class ClientApi {
   }
 
   static getKlienter() {
-	  const url='/api/clients/testing';
-	  return fetch(url, { method: 'GET'})
-	     .then( response => Promise.all([response,response.json()]));
-	}
+    const url = '/api/clients/testing';
+    return fetch(url, {method: 'GET'})
+      .then(response => Promise.all([response, response.json()]));
+  }
 
   static updateClient(client) {
     const request = new Request(`/api/clients/testing/${client.name}`, {
       method: 'PUT',
       headers: new Headers({
-          'Content-Type': 'application/json'
-        }),
-        body: JSON.stringify({
-      	  name: client.name,
-      	  note: client.note,
-      	  shortDescription: client.shortDescription})
-      });
+        'Content-Type': 'application/json'
+      }),
+      body: JSON.stringify({
+        name: client.name,
+        note: client.note,
+        shortDescription: client.shortDescription
+      })
+    });
 
 
     return fetch(request).then(response => {
@@ -42,13 +43,14 @@ class ClientApi {
     const request = new Request(`/api/clients/testing`, {
       method: 'POST',
       headers: {
-          'Accept': '*/*',
-          'Content-Type': 'application/json'
-        },
+        'Accept': '*/*',
+        'Content-Type': 'application/json'
+      },
       body: JSON.stringify({
-    	  name: Klient.name,
-    	  note: Klient.note,
-    	  shortDescription:Klient.shortDescription})
+        name: Klient.name,
+        note: Klient.note,
+        shortDescription: Klient.shortDescription
+      })
     });
 
 

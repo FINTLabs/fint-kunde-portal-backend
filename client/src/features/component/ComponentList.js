@@ -17,10 +17,11 @@ import AddIcon from '@material-ui/icons/AddCircle';
 import RemoveIcon from '@material-ui/icons/RemoveCircle';
 import ComponentIcon from '@material-ui/icons/WebAsset';
 import OrganisationApi from "../../data/api/OrganisationApi";
-import MessageDialog from "./message-dialog/MessageDialog";
 import AutoHideNotification from "../../common/AutoHideNotification";
 import PropTypes from 'prop-types';
 import ComponentsView from "./ComponentsView";
+import WarningMessageBox from "../../common/WarningMessageBox";
+import InformationMessageBox from "../../common/InformationMessageBox";
 
 
 const styles = theme => ({
@@ -48,42 +49,28 @@ const styles = theme => ({
     backgroundColor: theme.palette.secondary.main,
   },
   addIcon: {
-    color: theme.palette.secondary.main,
+    color: theme.palette.secondary.dark,
   },
   removeIcon: {
-    color: theme.palette.primary.main,
+    color: theme.palette.primary.light,
   },
 });
 
 class ComponentList extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      showMessage: false,
-      message: null,
-      component: null,
-      notify: false,
-      notifyMessage: null,
-      showComponent: false,
-    };
-  }
-
   askToLinkComponent = (component) => {
     this.setState({
-      showMessage: true,
+      askLink: true,
       message: "Vil du legge til komponenten:  " + component.description + " til organisasjonen?",
       component: component,
     });
   };
-
   askToUnLinkComponent = (component) => {
     this.setState({
-      showMessage: true,
+      askUnLink: true,
       message: "Er du sikker på at du vil fjerne komponenten:  " + component.description + " fra organisasjonen?",
       component: component,
     });
   };
-
   linkComponent = (component) => {
     OrganisationApi.linkComponent(component).then(responseApi => {
       this.setState({
@@ -96,7 +83,6 @@ class ComponentList extends Component {
       alert(error);
     });
   };
-
   unlinkComponent = (component) => {
     OrganisationApi.unlinkComponent(component).then(responseApi => {
       this.setState({
@@ -109,43 +95,42 @@ class ComponentList extends Component {
       alert(error);
     });
   };
-
-  onCloseMessage = (confirmed) => {
+  onCloseLink = (confirmed) => {
     this.setState({
-      showMessage: false,
+      askLink: false,
+    });
+
+    if (confirmed) {
+      this.linkComponent(this.state.component);
+    }
+  };
+  onCloseUnLink = (confirmed) => {
+    this.setState({
+      askUnLink: false,
     });
 
     if (this.isLinkedToOrganisation(this.state.component) && confirmed) {
       this.unlinkComponent(this.state.component);
     }
-    if (confirmed) {
-      this.linkComponent(this.state.component);
-    }
   };
-
   onCloseNotification = () => {
     this.setState({
       notify: false,
       notifyMessage: null,
     });
   };
-
   showComponent = (component) => {
-    console.log("showcomponent");
-    console.log(component);
     this.setState({
       showComponent: true,
       component: component,
     });
   };
-
   onCloseShowComponent = () => {
     this.setState({
       showComponent: false,
       component: null,
     });
   };
-
   isLinkedToOrganisation = (component) => {
     let componentOrganisations = component.organisations;
 
@@ -157,15 +142,33 @@ class ComponentList extends Component {
     return false;
   };
 
+  constructor(props) {
+    super(props);
+    this.state = {
+      askLink: false,
+      askUnLink: false,
+      message: null,
+      component: null,
+      notify: false,
+      notifyMessage: null,
+      showComponent: false,
+    };
+  }
+
   render() {
     const {classes} = this.props;
 
     return (
       <div className={classes.root}>
-        <MessageDialog
-          show={this.state.showMessage}
+        <WarningMessageBox
+          show={this.state.askUnLink}
           message={this.state.message}
-          onClose={this.onCloseMessage}
+          onClose={this.onCloseUnLink}
+        />
+        <InformationMessageBox
+          show={this.state.askLink}
+          message={this.state.message}
+          onClose={this.onCloseLink}
         />
         <AutoHideNotification
           showNotification={this.state.notify}
@@ -175,7 +178,7 @@ class ComponentList extends Component {
           component={this.state.component}
           show={this.state.showComponent}
           onClose={this.onCloseShowComponent}
-          />
+        />
         <div className={classes.componentList}>
           <Typography variant="headline" className={classes.title}>Komponenter</Typography>
           <Divider/>

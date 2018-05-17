@@ -37,8 +37,8 @@ class ClientsContainer extends React.Component {
     return (
       <div className={classes.root}>
         <KlienterList klienter={this.props.clients}
-                      updateClient={this.props.updateClient}
-                      deleteKlient={this.props.deleteClient}
+                      updateClient={this.props.updateAdapter}
+                      deleteKlient={this.props.deleteAdapter}
         />
         <ClientAdd
           createClient={this.props.createClient}

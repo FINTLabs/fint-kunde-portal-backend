@@ -7,8 +7,6 @@ import {
   fetchOrganisationSuccess,
   fetchTechnicalContactsError,
   fetchTechnicalContactsSuccess,
-  linkComponentToOrganisationError,
-  linkComponentToOrganisationSuccess,
   removeTechnicalContactError,
   removeTechnicalContactSuccess,
   setLegalContactError,
@@ -51,11 +49,10 @@ export function fetchLegalContact() {
 export function fetchOrganisation() {
 
   return function (dispatch) {
-    return OrganisationApi.getOrganisation().then(([response, json])   => {
+    return OrganisationApi.getOrganisation().then(([response, json]) => {
       dispatch(fetchOrganisationSuccess(json));
       return json;
     }).catch(error => {
-      console.log(error);
       dispatch(fetchOrganisationError())
 
     });

@@ -4,11 +4,10 @@ import Dialog, {DialogActions, DialogContent, DialogContentText, DialogTitle,} f
 import TextField from 'material-ui/TextField';
 import {Add} from "material-ui-icons";
 import {withStyles} from "material-ui";
-import AutoHideNotification from "../../common/AutoHideNotification";
-import PropTypes from 'prop-types';
-import {createAdapter} from "../../data/redux/dispatchers/adapter";
+import AutoHideNotification from "../../../common/AutoHideNotification";
+import UsernameValidationInput from "../../../common/UsernameValidationInput";
 
-const styles = theme => ({
+const styles = () => ({
   addButton: {
     margin: 0,
     top: 100,
@@ -21,17 +20,6 @@ const styles = theme => ({
 });
 
 class AdapterAdd extends React.Component {
-  constructor(props, context) {
-    super(props, context);
-    this.state = {
-      adapter: {},
-      showAdapterAdd: false,
-      adapterAdded: false,
-      adapterAddedName: null,
-    };
-  }
-
-
   updateAdapterState = (event) => {
 
     const field = event.target.name;
@@ -41,86 +29,108 @@ class AdapterAdd extends React.Component {
     return this.setState({adapter: adapter});
   };
 
-  handleClose = () => {
-    this.props.createAdapter(this.state.adapter, this.context.organisation).then(() => {
+  handleAddAdapter = () => {
+    this.props.createAdapter(this.state.adapter).then(() => {
       this.setState({
-        adapterAdded: false,
-        adapterAddedName: null,
-      })
+        showAdapterAdd: false,
+        notify: true,
+        adapterAddedName: this.state.adapter.name,
+        adapter: this.getEmptyAdapter(),
+      });
     });
 
-    this.setState({
-      showAdapterAdd: false,
-      adapterAdded: true,
-      adapterAddedName: this.state.adapter.name,
-    });
+  };
+
+  usernameIsValid = (valid) => {
+    this.setState({usernameIsValid: valid});
   };
 
   openAddDialog = () => {
-    this.setState({showAdapterAdd: true, adapterAdded: false});
+    this.setState({showAdapterAdd: true, notify: false});
   };
 
   handleCancel = () => {
-    this.setState({showAdapterAdd: false, adapterAdded: false});
+    this.setState({showAdapterAdd: false, notify: false});
   };
 
-  static contextTypes = {
-	    organisation: PropTypes.string,
-	    components: PropTypes.array
- };
+  onCloseNotification = () => {
+    this.setState({
+      notify: false,
+    });
+  };
+
+  getEmptyAdapter = () => {
+    return {
+      name: '',
+      shortDescription: '',
+      note: '',
+    };
+  };
+  isFormValid = () => {
+    return (this.state.usernameIsValid && this.state.adapter.shortDescription.length > 0 && this.state.adapter.note.length > 0)
+  };
+
+  constructor(props, context) {
+    super(props, context);
+    this.state = {
+      adapter: this.getEmptyAdapter(),
+      showAdapterAdd: false,
+      adapterAddedName: null,
+      notify: false,
+      usernameIsValid: false,
+    };
+  }
+
   render() {
     const {classes} = this.props;
     return (
       <div>
         <AutoHideNotification
-          showNotification={this.state.adapterAdded}
+          showNotification={this.state.notify}
           message={`Adapter ${this.state.adapterAddedName} ble lagt til!`}
+          onClose={this.onCloseNotification}
         />
         <div>
           <Button variant="fab" color="secondary" className={classes.addButton}
                   onClick={this.openAddDialog}><Add/></Button>
           <Dialog
             open={this.state.showAdapterAdd}
-            onClose={this.handleClose}
+            onClose={this.handleAddAdapter}
             aria-labelledby="form-dialog-title"
           >
-            <DialogTitle id="form-dialog-title">Ny Adapter</DialogTitle>
+            <DialogTitle id="form-dialog-title">Nytt adapter</DialogTitle>
             <DialogContent>
               <DialogContentText>
-                Vennligst fyll ut de obligatoriske feltene for å legge til ny klient
+                Vennligst fyll ut de obligatoriske feltene for å legge til ny adapter.
               </DialogContentText>
-
-              <TextField
-                autoFocus
-                margin="dense"
-                required
+              <UsernameValidationInput
+                title="Brukernavn"
                 name="name"
-                label="Adapter Navn"
-                fullWidth
                 onChange={this.updateAdapterState}
+                usernameIsValid={this.usernameIsValid}
               />
-
               <TextField
                 name="shortDescription"
                 label="Kort beskrivelse"
+                required
                 fullWidth
                 onChange={this.updateAdapterState}
               />
-
               <TextField
                 name="note"
                 label="Note"
                 fullWidth
+                required
                 multiline
                 rows="4"
                 onChange={this.updateAdapterState}
               />
-              </DialogContent>
-              <DialogActions>
-              <Button onClick={this.handleCancel} color="primary" style={{textTransform: 'none'}}>
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={this.handleCancel} variant="raised" color="primary">
                 Avbryt
               </Button>
-              <Button onClick={this.handleClose} color="primary" style={{textTransform: 'none'}}>
+              <Button disabled={!this.isFormValid()} onClick={this.handleAddAdapter} variant="raised" color="primary">
                 Legg til
               </Button>
             </DialogActions>
@@ -132,16 +142,9 @@ class AdapterAdd extends React.Component {
 }
 
 
-AdapterAdd.propTypes = {
-
-};
+AdapterAdd.propTypes = {};
 
 export default withStyles(styles)(AdapterAdd);
-
-
-
-
-
 
 
 

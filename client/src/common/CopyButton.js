@@ -8,7 +8,7 @@ class CopyButton extends React.Component {
   render() {
 
     return (
-      <IconButton aria-label="Kopier">
+      <IconButton>
         <ContentCopy/>
       </IconButton>
     );

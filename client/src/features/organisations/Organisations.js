@@ -8,17 +8,17 @@ const styles = theme => ({});
 
 class Organisations extends Component {
 
-    render() {
-        //const {classes} = this.props;
+  render() {
+    //const {classes} = this.props;
 
-        return (
-            <h1>Organisasjoner</h1>
-        );
-    }
+    return (
+      <h1>Organisasjoner</h1>
+    );
+  }
 }
 
 Organisations.propTypes = {
-    classes: PropTypes.object.isRequired,
+  classes: PropTypes.object.isRequired,
 };
 
 export default withStyles(styles)(Organisations);

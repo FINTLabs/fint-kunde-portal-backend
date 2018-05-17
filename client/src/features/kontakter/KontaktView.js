@@ -8,6 +8,18 @@ import TextField from 'material-ui/TextField';
 import {updateContact} from "../../data/redux/dispatchers/contact";
 
 class KontaktView extends React.Component {
+  state = {
+    open: false,
+  };
+  handleClickOpen = () => {
+    this.setState({open: true});
+  };
+  handleClose = () => {
+    this.updateKontakt(this.state.kontakt)
+    this.setState({open: false});
+
+  };
+
   constructor(props, context) {
     super(props, context);
     this.state = {
@@ -42,7 +54,6 @@ class KontaktView extends React.Component {
     this.props.updateContact(this.state.kontakt);
   }
 
-
   updateKontaktState(event) {
     const field = event.target.name;
     const kontakt = this.state.kontakt;
@@ -51,19 +62,6 @@ class KontaktView extends React.Component {
       value: event.target.value
     });
   }
-
-  state = {
-    open: false,
-  };
-  handleClickOpen = () => {
-    this.setState({open: true});
-  };
-
-  handleClose = () => {
-    this.updateKontakt(this.state.kontakt)
-    this.setState({open: false});
-
-  };
 
   render() {
     return (

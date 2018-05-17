@@ -8,17 +8,17 @@ const styles = theme => ({});
 
 class Support extends Component {
 
-    render() {
-        //const {classes} = this.props;
+  render() {
+    //const {classes} = this.props;
 
-        return (
-            <h1>Support</h1>
-        );
-    }
+    return (
+      <h1>Support</h1>
+    );
+  }
 }
 
 Support.propTypes = {
-    classes: PropTypes.object.isRequired,
+  classes: PropTypes.object.isRequired,
 };
 
 export default withStyles(styles)(Support);

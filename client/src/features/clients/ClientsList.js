@@ -32,7 +32,7 @@ const styles = theme => ({
   },
   title: {
     paddingLeft: theme.spacing.unit * 3,
-    paddingBottom: theme.spacing.unit ,
+    paddingBottom: theme.spacing.unit,
   },
   listItem: {
     borderBottom: '1px dashed lightgray',
@@ -44,6 +44,26 @@ const styles = theme => ({
 });
 
 class ClientsList extends Component {
+  editClient = (client) => {
+    this.setState({
+      open: true,
+      clientToEdit: client,
+    });
+  };
+  onCloseEdit = () => {
+    this.setState({open: false});
+  };
+  updateClient = (client) => {
+    this.props.updateAdapter(client);
+  };
+  deleteClient = (client) => {
+    this.setState({
+      clientDeleted: true,
+      clientDeletedName: client.name,
+    });
+    this.props.deleteKlient(client);
+  };
+
   constructor(props) {
     super(props);
     this.state = {
@@ -55,29 +75,6 @@ class ClientsList extends Component {
     };
 
   }
-
-  editClient = (client) => {
-    this.setState({
-      open: true,
-      clientToEdit: client,
-    });
-  };
-
-  onCloseEdit = () => {
-    this.setState({open: false});
-  };
-
-  updateClient = (client) => {
-    this.props.updateClient(client);
-  };
-
-  deleteClient = (client) => {
-    this.setState({
-      clientDeleted: true,
-      clientDeletedName: client.name,
-    });
-    this.props.deleteKlient(client);
-  };
 
   render() {
     const {classes} = this.props;

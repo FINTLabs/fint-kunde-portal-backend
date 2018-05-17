@@ -3,26 +3,13 @@ import PropTypes from 'prop-types';
 import SwipeableViews from 'react-swipeable-views';
 import AppBar from 'material-ui/AppBar';
 import Tabs, {Tab} from 'material-ui/Tabs';
-import Typography from 'material-ui/Typography';
 import {FormControl, IconButton, Input, InputAdornment, InputLabel, TextField} from "material-ui";
 import {ContentCopy, Refresh} from "material-ui-icons";
 import withStyles from "material-ui/es/styles/withStyles";
 import {CopyToClipboard} from 'react-copy-to-clipboard';
 import CopyButton from "../../common/CopyButton";
+import TabContainer from "../../common/TabContainer";
 
-
-function TabContainer({children, dir}) {
-  return (
-    <Typography component="div" dir={dir} style={{padding: 8 * 3}}>
-      {children}
-    </Typography>
-  );
-}
-
-TabContainer.propTypes = {
-  children: PropTypes.node.isRequired,
-  dir: PropTypes.string.isRequired,
-};
 
 const styles = theme => ({
   root: {
@@ -63,21 +50,19 @@ const styles = theme => ({
 
 class ClientTabView extends React.Component {
 
+  handleChange = (event, value) => {
+    this.setState({value});
+  };
+  handleChangeIndex = index => {
+    this.setState({value: index});
+  };
+
   constructor(props) {
     super(props);
     this.state = {
       value: 0,
     };
   }
-
-  handleChange = (event, value) => {
-    this.setState({value});
-  };
-
-  handleChangeIndex = index => {
-    this.setState({value: index});
-  };
-
 
   render() {
     const {classes, theme} = this.props;
@@ -111,7 +96,7 @@ class ClientTabView extends React.Component {
               name="shortDescription"
               label="Kort beskrivelse"
               fullWidth
-              onChange={this.props.updateClientState}
+              onChange={this.props.updateAdapterState}
               value={this.props.klient.shortDescription}
             />
             <TextField
@@ -119,7 +104,7 @@ class ClientTabView extends React.Component {
               label="Note"
               multiline
               rows="4"
-              onChange={this.props.updateClientState}
+              onChange={this.props.updateAdapterState}
               value={this.props.klient.note}
               fullWidth
             />

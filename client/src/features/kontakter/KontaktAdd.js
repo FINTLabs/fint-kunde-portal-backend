@@ -11,10 +11,21 @@ import {createContact, fetchContacts} from "../../data/redux/dispatchers/contact
 
 
 class KontaktAdd extends React.Component {
+  state = {
+    open: false,
+  };
+  handleClickOpen = () => {
+    this.setState({open: true});
+  };
+  handleClose = () => {
+    this.createKontakt(this.state.kontakt)
+    this.setState({open: false});
+  };
+
   constructor(props, context) {
     super(props, context);
     this.state = {
-    		contacts: this.props.contacts,
+      contacts: this.props.contacts,
       kontakt: Object.assign({}, this.props.location.state),
       isSaving: false,
       isAdding: false
@@ -24,7 +35,6 @@ class KontaktAdd extends React.Component {
     this.toggleAdd = this.toggleAdd.bind(this);
     this.saveKontakt = this.saveKontakt.bind(this);
   }
-
 
   componentWillReceiveProps(nextProps) {
     this.setState({saving: false, isAdding: false});
@@ -55,18 +65,6 @@ class KontaktAdd extends React.Component {
     kontakt[field] = event.target.value;
     return this.setState({kontakt: kontakt});
   }
-
-  state = {
-    open: false,
-  };
-  handleClickOpen = () => {
-    this.setState({open: true});
-  };
-
-  handleClose = () => {
-    this.createKontakt(this.state.kontakt)
-    this.setState({open: false});
-  };
 
   render() {
     return (
@@ -162,7 +160,6 @@ class KontaktAdd extends React.Component {
 }
 
 function mapStateToProps(state) {
-  console.log(`contacts: ${JSON.stringify(state)}`);
   return {
     posts: state.posts
   }
@@ -170,7 +167,7 @@ function mapStateToProps(state) {
 
 function matchDispatchToProps(dispatch) {
   return bindActionCreators({
-    fetchContacts : fetchContacts,
+    fetchContacts: fetchContacts,
     createKontakt: createContact
   }, dispatch);
 }

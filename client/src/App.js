@@ -4,6 +4,7 @@ import {createMuiTheme, MuiThemeProvider} from "material-ui";
 import PropTypes from 'prop-types';
 import Main from "./main/Main";
 
+
 const theme = createMuiTheme({
   palette: {
     primary: {
@@ -21,14 +22,35 @@ const theme = createMuiTheme({
   },
 });
 
-class App extends Component {
-  componentDidMount() {
-    //this.props.fetchApis(this.props.org)
-  }
 
+/*
+const theme = createMuiTheme({
+  palette: {
+    primary: {
+      light: '#efefef',
+      main: '#bdbdbd',
+      dark: '#8d8d8d',
+      contrastText: '#000',
+    },
+    secondary: {
+      light: '#95C81F',
+      main: '#b71c1c',
+      dark: '#148478',
+      contrastText: '#fff',
+    },
+  },
+
+});
+*/
+
+class App extends Component {
   static childContextTypes = {
     organisation: PropTypes.string,
   };
+
+  componentDidMount() {
+    //this.props.fetchApis(this.props.org)
+  }
 
   getChildContext() {
     return {

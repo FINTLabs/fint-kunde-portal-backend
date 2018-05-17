@@ -24,6 +24,24 @@ const buttonstyle = {
 
 class SearchComponent extends Component {
 
+  static contextTypes = {
+    organisation: PropTypes.string,
+    components: PropTypes.array
+  };
+
+  constructor(props) {
+    super(props)
+    this.state = {
+      menuItems: [],
+      selectedItems: [],
+      searchValue: '',
+      menuVisible: false,
+      adapter: Object.assign({}, this.props.location.state.adapter),
+
+    }
+    this.addAdapterToComponent = this.addAdapterToComponent.bind(this);
+  }
+
   static get defaultProps() {
     return {
       initialSelected: [],
@@ -51,19 +69,6 @@ class SearchComponent extends Component {
     }
   }
 
-  constructor(props) {
-    super(props)
-    this.state = {
-      menuItems: [],
-      selectedItems: [],
-      searchValue: '',
-      menuVisible: false,
-      adapter: Object.assign({}, this.props.location.state.adapter),
-
-    }
-    this.addAdapterToComponent = this.addAdapterToComponent.bind(this);
-  }
-
   componentDidMount() {
 
     const {initialSelected} = this.props;
@@ -73,11 +78,6 @@ class SearchComponent extends Component {
       this.addSelected(initialSelected)
     }
   }
-
-  static contextTypes = {
-    organisation: PropTypes.string,
-    components: PropTypes.array
-  };
 
   SearchItemInArrayObjects(items, input, searchKey) {
     var reg = new RegExp(input.split('').join('\\w*').replace(/\W/, ''), 'i')

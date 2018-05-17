@@ -48,7 +48,6 @@ KontakterContainer.propTypes = {
 };
 
 function mapStateToProps(state) {
-  console.log(`contacts1: ${JSON.stringify(state.organisation.technicalContacts)}`);
   return {
     technicalContacts: state.organisation.technicalContacts
   }

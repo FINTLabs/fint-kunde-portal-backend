@@ -8,6 +8,15 @@ const styles = () => {
 
 class AutoHideNotification extends React.Component {
 
+  handleClose = (reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+
+    this.setState({open: false});
+    this.props.onClose();
+  };
+
   constructor(props) {
     super(props);
 
@@ -25,15 +34,6 @@ class AutoHideNotification extends React.Component {
 
     return null;
   }
-
-  handleClose = (reason) => {
-    if (reason === 'clickaway') {
-      return;
-    }
-
-    this.setState({open: false});
-    this.props.onClose();
-  };
 
   render() {
     return (

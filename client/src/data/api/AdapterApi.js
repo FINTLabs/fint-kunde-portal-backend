@@ -2,14 +2,14 @@ class AdapterApi {
 
   static getAdapters(org) {
 
-    const url = '/api/adapters/'.concat(org);
+    const url = '/api/adapters/testing'; //.concat(org);
     return fetch(url, {method: 'GET'})
       .then(response => Promise.all([response, response.json()]));
   }
 
   static updateAdapter(Adapter, org) {
 
-    const request = new Request(`/api/adapters/${org}/${Adapter.name}`, {
+    const request = new Request(`/api/adapters/testing/${Adapter.name}`, {
       method: 'PUT',
       headers: {
         'Accept': '*/*',
@@ -30,7 +30,7 @@ class AdapterApi {
 
   static createAdapter(Adapter, org) {
 
-    const request = new Request(`/api/adapters/${org}`, {
+    const request = new Request(`/api/adapters/testing`, {
       method: 'POST',
       headers: {
         'Accept': '*/*',
@@ -51,7 +51,7 @@ class AdapterApi {
 
   static addAdapterToComponent(Adapter, component, org) {
 
-    const request = new Request(`/api/components/${component.value}/${org}/adapters/${Adapter.name}`, {
+    const request = new Request(`/api/components/${component.name}/${org}/adapters/${Adapter.name}`, {
       method: 'PUT',
       headers: {
         'Accept': '*/*',
@@ -69,7 +69,7 @@ class AdapterApi {
   }
 
   static deleteAdapter(Adapter, org) {
-    const request = new Request(`/api/adapters/${org}/${Adapter.name}`, {
+    const request = new Request(`/api/adapters/testing/${Adapter.name}`, {
       method: 'DELETE'
     });
 
@@ -82,11 +82,44 @@ class AdapterApi {
 
   static deleteAdapterFromComponent(adapter, component, org) {
 
-    const request = new Request(`/api/components/${component}/${org}/adapters/${adapter.name}`, {
+    const request = new Request(`/api/components/${component.name}/${org}/adapters/${adapter.name}`, {
       method: 'DELETE'
     });
     return fetch(request).then(response => {
       return response.json();
+    }).catch(error => {
+      return error;
+    });
+  }
+
+  static getOpenIdSecret(adapter, org) {
+    org = 'testing';
+    const request = new Request(`/api/adapters/${org}/${adapter.name}/secret`,
+      {
+        method: 'GET'
+      });
+    return fetch(request)
+      .then(response => {
+          return response.text();
+        }
+      )
+      .catch(error => {
+        return error
+      });
+  }
+
+  static setPassword(adapter, password, org) {
+
+    const request = new Request(`/api/adapters/${org}/${adapter.name}/password`, {
+      method: 'PUT',
+      headers: {
+        'Accept': '*/*',
+        'Content-Type': 'text/plain'
+      },
+      body: password
+    });
+    return fetch(request).then(response => {
+      return response;
     }).catch(error => {
       return error;
     });

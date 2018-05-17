@@ -1,5 +1,5 @@
 import React, {PropTypes} from 'react';
-import { Route,  Link } from "react-router-dom";
+import {Link} from "react-router-dom";
 
 const Header = () => {
   return (

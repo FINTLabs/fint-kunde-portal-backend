@@ -24,6 +24,17 @@ const buttonstyle = {
 
 class SearchContact extends Component {
 
+  constructor(props) {
+    super(props)
+    this.state = {
+      menuItems: [],
+      selectedItems: [],
+      searchValue: '',
+      menuVisible: false
+    }
+    this.addTechnicalContact = this.addTechnicalContact.bind(this);
+  }
+
   static get defaultProps() {
     return {
       initialSelected: [],
@@ -49,17 +60,6 @@ class SearchContact extends Component {
       onKeyChange: PropTypes.func,
       getItemsAsync: PropTypes.func
     }
-  }
-
-  constructor(props) {
-    super(props)
-    this.state = {
-      menuItems: [],
-      selectedItems: [],
-      searchValue: '',
-      menuVisible: false
-    }
-    this.addTechnicalContact = this.addTechnicalContact.bind(this);
   }
 
   componentDidMount() {

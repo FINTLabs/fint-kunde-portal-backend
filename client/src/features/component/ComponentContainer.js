@@ -19,6 +19,7 @@ const styles = () => ({
 class ComponentContainer extends React.Component {
   constructor(props) {
     super(props);
+    this.state = {};
   }
 
   componentDidMount() {
@@ -58,7 +59,6 @@ ComponentContainer.propTypes = {
 };
 
 function mapStateToProps(state) {
-  console.log(`organisation: ${JSON.stringify(state)}`);
   return {
     components: state.component.components,
     organisation: state.organisation.organisation,

@@ -9,7 +9,7 @@ export default function klienterReducer(state = initialState.klienter, action) {
     case types.FETCH_CLIENT_SUCCESS:
       return {...state, clients: action.payload};
 
-      default:
+    default:
       return state;
   }
 }
