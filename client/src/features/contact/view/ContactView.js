@@ -46,7 +46,6 @@ class ContactView extends Component {
         this.props.onClose();
       })
       .catch(error => {
-        console.log(error);
       });
 
   };

@@ -45,7 +45,7 @@ class ContactApi {
     });
 
     return fetch(request).then(response => {
-      return response.json();
+      return response;
     }).catch(error => {
       return error;
     });

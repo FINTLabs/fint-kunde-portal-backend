@@ -15,10 +15,10 @@ import {
 } from "material-ui";
 import ContactIcon from '@material-ui/icons/Person';
 import AddIconCircle from "@material-ui/icons/AddCircle";
-import AddIcon from "@material-ui/icons/Add";
 import OrganisationApi from "../../../data/api/OrganisationApi";
 import InformationMessageBox from "../../../common/InformationMessageBox";
 import PropTypes from "prop-types";
+import ContactNew from "./ContactNew";
 
 const styles = (theme) => ({
   addButton: {
@@ -53,13 +53,11 @@ const styles = (theme) => ({
     margin: theme.spacing.unit,
     width: '80%',
   },
-  newContactButton: {
-    margin: theme.spacing.unit,
-  },
+
 
 });
 
-class ContactAdd extends React.Component {
+class ContactAddExisting extends React.Component {
 
 
   handleCancel = () => {
@@ -74,7 +72,8 @@ class ContactAdd extends React.Component {
     let contacts = this.props.contacts;
     this.setState({
       filteredContacts: contacts.filter(c =>
-        c.firstName.toLowerCase().includes(searchString.toLowerCase())
+        //c.firstName.toLowerCase().includes(searchString.toLowerCase())
+        c.nin === searchString
         || c.lastName.toLowerCase().includes(searchString.toLowerCase())
       ),
     });
@@ -128,6 +127,23 @@ class ContactAdd extends React.Component {
     });
   };
 
+  onCloseCreateContact = (contact) => {
+    this.props.fetchContacts().then(() => {
+      this.onSearch(contact.nin);
+    });
+    /*
+    this.setState({
+      filteredContacts: [contact],
+    });
+    */
+    console.log(JSON.stringify(this.state.filteredContacts));
+    /*
+    this.setState({
+      searchString: `${contact.firstName}`,
+    });
+    */
+  };
+
   constructor(props, context) {
     super(props, context);
     this.state = {
@@ -149,7 +165,9 @@ class ContactAdd extends React.Component {
           onClose={this.onCloseAddContact}
         />
         <Button variant="fab" color="secondary" className={classes.addButton}
-                onClick={this.openAddDialog}><Add/></Button>
+                onClick={this.openAddDialog}>
+          <Add/>
+        </Button>
         <Dialog
           open={this.state.showContactAdd}
           aria-labelledby="form-dialog-title"
@@ -162,7 +180,7 @@ class ContactAdd extends React.Component {
             <Input
               autoFocus
               value={this.state.searchString}
-              placeholder="Søk på navn"
+              placeholder="Søk på etternavn"
               className={classes.searchInput}
               inputProps={{
                 'aria-label': 'Description',
@@ -170,10 +188,7 @@ class ContactAdd extends React.Component {
               onChange={this.onChangeSearch}
               onKeyUp={() => this.onSearch(this.state.searchString)}
             />
-            <Button onClick={() => alert("add new contact")} variant="fab" color="primary" aria-label="add"
-                    className={classes.newContactButton}>
-              <AddIcon/>
-            </Button>
+            <ContactNew notify={this.props.notify} onClose={this.onCloseCreateContact}/>
           </DialogTitle>
           <DialogContent>
             <div className={classes.contactList}>
@@ -211,14 +226,14 @@ class ContactAdd extends React.Component {
 }
 
 
-ContactAdd.propTypes = {
+ContactAddExisting.propTypes = {
   classes: PropTypes.any.isRequired,
   contacts: PropTypes.any.isRequired,
   fetchTechnicalContacts: PropTypes.any.isRequired,
   notify: PropTypes.any.isRequired
 };
 
-export default withStyles(styles)(ContactAdd);
+export default withStyles(styles)(ContactAddExisting);
 
 
 
