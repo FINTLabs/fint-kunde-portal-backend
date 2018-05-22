@@ -5,6 +5,7 @@ import component from "../reducers/component";
 import client from "../reducers/client";
 import organisation from "../reducers/organisation";
 import adapter from "../reducers/adapter";
+import contact from "../reducers/contact";
 
 const logger = createLogger();
 const store = createStore(
@@ -13,6 +14,7 @@ const store = createStore(
     component,
     organisation,
     adapter,
+    contact,
   }),
   applyMiddleware(thunkMiddleware, logger)
 );

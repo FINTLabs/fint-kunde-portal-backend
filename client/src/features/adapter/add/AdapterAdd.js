@@ -97,6 +97,7 @@ class AdapterAdd extends React.Component {
             open={this.state.showAdapterAdd}
             onClose={this.handleAddAdapter}
             aria-labelledby="form-dialog-title"
+            maxWidth="md"
           >
             <DialogTitle id="form-dialog-title">Nytt adapter</DialogTitle>
             <DialogContent>

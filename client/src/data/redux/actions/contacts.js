@@ -15,16 +15,16 @@ export function fetchContactError() {
   return {type: FETCH_CONTACTS_ERROR}
 }
 
-export function deleteContactSuccess(contact) {
-  return {type: DELETE_CONTACT_SUCCESS, contact}
+export function deleteContactSuccess(payload) {
+  return {type: DELETE_CONTACT_SUCCESS, payload}
 }
 
-export function createContactSuccess(contact) {
-  return {type: CREATE_CONTACT_SUCCESS, contact}
+export function createContactSuccess(payload) {
+  return {type: CREATE_CONTACT_SUCCESS, payload}
 }
 
-export function updateKontaktSuccess(contact) {
-  return {type: UPDATE_CONTACT_SUCCESS, contact}
+export function updateKontaktSuccess(payload) {
+  return {type: UPDATE_CONTACT_SUCCESS, payload}
 }
 
 

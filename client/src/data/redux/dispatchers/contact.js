@@ -9,9 +9,9 @@ import ContactApi from "../../api/ContactApi";
 
 export function fetchContacts() {
   return (dispatch) => {
-    return ContactApi.fetchContacts().then((response) => {
+    return ContactApi.fetchContacts().then(([response, json]) => {
       if (response.status === 200) {
-        dispatch(fetchContactsSuccess(response));
+        dispatch(fetchContactsSuccess(json));
       }
       else {
         dispatch(fetchContactError());
@@ -46,9 +46,6 @@ export function deleteContact(kontakt) {
   return function (dispatch) {
     return ContactApi.deleteContact(kontakt).then(() => {
       dispatch(deleteContactSuccess(kontakt));
-      //eslint-disable-next-line
-      location.assign("/kontakter/kontakter");
-      return;
     }).catch(error => {
       throw(error);
     })

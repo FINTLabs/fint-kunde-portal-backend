@@ -96,7 +96,7 @@ class ClientTabView extends React.Component {
               name="shortDescription"
               label="Kort beskrivelse"
               fullWidth
-              onChange={this.props.updateAdapterState}
+              onChange={this.props.updateContactState}
               value={this.props.klient.shortDescription}
             />
             <TextField
@@ -104,7 +104,7 @@ class ClientTabView extends React.Component {
               label="Note"
               multiline
               rows="4"
-              onChange={this.props.updateAdapterState}
+              onChange={this.props.updateContactState}
               value={this.props.klient.note}
               fullWidth
             />

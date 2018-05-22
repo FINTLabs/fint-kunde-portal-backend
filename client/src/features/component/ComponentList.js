@@ -11,7 +11,6 @@ import {
   Typography,
   withStyles
 } from "material-ui";
-import {green} from 'material-ui/colors';
 import SettingsIcon from '@material-ui/icons/Settings';
 import AddIcon from '@material-ui/icons/AddCircle';
 import RemoveIcon from '@material-ui/icons/RemoveCircle';
@@ -32,11 +31,7 @@ const styles = theme => ({
   componentList: {
     width: '75%',
   },
-  avtarstyle: {
-    margin: 1,
-    color: '#fff',
-    backgroundColor: green[500],
-  },
+
   title: {
     paddingLeft: theme.spacing.unit * 3,
     paddingBottom: theme.spacing.unit,

@@ -42,7 +42,7 @@ class AdapterView extends React.Component {
   onCloseNotification = () => {
     this.setState({
       notify: false,
-      notifyMessage: null,
+      notifyMessage: '',
     });
   };
 

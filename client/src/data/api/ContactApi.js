@@ -1,15 +1,9 @@
 class ContactApi {
 
   static fetchContacts() {
-    const request = new Request(`/api/contacts`, {
-      method: 'GET'
-    });
-
-    return fetch(request).then(response => {
-      return response.json();
-    }).catch(error => {
-      return error;
-    });
+    const url = '/api/contacts';
+    return fetch(url, {method: 'GET'})
+      .then(response => Promise.all([response, response.json()]));
   }
 
   static updateContact(contact) {
