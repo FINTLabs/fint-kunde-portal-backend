@@ -18,10 +18,10 @@ import {
 import OrganisationApi from "../../api/OrganisationApi";
 import {fetchComponents} from "./component";
 
-export function fetchTechnicalContacts() {
+export function fetchTechnicalContacts(organisation) {
 
   return (dispatch) => {
-    return OrganisationApi.getTechnicalContacts().then(([response, json]) => {
+    return OrganisationApi.getTechnicalContacts(organisation).then(([response, json]) => {
       if (response.status === 200) {
         dispatch(fetchTechnicalContactsSuccess(json));
       }
@@ -32,10 +32,10 @@ export function fetchTechnicalContacts() {
   }
 }
 
-export function fetchLegalContact() {
+export function fetchLegalContact(organisation) {
 
   return (dispatch) => {
-    return OrganisationApi.getLegalContact().then(([response, json]) => {
+    return OrganisationApi.getLegalContact(organisation).then(([response, json]) => {
       if (response.status === 200) {
         dispatch(fetchLegalContactSuccess(json));
       }
@@ -46,10 +46,10 @@ export function fetchLegalContact() {
   }
 }
 
-export function fetchOrganisation() {
+export function fetchOrganisation(organisation) {
 
   return function (dispatch) {
-    return OrganisationApi.getOrganisation().then(([response, json]) => {
+    return OrganisationApi.getOrganisation(organisation).then(([response, json]) => {
       dispatch(fetchOrganisationSuccess(json));
       return json;
     }).catch(error => {
@@ -85,6 +85,7 @@ export function unlinkComponentFromOrganisation(api) {
   };
 }
 
+/*
 export function removeTechnicalContact(kontakt) {
   return function (dispatch) {
     return OrganisationApi.removeTechnicalContact(kontakt).then(response => {
@@ -95,7 +96,9 @@ export function removeTechnicalContact(kontakt) {
     });
   };
 }
+*/
 
+/*
 export function addTechnicalContact(nin) {
   return function (dispatch) {
     return OrganisationApi.addTechnicalContact(nin).then(responseKontakt => {
@@ -106,8 +109,10 @@ export function addTechnicalContact(nin) {
     });
   };
 }
+*/
 
 
+/*
 export function setLegalContact(nin) {
   return function (dispatch) {
     return OrganisationApi.setLegalContact(nin).then(response => {
@@ -129,3 +134,4 @@ export function unsetLegalContact(kontakt) {
     });
   };
 }
+*/

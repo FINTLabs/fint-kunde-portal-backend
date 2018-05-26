@@ -7,6 +7,7 @@ import AdapterApi from "../../../data/api/AdapterApi";
 import * as PasswordGenerator from "generate-password";
 import GetSecretIcon from '@material-ui/icons/GetApp';
 import RefreshIcon from "@material-ui/icons/Refresh";
+import {withContext} from "../../../data/context/withContext";
 
 
 const styles = theme => ({
@@ -50,7 +51,7 @@ class AdapterTabAuthenticationInformation extends React.Component {
 
   getOpenIdSecret = () => {
 
-    AdapterApi.getOpenIdSecret(this.props.adapter, 'testing').then(data => {
+    AdapterApi.getOpenIdSecret(this.props.adapter, this.props.context.currentOrganisation.name).then(data => {
       let allAuthInfo = this.state.allAuthInfo;
       allAuthInfo.openIdSecret = data;
       this.setState({
@@ -73,7 +74,7 @@ class AdapterTabAuthenticationInformation extends React.Component {
     let password = this.generatePassord();
 
 
-    AdapterApi.setPassword(this.props.adapter, password, 'testing')
+    AdapterApi.setPassword(this.props.adapter, password, this.props.context.currentOrganisation.name)
       .then(response => {
         if (response.status === 200) {
           let allAuthInfo = this.state.allAuthInfo;
@@ -212,4 +213,4 @@ AdapterTabAuthenticationInformation.propTypes = {
 
 };
 
-export default withStyles(styles)(AdapterTabAuthenticationInformation);
+export default withStyles(styles)(withContext(AdapterTabAuthenticationInformation));

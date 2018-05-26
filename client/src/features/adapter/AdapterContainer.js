@@ -6,6 +6,7 @@ import LoadingProgress from "../../common/LoadingProgress";
 import {createAdapter, deleteAdapter, fetchAdapters, updateAdapter} from "../../data/redux/dispatchers/adapter";
 import AdapterList from "./AdapterList";
 import AdapterAdd from "./add/AdapterAdd";
+import {withContext} from "../../data/context/withContext";
 
 
 const styles = () => ({
@@ -17,15 +18,22 @@ class AdapterContainer extends React.Component {
     super(props);
     this.state = {
       adapterAdded: false,
-    }
+    };
   }
 
   componentDidMount() {
-    this.props.fetchAdapters();
+    this.props.fetchAdapters(this.props.context.currentOrganisation.name);
+  }
+
+  componentDidUpdate(prevProps, prevState, snapshot) {
+
+    if (prevProps.context !== this.props.context) {
+      this.props.fetchAdapters(this.props.context.currentOrganisation.name);
+    }
   }
 
   render() {
-    if (!this.props.adapters) {
+    if (this.props.adapters === undefined || this.props.context.currentOrganisation === undefined) {
       return <LoadingProgress/>;
     } else {
       return this.renderAdapters();
@@ -69,4 +77,4 @@ function mapDispatchToProps(dispatch) {
   }, dispatch);
 }
 
-export default withStyles(styles)(connect(mapStateToProps, mapDispatchToProps)(AdapterContainer));
+export default withStyles(styles)(connect(mapStateToProps, mapDispatchToProps)(withContext(AdapterContainer)));

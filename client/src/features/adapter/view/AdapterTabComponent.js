@@ -22,6 +22,7 @@ import {addAdapterToComponent, deleteAdapterFromComponent} from "../../../data/r
 import AdapterApi from "../../../data/api/AdapterApi";
 import WarningMessageBox from "../../../common/WarningMessageBox";
 import InformationMessageBox from "../../../common/InformationMessageBox";
+import {withContext} from "../../../data/context/withContext";
 
 const styles = theme => ({
   root: {
@@ -75,7 +76,7 @@ class AdapterTabComponent extends React.Component {
     });
   };
   unLinkComponent = (component) => {
-    AdapterApi.deleteAdapterFromComponent(this.props.adapter, component, 'testing')
+    AdapterApi.deleteAdapterFromComponent(this.props.adapter, component, this.props.context.currentOrganisation.name)
       .then(() => {
         this.props.notify(`${this.props.adapter.name} ble lagt til ${component.description}`);
         this.props.fetchComponents();
@@ -83,7 +84,7 @@ class AdapterTabComponent extends React.Component {
     });
   };
   linkComponent = (component) => {
-    AdapterApi.addAdapterToComponent(this.props.adapter, component, 'testing')
+    AdapterApi.addAdapterToComponent(this.props.adapter, component, this.props.context.currentOrganisation.name)
       .then(() => {
 
         this.props.notify(`${this.props.adapter.name} ble lagt til ${component.description}`);
@@ -122,7 +123,7 @@ class AdapterTabComponent extends React.Component {
   getOrganisationComponents = () => {
     return this.props.components
       .filter(component => component.organisations.length > 0)
-      .filter(component => component.organisations.find(o => o === 'ou=testing,ou=organisations,o=FINT-TEST'));
+      .filter(component => component.organisations.find(o => o === this.props.context.currentOrganisation.dn));
   };
 
   constructor(props) {
@@ -203,7 +204,7 @@ class AdapterTabComponent extends React.Component {
     }
     else {
       return (
-        <Typography variant="subheader">Det er ikke lagt til noen komponenter for denne organisasjonen.</Typography>
+        <Typography variant="subheading">Det er ikke lagt til noen komponenter for denne organisasjonen.</Typography>
       );
 
     }
@@ -224,5 +225,5 @@ function mapDispatchToProps(dispatch) {
   }, dispatch);
 }
 
-export default withStyles(styles)(connect(mapStateToProps, mapDispatchToProps)(AdapterTabComponent));
+export default withStyles(styles)(connect(mapStateToProps, mapDispatchToProps)(withContext(AdapterTabComponent)));
 

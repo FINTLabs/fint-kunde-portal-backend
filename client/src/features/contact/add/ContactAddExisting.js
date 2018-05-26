@@ -19,6 +19,7 @@ import OrganisationApi from "../../../data/api/OrganisationApi";
 import InformationMessageBox from "../../../common/InformationMessageBox";
 import PropTypes from "prop-types";
 import ContactNew from "./ContactNew";
+import {withContext} from "../../../data/context/withContext";
 
 const styles = (theme) => ({
   addButton: {
@@ -99,13 +100,14 @@ class ContactAddExisting extends React.Component {
 
   addExitingContact = (contact) => {
 
-    OrganisationApi.addTechnicalContact(contact.nin)
+    OrganisationApi.addTechnicalContact(contact.nin, this.props.context.currentOrganisation.name)
       .then(response => {
         this.props.notify(`${contact.firstName} ${contact.lastName} ble lagt til.`);
-        this.props.fetchTechnicalContacts().then(() => {
+        this.props.fetchTechnicalContacts();
+          //.then(() => {
             this.onSearch(this.state.searchString);
-          }
-        );
+          //}
+        //);
       }).catch(error => {
       alert(error);
     });
@@ -128,7 +130,8 @@ class ContactAddExisting extends React.Component {
   };
 
   onCloseCreateContact = (contact) => {
-    this.props.fetchContacts().then(() => {
+    this.props.fetchContacts()
+      .then(() => {
       this.onSearch(contact.nin);
     });
     /*
@@ -136,7 +139,6 @@ class ContactAddExisting extends React.Component {
       filteredContacts: [contact],
     });
     */
-    console.log(JSON.stringify(this.state.filteredContacts));
     /*
     this.setState({
       searchString: `${contact.firstName}`,
@@ -233,7 +235,7 @@ ContactAddExisting.propTypes = {
   notify: PropTypes.any.isRequired
 };
 
-export default withStyles(styles)(ContactAddExisting);
+export default withStyles(styles)(withContext(ContactAddExisting));
 
 
 

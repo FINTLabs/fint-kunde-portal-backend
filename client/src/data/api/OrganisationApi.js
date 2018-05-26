@@ -1,32 +1,32 @@
 class OrganisationApi {
 
-  static getTechnicalContacts() {
-    const url = '/api/organisations/testing/contacts/technical';
+  static getTechnicalContacts(organisation) {
+    const url = `/api/organisations/${organisation}/contacts/technical`;
     return fetch(url, {method: 'GET'})
       .then(response => Promise.all([response, response.json()]));
   }
 
-  static getLegalContact() {
-    const url = '/api/organisations/testing/contacts/legal';
+  static getLegalContact(organisation) {
+    const url = `/api/organisations/${organisation}/contacts/legal`;
     return fetch(url, {method: 'GET'})
       .then(response => Promise.all([response, response.json()]));
   }
 
-  static getOrganisation() {
-    const url = '/api/organisations/testing/';
+  static getOrganisation(organisation) {
+    const url = `/api/organisations/${organisation}/`;
 
     return fetch(url, {method: 'GET'})
       .then(response => Promise.all([response, response.json()]));
   }
 
-  static linkComponent(api) {
-    const request = new Request(`/api/organisations/testing/components/${api.name}`, {
+  static linkComponent(component, organisation) {
+    const request = new Request(`/api/organisations/${organisation}/components/${component.name}`, {
       method: 'PUT',
       headers: new Headers({
         'Content-Type': 'application/json'
       }),
       body: JSON.stringify({
-        name: api.name
+        name: component.name
       })
     });
 
@@ -37,14 +37,14 @@ class OrganisationApi {
     });
   }
 
-  static unlinkComponent(api) {
-    const request = new Request(`/api/organisations/testing/components/${api.name}`, {
+  static unlinkComponent(component, organisation) {
+    const request = new Request(`/api/organisations/${organisation}/components/${component.name}`, {
       method: 'DELETE',
       headers: new Headers({
         'Content-Type': 'application/json'
       }),
       body: JSON.stringify({
-        name: api.name
+        name: component.name
       })
     });
 
@@ -56,8 +56,8 @@ class OrganisationApi {
   }
 
 
-  static addTechnicalContact(nin) {
-    const request = new Request(`/api/organisations/testing/contacts/technical/${nin}`, {
+  static addTechnicalContact(nin, organisation) {
+    const request = new Request(`/api/organisations/${organisation}/contacts/technical/${nin}`, {
       method: 'PUT',
       headers: new Headers({
         'Content-Type': 'application/json'
@@ -75,14 +75,14 @@ class OrganisationApi {
   }
 
 
-  static removeTechnicalContact(kontakt) {
-    const request = new Request(`/api/organisations/testing/contacts/technical/${kontakt.nin}`, {
+  static removeTechnicalContact(contact, organisation) {
+    const request = new Request(`/api/organisations/${organisation}/contacts/technical/${contact.nin}`, {
       method: 'DELETE',
       headers: new Headers({
         'Content-Type': 'application/json'
       }),
       body: JSON.stringify({
-        nin: kontakt.nin
+        nin: contact.nin
       })
     });
 
@@ -93,14 +93,14 @@ class OrganisationApi {
     });
   }
 
-  static setLegalContact(kontakt) {
-    const request = new Request(`/api/organisations/testing/contacts/legal/${kontakt.nin}`, {
+  static setLegalContact(contact, organisation) {
+    const request = new Request(`/api/organisations/${organisation}/contacts/legal/${contact.nin}`, {
       method: 'PUT',
       headers: new Headers({
         'Content-Type': 'application/json'
       }),
       body: JSON.stringify({
-        name: kontakt.nin
+        name: contact.nin
       })
     });
 
@@ -111,14 +111,14 @@ class OrganisationApi {
     });
   }
 
-  static unsetLegalContact(kontakt) {
-    const request = new Request(`/api/organisations/testing/contacts/legal/${kontakt.nin}`, {
+  static unsetLegalContact(contact, organisation) {
+    const request = new Request(`/api/organisations/${organisation}/contacts/legal/${contact.nin}`, {
       method: 'DELETE',
       headers: new Headers({
         'Content-Type': 'application/json'
       }),
       body: JSON.stringify({
-        name: kontakt.nin
+        name: contact.nin
       })
     });
 

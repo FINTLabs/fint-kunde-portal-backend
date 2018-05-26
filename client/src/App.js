@@ -1,8 +1,9 @@
 import React, {Component} from 'react';
 import './App.css';
 import {createMuiTheme, MuiThemeProvider} from "material-ui";
-import PropTypes from 'prop-types';
 import Main from "./main/Main";
+import AppProvider from "./data/context/AppProvider";
+import {CookiesProvider} from 'react-cookie';
 
 
 const theme = createMuiTheme({
@@ -44,31 +45,28 @@ const theme = createMuiTheme({
 */
 
 class App extends Component {
-  static childContextTypes = {
-    organisation: PropTypes.string,
-  };
+
 
   componentDidMount() {
     //this.props.fetchApis(this.props.org)
   }
 
-  getChildContext() {
-    return {
-      organisation: 'testing',
-    };
-  }
 
   render() {
 
     return (
       <MuiThemeProvider theme={theme}>
-        <Main/>
+        <CookiesProvider>
+          <AppProvider>
+            <Main/>
+          </AppProvider>
+        </CookiesProvider>
       </MuiThemeProvider>
     );
   }
 }
 
-App.propTypes = {};
+App.propTypes = {}
 
 export default (App);
 

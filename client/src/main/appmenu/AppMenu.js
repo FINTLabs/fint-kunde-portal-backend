@@ -14,6 +14,7 @@ import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import {MENU_ITEMS} from './MenuItems';
 import Routes from "../routes/Routes";
+import OrganisationSelector from "./OrganisationSelector";
 
 const drawerWidth = 240;
 
@@ -97,7 +98,10 @@ const styles = theme => ({
     height: '8%',
     width: '8%',
     marginRight: theme.spacing.unit * 4,
-  }
+  },
+  flex: {
+    flex: 1,
+  },
 });
 
 class AppMenu extends React.Component {
@@ -132,9 +136,10 @@ class AppMenu extends React.Component {
               <MenuIcon/>
             </IconButton>
             <img src="fint.svg" alt="logo" className={classes.logo}/>
-            <Typography variant="title" color="inherit" noWrap>
+            <Typography variant="title" color="inherit" noWrap className={classes.flex}>
               Kunde Portal
             </Typography>
+            <OrganisationSelector/>
           </Toolbar>
         </AppBar>
         <Drawer

@@ -20,6 +20,7 @@ import blue from "material-ui/colors/blue";
 import OrganisationApi from "../../../data/api/OrganisationApi";
 import WarningMessageBox from "../../../common/WarningMessageBox";
 import ContactView from "../view/ContactView";
+import {withContext} from "../../../data/context/withContext";
 
 
 const styles = (theme) => ({
@@ -81,7 +82,7 @@ class TechnicalList extends React.Component {
   };
 
   removeContact = (contact) => {
-    OrganisationApi.removeTechnicalContact(contact).then(response => {
+    OrganisationApi.removeTechnicalContact(contact, this.props.context.currentOrganisation.name).then(response => {
       this.props.notify(`${contact.firstName} ${contact.lastName} ble fjernet.`);
       this.props.fetchTechnicalContacts();
     }).catch(error => {
@@ -105,7 +106,7 @@ class TechnicalList extends React.Component {
   };
 
   setLegalContact = (contact) => {
-    OrganisationApi.setLegalContact(contact)
+    OrganisationApi.setLegalContact(contact, this.props.context.currentOrganisation.name)
       .then(() => {
         this.props.notify("Juridisk ansvarlig er oppdatert.");
         this.props.afterUpdateLegalContact();
@@ -172,5 +173,5 @@ TechnicalList.propTypes = {
   fetchTechnicalContacts: PropTypes.any.isRequired,
   notify: PropTypes.any.isRequired,
   technicalContacts: PropTypes.array.isRequired
-}
-export default withStyles(styles)(TechnicalList);
+};
+export default withStyles(styles)(withContext(TechnicalList));

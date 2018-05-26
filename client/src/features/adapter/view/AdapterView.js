@@ -31,6 +31,7 @@ class AdapterView extends React.Component {
   };
 
   handleUpdate = () => {
+
     this.props.updateAdapter(this.state.adapter);
     this.props.onClose();
   };

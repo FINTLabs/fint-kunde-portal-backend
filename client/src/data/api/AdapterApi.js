@@ -1,24 +1,25 @@
 class AdapterApi {
 
-  static getAdapters(org) {
+  static getAdapters(organisation) {
 
-    const url = '/api/adapters/testing'; //.concat(org);
+    const url = `/api/adapters/${organisation}`; //.concat(org);
     return fetch(url, {method: 'GET'})
       .then(response => Promise.all([response, response.json()]));
   }
 
-  static updateAdapter(Adapter, org) {
+  static updateAdapter(adapter, organisation) {
 
-    const request = new Request(`/api/adapters/testing/${Adapter.name}`, {
+
+    const request = new Request(`/api/adapters/${organisation}/${adapter.name}`, {
       method: 'PUT',
       headers: {
         'Accept': '*/*',
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        name: Adapter.name,
-        note: Adapter.note,
-        shortDescription: Adapter.shortDescription
+        name: adapter.name,
+        note: adapter.note,
+        shortDescription: adapter.shortDescription
       })
     });
     return fetch(request).then(response => {
@@ -28,9 +29,9 @@ class AdapterApi {
     });
   }
 
-  static createAdapter(Adapter, org) {
+  static createAdapter(Adapter, organisation) {
 
-    const request = new Request(`/api/adapters/testing`, {
+    const request = new Request(`/api/adapters/${organisation}`, {
       method: 'POST',
       headers: {
         'Accept': '*/*',
@@ -49,9 +50,9 @@ class AdapterApi {
     });
   }
 
-  static addAdapterToComponent(Adapter, component, org) {
+  static addAdapterToComponent(Adapter, component, organisation) {
 
-    const request = new Request(`/api/components/${component.name}/${org}/adapters/${Adapter.name}`, {
+    const request = new Request(`/api/components/${component.name}/${organisation}/adapters/${Adapter.name}`, {
       method: 'PUT',
       headers: {
         'Accept': '*/*',
@@ -68,8 +69,8 @@ class AdapterApi {
     });
   }
 
-  static deleteAdapter(Adapter, org) {
-    const request = new Request(`/api/adapters/testing/${Adapter.name}`, {
+  static deleteAdapter(Adapter, organisation) {
+    const request = new Request(`/api/adapters/${organisation}/${Adapter.name}`, {
       method: 'DELETE'
     });
 
@@ -80,9 +81,9 @@ class AdapterApi {
     });
   }
 
-  static deleteAdapterFromComponent(adapter, component, org) {
+  static deleteAdapterFromComponent(adapter, component, organisation) {
 
-    const request = new Request(`/api/components/${component.name}/${org}/adapters/${adapter.name}`, {
+    const request = new Request(`/api/components/${component.name}/${organisation}/adapters/${adapter.name}`, {
       method: 'DELETE'
     });
     return fetch(request).then(response => {
@@ -92,9 +93,9 @@ class AdapterApi {
     });
   }
 
-  static getOpenIdSecret(adapter, org) {
-    org = 'testing';
-    const request = new Request(`/api/adapters/${org}/${adapter.name}/secret`,
+  static getOpenIdSecret(adapter, organisation) {
+
+    const request = new Request(`/api/adapters/${organisation}/${adapter.name}/secret`,
       {
         method: 'GET'
       });
@@ -108,9 +109,9 @@ class AdapterApi {
       });
   }
 
-  static setPassword(adapter, password, org) {
+  static setPassword(adapter, password, organisation) {
 
-    const request = new Request(`/api/adapters/${org}/${adapter.name}/password`, {
+    const request = new Request(`/api/adapters/${organisation}/${adapter.name}/password`, {
       method: 'PUT',
       headers: {
         'Accept': '*/*',

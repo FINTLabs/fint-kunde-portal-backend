@@ -15,6 +15,7 @@ import {
 import {Delete, Edit, InsertLink} from "material-ui-icons";
 import AutoHideNotification from "../../common/AutoHideNotification";
 import AdapterView from "./view/AdapterView";
+import {withContext} from "../../data/context/withContext";
 
 const styles = theme => ({
   root: {
@@ -48,7 +49,9 @@ class AdapterList extends Component {
     this.setState({open: false});
   };
   updateAdapter = (adapter) => {
-    this.props.updateAdapter(adapter);
+    const {currentOrganisation} = this.props.context;
+    console.log(currentOrganisation);
+    this.props.updateAdapter(adapter, currentOrganisation.name);
   };
   deleteAdapter = (adapter) => {
     this.props.deleteAdapter(adapter);
@@ -132,6 +135,6 @@ AdapterList.propTypes = {
 };
 
 
-export default withStyles(styles)(AdapterList);
+export default withStyles(styles)(withContext(AdapterList));
 
 

@@ -6,6 +6,15 @@ class ContactApi {
       .then(response => Promise.all([response, response.json()]));
   }
 
+  static fetchContactOrganisatons() {
+    const url = '/api/contacts/organisations';
+    return fetch(url, {method: 'GET'})
+    //.then(response => Promise.all([response, response.json()]));
+      .then(response => {
+        return response
+      });
+  }
+
   static updateContact(contact) {
     const request = new Request(`/api/contacts/${contact.nin}`, {
       method: 'PUT',

@@ -9,6 +9,7 @@ import {withStyles} from "material-ui";
 import {fetchContacts} from "../../data/redux/dispatchers/contact";
 import AutoHideNotification from "../../common/AutoHideNotification";
 import PropTypes from "prop-types";
+import {withContext} from "../../data/context/withContext";
 
 const styles = () => ({
   root: {}
@@ -25,11 +26,29 @@ class ContactContainer extends React.Component {
   }
 
   componentDidMount() {
-    this.props.fetchTechnicalContacts();
-    this.props.fetchLegalContact();
+    this.fetchTechnicalContacts();
+    this.fetchLegalContact();
     this.props.fetchContacts();
 
   }
+
+  componentDidUpdate(prevProps, prevState, snapshot) {
+
+    if (prevProps.context !== this.props.context) {
+      //this.props.fetchAdapters(this.props.context.currentOrganisation.name);
+      this.fetchTechnicalContacts();
+      this.fetchLegalContact();
+      this.props.fetchContacts();
+    }
+  }
+
+  fetchTechnicalContacts = () => {
+    return this.props.fetchTechnicalContacts(this.props.context.currentOrganisation.name);
+  };
+
+  fetchLegalContact = () => {
+    this.props.fetchLegalContact(this.props.context.currentOrganisation.name);
+  };
 
   notify = (message) => {
     this.setState({
@@ -55,8 +74,8 @@ class ContactContainer extends React.Component {
   };
 
   afterUpdateLegalContact = () => {
-    this.props.fetchTechnicalContacts();
-    this.props.fetchLegalContact();
+    this.fetchTechnicalContacts();
+    this.fetchLegalContact();
   };
 
   render() {
@@ -79,12 +98,12 @@ class ContactContainer extends React.Component {
         <ContactList
           technicalContacts={technicalContacts}
           legalContact={legalContact}
-          fetchTechnicalContacts={this.props.fetchTechnicalContacts}
+          fetchTechnicalContacts={this.fetchTechnicalContacts}
           afterUpdateLegalContact={this.afterUpdateLegalContact}
           notify={this.notify}
         />
         <ContactAdd contacts={this.getSelectableContacts()}
-                    fetchTechnicalContacts={this.props.fetchTechnicalContacts}
+                    fetchTechnicalContacts={this.fetchTechnicalContacts}
                     fetchContacts={this.props.fetchContacts}
                     notify={this.notify}
         />
@@ -122,4 +141,4 @@ function matchDispatchToProps(dispatch) {
     , dispatch);
 }
 
-export default withStyles(styles)(connect(mapStateToProps, matchDispatchToProps)(ContactContainer));
+export default withStyles(styles)(connect(mapStateToProps, matchDispatchToProps)(withContext(ContactContainer)));

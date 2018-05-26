@@ -11,6 +11,7 @@ import no.fint.portal.exceptions.UpdateEntityMismatchException;
 import no.fint.portal.model.ErrorResponse;
 import no.fint.portal.model.contact.Contact;
 import no.fint.portal.model.contact.ContactService;
+import no.fint.portal.model.organisation.OrganisationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -33,6 +34,9 @@ public class ContactController {
 
   @Autowired
   private ContactService contactService;
+
+  @Autowired
+  OrganisationService organisationService;
 
   @ApiOperation("Create new contact")
   @RequestMapping(method = RequestMethod.POST,
@@ -101,6 +105,13 @@ public class ContactController {
 
     contactService.deleteContact(contact);
     return ResponseEntity.noContent().build();
+  }
+
+  @ApiOperation("Get contact organisations")
+  @GetMapping(value = "/organisations")
+  public ResponseEntity getContactOrganisations() {
+    organisationService.getOrganisations();
+    return ResponseEntity.ok(organisationService.getOrganisations());
   }
 
   //

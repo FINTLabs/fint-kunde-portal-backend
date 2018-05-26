@@ -21,6 +21,7 @@ import PropTypes from 'prop-types';
 import ComponentsView from "./ComponentsView";
 import WarningMessageBox from "../../common/WarningMessageBox";
 import InformationMessageBox from "../../common/InformationMessageBox";
+import {withContext} from "../../data/context/withContext";
 
 
 const styles = theme => ({
@@ -67,24 +68,28 @@ class ComponentList extends Component {
     });
   };
   linkComponent = (component) => {
-    OrganisationApi.linkComponent(component).then(responseApi => {
+    const {context} = this.props;
+
+    OrganisationApi.linkComponent(component, context.currentOrganisation.name).then(responseApi => {
       this.setState({
         notify: true,
         notifyMessage: `${component.description} ble lagt til!`,
       });
-      this.props.fetchOrganisation();
+      context.refresh();
       this.props.fetchComponents();
     }).catch(error => {
       alert(error);
     });
   };
   unlinkComponent = (component) => {
-    OrganisationApi.unlinkComponent(component).then(responseApi => {
+    const {context} = this.props;
+
+    OrganisationApi.unlinkComponent(component, context.currentOrganisation.name).then(responseApi => {
       this.setState({
         notify: true,
         notifyMessage: `${component.description} ble fjernet!`,
       });
-      this.props.fetchOrganisation();
+      context.refresh();
       this.props.fetchComponents();
     }).catch(error => {
       alert(error);
@@ -111,7 +116,7 @@ class ComponentList extends Component {
   onCloseNotification = () => {
     this.setState({
       notify: false,
-      notifyMessage: null,
+      notifyMessage: '',
     });
   };
   showComponent = (component) => {
@@ -142,10 +147,10 @@ class ComponentList extends Component {
     this.state = {
       askLink: false,
       askUnLink: false,
-      message: null,
+      message: '',
       component: null,
       notify: false,
-      notifyMessage: null,
+      notifyMessage: '',
       showComponent: false,
     };
   }
@@ -215,10 +220,14 @@ class ComponentList extends Component {
 }
 
 ComponentList.propTypes = {
-  components: PropTypes.array.isRequired
+  classes: PropTypes.any.isRequired,
+  components: PropTypes.array.isRequired,
+  fetchComponents: PropTypes.any.isRequired,
+  //fetchOrganisation: PropTypes.any.isRequired,
+  organisation: PropTypes.any.isRequired
 };
 
 
-export default withStyles(styles)(ComponentList);
+export default withStyles(styles)(withContext(ComponentList));
 
 
