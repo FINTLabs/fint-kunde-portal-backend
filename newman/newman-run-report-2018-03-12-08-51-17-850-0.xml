@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites name="FINT Kunde Portal API - TEST MODE" time="9.375000000000002">
+  <testsuite name="api / Get  all  components" id="087aae98-9dda-4a04-9ab7-5cd4404e8721" tests="1" time="2.161">
+    <testcase name="Component Personal found" time="2.161"/>
+  </testsuite>
+  <testsuite name="api / Get  component  by  name" id="066e9b49-a5e1-4cf6-9b97-41fd4eed56b6" tests="1" time="0.243">
+    <testcase name="Status code is 200" time="0.243"/>
+  </testsuite>
+  <testsuite name="api / Get  all   assets" id="0291287a-605c-423a-a810-bbf5da46e9fc" tests="1" time="0.077">
+    <testcase name="Status code is 200" time="0.077"/>
+  </testsuite>
+  <testsuite name="api / Create   asset" id="3d49af03-d75c-4e97-b4ed-1b4866d0b3ef" tests="1" time="0.374">
+    <testcase name="Status code is 201" time="0.374"/>
+  </testsuite>
+  <testsuite name="api / Get   asset  by   name" id="b58549ad-2508-49fb-9029-fc6910b365f6" tests="1" time="0.28">
+    <testcase name="Asset exists" time="0.28"/>
+  </testsuite>
+  <testsuite name="api / Update   asset" id="e7ccc5a1-c066-4d3c-b78a-dc8ef84a5c74" tests="1" time="0.258">
+    <testcase name="Asset is updated" time="0.258"/>
+  </testsuite>
+  <testsuite name="api / Get  all  adapters" id="da817c80-838c-4df1-8d7c-422edcc08c58" tests="1" time="0.685">
+    <testcase name="Status code is 200" time="0.685"/>
+  </testsuite>
+  <testsuite name="api / Add  adapter" id="245bebaf-9fcb-4490-9fd8-68388c8d81e8" tests="1" time="0.129">
+    <testcase name="Status code is 200" time="0.129"/>
+  </testsuite>
+  <testsuite name="api / Get  adapter" id="ee68c953-f2d8-48c8-99c5-a7dc026b2c29" tests="1" time="0.067">
+    <testcase name="Valid Adapter Found" time="0.067"/>
+  </testsuite>
+  <testsuite name="api / Get  adapter secret" id="74a56844-d114-4e6a-ad2a-1064ad60083e" tests="1" time="0.595">
+    <testcase name="Client Secret Found" time="0.595"/>
+  </testsuite>
+  <testsuite name="api / Reset  adapter  password" id="20bb77e7-0900-49bc-bc8c-fb0a05b9152d" tests="1" time="0.069">
+    <testcase name="Status code is 200" time="0.069"/>
+  </testsuite>
+  <testsuite name="api / Update  adapter" id="859497b4-c660-4414-810b-55333c095181" tests="1" time="0.191">
+    <testcase name="Adapter is updated" time="0.191"/>
+  </testsuite>
+  <testsuite name="api / Link   adapter  to   asset" id="370a3234-11f3-4e3c-b4b9-620e021ed2b4" tests="1" time="0.115">
+    <testcase name="Status code is 204" time="0.115"/>
+  </testsuite>
+  <testsuite name="api / Add  adapter  to  component" id="375d3f0b-0a3b-4a80-ab46-d04027d2669c" tests="1" time="0.098">
+    <testcase name="Status code is 204" time="0.098"/>
+  </testsuite>
+  <testsuite name="api / Unlink   adapter  from   asset" id="10ec656d-e5f3-4c99-bc4b-3684d04f69cf" tests="1" time="0.482">
+    <testcase name="Status code is 204" time="0.482"/>
+  </testsuite>
+  <testsuite name="api / Remove  adapter  from  component" id="0504d698-4103-4801-995c-6ba03e188787" tests="1" time="0.215">
+    <testcase name="Status code is 204" time="0.215"/>
+  </testsuite>
+  <testsuite name="api / Delete  adapter" id="fafac681-1b1c-4f2e-b72a-c01b0f5e0849" tests="1" time="0.12">
+    <testcase name="Status code is 204" time="0.12"/>
+  </testsuite>
+  <testsuite name="api / Get  all  clients" id="b2a82ee4-ccae-4c2c-b30e-00610c42def7" tests="1" time="0.115">
+    <testcase name="Status code is 200" time="0.115"/>
+  </testsuite>
+  <testsuite name="api / Add  client" id="8e97653c-2ad4-45cd-89bd-d7219c3fda92" tests="1" time="0.079">
+    <testcase name="Client created" time="0.079"/>
+  </testsuite>
+  <testsuite name="api / Get  client" id="69e3350d-237a-4594-85a9-e9e70de6101b" tests="1" time="0.625">
+    <testcase name="Client exists" time="0.625"/>
+  </testsuite>
+  <testsuite name="api / Get  client secret" id="5cfcab6d-92ab-4e0a-ab3b-3531d5d6f675" tests="1" time="0.035">
+    <testcase name="Client secret exists" time="0.035"/>
+  </testsuite>
+  <testsuite name="api / Update  client" id="e761bb2e-6645-4b33-bf1d-114a12eabe79" tests="1" time="0.135">
+    <testcase name="Client is updated" time="0.135"/>
+  </testsuite>
+  <testsuite name="api / Reset  client  password" id="4af3c344-b07c-45ce-9447-ffb65e4ece4a" tests="1" time="0.06">
+    <testcase name="Status code is 200" time="0.06"/>
+  </testsuite>
+  <testsuite name="api / Link   client  to   asset" id="d2382b4f-55db-48fb-83af-ae53def077aa" tests="1" time="0.198">
+    <testcase name="Status code is 204" time="0.198"/>
+  </testsuite>
+  <testsuite name="api / Add  client  to  component" id="0948bf59-0109-4cde-99aa-9b0af678fbe5" tests="1" time="0.192">
+    <testcase name="Status code is 204" time="0.192"/>
+  </testsuite>
+  <testsuite name="api / Unlink   client  from   asset" id="f451905b-3f13-4bb9-949c-8f2cd495289b" tests="1" time="0.195">
+    <testcase name="Status code is 204" time="0.195"/>
+  </testsuite>
+  <testsuite name="api / Remove  client  from  component" id="0d3aaa2e-81cf-4574-9db6-a43c641879de" tests="1" time="0.064">
+    <testcase name="Status code is 204" time="0.064"/>
+  </testsuite>
+  <testsuite name="api / Delete  client" id="a63ccc94-6e62-4d3d-a919-0672e1b0528b" tests="1" time="0.032">
+    <testcase name="Status code is 204" time="0.032"/>
+  </testsuite>
+  <testsuite name="api / Delete   asset" id="b8726347-2f68-4871-8d25-48880450001f" tests="1" time="0.034">
+    <testcase name="Status code is 204" time="0.034"/>
+  </testsuite>
+  <testsuite name="api / Get  all  contacts" id="868cb9f2-3b56-4b10-881a-33c6c663ad34" tests="1" time="0.033">
+    <testcase name="Should return two contacts" time="0.033"/>
+  </testsuite>
+  <testsuite name="api / Get  contact  by  nin" id="5217cfbe-e9e5-4f29-9da3-0851434300d4" tests="1" time="0.031">
+    <testcase name="Your test name" time="0.031"/>
+  </testsuite>
+  <testsuite name="api / Update  contact" id="9f3611b1-5b12-416e-a029-7af228941bb5" tests="1" time="0.139">
+    <testcase name="Contact is updated" time="0.139"/>
+  </testsuite>
+  <testsuite name="api / Create  new  contact" id="1688b755-6b71-467e-83e3-357011a2f840" tests="1" time="0.068">
+    <testcase name="Contact is created" time="0.068"/>
+  </testsuite>
+  <testsuite name="api / Delete  a  contact" id="6a9f5889-d3d6-43ab-832d-287023689290" tests="1" time="0.035">
+    <testcase name="Status code is 204" time="0.035"/>
+  </testsuite>
+  <testsuite name="api / Get   organisation" id="fea36fd1-91ce-42cc-8c01-03ad3c97e1b1" tests="1" time="0.026">
+    <testcase name="Your test name" time="0.026"/>
+  </testsuite>
+  <testsuite name="api / Update   organisation" id="fef80125-26ae-4276-83b9-ad8f7571cfcc" tests="1" time="0.082">
+    <testcase name="Organisation Name Updated" time="0.082"/>
+  </testsuite>
+  <testsuite name="api / Link   component" id="9c82c79f-cc03-4bd3-968a-7df04cabb37c" tests="1" time="0.137">
+    <testcase name="Status code is 204" time="0.137"/>
+  </testsuite>
+  <testsuite name="api / Unlink   component" id="b56ada28-9a6b-4668-b8f3-c4d10a89b264" tests="1" time="0.102">
+    <testcase name="Status code is 204" time="0.102"/>
+  </testsuite>
+  <testsuite name="api / Set   legal   contact" id="181caac1-0d14-4756-a1a4-79428b9ce2dc" tests="1" time="0.054">
+    <testcase name="Status code is 204" time="0.054"/>
+  </testsuite>
+  <testsuite name="api / Get   legal   contact" id="b795b3cf-274b-4283-a706-90b36845f11e" tests="1" time="0.08">
+    <testcase name="Verify Legal Contact by NIN" time="0.08"/>
+  </testsuite>
+  <testsuite name="api / Unset   legal   contact" id="7139d429-4557-4eb3-a298-415da060d7bb" tests="1" time="0.122">
+    <testcase name="Status code is 204" time="0.122"/>
+  </testsuite>
+  <testsuite name="api / Get   technical   contacts" id="e5f15dae-6e56-4e8c-b49b-24ab9bb987fe" tests="0" time="0.076"/>
+  <testsuite name="api / Add   technical   contact" id="c080aed4-5597-44ae-b654-3f26976c8fc1" tests="1" time="0.295">
+    <testcase name="Status code is 204" time="0.295"/>
+  </testsuite>
+  <testsuite name="api / Remove   technical   contact" id="de4fef5b-7715-460f-ae83-90efff8a43c1" tests="0" time="0.172"/>
+</testsuites>

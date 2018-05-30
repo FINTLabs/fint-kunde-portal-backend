@@ -11,6 +11,10 @@ buildscript {
   }
 }
 
+plugins {
+  id 'com.github.ben-manes.versions' version '0.17.0'
+}
+
 apply plugin: 'java'
 apply plugin: 'groovy'
 apply plugin: 'maven'
@@ -49,13 +53,15 @@ dependencies {
 
   compile("com.github.springfox.loader:springfox-loader:${springfoxLoaderVersion}")
   compile('no.rogfk:spring-hateoas-hal-extension:0.0.6')
-  compile('no.fint:fint-portal-api:2.0.0-1')
+  compile('no.fint:fint-portal-api:3.0.0-rc-4')
 
   runtime('org.springframework.boot:spring-boot-devtools')
 
-  compileOnly('org.projectlombok:lombok')
+  compile('org.projectlombok:lombok')
 
   testCompile('org.springframework.boot:spring-boot-starter-test')
+  runtime('org.springframework.ldap:spring-ldap-test')
+  runtime("com.unboundid:unboundid-ldapsdk:3.1.1")
   testCompile("org.spockframework:spock-core:${spockSpringVersion}")
 }
 

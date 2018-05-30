@@ -4,17 +4,16 @@ package no.fint.portal.customer.controller;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
-import no.fint.portal.component.Component;
-import no.fint.portal.component.ComponentService;
-import no.fint.portal.customer.dto.ComponentDto;
+import no.fint.portal.customer.service.PortalApiService;
 import no.fint.portal.exceptions.EntityFoundException;
 import no.fint.portal.exceptions.EntityNotFoundException;
 import no.fint.portal.exceptions.UpdateEntityMismatchException;
 import no.fint.portal.model.ErrorResponse;
-import no.fint.portal.organisation.Organisation;
-import no.fint.portal.organisation.OrganisationService;
-import no.rogfk.hateoas.extension.HalPagedResources;
-import no.rogfk.hateoas.extension.annotations.HalResource;
+import no.fint.portal.model.adapter.Adapter;
+import no.fint.portal.model.client.Client;
+import no.fint.portal.model.component.Component;
+import no.fint.portal.model.component.ComponentService;
+import no.fint.portal.model.organisation.Organisation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -23,7 +22,6 @@ import org.springframework.ldap.NameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.UnknownHostException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -35,107 +33,90 @@ import java.util.Optional;
 public class ComponentController {
 
   @Autowired
-  private ComponentService componentService;
+  PortalApiService portalApiService;
 
   @Autowired
-  private OrganisationService organisationService;
+  private ComponentService componentService;
 
   @ApiOperation("Get all components")
-  @HalResource(pageSize = 10)
   @RequestMapping(method = RequestMethod.GET)
-  public HalPagedResources<ComponentDto> getComponents(@RequestHeader("x-org-id") final String orgId, @RequestParam(required = false) Integer page) {
-    Organisation organisation = verifyOrganisation(orgId);
+  public ResponseEntity getComponents() {
+    List<Component> components = componentService.getComponents();
 
-    List<Component> allComponents = componentService.getComponents();
-    List<Component> configured = componentService.getComponentsByOrgUUID(organisation.getName());
-
-    List<ComponentDto> returnedComponents = new ArrayList<>();
-    allComponents.forEach((component) -> {
-      ComponentDto comp = new ComponentDto(component);
-      comp.setConfigured(configured.indexOf(component) > -1);
-      //comp.setClients(componentService.getClients(comp.getUuid(), organisation.getUuid()));
-      //List<Adapter> adapters = componentService.getAdapters(comp.getUuid(), organisation.getUuid());
-      //if (adapters != null && adapters.size() > 0) {
-      //  comp.setAdapter(adapters.get(0));
-      //}
-      returnedComponents.add(comp);
-    });
-    return new HalPagedResources<>(returnedComponents, page);
+    return ResponseEntity.ok(components);
   }
 
-  @ApiOperation("Get component by uuid")
-  @RequestMapping(method = RequestMethod.GET, value = "/{compUuid}")
-  public ResponseEntity getComponent(@RequestHeader("x-org-id") final String orgId, @PathVariable String compUuid) {
-    Organisation organisation = verifyOrganisation(orgId);
+  @ApiOperation("Get component by name")
+  @RequestMapping(method = RequestMethod.GET, value = "/{compName}")
+  public ResponseEntity getComponent(@PathVariable String compName) {
+    Component component = portalApiService.getComponent(compName);
 
-    Optional<Component> component = componentService.getComponentByUUID(compUuid);
-
-    if (component.isPresent()) {
-      ComponentDto dto = new ComponentDto(component.get());
-      //dto.setClients(componentService.getClients(dto.getUuid(), organisation.getUuid()));
-      //List<Adapter> adapters = componentService.getAdapters(dto.getUuid(), organisation.getUuid());
-      //if (adapters != null && adapters.size() > 0) {
-      //  dto.setAdapter(adapters.get(0));
-      //}
-      return ResponseEntity.ok(dto);
-    }
-
-    throw new EntityNotFoundException(
-      String.format("Component with uuid %s could not be found", compUuid)
-    );
+    return ResponseEntity.ok(component);
   }
 
-  @ApiOperation("Add organisation to component")
-  @RequestMapping(method = RequestMethod.POST,
+  @ApiOperation("Add adapter to component")
+  @RequestMapping(method = RequestMethod.PUT,
     consumes = MediaType.APPLICATION_JSON_VALUE,
-    value = "/{compUuid}/organisations"
+    value = "/{compName}/{orgName}/adapters/{adapterName}"
   )
-  public ResponseEntity addOrganisationToComponent(@PathVariable final String compUuid, @RequestHeader("x-org-id") final String orgId) {
+  public ResponseEntity addAdapterToComponent(@PathVariable final String adapterName, @PathVariable final String compName, @PathVariable("orgName") final String orgName) {
 
-    Organisation organisation = verifyOrganisation(orgId);
-    Component component = verifyComponent(compUuid);
+    Organisation organisation = portalApiService.getOrganisation(orgName);
+    Component component = portalApiService.getComponent(compName);
+    Adapter adapter = portalApiService.getAdapter(organisation, adapterName);
 
-    //componentService.addOrganisationToComponent(compUuid, organisation.getUuid());
-    organisationService.linkComponent(organisation, component);
-    return ResponseEntity.ok().build();
+    componentService.linkAdapter(component, adapter);
+
+    return ResponseEntity.noContent().build();
   }
 
-  @ApiOperation("Remove organisation to component")
+  @ApiOperation("Remove adapter from component")
   @RequestMapping(method = RequestMethod.DELETE,
-    value = "/{compUuid}/organisations"
+    value = "/{compName}/{orgName}/adapters/{adapterName}"
   )
-  public ResponseEntity removeOrganisationFromComponent(@PathVariable final String compUuid, @RequestHeader("x-org-id") final String orgId) {
+  public ResponseEntity removeAdapterFromComponent(@PathVariable final String adapterName, @PathVariable final String compName, @PathVariable("orgName") final String orgName) {
 
-    Organisation organisation = verifyOrganisation(orgId);
-    Component component = verifyComponent(compUuid);
+    Organisation organisation = portalApiService.getOrganisation(orgName);
+    Component component = portalApiService.getComponent(compName);
+    Adapter adapter = portalApiService.getAdapter(organisation, adapterName);
 
-    organisationService.unLinkComponent(organisation, component);
+    componentService.unLinkAdapter(component, adapter);
 
-    return ResponseEntity.accepted().build();
-
+    return ResponseEntity.noContent().build();
   }
 
 
-  private Organisation verifyOrganisation(String orgId) {
-    Optional<Organisation> organisation = organisationService.getOrganisationByOrgId(orgId);
-    if (organisation.isPresent()) {
-      return organisation.get();
-    }
+  @ApiOperation("Add client to component")
+  @RequestMapping(method = RequestMethod.PUT,
+    consumes = MediaType.APPLICATION_JSON_VALUE,
+    value = "/{compName}/{orgName}/clients/{clientName}"
+  )
+  public ResponseEntity addClientToComponent(@PathVariable final String clientName, @PathVariable final String compName, @PathVariable("orgName") final String orgName) {
 
-    throw new EntityNotFoundException(
-      String.format("Organisation %s could not be found", orgId)
-    );
+    Organisation organisation = portalApiService.getOrganisation(orgName);
+    Component component = portalApiService.getComponent(compName);
+    Client client = portalApiService.getClient(organisation, clientName);
+
+    componentService.linkClient(component, client);
+
+    return ResponseEntity.noContent().build();
   }
 
-  private Component verifyComponent(String compUuid) {
-    Optional<Component> component = componentService.getComponentByUUID(compUuid);
-    if (component.isPresent()) {
-      return component.get();
-    }
-    throw new EntityNotFoundException(
-      String.format("Component %s could not be found", compUuid)
-    );
+  @ApiOperation("Remove client from component")
+  @RequestMapping(method = RequestMethod.DELETE,
+    value = "/{compName}/{orgName}/clients/{clientName}"
+  )
+  public ResponseEntity removeClientFromComponent(@PathVariable final String clientName, @PathVariable final String compName, @PathVariable("orgName") final String orgName) {
+
+    Organisation organisation = portalApiService.getOrganisation(orgName);
+    Component component = portalApiService.getComponent(compName);
+    Client client = portalApiService.getClient(organisation, clientName);
+
+    componentService.unLinkClient(component, client);
+
+    return ResponseEntity.noContent().build();
   }
+
 
   //
   // Exception handlers

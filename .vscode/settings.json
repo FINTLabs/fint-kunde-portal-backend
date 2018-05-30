@@ -1,4 +1,0 @@
-{
-  "typescript.tsdk": "./fint-kunde-portal-frontend/node_modules/typescript/lib",
-  "java.configuration.updateBuildConfiguration": "automatic"
-}
