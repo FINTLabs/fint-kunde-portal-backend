@@ -1,13 +1,13 @@
 import React from "react";
 import {Route} from "react-router-dom";
 import ClientsContainer from "../../features/clients/ClientsContainer";
-import Logs from "../../features/logs/Logs";
 import Dashboard from "../../features/dashboard/Dashboard";
 import Support from "../../features/support/Support";
 import ComponentContainer from "../../features/component/ComponentContainer";
 import AdapterContainer from "../../features/adapter/AdapterContainer";
 import ContactContainer from "../../features/contact/ContactContainer";
 import AssetContainer from "../../features/asset/AssetContainer";
+import LogContainer from "../../features/logs/LogContainer";
 
 
 class Routes extends React.Component {
@@ -21,7 +21,7 @@ class Routes extends React.Component {
         <Route path='/contacts' component={ContactContainer}/>
         <Route path='/assets' component={AssetContainer}/>
         <Route path='/apis' component={ComponentContainer}/>
-        <Route path='/logs' component={Logs}/>
+        <Route path='/logs' component={LogContainer}/>
         <Route path='/support' component={Support}/>
       </div>
     );
