@@ -1,5 +1,5 @@
-import React from 'react';
-import {CircularProgress, withStyles} from "material-ui";
+import React from "react";
+import {CircularProgress, withStyles} from "@material-ui/core";
 
 const styles = theme => ({
   progress: {

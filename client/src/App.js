@@ -1,9 +1,9 @@
-import React, {Component} from 'react';
-import './App.css';
-import {createMuiTheme, MuiThemeProvider} from "material-ui";
+import React, {Component} from "react";
+import "./App.css";
+import {createMuiTheme, MuiThemeProvider} from "@material-ui/core";
 import Main from "./main/Main";
 import AppProvider from "./data/context/AppProvider";
-import {CookiesProvider} from 'react-cookie';
+import {CookiesProvider} from "react-cookie";
 
 
 const theme = createMuiTheme({

@@ -1,13 +1,14 @@
-import React from 'react';
-import {ListItem, ListItemIcon, ListItemText} from 'material-ui/List';
-import DashboardIcon from '@material-ui/icons/Dashboard';
-import ClientIcon from '@material-ui/icons/ImportantDevices';
-import ApiIcon from '@material-ui/icons/WebAsset';
-import AdapterIcon from '@material-ui/icons/Link';
-import ContactIcon from '@material-ui/icons/Person';
-import LogIcon from '@material-ui/icons/Receipt';
-import SupportIcon from '@material-ui/icons/Help';
-import DocumentationIcon from '@material-ui/icons/Book';
+import React from "react";
+import {ListItem, ListItemIcon, ListItemText} from "@material-ui/core";
+import DashboardIcon from "@material-ui/icons/Dashboard";
+import ClientIcon from "@material-ui/icons/ImportantDevices";
+import ApiIcon from "@material-ui/icons/WebAsset";
+import AdapterIcon from "@material-ui/icons/Link";
+import ContactIcon from "@material-ui/icons/Person";
+import LogIcon from "@material-ui/icons/Receipt";
+import SupportIcon from "@material-ui/icons/Help";
+import DocumentationIcon from "@material-ui/icons/Book";
+import AssetIcon from "@material-ui/icons/Domain";
 import {Link} from "react-router-dom";
 
 const menuLink = {
@@ -24,14 +25,6 @@ export const MENU_ITEMS = (
         <ListItemText primary="Dashboard"/>
       </ListItem>
     </Link>
-    <Link to="/clients" style={menuLink}>
-      <ListItem button>
-        <ListItemIcon>
-          <ClientIcon/>
-        </ListItemIcon>
-        <ListItemText primary="Klienter"/>
-      </ListItem>
-    </Link>
     <Link to="/apis" style={menuLink}>
       <ListItem button>
         <ListItemIcon>
@@ -46,6 +39,22 @@ export const MENU_ITEMS = (
           <AdapterIcon/>
         </ListItemIcon>
         <ListItemText primary="Adapter"/>
+      </ListItem>
+    </Link>
+    <Link to="/clients" style={menuLink}>
+      <ListItem button>
+        <ListItemIcon>
+          <ClientIcon/>
+        </ListItemIcon>
+        <ListItemText primary="Klienter"/>
+      </ListItem>
+    </Link>
+    <Link to="/assets" style={menuLink}>
+      <ListItem button>
+        <ListItemIcon>
+          <AssetIcon/>
+        </ListItemIcon>
+        <ListItemText primary="Ressurser"/>
       </ListItem>
     </Link>
     <Link to="/contacts" style={menuLink}>

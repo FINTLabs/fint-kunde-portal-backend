@@ -4,7 +4,7 @@ import ContactApi from "../api/ContactApi";
 import LoadingProgress from "../../common/LoadingProgress";
 import PropTypes from "prop-types";
 
-import {Cookies, withCookies} from 'react-cookie';
+import {Cookies, withCookies} from "react-cookie";
 
 
 class AppProvider extends Component {
@@ -43,10 +43,12 @@ class AppProvider extends Component {
         return response.json();
       })
       .then(json => {
+
         this.setState({
           organisations: json,
           currentOrganisation: cookies.get('organisation') || json[1],
         });
+
 
       });
   };

@@ -1,11 +1,11 @@
 import React from "react";
 import {CopyToClipboard} from "react-copy-to-clipboard";
-import {Button, FormControl, IconButton, Input, InputAdornment, InputLabel, Tooltip, withStyles} from "material-ui";
-import {ContentCopy} from "material-ui-icons";
+import {Button, FormControl, IconButton, Input, InputAdornment, InputLabel, Tooltip, withStyles} from "@material-ui/core";
+import {ContentCopy} from "@material-ui/icons";
 import PropTypes from "prop-types";
 import AdapterApi from "../../../data/api/AdapterApi";
 import * as PasswordGenerator from "generate-password";
-import GetSecretIcon from '@material-ui/icons/GetApp';
+import GetSecretIcon from "@material-ui/icons/GetApp";
 import RefreshIcon from "@material-ui/icons/Refresh";
 import {withContext} from "../../../data/context/withContext";
 

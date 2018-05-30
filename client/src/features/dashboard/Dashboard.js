@@ -1,17 +1,18 @@
-import React, {Component} from 'react';
-import {Avatar, Card, CardContent, CardHeader, Divider, Grid, Typography, withStyles} from "material-ui";
-import {green} from 'material-ui/colors';
-import PropTypes from 'prop-types';
+import React, {Component} from "react";
+import {Avatar, Card, CardContent, CardHeader, Divider, Grid, Typography, withStyles} from "@material-ui/core";
+import {green} from "@material-ui/core/colors";
+import PropTypes from "prop-types";
 import {Link} from "react-router-dom";
-import AdapterIcon from 'material-ui-icons/Link';
-import ApiIcon from 'material-ui-icons/WebAsset';
-import ClientIcon from 'material-ui-icons/ImportantDevices';
+import AdapterIcon from "@material-ui/icons/Link";
+import ApiIcon from "@material-ui/icons/WebAsset";
+import ClientIcon from "@material-ui/icons/ImportantDevices";
 import {fetchAdapters} from "../../data/redux/dispatchers/adapter";
 import {bindActionCreators} from "redux";
 import {connect} from "react-redux";
 import {fetchKlienter} from "../../data/redux/dispatchers/client";
 import {fetchComponents} from "../../data/redux/dispatchers/component";
 import LoadingProgress from "../../common/LoadingProgress";
+import {withContext} from "../../data/context/withContext";
 
 const styles = theme => ({
   root: {
@@ -37,22 +38,12 @@ class Dashboard extends Component {
 
   constructor(props) {
     super(props);
-    this.state = {
-      organisation: {
-        dn: "ou=testing,ou=organisations,o=FINT-TEST",
-        name: "testing",
-        orgNumber: "123456789",
-        displayName: "Testing Unlimited",
-        components: ["ou=administrasjon_fullmakt,ou=apis,o=FINT-TEST", "ou=utdanning_elev,ou=apis,o=FINT-TEST"],
-        legalContact: "cn=42525252452,ou=contacts,o=FINT-TEST",
-        technicalContacts: ["cn=6464131321311,ou=contacts,o=FINT-TEST", "cn=42525252452,ou=contacts,o=FINT-TEST", "cn=13124|442,ou=contacts,o=FINT-TEST", "cn=4522244242,ou=contacts,o=FINT-TEST", "cn=ggfgdfgdg,ou=contacts,o=FINT-TEST", "cn=27077412345,ou=contacts,o=FINT-TEST", "cn=32345432,ou=contacts,o=FINT-TEST", "cn=21212121212,ou=contacts,o=FINT-TEST"]
-      }
-    };
+    this.state = {};
   }
 
   componentDidMount() {
-    this.props.fetchAdapters();
-    this.props.fetchClients();
+    this.props.fetchAdapters(this.props.context.currentOrganisation.name);
+    this.props.fetchClients(this.props.context.currentOrganisation.name);
     this.props.fetchComponents();
 
   }
@@ -128,7 +119,7 @@ class Dashboard extends Component {
                   <Divider/>
                   <CardContent className={classes.cardContent}>
                     <Typography type="display4">
-                      {this.state.organisation.components.length}
+                      {this.props.context.currentOrganisation.components.length}
                     </Typography>
                   </CardContent>
 
@@ -167,5 +158,5 @@ function mapDispatchToProps(dispatch) {
   }, dispatch);
 }
 
-export default withStyles(styles)(connect(mapStateToProps, mapDispatchToProps)(Dashboard));
+export default withStyles(styles)(connect(mapStateToProps, mapDispatchToProps)(withContext(Dashboard)));
 

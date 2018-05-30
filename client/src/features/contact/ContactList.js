@@ -1,5 +1,5 @@
 import React from "react";
-import {withStyles} from "material-ui";
+import {withStyles} from "@material-ui/core";
 import TechnicalList from "./lists/TechnicalList";
 import PropTypes from "prop-types";
 import LegalList from "./lists/LegalList";

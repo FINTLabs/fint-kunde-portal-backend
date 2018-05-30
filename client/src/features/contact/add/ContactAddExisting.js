@@ -1,7 +1,7 @@
-import React from 'react';
-import Button from 'material-ui/Button';
-import Dialog, {DialogActions, DialogContent, DialogTitle,} from 'material-ui/Dialog';
-import {Add} from "material-ui-icons";
+import React from "react";
+import Button from "@material-ui/core/Button";
+import {Dialog, DialogActions, DialogContent, DialogTitle,} from "@material-ui/core";
+import {Add} from "@material-ui/icons";
 import {
   Avatar,
   IconButton,
@@ -12,8 +12,8 @@ import {
   ListItemSecondaryAction,
   ListItemText,
   withStyles
-} from "material-ui";
-import ContactIcon from '@material-ui/icons/Person';
+} from "@material-ui/core";
+import ContactIcon from "@material-ui/icons/Person";
 import AddIconCircle from "@material-ui/icons/AddCircle";
 import OrganisationApi from "../../../data/api/OrganisationApi";
 import InformationMessageBox from "../../../common/InformationMessageBox";

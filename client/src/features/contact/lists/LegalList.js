@@ -11,10 +11,10 @@ import {
   ListItemText,
   Typography,
   withStyles
-} from "material-ui";
-import SettingsIcon from '@material-ui/icons/Settings';
-import ContactIcon from '@material-ui/icons/Person';
-import blue from "material-ui/colors/blue";
+} from "@material-ui/core";
+import SettingsIcon from "@material-ui/icons/Settings";
+import ContactIcon from "@material-ui/icons/Person";
+import blue from "@material-ui/core/colors/blue";
 import ContactView from "../view/ContactView";
 
 

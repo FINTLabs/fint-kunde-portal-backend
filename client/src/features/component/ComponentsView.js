@@ -1,8 +1,8 @@
-import React from 'react';
-import Button from 'material-ui/Button';
-import Dialog, {DialogActions, DialogContent, DialogTitle,} from 'material-ui/Dialog';
-import {Table, TableCell, TableRow, withStyles} from "material-ui";
-import PropTypes from 'prop-types';
+import React from "react";
+import Button from "@material-ui/core/Button";
+import {Dialog, DialogActions, DialogContent, DialogTitle,} from "@material-ui/core";
+import {Table, TableCell, TableRow, withStyles} from "@material-ui/core";
+import PropTypes from "prop-types";
 
 
 const styles = (theme) => ({

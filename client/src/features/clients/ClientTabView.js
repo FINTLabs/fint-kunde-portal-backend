@@ -1,12 +1,12 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import SwipeableViews from 'react-swipeable-views';
-import AppBar from 'material-ui/AppBar';
-import Tabs, {Tab} from 'material-ui/Tabs';
-import {FormControl, IconButton, Input, InputAdornment, InputLabel, TextField} from "material-ui";
-import {ContentCopy, Refresh} from "material-ui-icons";
-import withStyles from "material-ui/es/styles/withStyles";
-import {CopyToClipboard} from 'react-copy-to-clipboard';
+import React from "react";
+import PropTypes from "prop-types";
+import SwipeableViews from "react-swipeable-views";
+import AppBar from "@material-ui/core/AppBar";
+import Tabs, {Tab} from "@material-ui/core/Tabs";
+import {FormControl, IconButton, Input, InputAdornment, InputLabel, TextField} from "@material-ui/core";
+import {ContentCopy, Refresh} from "@material-ui/icons";
+import withStyles from "@material-ui/core/styles/withStyles";
+import {CopyToClipboard} from "react-copy-to-clipboard";
 import CopyButton from "../../common/CopyButton";
 import TabContainer from "../../common/TabContainer";
 
@@ -86,7 +86,7 @@ class ClientTabView extends React.Component {
           </Tabs>
         </AppBar>
         <SwipeableViews
-          axis={theme.direction === 'rtl' ? 'x-reverse' : 'x'}
+          axis={theme.direction === "rtl" ? 'x-reverse' : 'x'}
           index={this.state.value}
           onChangeIndex={this.handleChangeIndex}
         >

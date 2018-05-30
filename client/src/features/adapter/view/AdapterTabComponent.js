@@ -9,14 +9,14 @@ import {
   ListItemText,
   Typography,
   withStyles
-} from "material-ui";
-import AddIcon from '@material-ui/icons/AddCircle';
-import RemoveIcon from '@material-ui/icons/RemoveCircle';
-import ComponentIcon from '@material-ui/icons/WebAsset';
+} from "@material-ui/core";
+import AddIcon from "@material-ui/icons/AddCircle";
+import RemoveIcon from "@material-ui/icons/RemoveCircle";
+import ComponentIcon from "@material-ui/icons/WebAsset";
 import {bindActionCreators} from "redux";
 import {connect} from "react-redux";
 import {fetchComponents} from "../../../data/redux/dispatchers/component";
-import {green} from "material-ui/colors/index";
+import {green} from "@material-ui/core/colors/index";
 import LoadingProgress from "../../../common/LoadingProgress";
 import {addAdapterToComponent, deleteAdapterFromComponent} from "../../../data/redux/dispatchers/adapter";
 import AdapterApi from "../../../data/api/AdapterApi";

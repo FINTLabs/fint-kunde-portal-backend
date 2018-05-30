@@ -1,6 +1,6 @@
-import React, {Component} from 'react';
-import PropTypes from 'prop-types';
-import {Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField} from "material-ui";
+import React, {Component} from "react";
+import PropTypes from "prop-types";
+import {Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField} from "@material-ui/core";
 import ContactApi from "../../../data/api/ContactApi";
 
 class ContactView extends Component {

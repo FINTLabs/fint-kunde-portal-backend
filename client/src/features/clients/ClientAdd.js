@@ -1,9 +1,9 @@
-import React from 'react';
-import Button from 'material-ui/Button';
-import Dialog, {DialogActions, DialogContent, DialogContentText, DialogTitle,} from 'material-ui/Dialog';
-import TextField from 'material-ui/TextField';
-import {Add} from "material-ui-icons";
-import {withStyles} from "material-ui";
+import React from "react";
+import Button from "@material-ui/core/Button";
+import {Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle,} from "@material-ui/core";
+import TextField from "@material-ui/core/TextField";
+import {Add} from "@material-ui/icons";
+import {withStyles} from "@material-ui/core";
 import AutoHideNotification from "../../common/AutoHideNotification";
 
 const styles = () => ({

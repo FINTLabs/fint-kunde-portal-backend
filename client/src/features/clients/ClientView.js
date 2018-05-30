@@ -1,7 +1,7 @@
-import React from 'react';
-import Button from 'material-ui/Button';
-import Dialog, {DialogActions, DialogContent, DialogTitle,} from 'material-ui/Dialog';
-import {Snackbar, withStyles} from "material-ui";
+import React from "react";
+import Button from "@material-ui/core/Button";
+import {Dialog, DialogActions, DialogContent, DialogTitle,} from "@material-ui/core";
+import {Snackbar, withStyles} from "@material-ui/core";
 import ClientTabView from "./ClientTabView";
 
 
@@ -27,7 +27,7 @@ class ClientView extends React.Component {
     this.props.onClose();
   };
   handleCopySnackbarClose = (event, reason) => {
-    if (reason === 'clickaway') {
+    if (reason === "clickaway") {
       return;
     }
 
@@ -63,7 +63,7 @@ class ClientView extends React.Component {
           }}
           open={this.state.copiedToClipboard}
           onClose={this.handleCopySnackbarClose}
-          SnackbarContentProps={{
+          ContentProps={{
             'aria-describedby': 'message-id',
           }}
           message="Kopiert"

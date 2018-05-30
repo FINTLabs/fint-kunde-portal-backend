@@ -1,7 +1,7 @@
-import React from 'react';
-import Button from 'material-ui/Button';
-import Dialog, {DialogActions, DialogContent, DialogTitle,} from 'material-ui/Dialog';
-import {withStyles} from "material-ui";
+import React from "react";
+import Button from "@material-ui/core/Button";
+import {Dialog, DialogActions, DialogContent, DialogTitle,} from "@material-ui/core";
+import {withStyles} from "@material-ui/core";
 import AdapterTabView from "./AdapterTabView";
 import AutoHideNotification from "../../../common/AutoHideNotification";
 

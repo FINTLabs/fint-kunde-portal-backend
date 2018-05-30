@@ -1,11 +1,12 @@
-import React from 'react';
-import {connect} from 'react-redux';
-import {bindActionCreators} from 'redux';
-import {withStyles} from "material-ui";
+import React from "react";
+import {connect} from "react-redux";
+import {bindActionCreators} from "redux";
+import {withStyles} from "@material-ui/core";
 import LoadingProgress from "../../common/LoadingProgress";
 import KlienterList from "./ClientsList";
 import ClientAdd from "./ClientAdd";
 import {createKlient, deleteKlient, fetchKlienter, updateClient} from "../../data/redux/dispatchers/client";
+import {withContext} from "../../data/context/withContext";
 
 
 const styles = () => ({
@@ -21,7 +22,7 @@ class ClientsContainer extends React.Component {
   }
 
   componentDidMount() {
-    this.props.fetchKlienter()
+    this.props.fetchKlienter(this.props.context.currentOrganisation.name);
   }
 
   render() {
@@ -70,4 +71,4 @@ function mapDispatchToProps(dispatch) {
   }, dispatch);
 }
 
-export default withStyles(styles)(connect(mapStateToProps, mapDispatchToProps)(ClientsContainer));
+export default withStyles(styles)(connect(mapStateToProps, mapDispatchToProps)(withContext(ClientsContainer)));

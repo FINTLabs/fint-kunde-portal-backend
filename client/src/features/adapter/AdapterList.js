@@ -1,5 +1,5 @@
-import React, {Component} from 'react';
-import PropTypes from 'prop-types';
+import React, {Component} from "react";
+import PropTypes from "prop-types";
 import {
   Avatar,
   Divider,
@@ -11,8 +11,8 @@ import {
   ListItemText,
   Typography,
   withStyles
-} from "material-ui";
-import {Delete, Edit, InsertLink} from "material-ui-icons";
+} from "@material-ui/core";
+import {Delete, Edit, InsertLink} from "@material-ui/icons";
 import AutoHideNotification from "../../common/AutoHideNotification";
 import AdapterView from "./view/AdapterView";
 import {withContext} from "../../data/context/withContext";

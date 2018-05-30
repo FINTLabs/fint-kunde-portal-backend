@@ -1,6 +1,6 @@
-import React from 'react';
-import {Snackbar, withStyles} from "material-ui";
-import PropTypes from 'prop-types';
+import React from "react";
+import {Snackbar, withStyles} from "@material-ui/core";
+import PropTypes from "prop-types";
 
 const styles = () => {
 
@@ -9,7 +9,7 @@ const styles = () => {
 class AutoHideNotification extends React.Component {
 
   handleClose = (reason) => {
-    if (reason === 'clickaway') {
+    if (reason === "clickaway") {
       return;
     }
 
@@ -44,7 +44,7 @@ class AutoHideNotification extends React.Component {
         }}
         open={this.state.open}
         onClose={this.handleClose}
-        SnackbarContentProps={{
+        ContentProps={{
           'aria-describedby': 'message-id',
         }}
         message={this.props.message}

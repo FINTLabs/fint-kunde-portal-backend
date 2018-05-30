@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, {Component} from "react";
 import {
   Avatar,
   Divider,
@@ -10,14 +10,14 @@ import {
   ListItemText,
   Typography,
   withStyles
-} from "material-ui";
-import SettingsIcon from '@material-ui/icons/Settings';
-import AddIcon from '@material-ui/icons/AddCircle';
-import RemoveIcon from '@material-ui/icons/RemoveCircle';
-import ComponentIcon from '@material-ui/icons/WebAsset';
+} from "@material-ui/core";
+import SettingsIcon from "@material-ui/icons/Settings";
+import AddIcon from "@material-ui/icons/AddCircle";
+import RemoveIcon from "@material-ui/icons/RemoveCircle";
+import ComponentIcon from "@material-ui/icons/WebAsset";
 import OrganisationApi from "../../data/api/OrganisationApi";
 import AutoHideNotification from "../../common/AutoHideNotification";
-import PropTypes from 'prop-types';
+import PropTypes from "prop-types";
 import ComponentsView from "./ComponentsView";
 import WarningMessageBox from "../../common/WarningMessageBox";
 import InformationMessageBox from "../../common/InformationMessageBox";

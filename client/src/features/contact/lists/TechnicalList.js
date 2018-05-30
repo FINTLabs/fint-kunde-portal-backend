@@ -11,12 +11,12 @@ import {
   ListItemText,
   Typography,
   withStyles
-} from "material-ui";
-import RemoveIcon from '@material-ui/icons/RemoveCircle';
-import SettingsIcon from '@material-ui/icons/Settings';
-import ContactIcon from '@material-ui/icons/Person';
+} from "@material-ui/core";
+import RemoveIcon from "@material-ui/icons/RemoveCircle";
+import SettingsIcon from "@material-ui/icons/Settings";
+import ContactIcon from "@material-ui/icons/Person";
 import SetLegalIcon from "@material-ui/icons/AccountBalance";
-import blue from "material-ui/colors/blue";
+import blue from "@material-ui/core/colors/blue";
 import OrganisationApi from "../../../data/api/OrganisationApi";
 import WarningMessageBox from "../../../common/WarningMessageBox";
 import ContactView from "../view/ContactView";

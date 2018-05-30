@@ -1,5 +1,5 @@
-import React, {Component} from 'react';
-import {Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField, withStyles} from "material-ui";
+import React, {Component} from "react";
+import {Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField, withStyles} from "@material-ui/core";
 import AddIcon from "@material-ui/icons/Add";
 import ContactApi from "../../../data/api/ContactApi";
 import PropTypes from "prop-types";

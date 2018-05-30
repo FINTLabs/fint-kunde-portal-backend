@@ -1,6 +1,6 @@
-import React, {Component} from 'react';
-import PropTypes from 'prop-types';
-import {Button, Menu, MenuItem, withStyles} from "material-ui";
+import React, {Component} from "react";
+import PropTypes from "prop-types";
+import {Button, Menu, MenuItem, withStyles} from "@material-ui/core";
 import {withContext} from "../../data/context/withContext";
 
 const styles = (theme) => ({

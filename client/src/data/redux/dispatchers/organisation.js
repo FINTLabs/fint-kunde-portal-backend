@@ -1,19 +1,11 @@
 import {
-  addTechnicalContactError,
-  addTechnicalContactSuccess,
   fetchLegalContactError,
   fetchLegalContactSuccess,
   fetchOrganisationError,
   fetchOrganisationSuccess,
   fetchTechnicalContactsError,
   fetchTechnicalContactsSuccess,
-  removeTechnicalContactError,
-  removeTechnicalContactSuccess,
-  setLegalContactError,
-  setLegalContactSuccess,
-  unlinkComponentFromOrganisationSuccess,
-  unsetLegalContactError,
-  unsetLegalContactSuccess
+  unlinkComponentFromOrganisationSuccess
 } from "../actions/organisation";
 import OrganisationApi from "../../api/OrganisationApi";
 import {fetchComponents} from "./component";

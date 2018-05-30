@@ -1,6 +1,6 @@
-import React, {Component} from 'react';
-import KlientView from './ClientView';
-import PropTypes from 'prop-types';
+import React, {Component} from "react";
+import KlientView from "./ClientView";
+import PropTypes from "prop-types";
 import {
   Avatar,
   Divider,
@@ -12,9 +12,9 @@ import {
   ListItemText,
   Typography,
   withStyles
-} from "material-ui";
-import {green} from 'material-ui/colors';
-import {Delete, Edit, ImportantDevices} from "material-ui-icons";
+} from "@material-ui/core";
+import {green} from "@material-ui/core/colors";
+import {Delete, Edit, ImportantDevices} from "@material-ui/icons";
 import AutoHideNotification from "../../common/AutoHideNotification";
 
 const styles = theme => ({

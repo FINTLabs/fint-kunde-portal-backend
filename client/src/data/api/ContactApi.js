@@ -1,13 +1,13 @@
 class ContactApi {
 
   static fetchContacts() {
-    const url = '/api/contacts';
+    const url = "/api/contacts";
     return fetch(url, {method: 'GET'})
       .then(response => Promise.all([response, response.json()]));
   }
 
   static fetchContactOrganisatons() {
-    const url = '/api/contacts/organisations';
+    const url = "/api/contacts/organisations";
     return fetch(url, {method: 'GET'})
     //.then(response => Promise.all([response, response.json()]));
       .then(response => {

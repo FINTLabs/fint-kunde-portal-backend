@@ -10,10 +10,10 @@ import {DELETE_CLIENT_SUCCESS} from "../actions/types";
 import ClientApi from "../../api/ClientApi";
 
 
-export function fetchKlienter() {
+export function fetchKlienter(organisation) {
 
   return (dispatch) => {
-    return ClientApi.getKlienter().then(([response, json]) => {
+    return ClientApi.getKlienter(organisation).then(([response, json]) => {
       if (response.status === 200) {
         dispatch(fetchClientSuccess(json));
       }

@@ -1,5 +1,5 @@
-import allReducer from './index';
-import expect from 'expect';
+import allReducer from "./index";
+import expect from "expect";
 
 describe('allReducer', function () {
   it('Returns the JSON value state', function () {

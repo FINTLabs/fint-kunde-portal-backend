@@ -1,6 +1,6 @@
 import React from "react";
-import {FormControl, FormHelperText, Input, InputLabel, withStyles} from "material-ui";
-import PropTypes from 'prop-types';
+import {FormControl, FormHelperText, Input, InputLabel, withStyles} from "@material-ui/core";
+import PropTypes from "prop-types";
 
 
 const styles = () => {

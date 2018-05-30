@@ -1,11 +1,11 @@
-import React from 'react';
-import {connect} from 'react-redux';
-import {bindActionCreators} from 'redux';
+import React from "react";
+import {connect} from "react-redux";
+import {bindActionCreators} from "redux";
 import LoadingProgress from "../../common/LoadingProgress";
 import {fetchLegalContact, fetchTechnicalContacts} from "../../data/redux/dispatchers/organisation";
 import ContactList from "./ContactList";
 import ContactAdd from "./add/ContactAddExisting";
-import {withStyles} from "material-ui";
+import {withStyles} from "@material-ui/core";
 import {fetchContacts} from "../../data/redux/dispatchers/contact";
 import AutoHideNotification from "../../common/AutoHideNotification";
 import PropTypes from "prop-types";

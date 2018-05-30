@@ -1,10 +1,10 @@
-import React from 'react';
-import SwipeableViews from 'react-swipeable-views';
-import AppBar from 'material-ui/AppBar';
-import Tabs, {Tab} from 'material-ui/Tabs';
-import {withStyles} from "material-ui";
+import React from "react";
+import SwipeableViews from "react-swipeable-views";
+import AppBar from "@material-ui/core/AppBar";
+import {Tab, Tabs} from "@material-ui/core";
+import {withStyles} from "@material-ui/core";
 import TabContainer from "../../../common/TabContainer";
-import PropTypes from 'prop-types';
+import PropTypes from "prop-types";
 import AdapterTabComponent from "./AdapterTabComponent";
 import AdapterTabGeneral from "./AdapterTabGeneral";
 import AdapterTabAuthenticationInformation from "./AdapterTabAuthenticationInformation";
@@ -62,7 +62,7 @@ class AdapterTabView extends React.Component {
           </Tabs>
         </AppBar>
         <SwipeableViews
-          axis={theme.direction === 'rtl' ? 'x-reverse' : 'x'}
+          axis={theme.direction === "rtl" ? 'x-reverse' : 'x'}
           index={this.state.value}
           onChangeIndex={this.handleChangeIndex}
         >
