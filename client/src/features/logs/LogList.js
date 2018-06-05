@@ -1,35 +1,28 @@
 import React, {Component} from "react";
-import {Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField} from "@material-ui/core";
-import LogIcon from "@material-ui/icons/Receipt";
-import LogApi from "../../data/api/LogApi";
-import PropTypes from "prop-types";
+import ExpansionPanel from '@material-ui/core/ExpansionPanel';
+import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
+import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import {
 	  Avatar,
-	  Divider,
 	  IconButton,
-	  List,
-	  ListItem,
-	  ListItemAvatar,
-	  ListItemSecondaryAction,
-	  ListItemText,
 	  Typography,
 	  withStyles
 	} from "@material-ui/core";
-	import {Delete, Edit, InsertLink} from "@material-ui/icons";
-	import AutoHideNotification from "../../common/AutoHideNotification";
 
-const styles = (theme) => ({
-  createContactButton: {
-    margin: theme.spacing.unit,
-    top: theme.spacing.unit * 2,
-    right: theme.spacing.unit * 3,
-    position: 'absolute',
-  },
-  dialogContent: {
-    marginRight: theme.spacing.unit,
-    marginLeft: theme.spacing.unit,
-  }
-});
+const styles = theme => ({
+	  root: {
+	    width: '50%',
+	  },
+	  heading: {
+	    fontSize: theme.typography.pxToRem(15),
+	    fontWeight: theme.typography.fontWeightRegular,
+	  },
+	  details: {
+		    fontSize: theme.typography.pxToRem(15),
+		    fontWeight: theme.typography.fontWeightRegular,
+	  },
+	});
 
 class LogList extends Component {
 
@@ -41,29 +34,25 @@ class LogList extends Component {
       open: false,
     };
   }
-
+  
   render() {
     const {classes} = this.props;
     return (
-     <div className={classes.logList}>
-      <List>
+      <div className={classes.root}>
         {this.props.log.map((log) =>
-          <ListItem className={classes.listItem} key={log.corrId}>
-            <ListItemAvatar>
-              <Avatar className={classes.itemAvatar}>
-                <LogIcon/>
-              </Avatar>
-            </ListItemAvatar>
-            <ListItemText
-              primary={log.corrId}
-            />
-          </ListItem>,
+	      <ExpansionPanel>   
+	        <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
+	          <Typography className={classes.heading}>{log.corrId}</Typography>
+	        </ExpansionPanelSummary>
+	        <ExpansionPanelDetails className={classes.details}>
+	          	action:{log.currentEvent.action} status: {log.currentEvent.status}, time: {log.currentEvent.time}, orgId: {log.currentEvent.orgId}
+	        </ExpansionPanelDetails>
+	      </ExpansionPanel>
         )}
-      </List>
+ 
     </div>
     );
-  }
-
+ }
 }
 
 

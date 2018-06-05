@@ -1,25 +1,13 @@
 import React from "react";
 import Button from "@material-ui/core/Button";
-import {Dialog, DialogActions, DialogContent, DialogTitle,} from "@material-ui/core";
 import LogApi from "../../data/api/LogApi";
 import LogList from "./LogList";
-import {
-  Avatar,
-  IconButton,
-  Input,
-  List,
-  ListItem,
-  ListItemAvatar,
-  ListItemSecondaryAction,
-  ListItemText,
-  withStyles
-} from "@material-ui/core";
-
-import OrganisationApi from "../../data/api/OrganisationApi";
+import { Input,  withStyles} from "@material-ui/core";
 import InformationMessageBox from "../../common/InformationMessageBox";
 import PropTypes from "prop-types";
-
+import LoadingProgress from "../../common/LoadingProgress";
 import {withContext} from "../../data/context/withContext";
+import Search from "@material-ui/icons/Search";
 
 const styles = (theme) => ({
   addButton: {
@@ -52,7 +40,7 @@ const styles = (theme) => ({
 
   searchInput: {
     margin: theme.spacing.unit,
-    width: '80%',
+    width: '50%',
   },
 
 
@@ -62,7 +50,7 @@ class LogContainer extends React.Component {
 
 
   onSearch = (searchString) => {
-    let logs = this.props.logs;
+    let log = this.props.log;
   };
 
 
@@ -87,6 +75,7 @@ class LogContainer extends React.Component {
 	    LogApi.fetchLog("pwf.no", this.state.searchString)
 	      .then(response => {
 	        this.setState({log: response[1].data});
+	  	  console.log(response) 
 	      })
   };
 	  
@@ -109,7 +98,7 @@ class LogContainer extends React.Component {
               onKeyUp={() => this.onSearch(this.state.query)}
             />
         	<Button onClick={() => this.searchLog(this.state.query)}  color="primary">
-        		Søk i log
+        		<Search/>
         	</Button>
 		      <div className={classes.root}>
 		        <LogList
