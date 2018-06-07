@@ -3,7 +3,6 @@ import Button from "@material-ui/core/Button";
 import LogApi from "../../data/api/LogApi";
 import LogList from "./LogList";
 import { Input,  withStyles} from "@material-ui/core";
-import InformationMessageBox from "../../common/InformationMessageBox";
 import PropTypes from "prop-types";
 import LoadingProgress from "../../common/LoadingProgress";
 import {withContext} from "../../data/context/withContext";
@@ -48,12 +47,9 @@ const styles = (theme) => ({
 
 class LogContainer extends React.Component {
 
-
   onSearch = (searchString) => {
     let log = this.props.log;
   };
-
-
 
   onChangeSearch = (event) => {
     this.setState({
@@ -67,16 +63,21 @@ class LogContainer extends React.Component {
     this.state = {
       log: [],
       searchString: '',
-      message: '',
+      loading: false,
     };
   }
   
   searchLog = () => {
-	    LogApi.fetchLog("pwf.no", this.state.searchString)
-	      .then(response => {
-	        this.setState({log: response[1].data});
-	  	  console.log(response) 
-	      })
+	this.setState({
+      loading: true,
+    });
+    LogApi.fetchLog("pwf.no", this.state.searchString)
+      .then(response => {
+        this.setState({
+        	log: response[1].data,
+        	loading: false,
+        });
+      })
   };
 	  
   render() {
@@ -84,16 +85,11 @@ class LogContainer extends React.Component {
     const {classes} = this.props;
     return (
       <div className={classes.root}>
-        <InformationMessageBox
-          message={this.state.message}
-        />
             <Input
               autoFocus
               value={this.state.searchString}
               className={classes.searchInput}
-              inputProps={{
-                'aria-label': 'Log',
-              }}
+              placeholder= "Søk etter log"
               onChange={this.onChangeSearch}
               onKeyUp={() => this.onSearch(this.state.query)}
             />
@@ -103,6 +99,7 @@ class LogContainer extends React.Component {
 		      <div className={classes.root}>
 		        <LogList
 		          log={this.state.log}
+		          loading={this.state.loading}
 		        />
 		      </div>	
 
@@ -114,9 +111,9 @@ class LogContainer extends React.Component {
 
 LogContainer.propTypes = {
   classes: PropTypes.any.isRequired,
-  logs: PropTypes.any.isRequired,
+  log: PropTypes.any.isRequired,
   fetchLog: PropTypes.any.isRequired,
-  notify: PropTypes.any.isRequired
+  loading: PropTypes.any.isRequired
 };
 
 export default withStyles(styles)(withContext(LogContainer));

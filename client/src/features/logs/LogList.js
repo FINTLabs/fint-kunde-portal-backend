@@ -3,9 +3,9 @@ import ExpansionPanel from '@material-ui/core/ExpansionPanel';
 import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
 import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import LogIcon from "@material-ui/icons/Receipt";
+import LoadingProgress from "../../common/LoadingProgress";
 import {
-	  Avatar,
-	  IconButton,
 	  Typography,
 	  withStyles
 	} from "@material-ui/core";
@@ -25,24 +25,24 @@ const styles = theme => ({
 	});
 
 class LogList extends Component {
-
-
   constructor(props) {
     super(props);
-    this.state = {
-      log: {},
-      open: false,
-    };
+    this.state = {};
   }
   
   render() {
-    const {classes} = this.props;
+	  console.log(this.props.loading)
+	const {classes} = this.props;
+	if (this.props.loading == true) {
+		return (<LoadingProgress/>)
+	} else {
+
     return (
       <div className={classes.root}>
         {this.props.log.map((log) =>
 	      <ExpansionPanel>   
 	        <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-	          <Typography className={classes.heading}>{log.corrId}</Typography>
+	          <Typography className={classes.heading}><LogIcon/>{log.corrId}</Typography>
 	        </ExpansionPanelSummary>
 	        <ExpansionPanelDetails className={classes.details}>
 	          	action:{log.currentEvent.action} status: {log.currentEvent.status}, time: {log.currentEvent.time}, orgId: {log.currentEvent.orgId}
@@ -52,6 +52,7 @@ class LogList extends Component {
  
     </div>
     );
+	}
  }
 }
 
