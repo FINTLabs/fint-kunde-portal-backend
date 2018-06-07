@@ -9,40 +9,17 @@ import {withContext} from "../../data/context/withContext";
 import Search from "@material-ui/icons/Search";
 
 const styles = (theme) => ({
-  addButton: {
-    margin: 0,
-    top: 100,
-    left: 'auto',
-    bottom: 'auto',
-    right: 50,
-    position: 'fixed',
-  },
   root: {},
   dialog: {
     height: '75%',
-  },
-  contactList: {
-    marginRight: theme.spacing.unit * 2,
-    marginLeft: theme.spacing.unit * 2,
   },
   title: {
     paddingLeft: theme.spacing.unit * 3,
     paddingBottom: theme.spacing.unit,
   },
-  listItem: {
-    borderBottom: '1px dashed lightgray',
-  },
-  itemAvatar: {
-    color: '#fff',
-    backgroundColor: theme.palette.secondary.main,
-  },
-
   searchInput: {
-    margin: theme.spacing.unit,
-    width: '50%',
+    width: '30%',
   },
-
-
 });
 
 class LogContainer extends React.Component {
@@ -81,7 +58,6 @@ class LogContainer extends React.Component {
   };
 	  
   render() {
-	 
     const {classes} = this.props;
     return (
       <div className={classes.root}>
