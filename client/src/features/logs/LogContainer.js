@@ -2,23 +2,23 @@ import React from "react";
 import Button from "@material-ui/core/Button";
 import LogApi from "../../data/api/LogApi";
 import LogList from "./LogList";
-import { Input,  withStyles} from "@material-ui/core";
+import { Input,  withStyles, Typography} from "@material-ui/core";
 import PropTypes from "prop-types";
 import LoadingProgress from "../../common/LoadingProgress";
 import {withContext} from "../../data/context/withContext";
 import Search from "@material-ui/icons/Search";
 
 const styles = (theme) => ({
-  root: {},
-  dialog: {
-    height: '75%',
+  root: {
+	    display: 'flex',
+	    justifyContent: 'center',
   },
   title: {
-    paddingLeft: theme.spacing.unit * 3,
+    paddingLeft: theme.spacing.unit * 50,
     paddingBottom: theme.spacing.unit,
   },
   searchInput: {
-    width: '30%',
+    width: '50%',
   },
 });
 
@@ -60,25 +60,27 @@ class LogContainer extends React.Component {
   render() {
     const {classes} = this.props;
     return (
-      <div className={classes.root}>
-            <Input
-              autoFocus
-              value={this.state.searchString}
-              className={classes.searchInput}
-              placeholder= "Søk etter log"
-              onChange={this.onChangeSearch}
-              onKeyUp={() => this.onSearch(this.state.query)}
-            />
-        	<Button onClick={() => this.searchLog(this.state.query)}  color="primary">
-        		<Search/>
-        	</Button>
-		      <div className={classes.root}>
-		        <LogList
-		          log={this.state.log}
-		          loading={this.state.loading}
-		        />
-		      </div>	
-
+      <div>
+        <Typography variant="headline" className={classes.title}>Logs</Typography>
+        <div className={classes.root}>
+	        <Input
+	          autoFocus
+	          value={this.state.searchString}
+	          className={classes.searchInput}
+	          placeholder= "Søk etter log"
+	          onChange={this.onChangeSearch}
+	          onKeyUp={() => this.onSearch(this.state.query)}
+	        />
+	    	<Button onClick={() => this.searchLog(this.state.query)}  color="primary">
+	    		<Search/>
+	    	</Button>
+    	</div>
+        <div className={classes.root}>
+          <LogList
+            log={this.state.log}
+            loading={this.state.loading}
+          />
+        </div>	
       </div>
     )
   }

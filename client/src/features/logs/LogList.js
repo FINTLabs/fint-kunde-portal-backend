@@ -12,7 +12,7 @@ import {
 
 const styles = theme => ({
 	  root: {
-	    width: '50%',
+	    width: '55%',
 	  },
 	  heading: {
 	    fontSize: theme.typography.pxToRem(15),
