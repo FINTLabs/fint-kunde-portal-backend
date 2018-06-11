@@ -1,20 +1,80 @@
-import React, {Component} from 'react';
-import PropTypes from 'prop-types';
+import React from "react";
+import {connect} from "react-redux";
+import {bindActionCreators} from "redux";
 import {withStyles} from "@material-ui/core";
+import LoadingProgress from "../../common/LoadingProgress";
+import {createAsset, fetchAssets, updateAsset} from "../../data/redux/dispatchers/asset";
+import AssetList from "./AssetList";
+import AssetAdd from "./add/AssetAdd";
+import {withContext} from "../../data/context/withContext";
 
-const styles = (theme) => (
-  {}
-);
-class AssetContainer extends Component {
+
+const styles = () => ({
+  root: {}
+});
+
+class AssetContainer extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      assetAdded: false,
+    };
+  }
+
+  componentDidMount() {
+	  console.log(this.props.context.currentOrganisation.name)
+	   console.log(this.props)
+    this.props.fetchAssets(this.props.context.currentOrganisation.name);
+  }
+
+  componentDidUpdate(prevProps, prevState, snapshot) {
+
+    if (prevProps.context !== this.props.context) {
+      this.props.fetchAssets(this.props.context.currentOrganisation.name);
+    }
+  }
+
   render() {
+    if (this.props.assets === undefined || this.props.context.currentOrganisation === undefined) {
+      return <LoadingProgress/>;
+    } else {
+      return this.renderAssets();
+    }
+  }
+
+  renderAssets() {
+    const {classes} = this.props;
     return (
-      <div>
-        Her kommer assets
+      <div className={classes.root}>
+        <AssetList assets={this.props.assets}
+                   updateAsset={this.props.updateAsset}
+        />
+        <AssetAdd
+          createAsset={this.props.createAsset}
+        />
       </div>
+
+
     );
   }
 }
 
 AssetContainer.propTypes = {};
 
-export default withStyles(styles)(AssetContainer);
+function mapStateToProps(state) {
+
+  return {
+    assets: state.asset.assets,
+    components: state.component.components,
+  }
+}
+
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators({
+    fetchAssets: fetchAssets,
+    updateAsset: updateAsset,
+    createAsset: createAsset,
+  }, dispatch);
+}
+
+export default withStyles(styles)(connect(mapStateToProps, mapDispatchToProps)(withContext(AssetContainer)));

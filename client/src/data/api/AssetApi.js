@@ -1,10 +1,11 @@
 class AssetApi {
 
-  static getAssets(organisation) {
+  static fetchAssets(organisation) {
 
-    const url = `/api/assets/${organisation}`;
-    return fetch(url, {method: 'GET'})
+    const url = `/api/assets/${organisation}/`;
+	  return fetch(url, {method: 'GET'})
       .then(response => Promise.all([response, response.json()]));
+    
   }
 
   static createAsset(asset, organisation) {
