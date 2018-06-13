@@ -4,9 +4,8 @@ import {Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle,} f
 import TextField from "@material-ui/core/TextField";
 import {Add} from "@material-ui/icons";
 import {withStyles} from "@material-ui/core";
-import AutoHideNotification from "../../../common/AutoHideNotification";
-import UsernameValidationInput from "../../../common/UsernameValidationInput";
-
+import AutoHideNotification from "../../common/AutoHideNotification";
+import {withContext} from "../../data/context/withContext";
 const styles = () => ({
   addButton: {
     margin: 0,
@@ -21,16 +20,15 @@ const styles = () => ({
 
 class AssetAdd extends React.Component {
   updateAssetState = (event) => {
-
     const field = event.target.name;
-
     const asset = this.state.asset;
     asset[field] = event.target.value;
     return this.setState({asset: asset});
   };
 
   handleAddAsset = () => {
-    this.props.createAsset(this.state.asset).then(() => {
+	  const {currentOrganisation} = this.props.context;
+	  this.props.createAsset(this.state.asset, currentOrganisation.name).then(() => {
       this.setState({
         showAssetAdd: false,
         notify: true,
@@ -39,10 +37,6 @@ class AssetAdd extends React.Component {
       });
     });
 
-  };
-
-  usernameIsValid = (valid) => {
-    this.setState({usernameIsValid: valid});
   };
 
   openAddDialog = () => {
@@ -62,12 +56,11 @@ class AssetAdd extends React.Component {
   getEmptyAsset = () => {
     return {
       name: '',
-      shortDescription: '',
-      note: '',
+      description: '',
     };
   };
   isFormValid = () => {
-    return (this.state.usernameIsValid && this.state.asset.shortDescription.length > 0 && this.state.asset.note.length > 0)
+    return (this.state.asset.description.length > 0 && this.state.asset.name.length > 0)
   };
 
   constructor(props, context) {
@@ -104,19 +97,6 @@ class AssetAdd extends React.Component {
               <DialogContentText>
                 Vennligst fyll ut de obligatoriske feltene for å legge til ny asset.
               </DialogContentText>
-              <UsernameValidationInput
-                title="Brukernavn"
-                name="name"
-                onChange={this.updateAssetState}
-                usernameIsValid={this.usernameIsValid}
-              />
-              <TextField
-	              name="name"
-	              label="Name"
-	              fullWidth
-	              required
-	              onChange={this.updateAssetState}
-            />
               <TextField
                 name="description"
                 label="Beskrivelse"
@@ -124,7 +104,12 @@ class AssetAdd extends React.Component {
                 fullWidth
                 onChange={this.updateAssetState}
               />
-
+              <TextField
+                name="name"
+                label="Navn"
+                fullWidth
+                onChange={this.updateAssetState}
+              />
             </DialogContent>
             <DialogActions>
               <Button onClick={this.handleCancel} variant="raised" color="primary">
@@ -144,7 +129,7 @@ class AssetAdd extends React.Component {
 
 AssetAdd.propTypes = {};
 
-export default withStyles(styles)(AssetAdd);
+export default withStyles(styles)(withContext(AssetAdd));
 
 
 

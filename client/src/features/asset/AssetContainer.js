@@ -3,9 +3,9 @@ import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
 import {withStyles} from "@material-ui/core";
 import LoadingProgress from "../../common/LoadingProgress";
-import {createAsset, fetchAssets, updateAsset} from "../../data/redux/dispatchers/asset";
+import {createAsset, fetchAssets, updateAsset, deleteAsset} from "../../data/redux/dispatchers/asset";
 import AssetList from "./AssetList";
-import AssetAdd from "./add/AssetAdd";
+import AssetAdd from "./AssetAdd";
 import {withContext} from "../../data/context/withContext";
 
 
@@ -22,13 +22,10 @@ class AssetContainer extends React.Component {
   }
 
   componentDidMount() {
-	  console.log(this.props.context.currentOrganisation.name)
-	   console.log(this.props)
     this.props.fetchAssets(this.props.context.currentOrganisation.name);
   }
 
   componentDidUpdate(prevProps, prevState, snapshot) {
-
     if (prevProps.context !== this.props.context) {
       this.props.fetchAssets(this.props.context.currentOrganisation.name);
     }
@@ -48,6 +45,7 @@ class AssetContainer extends React.Component {
       <div className={classes.root}>
         <AssetList assets={this.props.assets}
                    updateAsset={this.props.updateAsset}
+        		   deleteAsset={this.props.deleteAsset}
         />
         <AssetAdd
           createAsset={this.props.createAsset}
@@ -74,6 +72,7 @@ function mapDispatchToProps(dispatch) {
     fetchAssets: fetchAssets,
     updateAsset: updateAsset,
     createAsset: createAsset,
+    deleteAsset: deleteAsset,
   }, dispatch);
 }
 

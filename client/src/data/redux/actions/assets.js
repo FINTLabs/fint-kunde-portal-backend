@@ -1,5 +1,6 @@
 import {
   CREATE_ASSET_SUCCESS,
+  DELETE_ASSET_SUCCESS,
   FETCH_ASSETS_ERROR,
   FETCH_ASSETS_SUCCESS,
   UPDATE_ASSET_SUCCESS
@@ -22,7 +23,9 @@ export function updateAssetSuccess(payload) {
   return {type: UPDATE_ASSET_SUCCESS, payload}
 }
 
-
+export function deleteAssetSuccess(payload) {
+	  return {type: DELETE_ASSET_SUCCESS, payload}
+}
 
 
 

@@ -3,13 +3,13 @@ import {
   createAssetSuccess,
   fetchAssetError,
   fetchAssetsSuccess,
-  updateAssetSuccess
+  updateAssetSuccess,
+  deleteAssetSuccess
 } from "../actions/assets";
 
+import {fetchAdapters} from "./adapter";
 
 export function fetchAssets(org) {
-	  console.log(`org: ${org}`);
-
   return (dispatch) => {
     return AssetApi.fetchAssets(org).then(([response, json]) => {
       if (response.status === 200) {
@@ -22,25 +22,60 @@ export function fetchAssets(org) {
   }
 }
 
-export function createAsset(kontakt) {
+export function createAsset(asset,org) {
   return function (dispatch) {
-    return AssetApi.createAsset(kontakt).then(response => {
-      dispatch(createAssetSuccess(response));
-      return response;
+    return AssetApi.createAsset(asset,org).then(response => {
+      dispatch(createAssetSuccess(asset));
+      return;
     }).catch(error => {
       throw(error);
     });
   };
 }
 
-export function updateAsset(kontakt) {
+export function updateAsset(asset,org) {
   return function (dispatch) {
-    return AssetApi.updateAsset(kontakt).then(response => {
+    return AssetApi.updateAsset(asset,org).then(response => {
       dispatch(updateAssetSuccess(response));
       return response;
     }).catch(error => {
       throw(error);
     });
   };
+} 
+
+export function deleteAsset(asset,org) {
+	  return function (dispatch) {
+	    return AssetApi.deleteAsset(asset,org).then(response => {
+	      dispatch(deleteAssetSuccess(asset));
+	      return;
+	    }).catch(error => {
+	      throw(error);
+	    });
+	  };
 }
+
+export function deleteAdapterFromAsset(asset, adapter, org) {
+	  return function (dispatch) {
+	    return AssetApi.deleteAdapterFromAsset(asset, adapter, org).then(() => {
+      fetchAssets(org);
+      fetchAdapters();
+    }).catch(error => {
+      throw(error);
+    })
+  };
+}
+
+
+export function addAdapterToAsset(asset, adapter, org) {
+  return function (dispatch) {
+    return AssetApi.addAdapterToAsset(asset, adapter, org).then(responseAdapter => {
+      fetchAssets(org);
+      fetchAdapters();
+    }).catch(error => {
+      throw(error);
+    });
+  }
+}  
+
 

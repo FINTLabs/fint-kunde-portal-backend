@@ -12,7 +12,7 @@ import {
   Typography,
   withStyles
 } from "@material-ui/core";
-import {Edit, InsertLink} from "@material-ui/icons";
+import {Delete, Edit, InsertLink} from "@material-ui/icons";
 import AutoHideNotification from "../../common/AutoHideNotification";
 import AssetView from "./view/AssetView";
 import {withContext} from "../../data/context/withContext";
@@ -50,10 +50,17 @@ class AssetList extends Component {
   };
   updateAsset = (asset) => {
     const {currentOrganisation} = this.props.context;
-    console.log(currentOrganisation);
     this.props.updateAsset(asset, currentOrganisation.name);
   };
 
+  deleteAsset = (asset) => {
+	const {currentOrganisation} = this.props.context;
+    this.props.deleteAsset(asset, currentOrganisation.name);
+    this.setState({
+      notify: true,
+      assetDeletedName: asset.name,
+    });
+  };
   onCloseNotification = () => {
     this.setState({
       notify: false,
@@ -67,6 +74,7 @@ class AssetList extends Component {
       assetToEdit: null,
       open: false,
       notify: false,
+      assetDeletedName: null,
     };
 
   }
@@ -75,18 +83,18 @@ class AssetList extends Component {
     const {classes} = this.props;
     return (
       <div>
-        <AutoHideNotification
-          showNotification={this.state.notify}
-          onClose={this.onCloseNotification}
-
-        />
+	      <AutoHideNotification
+		      showNotification={this.state.notify}
+		      message={`Adapter ${this.state.assetDeletedName} ble slettet!`}
+		      onClose={this.onCloseNotification}
+	      />
         <div className={classes.root}>
           <div className={classes.componentList}>
             <Typography variant="headline" className={classes.title}>Asset</Typography>
             <Divider/>
             <List>
               {this.props.assets.map((asset) =>
-                <ListItem className={classes.listItem} key={asset.id}>
+                <ListItem className={classes.listItem} key={asset.name}>
                   <ListItemAvatar>
                     <Avatar className={classes.itemAvatar}>
                       <InsertLink/>
@@ -99,6 +107,9 @@ class AssetList extends Component {
                   <ListItemSecondaryAction>
                     <IconButton aria-label="Edit" onClick={() => this.editAsset(asset)}>
                       <Edit/>
+                    </IconButton>
+                    <IconButton aria-label="Delete" onClick={() => this.deleteAsset(asset)}>
+                    	<Delete/>
                     </IconButton>
                   </ListItemSecondaryAction>
                 </ListItem>,

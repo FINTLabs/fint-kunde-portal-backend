@@ -5,10 +5,9 @@ import {Tab, Tabs} from "@material-ui/core";
 import {withStyles} from "@material-ui/core";
 import TabContainer from "../../../common/TabContainer";
 import PropTypes from "prop-types";
-import AdapterTabComponent from "./AdapterTabComponent";
-import AdapterTabGeneral from "./AdapterTabGeneral";
-import AdapterTabAuthenticationInformation from "./AdapterTabAuthenticationInformation";
-
+import AssetTabAdapter from "./AssetTabAdapter";
+import AssetTabClient from "./AssetTabClient";
+import AssetTabGeneral from "./AssetTabGeneral";
 
 const styles = theme => ({
   root: {
@@ -49,17 +48,6 @@ class AssetTabView extends React.Component {
 
       <div className={classes.root}>
         <AppBar position="static" color="default">
-          <Tabs
-            value={this.state.value}
-            onChange={this.handleChange}
-            indicatorColor="primary"
-            textColor="primary"
-            fullWidth
-          >
-            <Tab label="Generelt"/>
-            <Tab label="Autentisering"/>
-            <Tab label="Komponenter"/>
-          </Tabs>
         </AppBar>
         <SwipeableViews
           axis={theme.direction === "rtl" ? 'x-reverse' : 'x'}
@@ -67,16 +55,16 @@ class AssetTabView extends React.Component {
           onChangeIndex={this.handleChangeIndex}
         >
           <TabContainer dir={theme.direction}>
-            <AdapterTabGeneral adapter={this.props.adapter} updateAdapterState={this.props.updateAdapterState}/>
+            <AssetTabGeneral asset={this.props.asset} updateAssetState={this.props.updateAssetState}/>
           </TabContainer>
-
+            
           <TabContainer dir={theme.direction}>
-            <AdapterTabAuthenticationInformation adapter={this.props.adapter} notify={this.props.notify}/>
+            <AssetTabAdapter asset={this.props.asset} notify={this.props.notify}/>
           </TabContainer>
-
+            
           <TabContainer dir={theme.direction}>
-            <AdapterTabComponent adapter={this.props.adapter} notify={this.props.notify}/>
-          </TabContainer>
+            <AssetTabClient asset={this.props.asset} notify={this.props.notify}/>
+          </TabContainer>            
         </SwipeableViews>
 
       </div>
@@ -85,7 +73,7 @@ class AssetTabView extends React.Component {
 }
 
 AssetTabView.propTypes = {
-  adapter: PropTypes.object.isRequired,
+  asset: PropTypes.object.isRequired,
   classes: PropTypes.object.isRequired,
   theme: PropTypes.object.isRequired,
   notify: PropTypes.func.isRequired,
