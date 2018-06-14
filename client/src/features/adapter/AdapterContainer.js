@@ -26,7 +26,6 @@ class AdapterContainer extends React.Component {
   }
 
   componentDidUpdate(prevProps, prevState, snapshot) {
-
     if (prevProps.context !== this.props.context) {
       this.props.fetchAdapters(this.props.context.currentOrganisation.name);
     }

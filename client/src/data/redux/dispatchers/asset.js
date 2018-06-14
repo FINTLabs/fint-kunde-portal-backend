@@ -47,15 +47,14 @@ export function updateAsset(asset,org) {
 export function deleteAsset(asset,org) {
 	  return function (dispatch) {
 	    return AssetApi.deleteAsset(asset,org).then(response => {
-	      dispatch(deleteAssetSuccess(asset));
-	      return;
+	    	fetchAssets(org);
 	    }).catch(error => {
 	      throw(error);
 	    });
 	  };
 }
 
-export function deleteAdapterFromAsset(asset, adapter, org) {
+export function deleteAdapterFromAsset(adapter, asset,  org) {
 	  return function (dispatch) {
 	    return AssetApi.deleteAdapterFromAsset(asset, adapter, org).then(() => {
       fetchAssets(org);
@@ -67,7 +66,8 @@ export function deleteAdapterFromAsset(asset, adapter, org) {
 }
 
 
-export function addAdapterToAsset(asset, adapter, org) {
+export function addAdapterToAsset(adapter, asset, org) {
+	console.log(adapter)	
   return function (dispatch) {
     return AssetApi.addAdapterToAsset(asset, adapter, org).then(responseAdapter => {
       fetchAssets(org);

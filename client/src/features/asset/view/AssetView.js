@@ -52,10 +52,10 @@ class AssetView extends React.Component {
     this.state = {
       asset: Object.assign({}, this.props.asset),
       isSaving: true,
-      copiedToClipboard: false,
       notify: false,
       notifyMessage: '',
       showUpdateButton: true,
+
     };
   }
 
@@ -88,22 +88,19 @@ class AssetView extends React.Component {
             <DialogContent>
               <AssetTabView
                 asset={this.state.asset}
-                onCopy={this.onCopy}
                 updateAssetState={this.updateAssetState}
                 notify={this.notify}
                 showUpdateButton={this.showUpdateButton}
               />
             </DialogContent>
             <DialogActions>
-
-
-              <Button onClick={this.handleCancel} variant="raised" color="secondary">
+            <Button onClick={this.handleCancel} variant="raised" color="secondary">
                 {this.state.showUpdateButton ? 'Avbryt' : 'Lukk'}
-              </Button>
+             </Button>
               {this.state.showUpdateButton ? (
-                < Button onClick={this.handleUpdate} variant="raised" color="secondary">
+             <Button onClick={this.handleUpdate} variant="raised" color="secondary">
                   Oppdater
-                </Button>) : null}
+             </Button>) : null}
 
             </DialogActions>
           </Dialog>

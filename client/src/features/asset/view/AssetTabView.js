@@ -47,7 +47,18 @@ class AssetTabView extends React.Component {
     return (
 
       <div className={classes.root}>
-        <AppBar position="static" color="default">
+      	<AppBar position="static" color="default">
+      		<Tabs
+        	value={this.state.value}
+        	onChange={this.handleChange}
+        	indicatorColor="primary"
+        	textColor="primary"
+        	fullWidth
+        	>
+  			<Tab label="Generelt"/>
+    		<Tab label="Adapters"/>
+    		<Tab label="Klienter"/>
+        	</Tabs>
         </AppBar>
         <SwipeableViews
           axis={theme.direction === "rtl" ? 'x-reverse' : 'x'}

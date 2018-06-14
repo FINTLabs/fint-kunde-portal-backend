@@ -15,8 +15,8 @@ class AssetTabGeneral extends React.Component {
     return (
       <div>
 	    <TextField
-	      name="id"
-	      label="Asset Id"
+	      name="assetId"
+	      label="AssetId"
 	      onChange={this.props.updateAssetState}
 	      value={this.props.asset.assetId}
 	      disabled
@@ -32,9 +32,7 @@ class AssetTabGeneral extends React.Component {
         />
         <TextField
           name="name"
-          label="Name"
-          multiline
-          rows="4"
+          label="Navn"
           onChange={this.props.updateAssetState}
           value={this.props.asset.name}
           fullWidth

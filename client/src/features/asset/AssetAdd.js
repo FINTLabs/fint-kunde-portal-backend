@@ -5,7 +5,7 @@ import TextField from "@material-ui/core/TextField";
 import {Add} from "@material-ui/icons";
 import {withStyles} from "@material-ui/core";
 import AutoHideNotification from "../../common/AutoHideNotification";
-import {withContext} from "../../data/context/withContext";
+
 const styles = () => ({
   addButton: {
     margin: 0,
@@ -27,8 +27,7 @@ class AssetAdd extends React.Component {
   };
 
   handleAddAsset = () => {
-	  const {currentOrganisation} = this.props.context;
-	  this.props.createAsset(this.state.asset, currentOrganisation.name).then(() => {
+	  this.props.createAsset(this.state.asset).then(() => {
       this.setState({
         showAssetAdd: false,
         notify: true,
@@ -129,7 +128,7 @@ class AssetAdd extends React.Component {
 
 AssetAdd.propTypes = {};
 
-export default withStyles(styles)(withContext(AssetAdd));
+export default withStyles(styles)(AssetAdd);
 
 
 

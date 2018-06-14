@@ -56,5 +56,37 @@ static deleteAsset(asset, organisation) {
       return error;
     });
   }
+
+
+static addAdapterToAsset(adapter, asset, organisation) {
+
+    const request = new Request(`/api/assets/${organisation}/${asset.assetId}/adapters/${adapter.name}`, {
+      method: 'PUT',
+      headers: {
+        'Accept': '*/*',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        name: adapter.name
+      })
+    });
+    return fetch(request).then(response => {
+      return response.json();
+    }).catch(error => {
+      return error;
+    });
+  }
+static deleteAdapterFromAsset(adapter, asset, organisation) {
+
+    const request = new Request(`/api/assets/${organisation}/${asset.assetId}/adapters/${adapter.name}`, {
+      method: 'DELETE',
+    });
+
+    return fetch(request).then(response => {
+      return response.json();
+    }).catch(error => {
+      return error;
+    });
+  }
 }
 export default AssetApi;

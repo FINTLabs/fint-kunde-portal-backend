@@ -21,9 +21,7 @@ const styles = () => ({
 
 class AdapterAdd extends React.Component {
   updateAdapterState = (event) => {
-
     const field = event.target.name;
-
     const adapter = this.state.adapter;
     adapter[field] = event.target.value;
     return this.setState({adapter: adapter});

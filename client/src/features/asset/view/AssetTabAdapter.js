@@ -59,35 +59,38 @@ const styles = theme => ({
 class AssetTabAdapter extends React.Component {
 
 
-  askToUnLinkComponent = (component) => {
+  askToUnLinkAdapter = (adapter) => {
 
     this.setState({
+      thisAdapter: adapter,
       askUnLink: true,
-      message: "Er du sikker på at du vil fjerne adapteret fra:  " + component.description + "?",
-      component: component,
+      message: "Er du sikker på at du vil fjerne " + adapter.shortDescription + " fra:  " + this.props.asset.name + "?",
+      adapter: adapter,
     });
 
   };
   askToLinkAdapter = (adapter) => {
     this.setState({
+      thisAdapter: adapter,
       askLink: true,
-      message: "Vil du legge  " + adapter.description + " til asset?",
+      message: "Vil du legge  " + adapter.shortDescription + " til asset?",
       adapter: adapter,
     });
+
   };
-  unLinkAdapter = (adapter) => {
-    AssetApi.deleteAssetFromAdapter(this.props.asset, adapter, this.props.context.currentOrganisation.name)
+  unLinkAdapter = () => {
+    AssetApi.deleteAdapterFromAsset(this.state.thisAdapter, this.props.asset, this.props.context.currentOrganisation.name)
       .then(() => {
-        this.props.notify(`${this.props.asset.name} ble slettet fra ${adapter.description}`);
+        this.props.notify(`${this.state.thisAdapter.shortDescription} ble slettet fra ${this.props.asset.name}`);
         this.props.fetchAdapters();
       }).catch(error => {
     });
   };
-  linkAdapter = (adapter) => {
-    AssetApi.addAssetToAdapter(this.props.asset, adapter, this.props.context.currentOrganisation.name)
+  linkAdapter = () => {
+    AssetApi.addAdapterToAsset(this.state.thisAdapter, this.props.asset,  this.props.context.currentOrganisation.name)
       .then(() => {
 
-        this.props.notify(`${this.props.asset.name} ble lagt til ${adapter.description}`);
+        this.props.notify(`${this.state.thisAdapter.shortDescription} ble lagt til ${this.props.asset.name}`);
         this.props.fetchAdapters();
       }).catch(error => {
     });
@@ -106,16 +109,15 @@ class AssetTabAdapter extends React.Component {
       askUnLink: false,
     });
 
-    if (this.isLinkedToAdapter(this.state.adapter) && confirmed) {
-      this.unLinkComponent(this.state.adapter);
+    if (confirmed) {
+      this.unLinkAdapter();
     }
   };
-  isLinkedToAdapter = (adapter) => {
-    for (let i = 0; i < adapter.adapters.length; i++) {
-      if (adapter.adapters[i].toLowerCase() === this.props.adapter.dn.toLowerCase()) {
+  isLinkedToAsset = (adapter) => {
+    for (let i = 0; i < this.props.adapters.length; i++) {
+      if (adapter.dn === this.props.asset.adapters[i]) {
         return true;
       }
-
     }
     return false;
 
@@ -145,12 +147,10 @@ class AssetTabAdapter extends React.Component {
   }
 
   componentDidMount() {
-    this.props.fetchAdapters();
+    this.props.fetchAdapters(this.props.context.currentOrganisation.name);
   }
 
   render() {
-	  console.log("render")
-	  console.log(this.props)
     if (!this.props.adapters) {
       return <LoadingProgress/>;
     } else {
@@ -159,11 +159,9 @@ class AssetTabAdapter extends React.Component {
   }
 
   renderAdapters() {
-console.log(this.props)
+
     const {classes} = this.props;
-    const organisationAdapters = this.getOrganisationAdapters();
-	  console.log("organisationAdapters")
-	  console.log(organisationAdapters)
+    const organisationAdapters = this.props.adapters;
     if (organisationAdapters.length > 0) {
       return (
         <div>
@@ -190,7 +188,7 @@ console.log(this.props)
                   secondary={adapter.name}
                 />
                 <ListItemSecondaryAction>
-                  {this.isLinkedToAdapter(adapter) ?
+                  {this.isLinkedToAsset(adapter) ?
                     (<IconButton aria-label="Remove" onClick={() => this.askToUnLinkAdapter(adapter)}>
                       <RemoveIcon className={classes.removeIcon}/>
                     </IconButton>)
