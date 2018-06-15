@@ -6,9 +6,8 @@ import {
   updateAssetSuccess,
   deleteAssetSuccess
 } from "../actions/assets";
-
+import {fetchKlienter} from "./client";
 import {fetchAdapters} from "./adapter";
-
 export function fetchAssets(org) {
   return (dispatch) => {
     return AssetApi.fetchAssets(org).then(([response, json]) => {
@@ -65,9 +64,7 @@ export function deleteAdapterFromAsset(adapter, asset,  org) {
   };
 }
 
-
 export function addAdapterToAsset(adapter, asset, org) {
-	console.log(adapter)	
   return function (dispatch) {
     return AssetApi.addAdapterToAsset(asset, adapter, org).then(responseAdapter => {
       fetchAssets(org);
@@ -77,5 +74,27 @@ export function addAdapterToAsset(adapter, asset, org) {
     });
   }
 }  
+
+export function deleteClientFromAsset(client, asset,  org) {
+	  return function (dispatch) {
+	    return AssetApi.deleteClientFromAsset(asset, client, org).then(() => {
+    fetchAssets(org);
+    fetchKlienter();
+  }).catch(error => {
+    throw(error);
+  })
+ };
+}
+
+export function addClientToAsset(client, asset, org) {
+	return function (dispatch) {
+	  return AssetApi.addAdapterToAsset(asset, client, org).then(responseAdapter => {
+	    fetchAssets(org);
+	    fetchKlienter();
+	  }).catch(error => {
+	    throw(error);
+	  });
+ }
+} 
 
 

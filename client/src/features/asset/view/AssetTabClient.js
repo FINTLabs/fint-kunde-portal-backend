@@ -15,11 +15,11 @@ import RemoveIcon from "@material-ui/icons/RemoveCircle";
 import ComponentIcon from "@material-ui/icons/WebAsset";
 import {bindActionCreators} from "redux";
 import {connect} from "react-redux";
-import {fetchComponents} from "../../../data/redux/dispatchers/component";
+import {fetchKlienter} from "../../../data/redux/dispatchers/client";
 import {green} from "@material-ui/core/colors/index";
 import LoadingProgress from "../../../common/LoadingProgress";
-import {addAdapterToComponent, deleteAdapterFromComponent} from "../../../data/redux/dispatchers/adapter";
-import AdapterApi from "../../../data/api/AdapterApi";
+import {addClientToAsset, deleteClientFromAsset} from "../../../data/redux/dispatchers/asset";
+import AssetApi from "../../../data/api/AssetApi";
 import WarningMessageBox from "../../../common/WarningMessageBox";
 import InformationMessageBox from "../../../common/InformationMessageBox";
 import {withContext} from "../../../data/context/withContext";
@@ -59,36 +59,39 @@ const styles = theme => ({
 class AssetTabClient extends React.Component {
 
 
-  askToUnLinkComponent = (component) => {
+  askToUnLinkKlient = (klient) => {
 
     this.setState({
+      thisKlient: klient,
       askUnLink: true,
-      message: "Er du sikker på at du vil fjerne adapteret fra:  " + component.description + "?",
-      component: component,
+      message: "Er du sikker på at du vil fjerne " + klient.shortDescription + " fra:  " + this.props.asset.name + "?",
+      klient: klient,
     });
 
   };
-  askToLinkComponent = (component) => {
+  askToLinkKlient = (klient) => {
     this.setState({
+      thisKlient: klient,
       askLink: true,
-      message: "Vil du legge adapteret til:  " + component.description + "?",
-      component: component,
+      message: "Vil du legge  " + klient.shortDescription + " til asset?",
+      klient: klient,
     });
+
   };
-  unLinkComponent = (component) => {
-    AdapterApi.deleteAdapterFromComponent(this.props.adapter, component, this.props.context.currentOrganisation.name)
+  unLinkKlient = () => {
+    AssetApi.deleteClientFromAsset(this.state.thisKlient, this.props.asset, this.props.context.currentOrganisation.name)
       .then(() => {
-        this.props.notify(`${this.props.adapter.name} ble lagt til ${component.description}`);
-        this.props.fetchComponents();
+        this.props.notify(`${this.state.thisKlient.shortDescription} ble slettet fra ${this.props.asset.name}`);
+        this.props.fetchKlienter();
       }).catch(error => {
     });
   };
-  linkComponent = (component) => {
-    AdapterApi.addAdapterToComponent(this.props.adapter, component, this.props.context.currentOrganisation.name)
+  linkKlient = () => {
+    AssetApi.addClientToAsset(this.state.thisKlient, this.props.asset,  this.props.context.currentOrganisation.name)
       .then(() => {
 
-        this.props.notify(`${this.props.adapter.name} ble lagt til ${component.description}`);
-        this.props.fetchComponents();
+        this.props.notify(`${this.state.thisKlient.shortDescription} ble lagt til ${this.props.asset.name}`);
+        this.props.fetchKlienter();
       }).catch(error => {
     });
   };
@@ -98,7 +101,7 @@ class AssetTabClient extends React.Component {
     });
 
     if (confirmed) {
-      this.linkComponent(this.state.component);
+      this.linkKlient(this.state.klient);
     }
   };
   onCloseUnLink = (confirmed) => {
@@ -106,29 +109,23 @@ class AssetTabClient extends React.Component {
       askUnLink: false,
     });
 
-    if (this.isLinkedToAdapter(this.state.component) && confirmed) {
-      this.unLinkComponent(this.state.component);
+    if (confirmed) {
+      this.unLinkKlient();
     }
   };
-  isLinkedToAdapter = (component) => {
-	  console.log("Adapter")
-//	  console.log(this.props.asset)
-//	  console.log(component)
-    for (let i = 0; i < component.adapters.length; i++) {
-  	  console.log(this.props.asset.organisation)
-  	  console.log(component.adapters[i])
-      if (component.adapters[i].toLowerCase() === this.props.asset.organisation.toLowerCase()) {
+  isLinkedToAsset = (klient) => {
+    for (let i = 0; i < this.props.clients.length; i++) {
+      if (klient.dn === this.props.asset.clients[i]) {
         return true;
       }
-
     }
     return false;
 
   };
-  getOrganisationComponents = () => {
-    return this.props.components
-      .filter(component => component.organisations.length > 0)
-      .filter(component => component.organisations.find(o => o === this.props.context.currentOrganisation.dn));
+  getOrganisationKlienter = () => {
+    return this.props.adapers
+      .filter(klient => klient.organisations.length > 0)
+      .filter(klient => klient.organisations.find(o => o === this.props.context.currentOrganisation.dn));
   };
 
   constructor(props) {
@@ -141,31 +138,32 @@ class AssetTabClient extends React.Component {
   }
 
   static getDerivedStateFromProps(nextProps, prevState) {
-    if (nextProps.adapter !== prevState.adapter) {
+    if (nextProps.klient !== prevState.klient) {
       return {
-        adapter: nextProps.adapter,
+        klient: nextProps.klient,
       };
     }
     return null;
   }
 
   componentDidMount() {
-    this.props.fetchComponents();
+    this.props.fetchKlienter(this.props.context.currentOrganisation.name);
   }
 
   render() {
-    if (!this.props.components) {
+	  console.log("this.props")
+console.log(this.props)
+    if (!this.props.clients) {
       return <LoadingProgress/>;
     } else {
-      return this.renderComponents();
+      return this.renderKlienter();
     }
   }
 
-  renderComponents() {
-
+  renderKlienter() {
     const {classes} = this.props;
-    const organisationComponents = this.getOrganisationComponents();
-    if (organisationComponents.length > 0) {
+    const organisationKlienter = this.props.clients;
+    if (organisationKlienter.length > 0) {
       return (
         <div>
           <WarningMessageBox
@@ -179,24 +177,24 @@ class AssetTabClient extends React.Component {
             onClose={this.onCloseLink}
           />
           <List>
-            {organisationComponents.map((component) =>
-              <ListItem className={classes.listItem} key={component.dn}>
+            {organisationKlienter.map((klient) =>
+              <ListItem className={classes.listItem} key={klient.dn}>
                 <ListItemAvatar>
                   <Avatar className={classes.itemAvatar}>
                     <ComponentIcon/>
                   </Avatar>
                 </ListItemAvatar>
                 <ListItemText
-                  primary={component.description}
-                  secondary={component.basePath}
+                  primary={klient.shortDescription}
+                  secondary={klient.name}
                 />
                 <ListItemSecondaryAction>
-                  {this.isLinkedToAdapter(component) ?
-                    (<IconButton aria-label="Remove" onClick={() => this.askToUnLinkComponent(component)}>
+                  {this.isLinkedToAsset(klient) ?
+                    (<IconButton aria-label="Remove" onClick={() => this.askToUnLinkKlient(klient)}>
                       <RemoveIcon className={classes.removeIcon}/>
                     </IconButton>)
                     :
-                    (<IconButton aria-label="Add" onClick={() => this.askToLinkComponent(component)}>
+                    (<IconButton aria-label="Add" onClick={() => this.askToLinkKlient(klient)}>
                       <AddIcon className={classes.addIcon}/>
                     </IconButton>)
                   }
@@ -209,7 +207,7 @@ class AssetTabClient extends React.Component {
     }
     else {
       return (
-        <Typography variant="subheading">Det er ikke lagt til noen komponenter for denne organisasjonen.</Typography>
+        <Typography variant="subheading">Det er ikke lagt til noen klienter for denne organisasjonen.</Typography>
       );
 
     }
@@ -218,15 +216,15 @@ class AssetTabClient extends React.Component {
 
 function mapStateToProps(state) {
   return {
-    components: state.component.components,
+	  clients: state.client.clients,
   }
 }
 
 function mapDispatchToProps(dispatch) {
   return bindActionCreators({
-    fetchComponents: fetchComponents,
-    addAdapterToComponent: addAdapterToComponent,
-    deleteAdapterFromComponent: deleteAdapterFromComponent,
+    fetchKlienter: fetchKlienter,
+    addClientToAsset: addClientToAsset,
+    deleteClientFromAsset: deleteClientFromAsset,
   }, dispatch);
 }
 

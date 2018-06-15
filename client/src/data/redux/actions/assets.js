@@ -6,6 +6,8 @@ import {
   UPDATE_ASSET_SUCCESS,
   ADD_ADAPER_TO_ASSET,
   DELETE_ADAPTER_FROM_ASSET,
+  ADD_CLIENT_TO_ASSET,
+  DELETE_CLIENT_FROM_ASSET,
 } from "./types";
 
 
@@ -34,7 +36,12 @@ export function addAdapterToAssetSuccess(payload) {
 export function deleteAdapterFromAsset(payload) {
 	  return {type: DELETE_ADAPTER_FROM_ASSET, payload}
 }
-
+export function addClientToAssetSuccess(payload) {
+	  return {type: ADD_CLIENT_TO_ASSET, payload}
+}
+export function deleteClientFromAsset(payload) {
+	  return {type: DELETE_CLIENT_FROM_ASSET, payload}
+}
 
 
 

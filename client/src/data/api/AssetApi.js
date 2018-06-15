@@ -88,5 +88,36 @@ static deleteAdapterFromAsset(adapter, asset, organisation) {
       return error;
     });
   }
+
+static addClientToAsset(client, asset, organisation) {
+
+    const request = new Request(`/api/assets/${organisation}/${asset.assetId}/clients/${client.name}`, {
+      method: 'PUT',
+      headers: {
+        'Accept': '*/*',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        name: client.name
+      })
+    });
+    return fetch(request).then(response => {
+      return response.json();
+    }).catch(error => {
+      return error;
+    });
+  }
+static deleteClientFromAsset(client, asset, organisation) {
+
+    const request = new Request(`/api/assets/${organisation}/${asset.assetId}/clients/${client.name}`, {
+      method: 'DELETE',
+    });
+
+    return fetch(request).then(response => {
+      return response.json();
+    }).catch(error => {
+      return error;
+    });
+  }
 }
 export default AssetApi;
