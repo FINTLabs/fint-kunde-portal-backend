@@ -47,7 +47,7 @@ class AssetContainer extends React.Component {
                    updateAsset={this.props.updateAsset}
         		   deleteAsset={this.props.deleteAsset}
         />
-        <AssetAdd
+        <AssetAdd organisation={this.props.context.currentOrganisation}
           createAsset={this.props.createAsset}
         />
       </div>

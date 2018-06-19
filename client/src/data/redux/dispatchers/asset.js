@@ -23,9 +23,8 @@ export function fetchAssets(org) {
 
 export function createAsset(asset,org) {
   return function (dispatch) {
-    return AssetApi.createAsset(asset,org).then(response => {
-      dispatch(createAssetSuccess(asset));
-      return;
+    return AssetApi.createAsset(asset,org.name).then(response => {
+    	fetchAssets(org);
     }).catch(error => {
       throw(error);
     });

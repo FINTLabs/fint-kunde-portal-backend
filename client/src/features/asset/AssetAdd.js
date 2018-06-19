@@ -27,7 +27,9 @@ class AssetAdd extends React.Component {
   };
 
   handleAddAsset = () => {
-	  this.props.createAsset(this.state.asset).then(() => {
+	  console.log("Context");
+	  console.log(this.props.organisation);
+	  this.props.createAsset(this.state.asset,this.props.organisation).then(() => {
       this.setState({
         showAssetAdd: false,
         notify: true,
