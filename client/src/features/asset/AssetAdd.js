@@ -27,14 +27,13 @@ class AssetAdd extends React.Component {
   };
 
   handleAddAsset = () => {
-	  console.log("Context");
-	  console.log(this.props.organisation);
 	  this.props.createAsset(this.state.asset,this.props.organisation).then(() => {
       this.setState({
         showAssetAdd: false,
         notify: true,
         assetAddedName: this.state.asset.name,
         asset: this.getEmptyAsset(),
+        assetAdded: true,
       });
     });
 
@@ -51,6 +50,8 @@ class AssetAdd extends React.Component {
   onCloseNotification = () => {
     this.setState({
       notify: false,
+      assetAdded: false,
+      assetAddedName: this.state.asset.name,
     });
   };
 
@@ -69,12 +70,16 @@ class AssetAdd extends React.Component {
     this.state = {
       asset: this.getEmptyAsset(),
       showAssetAdd: false,
-      assetAddedName: null,
+      assetAdded: false,
       notify: false,
       usernameIsValid: false,
     };
   }
-
+  componentDidUpdate(prevState) {
+    if (prevState.assetAdded == true) {
+      this.props.fetchAssets(this.props.organisation.name);
+    }
+  }
   render() {
     const {classes} = this.props;
     return (

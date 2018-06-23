@@ -27,7 +27,7 @@ class AssetContainer extends React.Component {
 
   componentDidUpdate(prevProps, prevState, snapshot) {
     if (prevProps.context !== this.props.context) {
-      this.props.fetchAssets(this.props.context.currentOrganisation.name);
+    	this.props.fetchAssets(this.props.context.currentOrganisation.name);
     }
   }
 
@@ -46,9 +46,12 @@ class AssetContainer extends React.Component {
         <AssetList assets={this.props.assets}
                    updateAsset={this.props.updateAsset}
         		   deleteAsset={this.props.deleteAsset}
+        		   fetchAssets={this.props.fetchAssets}
         />
         <AssetAdd organisation={this.props.context.currentOrganisation}
-          createAsset={this.props.createAsset}
+          		  createAsset={this.props.createAsset}
+                  fetchAssets={this.props.fetchAssets}
+   	
         />
       </div>
 

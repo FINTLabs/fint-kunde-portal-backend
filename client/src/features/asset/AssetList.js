@@ -60,10 +60,12 @@ class AssetList extends Component {
       notify: true,
       assetDeletedName: asset.name,
     });
+
   };
   onCloseNotification = () => {
     this.setState({
       notify: false,
+      assetDeletedName: null,
     });
   };
 
@@ -75,11 +77,19 @@ class AssetList extends Component {
       open: false,
       notify: false,
       assetDeletedName: null,
+      assetAddedName:null,
+      assetAdded:null,
     };
 
   }
 
+  componentDidUpdate(prevState) {
+      if (prevState.assetDeletedName !== null) {
+    	  this.props.fetchAssets(this.props.context.currentOrganisation.name);
+    }
+ } 
   render() {
+
     const {classes} = this.props;
     return (
       <div>
@@ -135,5 +145,6 @@ AssetList.propTypes = {
 
 
 export default withStyles(styles)(withContext(AssetList));
+
 
 
