@@ -19,17 +19,18 @@ export function fetchAssetError() {
   return {type: FETCH_ASSETS_ERROR}
 }
 
-export function createAssetSuccess(payload) {
-  return {type: CREATE_ASSET_SUCCESS, payload}
+export function createAssetSuccess(asset) {
+  return {type: CREATE_ASSET_SUCCESS, asset}
 }
 
-export function updateAssetSuccess(payload) {
-  return {type: UPDATE_ASSET_SUCCESS, payload}
+export function updateAssetSuccess(asset) {
+  return {type: UPDATE_ASSET_SUCCESS, asset}
 }
 
-export function deleteAssetSuccess(payload) {
-	  return {type: DELETE_ASSET_SUCCESS, payload}
+export function deleteAssetSuccess(asset) {
+	  return {type: DELETE_ASSET_SUCCESS, asset}
 }
+
 export function addAdapterToAssetSuccess(payload) {
 	  return {type: ADD_ADAPER_TO_ASSET, payload}
 }

@@ -47,8 +47,8 @@ class AdapterContainer extends React.Component {
                      updateAdapter={this.props.updateAdapter}
                      deleteAdapter={this.props.deleteAdapter}
         />
-        <AdapterAdd
-          createAdapter={this.props.createAdapter}
+        <AdapterAdd organisation={this.props.context.currentOrganisation}
+          			createAdapter={this.props.createAdapter}
         />
       </div>
 

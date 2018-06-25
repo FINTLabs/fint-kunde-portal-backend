@@ -50,11 +50,11 @@ class AdapterList extends Component {
   };
   updateAdapter = (adapter) => {
     const {currentOrganisation} = this.props.context;
-    console.log(currentOrganisation);
     this.props.updateAdapter(adapter, currentOrganisation.name);
   };
   deleteAdapter = (adapter) => {
-    this.props.deleteAdapter(adapter);
+	const {currentOrganisation} = this.props.context;
+    this.props.deleteAdapter(adapter, currentOrganisation.name);
     this.setState({
       notify: true,
       adapterDeletedName: adapter.name,

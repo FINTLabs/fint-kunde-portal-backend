@@ -28,7 +28,7 @@ class AdapterAdd extends React.Component {
   };
 
   handleAddAdapter = () => {
-    this.props.createAdapter(this.state.adapter).then(() => {
+    this.props.createAdapter(this.state.adapter,this.props.organisation).then(() => {
       this.setState({
         showAdapterAdd: false,
         notify: true,

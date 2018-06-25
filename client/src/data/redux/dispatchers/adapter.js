@@ -48,9 +48,6 @@ export function addAdapterToComponent(adapter, component, org) {
 }
 
 export function updateAdapter(adapter, organisation) {
-  console.log(`org: ${organisation}`);
-  console.log(`adapter: ${adapter}`);
-
   return function (dispatch) {
     console.log(`org: ${organisation}`);
 
@@ -65,9 +62,8 @@ export function updateAdapter(adapter, organisation) {
 }
 
 export function createAdapter(adapter, org) {
-
   return function (dispatch) {
-    return AdapterApi.createAdapter(adapter, org).then(responseAdapter => {
+    return AdapterApi.createAdapter(adapter, org.name).then(responseAdapter => {
       dispatch(createAdapterSuccess(responseAdapter));
       return responseAdapter;
     }).catch(error => {

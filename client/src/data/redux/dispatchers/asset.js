@@ -19,23 +19,28 @@ export function fetchAssets(org) {
       }
     })
   }
+  
+  
 }
 
-export function createAsset(asset,org) {
-  return function (dispatch) {
-    return AssetApi.createAsset(asset,org.name).then(response => {
-    	fetchAssets(org);
-    }).catch(error => {
-      throw(error);
-    });
-  };
-}
+export function createAsset(asset, org) {
+	  return function (dispatch) {
+	    return AssetApi.createAsset(asset, org.name).then(responseAsset => {
+	    	console.log("response")
+	    	console.log(responseAsset)
+	      dispatch(createAssetSuccess(responseAsset));
+	      return responseAsset;
+	    }).catch(error => {
+	      throw(error);
+	    });
+	  };
+	}
 
 export function updateAsset(asset,org) {
   return function (dispatch) {
-    return AssetApi.updateAsset(asset,org).then(response => {
-      dispatch(updateAssetSuccess(response));
-      return response;
+    return AssetApi.updateAsset(asset,org).then(responseAsset => {
+      dispatch(updateAssetSuccess(responseAsset));
+      return responseAsset;
     }).catch(error => {
       throw(error);
     });
@@ -45,7 +50,8 @@ export function updateAsset(asset,org) {
 export function deleteAsset(asset,org) {
 	  return function (dispatch) {
 	    return AssetApi.deleteAsset(asset,org).then(response => {
-	    	fetchAssets(org);
+		   dispatch(deleteAssetSuccess(asset));
+		   return;
 	    }).catch(error => {
 	      throw(error);
 	    });

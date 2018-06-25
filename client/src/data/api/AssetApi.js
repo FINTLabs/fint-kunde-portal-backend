@@ -8,6 +8,7 @@ class AssetApi {
   }
 
   static createAsset(asset, organisation) {
+
     const request = new Request(`/api/assets/${organisation}/`, {
       method: 'POST',
       headers: {
@@ -17,18 +18,18 @@ class AssetApi {
       body: JSON.stringify({
         description: asset.description,  
         name: asset.name,
-        assetId: asset.name
+        assetId: asset.name,
       })
     });
     return fetch(request).then(response => {
       return response.json();
     }).catch(error => {
-      return error;
+      return asset;
     });
   }
 
   static updateAsset(asset, organisation) {
-    const request = new Request(`/api/assets/${organisation}/${asset.assetId}`, {
+    const request = new Request(`/api/assets/${organisation}/${asset.name}`, {
       method: 'PUT',
       headers: {
         'Accept': '*/*',
@@ -36,6 +37,7 @@ class AssetApi {
       },
       body: JSON.stringify({
         description: asset.description,
+        name: asset.name,
       })
     });
     return fetch(request).then(response => {
@@ -45,8 +47,9 @@ class AssetApi {
     });
   }
 
+
 static deleteAsset(asset, organisation) {
-    const request = new Request(`/api/assets/${organisation}/${asset.assetId}`, {
+    const request = new Request(`/api/assets/${organisation}/${asset.name}`, {
       method: 'DELETE'
     });
 

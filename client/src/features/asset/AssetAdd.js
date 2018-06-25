@@ -27,7 +27,7 @@ class AssetAdd extends React.Component {
   };
 
   handleAddAsset = () => {
-	  this.props.createAsset(this.state.asset,this.props.organisation).then(() => {
+    this.props.createAsset(this.state.asset,this.props.organisation).then(() => {
       this.setState({
         showAssetAdd: false,
         notify: true,
@@ -37,6 +37,10 @@ class AssetAdd extends React.Component {
       });
     });
 
+  };
+
+  usernameIsValid = (valid) => {
+    this.setState({usernameIsValid: valid});
   };
 
   openAddDialog = () => {
@@ -70,16 +74,17 @@ class AssetAdd extends React.Component {
     this.state = {
       asset: this.getEmptyAsset(),
       showAssetAdd: false,
+      assetAddedName: null,
       assetAdded: false,
       notify: false,
       usernameIsValid: false,
     };
   }
   componentDidUpdate(prevState) {
-    if (prevState.assetAdded == true) {
-      this.props.fetchAssets(this.props.organisation.name);
-    }
-  }
+	    if (prevState.assetAdded == true) {
+	      this.props.fetchAssets(this.props.organisation.name);
+	    }
+	  }
   render() {
     const {classes} = this.props;
     return (
@@ -103,19 +108,19 @@ class AssetAdd extends React.Component {
               <DialogContentText>
                 Vennligst fyll ut de obligatoriske feltene for å legge til ny asset.
               </DialogContentText>
-              <TextField
-                name="description"
-                label="Beskrivelse"
-                required
-                fullWidth
-                onChange={this.updateAssetState}
-              />
-              <TextField
-                name="name"
-                label="Navn"
-                fullWidth
-                onChange={this.updateAssetState}
-              />
+                <TextField
+	              name="description"
+	              label="Beskrivelse"
+	              required
+	              fullWidth
+	              onChange={this.updateAssetState}
+	            />
+	            <TextField
+	              name="name"
+	              label="Navn"
+	              fullWidth
+	              onChange={this.updateAssetState}
+	            />
             </DialogContent>
             <DialogActions>
               <Button onClick={this.handleCancel} variant="raised" color="primary">

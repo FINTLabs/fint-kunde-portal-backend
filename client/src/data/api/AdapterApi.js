@@ -8,8 +8,6 @@ class AdapterApi {
   }
 
   static updateAdapter(adapter, organisation) {
-
-
     const request = new Request(`/api/adapters/${organisation}/${adapter.name}`, {
       method: 'PUT',
       headers: {
@@ -30,7 +28,6 @@ class AdapterApi {
   }
 
   static createAdapter(Adapter, organisation) {
-
     const request = new Request(`/api/adapters/${organisation}`, {
       method: 'POST',
       headers: {

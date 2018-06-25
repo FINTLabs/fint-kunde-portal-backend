@@ -88,7 +88,7 @@ AssetTabView.propTypes = {
   classes: PropTypes.object.isRequired,
   theme: PropTypes.object.isRequired,
   notify: PropTypes.func.isRequired,
-  updateAdapterState: PropTypes.func.isRequired,
+  updateAssetState: PropTypes.func.isRequired,
   showUpdateButton: PropTypes.func.isRequired,
 };
 

@@ -52,7 +52,6 @@ class AssetList extends Component {
     const {currentOrganisation} = this.props.context;
     this.props.updateAsset(asset, currentOrganisation.name);
   };
-
   deleteAsset = (asset) => {
 	const {currentOrganisation} = this.props.context;
     this.props.deleteAsset(asset, currentOrganisation.name);
@@ -60,12 +59,11 @@ class AssetList extends Component {
       notify: true,
       assetDeletedName: asset.name,
     });
-
   };
+
   onCloseNotification = () => {
     this.setState({
       notify: false,
-      assetDeletedName: null,
     });
   };
 
@@ -77,54 +75,47 @@ class AssetList extends Component {
       open: false,
       notify: false,
       assetDeletedName: null,
-      assetAddedName:null,
-      assetAdded:null,
     };
 
   }
 
-  componentDidUpdate(prevState) {
-      if (prevState.assetDeletedName !== null) {
-    	  this.props.fetchAssets(this.props.context.currentOrganisation.name);
-    }
- } 
   render() {
-
     const {classes} = this.props;
     return (
       <div>
-	      <AutoHideNotification
-		      showNotification={this.state.notify}
-		      message={`Adapter ${this.state.assetDeletedName} ble slettet!`}
-		      onClose={this.onCloseNotification}
-	      />
+        <AutoHideNotification
+          showNotification={this.state.notify}
+          message={`Asset ${this.state.assetDeletedName} ble slettet!`}
+          onClose={this.onCloseNotification}
+
+        />
         <div className={classes.root}>
           <div className={classes.componentList}>
             <Typography variant="headline" className={classes.title}>Asset</Typography>
             <Divider/>
             <List>
-              {this.props.assets.map((asset) =>
-                <ListItem className={classes.listItem} key={asset.name}>
-                  <ListItemAvatar>
-                    <Avatar className={classes.itemAvatar}>
-                      <InsertLink/>
-                    </Avatar>
-                  </ListItemAvatar>
-                  <ListItemText
-                    primary={asset.description}
-                    secondary={asset.name}
-                  />
-                  <ListItemSecondaryAction>
-                    <IconButton aria-label="Edit" onClick={() => this.editAsset(asset)}>
-                      <Edit/>
-                    </IconButton>
-                    <IconButton aria-label="Delete" onClick={() => this.deleteAsset(asset)}>
-                    	<Delete/>
-                    </IconButton>
-                  </ListItemSecondaryAction>
-                </ListItem>,
-              )}
-            </List>
+            {this.props.assets.map((asset) =>
+              <ListItem className={classes.listItem} key={asset.name}>
+                <ListItemAvatar>
+                  <Avatar className={classes.itemAvatar}>
+                    <InsertLink/>
+                  </Avatar>
+                </ListItemAvatar>
+                <ListItemText
+                  primary={asset.description}
+                  secondary={asset.name}
+                />
+                <ListItemSecondaryAction>
+                  <IconButton aria-label="Edit" onClick={() => this.editAsset(asset)}>
+                    <Edit/>
+                  </IconButton>
+                  <IconButton aria-label="Delete" onClick={() => this.deleteAsset(asset)}>
+                  	<Delete/>
+                  </IconButton>
+                </ListItemSecondaryAction>
+              </ListItem>,
+            )}
+          </List>
           </div>
         </div>
         <AssetView
@@ -145,6 +136,5 @@ AssetList.propTypes = {
 
 
 export default withStyles(styles)(withContext(AssetList));
-
 
 

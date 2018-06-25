@@ -35,6 +35,7 @@ class AssetTabGeneral extends React.Component {
           label="Navn"
           onChange={this.props.updateAssetState}
           value={this.props.asset.name}
+          disabled
           fullWidth
         />
       </div>
