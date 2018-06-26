@@ -62,7 +62,6 @@ class AssetTabAdapter extends React.Component {
   askToUnLinkAdapter = (adapter) => {
 
     this.setState({
-      thisAdapter: adapter,
       askUnLink: true,
       message: "Er du sikker på at du vil fjerne " + adapter.shortDescription + " fra:  " + this.props.asset.name + "?",
       adapter: adapter,
@@ -71,27 +70,26 @@ class AssetTabAdapter extends React.Component {
   };
   askToLinkAdapter = (adapter) => {
     this.setState({
-      thisAdapter: adapter,
       askLink: true,
       message: "Vil du legge  " + adapter.shortDescription + " til asset?",
       adapter: adapter,
+      
     });
 
   };
   unLinkAdapter = () => {
-    AssetApi.deleteAdapterFromAsset(this.state.thisAdapter, this.props.asset, this.props.context.currentOrganisation.name)
+    AssetApi.deleteAdapterFromAsset(this.state.adapter, this.props.asset, this.props.context.currentOrganisation.name)
       .then(() => {
-        this.props.notify(`${this.state.thisAdapter.shortDescription} ble slettet fra ${this.props.asset.name}`);
-        this.props.fetchAdapters();
+        this.props.notify(`${this.state.adapter.shortDescription} ble slettet fra ${this.props.asset.name}`);
+        this.props.fetchAdapters(this.props.context.currentOrganisation.name);
       }).catch(error => {
     });
   };
   linkAdapter = () => {
-    AssetApi.addAdapterToAsset(this.state.thisAdapter, this.props.asset,  this.props.context.currentOrganisation.name)
+    AssetApi.addAdapterToAsset(this.state.adapter, this.props.asset,  this.props.context.currentOrganisation.name)
       .then(() => {
-
-        this.props.notify(`${this.state.thisAdapter.shortDescription} ble lagt til ${this.props.asset.name}`);
-        this.props.fetchAdapters();
+        this.props.notify(`${this.state.adapter.shortDescription} ble lagt til ${this.props.asset.name}`);
+        this.props.fetchAdapters(this.props.context.currentOrganisation.name);
       }).catch(error => {
     });
   };
@@ -109,18 +107,17 @@ class AssetTabAdapter extends React.Component {
       askUnLink: false,
     });
 
-    if (confirmed) {
+    if (this.isLinkedToAsset(this.state.adapter) && confirmed) {
       this.unLinkAdapter();
     }
   };
   isLinkedToAsset = (adapter) => {
-    for (let i = 0; i < this.props.adapters.length; i++) {
-      if (adapter.dn === this.props.asset.adapters[i]) {
-        return true;
-      }
-    }
+	    for (let i = 0; i < this.props.asset.adapters.length; i++) {
+	      if (this.props.asset.adapters[i].toLowerCase() === adapter.dn.toLowerCase()) {
+	        return true;
+	      }
+	    }
     return false;
-
   };
   getOrganisationAdapters = () => {
     return this.props.adapers
@@ -138,9 +135,9 @@ class AssetTabAdapter extends React.Component {
   }
 
   static getDerivedStateFromProps(nextProps, prevState) {
-    if (nextProps.adapter !== prevState.adapter) {
+    if (nextProps.asset !== prevState.asset) {
       return {
-        adapter: nextProps.adapter,
+        asset: nextProps.asset,
       };
     }
     return null;
@@ -149,7 +146,7 @@ class AssetTabAdapter extends React.Component {
   componentDidMount() {
     this.props.fetchAdapters(this.props.context.currentOrganisation.name);
   }
-
+  
   render() {
     if (!this.props.adapters) {
       return <LoadingProgress/>;
@@ -228,4 +225,3 @@ function mapDispatchToProps(dispatch) {
 }
 
 export default withStyles(styles)(connect(mapStateToProps, mapDispatchToProps)(withContext(AssetTabAdapter)));
-

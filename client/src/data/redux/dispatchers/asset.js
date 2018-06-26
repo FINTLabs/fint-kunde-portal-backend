@@ -26,8 +26,6 @@ export function fetchAssets(org) {
 export function createAsset(asset, org) {
 	  return function (dispatch) {
 	    return AssetApi.createAsset(asset, org.name).then(responseAsset => {
-	    	console.log("response")
-	    	console.log(responseAsset)
 	      dispatch(createAssetSuccess(responseAsset));
 	      return responseAsset;
 	    }).catch(error => {
@@ -62,7 +60,7 @@ export function deleteAdapterFromAsset(adapter, asset,  org) {
 	  return function (dispatch) {
 	    return AssetApi.deleteAdapterFromAsset(asset, adapter, org).then(() => {
       fetchAssets(org);
-      fetchAdapters();
+      fetchAdapters(org);
     }).catch(error => {
       throw(error);
     })
@@ -73,7 +71,7 @@ export function addAdapterToAsset(adapter, asset, org) {
   return function (dispatch) {
     return AssetApi.addAdapterToAsset(asset, adapter, org).then(responseAdapter => {
       fetchAssets(org);
-      fetchAdapters();
+      fetchAdapters(org);
     }).catch(error => {
       throw(error);
     });
@@ -84,7 +82,7 @@ export function deleteClientFromAsset(client, asset,  org) {
 	  return function (dispatch) {
 	    return AssetApi.deleteClientFromAsset(asset, client, org).then(() => {
     fetchAssets(org);
-    fetchKlienter();
+    fetchKlienter(org);
   }).catch(error => {
     throw(error);
   })
@@ -95,7 +93,7 @@ export function addClientToAsset(client, asset, org) {
 	return function (dispatch) {
 	  return AssetApi.addAdapterToAsset(asset, client, org).then(responseAdapter => {
 	    fetchAssets(org);
-	    fetchKlienter();
+	    fetchKlienter(org);
 	  }).catch(error => {
 	    throw(error);
 	  });

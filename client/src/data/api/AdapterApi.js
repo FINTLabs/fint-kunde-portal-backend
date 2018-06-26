@@ -1,7 +1,6 @@
 class AdapterApi {
 
   static getAdapters(organisation) {
-
     const url = `/api/adapters/${organisation}`; //.concat(org);
     return fetch(url, {method: 'GET'})
       .then(response => Promise.all([response, response.json()]));

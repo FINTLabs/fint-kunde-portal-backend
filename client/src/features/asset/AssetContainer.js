@@ -26,8 +26,6 @@ class AssetContainer extends React.Component {
   }
 
   componentDidUpdate(prevProps, prevState, snapshot) {
-	  console.log("update")
-	  console.log(this)
     if (prevProps.context !== this.props.context) {
       this.props.fetchAssets(this.props.context.currentOrganisation.name);
     }

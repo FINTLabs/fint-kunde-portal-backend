@@ -31,11 +31,11 @@ export function deleteAssetSuccess(asset) {
 	  return {type: DELETE_ASSET_SUCCESS, asset}
 }
 
-export function addAdapterToAssetSuccess(payload) {
-	  return {type: ADD_ADAPER_TO_ASSET, payload}
+export function addAdapterToAssetSuccess(asset) {
+	  return {type: ADD_ADAPER_TO_ASSET, asset}
 }
-export function deleteAdapterFromAsset(payload) {
-	  return {type: DELETE_ADAPTER_FROM_ASSET, payload}
+export function deleteAdapterFromAsset(asset) {
+	  return {type: DELETE_ADAPTER_FROM_ASSET, asset}
 }
 export function addClientToAssetSuccess(payload) {
 	  return {type: ADD_CLIENT_TO_ASSET, payload}
