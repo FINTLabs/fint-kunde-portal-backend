@@ -60,7 +60,6 @@ class AssetTabAdapter extends React.Component {
 
 
   askToUnLinkAdapter = (adapter) => {
-
     this.setState({
       askUnLink: true,
       message: "Er du sikker på at du vil fjerne " + adapter.shortDescription + " fra:  " + this.props.asset.name + "?",
@@ -77,16 +76,16 @@ class AssetTabAdapter extends React.Component {
     });
 
   };
-  unLinkAdapter = () => {
-    AssetApi.deleteAdapterFromAsset(this.state.adapter, this.props.asset, this.props.context.currentOrganisation.name)
+  unLinkAdapter = (adapter) => {
+    AssetApi.deleteAdapterFromAsset(adapter, this.props.asset, this.props.context.currentOrganisation.name)
       .then(() => {
         this.props.notify(`${this.state.adapter.shortDescription} ble slettet fra ${this.props.asset.name}`);
         this.props.fetchAdapters(this.props.context.currentOrganisation.name);
       }).catch(error => {
     });
   };
-  linkAdapter = () => {
-    AssetApi.addAdapterToAsset(this.state.adapter, this.props.asset,  this.props.context.currentOrganisation.name)
+  linkAdapter = (adapter) => {
+    AssetApi.addAdapterToAsset(adapter, this.props.asset,  this.props.context.currentOrganisation.name)
       .then(() => {
         this.props.notify(`${this.state.adapter.shortDescription} ble lagt til ${this.props.asset.name}`);
         this.props.fetchAdapters(this.props.context.currentOrganisation.name);
@@ -108,7 +107,7 @@ class AssetTabAdapter extends React.Component {
     });
 
     if (this.isLinkedToAsset(this.state.adapter) && confirmed) {
-      this.unLinkAdapter();
+      this.unLinkAdapter(this.state.adapter);
     }
   };
   isLinkedToAsset = (adapter) => {

@@ -55,7 +55,6 @@ class AssetView extends React.Component {
       notify: false,
       notifyMessage: '',
       showUpdateButton: true,
-
     };
   }
 

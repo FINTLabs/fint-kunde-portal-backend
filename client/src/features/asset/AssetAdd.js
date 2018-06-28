@@ -81,10 +81,10 @@ class AssetAdd extends React.Component {
     };
   }
   componentDidUpdate(prevState) {
-	    if (prevState.assetAdded == true) {
-	      this.props.fetchAssets(this.props.organisation.name);
-	    }
-	  }
+    if (prevState.assetAdded == true) {
+      this.props.fetchAssets(this.props.organisation.name);
+    }
+  }
   render() {
     const {classes} = this.props;
     return (
