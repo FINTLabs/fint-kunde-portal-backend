@@ -1,23 +1,40 @@
 pipeline {
-  agent none
-  stages {
-    stage('Build') {
-      agent { label 'docker' }
-      steps {
-        script {
-          props=readProperties file: 'gradle.properties'
-          VERSION="${props.version}"
+    agent { label 'docker' }
+    stages {
+        stage('Build') {
+            steps {
+                sh "docker build --tag ${GIT_COMMIT} ."
+            }
         }
-        sh "docker build --tag 'dtr.rogfk.no/fint-beta/kunde-portal:${VERSION}' ."
-      }
-    }
-    stage('Publish') {
-      agent { label 'docker' }
-      steps {
-        withDockerRegistry([credentialsId: 'dtr-rogfk-no', url: 'https://dtr.rogfk.no']) {
-          sh "docker push 'dtr.rogfk.no/fint-beta/kunde-portal:${VERSION}'"
+        stage('Publish') {
+            when { branch 'master' }
+            steps {
+                sh "docker tag ${GIT_COMMIT} dtr.fintlabs.no/beta/kunde-portal:latest"
+                withDockerRegistry([credentialsId: 'dtr-fintlabs-no', url: 'https://dtr.fintlabs.no']) {
+                    sh "docker push 'dtr.fintlabs.no/beta/kunde-portal:latest'"
+                }
+                withDockerServer([credentialsId: "ucp-fintlabs-jenkins-bundle", uri: "tcp://ucp.fintlabs.no:443"]) {
+                    //sh "docker service update kunde-portal-beta_kunde-portal --image dtr.fintlabs.no/beta/kunde-portal:latest --detach=false"
+                }
+            }
         }
-      }
+        stage('Publish PR') {
+            when { changeRequest() }
+            steps {
+                sh "docker tag ${GIT_COMMIT} dtr.fintlabs.no/beta/kunde-portal:${BRANCH_NAME}"
+                withDockerRegistry([credentialsId: 'dtr-fintlabs-no', url: 'https://dtr.fintlabs.no']) {
+                    sh "docker push 'dtr.fintlabs.no/beta/kunde-portal:${BRANCH_NAME}'"
+                }
+            }
+        }
+        stage('Publish Tag') {
+            when { buildingTag() }
+            steps {
+                sh "docker tag ${GIT_COMMIT} dtr.fintlabs.no/beta/kunde-portal:${TAG_NAME}"
+                withDockerRegistry([credentialsId: 'dtr-fintlabs-no', url: 'https://dtr.fintlabs.no']) {
+                    sh "docker push 'dtr.fintlabs.no/beta/kunde-portal:${TAG_NAME}'"
+                }
+            }
+        }
     }
-  }
 }
