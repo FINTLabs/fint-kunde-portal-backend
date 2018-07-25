@@ -2,9 +2,12 @@ class AssetApi {
 
   static fetchAssets(organisation) {
     const url = `/api/assets/${organisation}/`;
-	  return fetch(url, {method: 'GET'})
+	  return fetch(url, {
+	    method: 'GET',
+      credentials: 'same-origin'
+	  })
       .then(response => Promise.all([response, response.json()]));
-    
+
   }
 
   static createAsset(asset, organisation) {
@@ -15,8 +18,9 @@ class AssetApi {
         'Accept': '*/*',
         'Content-Type': 'application/json'
       },
+      credentials: 'same-origin',
       body: JSON.stringify({
-        description: asset.description,  
+        description: asset.description,
         name: asset.name,
         assetId: asset.name,
       })
@@ -35,6 +39,7 @@ class AssetApi {
         'Accept': '*/*',
         'Content-Type': 'application/json'
       },
+      credentials: 'same-origin',
       body: JSON.stringify({
         description: asset.description,
         name: asset.name,
@@ -50,7 +55,8 @@ class AssetApi {
 
 static deleteAsset(asset, organisation) {
     const request = new Request(`/api/assets/${organisation}/${asset.name}`, {
-      method: 'DELETE'
+      method: 'DELETE',
+      credentials: 'same-origin',
     });
 
     return fetch(request).then(response => {
@@ -69,6 +75,7 @@ static addAdapterToAsset(adapter, asset, organisation) {
         'Accept': '*/*',
         'Content-Type': 'application/json'
       },
+      credentials: 'same-origin',
       body: JSON.stringify({
         name: adapter.name
       })
@@ -83,6 +90,7 @@ static deleteAdapterFromAsset(adapter, asset, organisation) {
 
     const request = new Request(`/api/assets/${organisation}/${asset.assetId}/adapters/${adapter.name}`, {
       method: 'DELETE',
+      credentials: 'same-origin',
     });
 
     return fetch(request).then(response => {
@@ -100,6 +108,7 @@ static addClientToAsset(client, asset, organisation) {
         'Accept': '*/*',
         'Content-Type': 'application/json'
       },
+      credentials: 'same-origin',
       body: JSON.stringify({
         name: client.name
       })
@@ -114,6 +123,7 @@ static deleteClientFromAsset(client, asset, organisation) {
 
     const request = new Request(`/api/assets/${organisation}/${asset.assetId}/clients/${client.name}`, {
       method: 'DELETE',
+      credentials: 'same-origin',
     });
 
     return fetch(request).then(response => {

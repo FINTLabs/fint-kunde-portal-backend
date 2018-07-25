@@ -37,7 +37,7 @@ public class IntegrationTest {
     mockMvc.perform(get("/api/assets/testing/test_no")).andExpect(status().isOk()).andExpect(jsonPath("$.name").value(equalTo("test_no")));
     mockMvc.perform(put("/api/assets/testing/test_no").content("{ \"assetId\": \"test.no\", \"name\": \"test_no\", \"description\": \"Test Mer Norge AS\" }").contentType(MediaType.APPLICATION_JSON)).andExpect(status().isOk()).andExpect(jsonPath("$.description").value(equalTo("Test Mer Norge AS")));
     mockMvc.perform(get("/api/adapters/testing")).andExpect(status().isOk());
-    mockMvc.perform(post("/api/adapters/testing").content("{ \"name\": \"testAdapter\", \"note\": \"Test Adapter\", \"secret\": \"Open Sesame!\", \"shortDescription\": \"This is a Test Adapter\" }").contentType(MediaType.APPLICATION_JSON)).andExpect(status().isOk());
+    mockMvc.perform(post("/api/adapters/testing").content("{ \"name\": \"testAdapter\", \"note\": \"Test Adapter\", \"secret\": \"Open Sesame!\", \"shortDescription\": \"This is a Test Adapter\" }").contentType(MediaType.APPLICATION_JSON)).andExpect(status().is(201));
     mockMvc.perform(get("/api/adapters/testing/testadapter")).andExpect(status().isOk()).andExpect(jsonPath("$.name").value(equalTo("testAdapter")));
     mockMvc.perform(get("/api/adapters/testing/testadapter/secret")).andExpect(status().isOk()).andExpect(content().string(containsString("_ClientSecret")));
     mockMvc.perform(put("/api/adapters/testing/testadapter/password").content("This is the new password").contentType(MediaType.TEXT_PLAIN)).andExpect(status().isOk());
@@ -48,7 +48,7 @@ public class IntegrationTest {
     mockMvc.perform(delete("/api/components/administrasjon_personal/testing/adapters/testadapter")).andExpect(status().is(204));
     mockMvc.perform(delete("/api/adapters/testing/testadapter")).andExpect(status().is(204));
     mockMvc.perform(get("/api/clients/testing")).andExpect(status().is(200));
-    mockMvc.perform(post("/api/clients/testing").content("{ \"name\": \"testclient\", \"note\": \"Test Client\", \"secret\": \"password\", \"shortDescription\": \"This is a Test Client.\" }").contentType(MediaType.APPLICATION_JSON)).andExpect(status().isOk()).andExpect(jsonPath("$.name").value(equalTo("testclient")));
+    mockMvc.perform(post("/api/clients/testing").content("{ \"name\": \"testclient\", \"note\": \"Test Client\", \"secret\": \"password\", \"shortDescription\": \"This is a Test Client.\" }").contentType(MediaType.APPLICATION_JSON)).andExpect(status().is(201)).andExpect(jsonPath("$.name").value(equalTo("testclient")));
     mockMvc.perform(get("/api/clients/testing/testclient")).andExpect(status().isOk()).andExpect(jsonPath("$.name").value(equalTo("testclient")));
     mockMvc.perform(get("/api/clients/testing/testclient/secret")).andExpect(status().isOk()).andExpect(content().string(containsString("_ClientSecret")));
     mockMvc.perform(put("/api/clients/testing/testclient").content("{ \"name\": \"testclient\", \"note\": \"Testing Client\", \"shortDescription\": \"This is an updated Test Client.\" }").contentType(MediaType.APPLICATION_JSON)).andExpect(status().isOk()).andExpect(jsonPath("$.shortDescription").value(containsString("updated")));

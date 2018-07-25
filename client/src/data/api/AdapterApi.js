@@ -2,7 +2,10 @@ class AdapterApi {
 
   static getAdapters(organisation) {
     const url = `/api/adapters/${organisation}`; //.concat(org);
-    return fetch(url, {method: 'GET'})
+    return fetch(url, {
+      method: 'GET',
+      credentials: 'same-origin'
+    })
       .then(response => Promise.all([response, response.json()]));
   }
 
@@ -13,6 +16,7 @@ class AdapterApi {
         'Accept': '*/*',
         'Content-Type': 'application/json'
       },
+      credentials: 'same-origin',
       body: JSON.stringify({
         name: adapter.name,
         note: adapter.note,
@@ -33,6 +37,7 @@ class AdapterApi {
         'Accept': '*/*',
         'Content-Type': 'application/json'
       },
+      credentials: 'same-origin',
       body: JSON.stringify({
         name: Adapter.name,
         note: Adapter.note,
@@ -62,6 +67,7 @@ class AdapterApi {
         'Accept': '*/*',
         'Content-Type': 'application/json'
       },
+      credentials: 'same-origin',
       body: JSON.stringify({
         name: Adapter.name
       })
@@ -75,7 +81,8 @@ class AdapterApi {
 
   static deleteAdapter(Adapter, organisation) {
     const request = new Request(`/api/adapters/${organisation}/${Adapter.name}`, {
-      method: 'DELETE'
+      method: 'DELETE',
+      credentials: 'same-origin'
     });
 
     return fetch(request).then(response => {
@@ -88,7 +95,8 @@ class AdapterApi {
   static deleteAdapterFromComponent(adapter, component, organisation) {
 
     const request = new Request(`/api/components/${component.name}/${organisation}/adapters/${adapter.name}`, {
-      method: 'DELETE'
+      method: 'DELETE',
+      credentials: 'same-origin'
     });
     return fetch(request).then(response => {
       return response.json();
@@ -101,7 +109,8 @@ class AdapterApi {
 
     const request = new Request(`/api/adapters/${organisation}/${adapter.name}/secret`,
       {
-        method: 'GET'
+        method: 'GET',
+        credentials: 'same-origin',
       });
     return fetch(request)
       .then(response => {
@@ -121,6 +130,7 @@ class AdapterApi {
         'Accept': '*/*',
         'Content-Type': 'text/plain'
       },
+      credentials: 'same-origin',
       body: password
     });
     return fetch(request).then(response => {

@@ -2,7 +2,10 @@ class ComponentApi {
 
   static getApis() {
     const url = "/api/components";
-    return fetch(url, {method: 'GET'})
+    return fetch(url, {
+      method: 'GET',
+      credentials: 'same-origin',
+    })
       .then(response => Promise.all([response, response.json()]));
   }
 

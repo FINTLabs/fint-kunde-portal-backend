@@ -2,17 +2,21 @@ class ContactApi {
 
   static fetchContacts() {
     const url = "/api/contacts";
-    return fetch(url, {method: 'GET'})
+    return fetch(url, {
+      method: 'GET',
+      credentials: 'same-origin',
+    })
       .then(response => Promise.all([response, response.json()]));
   }
 
   static fetchContactOrganisatons() {
     const url = "/api/contacts/organisations";
-    return fetch(url, {method: 'GET'})
-    //.then(response => Promise.all([response, response.json()]));
-      .then(response => {
-        return response
-      });
+    return fetch(url, {
+      method: 'GET',
+      credentials: 'same-origin',
+    }).then(response => {
+      return response
+    });
   }
 
   static updateContact(contact) {
@@ -21,6 +25,7 @@ class ContactApi {
       headers: new Headers({
         'Content-Type': 'application/json'
       }),
+      credentials: 'same-origin',
       body: JSON.stringify({
         nin: contact.nin,
         firstName: contact.firstName,
@@ -44,6 +49,7 @@ class ContactApi {
         'Accept': '*/*',
         'Content-Type': 'application/json'
       },
+      credentials: 'same-origin',
       body: JSON.stringify({
         nin: contact.nin,
         firstName: contact.firstName,
@@ -62,7 +68,8 @@ class ContactApi {
 
   static deleteContact(contact) {
     const request = new Request(`/api/contacts/${contact.nin}`, {
-      method: 'DELETE'
+      method: 'DELETE',
+      credentials: 'same-origin',
     });
 
     return fetch(request).then(response => {

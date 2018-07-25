@@ -2,7 +2,8 @@ class ClientApi {
 
   static fetchKlienter(organisation) {
     const request = new Request(`/api/clients/${organisation}`, {
-      method: 'GET'
+      method: 'GET',
+      credentials: 'same-origin',
     });
 
     return fetch(request).then(response => {
@@ -14,7 +15,10 @@ class ClientApi {
 
   static getKlienter(organisation) {
     const url = `/api/clients/${organisation}`;
-    return fetch(url, {method: 'GET'})
+    return fetch(url, {
+      method: 'GET',
+      credentials: 'same-origin',
+    })
       .then(response => Promise.all([response, response.json()]));
   }
 
@@ -24,13 +28,13 @@ class ClientApi {
       headers: new Headers({
         'Content-Type': 'application/json'
       }),
+      credentials: 'same-origin',
       body: JSON.stringify({
         name: client.name,
         note: client.note,
         shortDescription: client.shortDescription
       })
     });
-
 
     return fetch(request).then(response => {
       return response.json();
@@ -46,6 +50,7 @@ class ClientApi {
         'Accept': '*/*',
         'Content-Type': 'application/json'
       },
+      credentials: 'same-origin',
       body: JSON.stringify({
         name: client.name,
         note: client.note,
@@ -70,7 +75,8 @@ class ClientApi {
 
   static deleteKlient(client, organisation) {
     const request = new Request(`/api/clients/${organisation}/${client.name}`, {
-      method: 'DELETE'
+      method: 'DELETE',
+      credentials: 'same-origin',
     });
 
     return fetch(request).then(response => {
@@ -88,6 +94,7 @@ class ClientApi {
         'Accept': '*/*',
         'Content-Type': 'application/json'
       },
+      credentials: 'same-origin',
       body: JSON.stringify({
         name: Adapter.name
       })
@@ -102,7 +109,8 @@ class ClientApi {
   static deleteClientFromComponent(adapter, component, organisation) {
 
     const request = new Request(`/api/components/${component.name}/${organisation}/clients/${adapter.name}`, {
-      method: 'DELETE'
+      method: 'DELETE',
+      credentials: 'same-origin',
     });
     return fetch(request).then(response => {
       return response.json();
@@ -115,7 +123,8 @@ class ClientApi {
 
     const request = new Request(`/api/clients/${organisation}/${adapter.name}/secret`,
       {
-        method: 'GET'
+        method: 'GET',
+        credentials: 'same-origin',
       });
     return fetch(request)
       .then(response => {
@@ -135,6 +144,7 @@ class ClientApi {
         'Accept': '*/*',
         'Content-Type': 'text/plain'
       },
+      credentials: 'same-origin',
       body: password
     });
     return fetch(request).then(response => {

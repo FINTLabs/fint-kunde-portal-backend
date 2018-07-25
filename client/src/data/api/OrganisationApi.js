@@ -2,20 +2,27 @@ class OrganisationApi {
 
   static getTechnicalContacts(organisation) {
     const url = `/api/organisations/${organisation}/contacts/technical`;
-    return fetch(url, {method: 'GET'})
-      .then(response => Promise.all([response, response.json()]));
+    return fetch(url, {
+      method: 'GET',
+      credentials: 'same-origin',
+    }).then(response => Promise.all([response, response.json()]));
   }
 
   static getLegalContact(organisation) {
     const url = `/api/organisations/${organisation}/contacts/legal`;
-    return fetch(url, {method: 'GET'})
-      .then(response => Promise.all([response, response.json()]));
+    return fetch(url, {
+      method: 'GET',
+      credentials: 'same-origin',
+    }).then(response => Promise.all([response, response.json()]));
   }
 
   static getOrganisation(organisation) {
     const url = `/api/organisations/${organisation}/`;
 
-    return fetch(url, {method: 'GET'})
+    return fetch(url, {
+      method: 'GET',
+      credentials: 'same-origin',
+    })
       .then(response => Promise.all([response, response.json()]));
   }
 
@@ -25,6 +32,7 @@ class OrganisationApi {
       headers: new Headers({
         'Content-Type': 'application/json'
       }),
+      credentials: 'same-origin',
       body: JSON.stringify({
         name: component.name
       })
@@ -43,6 +51,7 @@ class OrganisationApi {
       headers: new Headers({
         'Content-Type': 'application/json'
       }),
+      credentials: 'same-origin',
       body: JSON.stringify({
         name: component.name
       })
@@ -62,6 +71,7 @@ class OrganisationApi {
       headers: new Headers({
         'Content-Type': 'application/json'
       }),
+      credentials: 'same-origin',
       body: JSON.stringify({
         nin: nin
       })
@@ -81,6 +91,7 @@ class OrganisationApi {
       headers: new Headers({
         'Content-Type': 'application/json'
       }),
+      credentials: 'same-origin',
       body: JSON.stringify({
         nin: contact.nin
       })
@@ -99,6 +110,7 @@ class OrganisationApi {
       headers: new Headers({
         'Content-Type': 'application/json'
       }),
+      credentials: 'same-origin',
       body: JSON.stringify({
         name: contact.nin
       })
@@ -117,6 +129,7 @@ class OrganisationApi {
       headers: new Headers({
         'Content-Type': 'application/json'
       }),
+      credentials: 'same-origin',
       body: JSON.stringify({
         name: contact.nin
       })
