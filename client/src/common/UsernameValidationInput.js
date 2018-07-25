@@ -34,7 +34,7 @@ class UsernameValidationInput extends React.Component {
     const {name, title} = this.props;
     return (
       <FormControl fullWidth error={!this.state.usernameValid} required>
-        <InputLabel htmlFor="password">{title}</InputLabel>
+        <InputLabel htmlFor={name}>{title}</InputLabel>
         <Input
           autoFocus
           fullWidth

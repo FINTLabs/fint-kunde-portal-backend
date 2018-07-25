@@ -5,6 +5,7 @@ import TextField from "@material-ui/core/TextField";
 import {Add} from "@material-ui/icons";
 import {withStyles} from "@material-ui/core";
 import AutoHideNotification from "../../common/AutoHideNotification";
+import UsernameValidationInput from "../../common/UsernameValidationInput";
 
 const styles = () => ({
   addButton: {
@@ -28,7 +29,7 @@ class ClientAdd extends React.Component {
     return this.setState({client: client});
   };
   handleClose = () => {
-    this.props.createClient(this.state.client).then(() => {
+    this.props.createClient(this.state.client, this.props.organisation).then(() => {
       this.setState({
         clientAdded: false,
         clientAddedName: null,
@@ -48,6 +49,10 @@ class ClientAdd extends React.Component {
     this.setState({showClientAdd: false, clientAdded: false});
   };
 
+  usernameIsValid = (valid) => {
+    this.setState({usernameIsValid: valid});
+  };
+
   constructor(props, context) {
     super(props, context);
     this.state = {
@@ -55,6 +60,7 @@ class ClientAdd extends React.Component {
       showClientAdd: false,
       clientAdded: false,
       clientAddedName: null,
+      usernameIsValid: false,
     };
   }
 
@@ -80,14 +86,11 @@ class ClientAdd extends React.Component {
                 Vennligst fyll ut de obligatoriske feltene for å legge til ny klient
               </DialogContentText>
 
-              <TextField
-                autoFocus
-                margin="dense"
-                required
+              <UsernameValidationInput
+                title="Brukernavn"
                 name="name"
-                label="Navn"
-                fullWidth
                 onChange={this.updateKlientState}
+                usernameIsValid={this.usernameIsValid}
               />
 
               <TextField

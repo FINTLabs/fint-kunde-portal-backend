@@ -54,20 +54,26 @@ class ClientsList extends Component {
     this.setState({open: false});
   };
   updateClient = (client) => {
-    this.props.updateAdapter(client);
+    this.props.updateClient(client);
   };
   deleteClient = (client) => {
     this.setState({
       clientDeleted: true,
       clientDeletedName: client.name,
     });
-    this.props.deleteKlient(client);
+    this.props.deleteClient(client);
+  };
+
+  onCloseNotification = () => {
+    this.setState({
+      notify: false,
+    });
   };
 
   constructor(props) {
     super(props);
     this.state = {
-      klienter: this.props.klienter,
+      klienter: this.props.clients,
       clientToEdit: null,
       open: false,
       clientDeleted: false,
@@ -83,29 +89,29 @@ class ClientsList extends Component {
         <AutoHideNotification
           showNotification={this.state.clientDeleted}
           message={`Klient ${this.state.clientDeletedName} ble slettet!`}
-
+          onClose={this.onCloseNotification}
         />
         <div className={classes.root}>
           <div className={classes.componentList}>
             <Typography variant="headline" className={classes.title}>Klienter</Typography>
             <Divider/>
             <List>
-              {this.props.klienter.map((klient) =>
-                <ListItem className={classes.listItem} key={klient.dn}>
+              {this.props.clients.map((client) =>
+                <ListItem className={classes.listItem} key={client.dn}>
                   <ListItemAvatar>
                     <Avatar className={classes.itemAvatar}>
                       <ImportantDevices/>
                     </Avatar>
                   </ListItemAvatar>
                   <ListItemText
-                    primary={klient.shortDescription}
-                    secondary={klient.name}
+                    primary={client.shortDescription}
+                    secondary={client.name}
                   />
                   <ListItemSecondaryAction>
-                    <IconButton aria-label="Edit" onClick={() => this.editClient(klient)}>
+                    <IconButton aria-label="Edit" onClick={() => this.editClient(client)}>
                       <Edit/>
                     </IconButton>
-                    <IconButton aria-label="Delete" onClick={() => this.deleteClient(klient)}>
+                    <IconButton aria-label="Delete" onClick={() => this.deleteClient(client)}>
                       <Delete/>
                     </IconButton>
                   </ListItemSecondaryAction>
@@ -127,7 +133,7 @@ class ClientsList extends Component {
 }
 
 ClientsList.propTypes = {
-  klienter: PropTypes.array.isRequired
+  clients: PropTypes.array.isRequired
 };
 
 

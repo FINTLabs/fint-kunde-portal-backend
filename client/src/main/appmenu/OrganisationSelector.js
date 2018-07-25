@@ -1,12 +1,16 @@
 import React, {Component} from "react";
 import PropTypes from "prop-types";
 import {Button, Menu, MenuItem, withStyles} from "@material-ui/core";
+import OrganisationIcon from "@material-ui/icons/Domain";
 import {withContext} from "../../data/context/withContext";
 
 const styles = (theme) => ({
   root: {
     marginRight: theme.spacing.unit,
   },
+  organsationIcon: {
+    marginLeft: theme.spacing.unit,
+  }
 });
 
 
@@ -21,22 +25,6 @@ class OrganisationSelector extends Component {
       selectedOrganisation: {},
     };
   }
-
-  /*
-  componentDidMount() {
-    ContactApi.fetchContactOrganisatons()
-      .then(response => {
-        return response.json();
-      })
-      .then(json => {
-        this.setState({
-          organisations: json,
-          selectedOrganisation: json[1],
-        });
-        this.props.context.setCurrentOrganisation(json[1]);
-      });
-  }
-  */
 
   handleMenu = event => {
     this.setState({anchorEl: event.currentTarget});
@@ -65,6 +53,7 @@ class OrganisationSelector extends Component {
             color="inherit"
           >
             {this.props.context.currentOrganisation ? this.props.context.currentOrganisation.displayName : 'Velg organisasjon'}
+            <OrganisationIcon className={classes.organsationIcon}/>
           </Button>
           <Menu
             id="menu-appbar"

@@ -11,7 +11,9 @@ import no.fint.portal.exceptions.UpdateEntityMismatchException;
 import no.fint.portal.model.ErrorResponse;
 import no.fint.portal.model.contact.Contact;
 import no.fint.portal.model.contact.ContactService;
+import no.fint.portal.model.organisation.Organisation;
 import no.fint.portal.model.organisation.OrganisationService;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -22,7 +24,9 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.UnknownHostException;
 import java.util.List;
+import java.util.stream.Collectors;
 
+@Slf4j
 @RestController
 @Api(tags = "Contacts")
 @CrossOrigin(origins = "*")
@@ -31,12 +35,10 @@ public class ContactController {
 
   @Autowired
   PortalApiService portalApiService;
-
-  @Autowired
-  private ContactService contactService;
-
   @Autowired
   OrganisationService organisationService;
+  @Autowired
+  private ContactService contactService;
 
   @ApiOperation("Create new contact")
   @RequestMapping(method = RequestMethod.POST,
@@ -63,13 +65,13 @@ public class ContactController {
       throw new UpdateEntityMismatchException("The contact to updateEntry is not the contact in endpoint.");
     }
     Contact original = portalApiService.getContact(nin);
-    if (contact.getFirstName()!=null)
+    if (contact.getFirstName() != null)
       original.setFirstName(contact.getFirstName());
-    if (contact.getLastName()!=null)
+    if (contact.getLastName() != null)
       original.setLastName(contact.getLastName());
-    if (contact.getMail()!=null)
+    if (contact.getMail() != null)
       original.setMail(contact.getMail());
-    if (contact.getMobile()!=null)
+    if (contact.getMobile() != null)
       original.setMobile(contact.getMobile());
 
     if (!contactService.updateContact(original)) {
@@ -109,9 +111,12 @@ public class ContactController {
 
   @ApiOperation("Get contact organisations")
   @GetMapping(value = "/organisations")
-  public ResponseEntity getContactOrganisations() {
-    organisationService.getOrganisations();
-    return ResponseEntity.ok(organisationService.getOrganisations());
+  public ResponseEntity getContactOrganisations(@RequestHeader(value = "x-dn") final String dn) {
+    List<Organisation> organisations = organisationService.getOrganisations();
+    List<Organisation> contactOrganisations = organisations.stream().filter(
+      organisation -> StringUtils.equalsIgnoreCase(organisation.getLegalContact(), dn) || organisation.getTechicalContacts().contains(dn)
+    ).collect(Collectors.toList());
+    return ResponseEntity.ok(contactOrganisations);
   }
 
   //

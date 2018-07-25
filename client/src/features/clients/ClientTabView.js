@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import SwipeableViews from "react-swipeable-views";
 import AppBar from "@material-ui/core/AppBar";
-import Tabs, {Tab} from "@material-ui/core/Tabs";
+import {Tab, Tabs} from "@material-ui/core";
 import {FormControl, IconButton, Input, InputAdornment, InputLabel, TextField} from "@material-ui/core";
 import {ContentCopy, Refresh} from "@material-ui/icons";
 import withStyles from "@material-ui/core/styles/withStyles";

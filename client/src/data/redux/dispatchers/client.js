@@ -24,9 +24,9 @@ export function fetchKlienter(organisation) {
   }
 }
 
-export function createKlient(klient) {
+export function createKlient(client, organisation) {
   return function (dispatch) {
-    return ClientApi.createKlient(klient).then(responseKlient => {
+    return ClientApi.createKlient(client, organisation.name).then(responseKlient => {
       dispatch(createKlientSuccess(responseKlient));
       return responseKlient;
     }).catch(error => {

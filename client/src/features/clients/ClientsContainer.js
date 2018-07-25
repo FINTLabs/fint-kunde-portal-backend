@@ -3,7 +3,7 @@ import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
 import {withStyles} from "@material-ui/core";
 import LoadingProgress from "../../common/LoadingProgress";
-import KlienterList from "./ClientsList";
+import ClientsList from "./ClientsList";
 import ClientAdd from "./ClientAdd";
 import {createKlient, deleteKlient, fetchKlienter, updateClient} from "../../data/redux/dispatchers/client";
 import {withContext} from "../../data/context/withContext";
@@ -37,11 +37,11 @@ class ClientsContainer extends React.Component {
     const {classes} = this.props;
     return (
       <div className={classes.root}>
-        <KlienterList klienter={this.props.clients}
-                      updateClient={this.props.updateAdapter}
-                      deleteKlient={this.props.deleteAdapter}
+        <ClientsList clients={this.props.clients}
+                     updateClient={this.props.updateClient}
+                     deleteClient={this.props.deleteClient}
         />
-        <ClientAdd
+        <ClientAdd organisation={this.props.context.currentOrganisation}
           createClient={this.props.createClient}
         />
       </div>

@@ -1,9 +1,8 @@
 import React from "react";
 import Button from "@material-ui/core/Button";
-import {Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle,} from "@material-ui/core";
+import {Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, withStyles,} from "@material-ui/core";
 import TextField from "@material-ui/core/TextField";
 import {Add} from "@material-ui/icons";
-import {withStyles} from "@material-ui/core";
 import AutoHideNotification from "../../../common/AutoHideNotification";
 import UsernameValidationInput from "../../../common/UsernameValidationInput";
 
@@ -28,7 +27,7 @@ class AdapterAdd extends React.Component {
   };
 
   handleAddAdapter = () => {
-    this.props.createAdapter(this.state.adapter,this.props.organisation).then(() => {
+    this.props.createAdapter(this.state.adapter, this.props.organisation).then(() => {
       this.setState({
         showAdapterAdd: false,
         notify: true,
