@@ -15,11 +15,11 @@ import RemoveIcon from "@material-ui/icons/RemoveCircle";
 import ComponentIcon from "@material-ui/icons/WebAsset";
 import {bindActionCreators} from "redux";
 import {connect} from "react-redux";
-import {fetchClients} from "../../../data/redux/dispatchers/client";
+import {fetchComponents} from "../../../data/redux/dispatchers/component";
 import {green} from "@material-ui/core/colors/index";
 import LoadingProgress from "../../../common/LoadingProgress";
-import {addClientToAsset, deleteClientFromAsset} from "../../../data/redux/dispatchers/asset";
-import AssetApi from "../../../data/api/AssetApi";
+import {addClientToComponent, deleteClientFromComponent} from "../../../data/redux/dispatchers/client";
+import ClientApi from "../../../data/api/ClientApi";
 import WarningMessageBox from "../../../common/WarningMessageBox";
 import InformationMessageBox from "../../../common/InformationMessageBox";
 import {withContext} from "../../../data/context/withContext";
@@ -56,42 +56,39 @@ const styles = theme => ({
   },
 });
 
-class AssetTabClient extends React.Component {
+class ClientTabComponent extends React.Component {
 
 
-  askToUnLinkKlient = (klient) => {
+  askToUnLinkComponent = (component) => {
 
     this.setState({
-      thisKlient: klient,
       askUnLink: true,
-      message: "Er du sikker på at du vil fjerne " + klient.shortDescription + " fra:  " + this.props.asset.name + "?",
-      klient: klient,
+      message: "Er du sikker på at du vil fjerne clientet fra:  " + component.description + "?",
+      component: component,
     });
 
   };
-  askToLinkKlient = (klient) => {
+  askToLinkComponent = (component) => {
     this.setState({
-      thisKlient: klient,
       askLink: true,
-      message: "Vil du legge  " + klient.shortDescription + " til asset?",
-      klient: klient,
+      message: "Vil du legge clientet til:  " + component.description + "?",
+      component: component,
     });
-
   };
-  unLinkKlient = () => {
-    AssetApi.deleteClientFromAsset(this.state.thisKlient, this.props.asset, this.props.context.currentOrganisation.name)
+  unLinkComponent = (component) => {
+    ClientApi.deleteClientFromComponent(this.props.client, component, this.props.context.currentOrganisation.name)
       .then(() => {
-        this.props.notify(`${this.state.thisKlient.shortDescription} ble slettet fra ${this.props.asset.name}`);
-        this.props.fetchClients();
+        this.props.notify(`${this.props.client.name} ble lagt til ${component.description}`);
+        this.props.fetchComponents();
       }).catch(error => {
     });
   };
-  linkKlient = () => {
-    AssetApi.addClientToAsset(this.state.thisKlient, this.props.asset,  this.props.context.currentOrganisation.name)
+  linkComponent = (component) => {
+    ClientApi.addClientToComponent(this.props.client, component, this.props.context.currentOrganisation.name)
       .then(() => {
 
-        this.props.notify(`${this.state.thisKlient.shortDescription} ble lagt til ${this.props.asset.name}`);
-        this.props.fetchClients();
+        this.props.notify(`${this.props.client.name} ble lagt til ${component.description}`);
+        this.props.fetchComponents();
       }).catch(error => {
     });
   };
@@ -101,7 +98,7 @@ class AssetTabClient extends React.Component {
     });
 
     if (confirmed) {
-      this.linkKlient(this.state.klient);
+      this.linkComponent(this.state.component);
     }
   };
   onCloseUnLink = (confirmed) => {
@@ -109,23 +106,24 @@ class AssetTabClient extends React.Component {
       askUnLink: false,
     });
 
-    if (confirmed) {
-      this.unLinkKlient();
+    if (this.isLinkedToClient(this.state.component) && confirmed) {
+      this.unLinkComponent(this.state.component);
     }
   };
-  isLinkedToAsset = (klient) => {
-    for (let i = 0; i < this.props.clients.length; i++) {
-      if (klient.dn === this.props.asset.clients[i]) {
+  isLinkedToClient = (component) => {
+    for (let i = 0; i < component.clients.length; i++) {
+      if (component.clients[i].toLowerCase() === this.props.client.dn.toLowerCase()) {
         return true;
       }
+
     }
     return false;
 
   };
-  getOrganisationKlienter = () => {
-    return this.props.adapers
-      .filter(klient => klient.organisations.length > 0)
-      .filter(klient => klient.organisations.find(o => o === this.props.context.currentOrganisation.dn));
+  getOrganisationComponents = () => {
+    return this.props.components
+      .filter(component => component.organisations.length > 0)
+      .filter(component => component.organisations.find(o => o === this.props.context.currentOrganisation.dn));
   };
 
   constructor(props) {
@@ -138,30 +136,31 @@ class AssetTabClient extends React.Component {
   }
 
   static getDerivedStateFromProps(nextProps, prevState) {
-    if (nextProps.klient !== prevState.klient) {
+    if (nextProps.client !== prevState.client) {
       return {
-        klient: nextProps.klient,
+        client: nextProps.client,
       };
     }
     return null;
   }
 
   componentDidMount() {
-    this.props.fetchClients(this.props.context.currentOrganisation.name);
+    this.props.fetchComponents();
   }
 
   render() {
-    if (!this.props.clients) {
+    if (!this.props.components) {
       return <LoadingProgress/>;
     } else {
-      return this.renderKlienter();
+      return this.renderComponents();
     }
   }
 
-  renderKlienter() {
+  renderComponents() {
+
     const {classes} = this.props;
-    const organisationKlienter = this.props.clients;
-    if (organisationKlienter.length > 0) {
+    const organisationComponents = this.getOrganisationComponents();
+    if (organisationComponents.length > 0) {
       return (
         <div>
           <WarningMessageBox
@@ -175,24 +174,24 @@ class AssetTabClient extends React.Component {
             onClose={this.onCloseLink}
           />
           <List>
-            {organisationKlienter.map((klient) =>
-              <ListItem className={classes.listItem} key={klient.dn}>
+            {organisationComponents.map((component) =>
+              <ListItem className={classes.listItem} key={component.dn}>
                 <ListItemAvatar>
                   <Avatar className={classes.itemAvatar}>
                     <ComponentIcon/>
                   </Avatar>
                 </ListItemAvatar>
                 <ListItemText
-                  primary={klient.shortDescription}
-                  secondary={klient.name}
+                  primary={component.description}
+                  secondary={component.basePath}
                 />
                 <ListItemSecondaryAction>
-                  {this.isLinkedToAsset(klient) ?
-                    (<IconButton aria-label="Remove" onClick={() => this.askToUnLinkKlient(klient)}>
+                  {this.isLinkedToClient(component) ?
+                    (<IconButton aria-label="Remove" onClick={() => this.askToUnLinkComponent(component)}>
                       <RemoveIcon className={classes.removeIcon}/>
                     </IconButton>)
                     :
-                    (<IconButton aria-label="Add" onClick={() => this.askToLinkKlient(klient)}>
+                    (<IconButton aria-label="Add" onClick={() => this.askToLinkComponent(component)}>
                       <AddIcon className={classes.addIcon}/>
                     </IconButton>)
                   }
@@ -205,7 +204,7 @@ class AssetTabClient extends React.Component {
     }
     else {
       return (
-        <Typography variant="subheading">Det er ikke lagt til noen klienter for denne organisasjonen.</Typography>
+        <Typography variant="subheading">Det er ikke lagt til noen komponenter for denne organisasjonen.</Typography>
       );
 
     }
@@ -214,17 +213,17 @@ class AssetTabClient extends React.Component {
 
 function mapStateToProps(state) {
   return {
-	  clients: state.client.clients,
+    components: state.component.components,
   }
 }
 
 function mapDispatchToProps(dispatch) {
   return bindActionCreators({
-    fetchClients: fetchClients,
-    addClientToAsset: addClientToAsset,
-    deleteClientFromAsset: deleteClientFromAsset,
+    fetchComponents: fetchComponents,
+    addClientToComponent: addClientToComponent,
+    deleteClientFromComponent: deleteClientFromComponent,
   }, dispatch);
 }
 
-export default withStyles(styles)(connect(mapStateToProps, mapDispatchToProps)(withContext(AssetTabClient)));
+export default withStyles(styles)(connect(mapStateToProps, mapDispatchToProps)(withContext(ClientTabComponent)));
 

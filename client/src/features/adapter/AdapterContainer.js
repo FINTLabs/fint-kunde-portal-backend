@@ -7,6 +7,7 @@ import {createAdapter, deleteAdapter, fetchAdapters, updateAdapter} from "../../
 import AdapterList from "./AdapterList";
 import AdapterAdd from "./add/AdapterAdd";
 import {withContext} from "../../data/context/withContext";
+import AutoHideNotification from "../../common/AutoHideNotification";
 
 
 const styles = () => ({
@@ -31,6 +32,24 @@ class AdapterContainer extends React.Component {
     }
   }
 
+  notify = (message) => {
+    this.setState({
+      notify: true,
+      notifyMessage: message,
+    });
+  };
+
+  onCloseNotification = () => {
+    this.setState({
+      notify: false,
+      notifyMessage: '',
+    });
+  };
+
+  afterAddAdapter = () => {
+    this.props.fetchAdapters(this.props.context.currentOrganisation.name);
+  };
+
   render() {
     if (this.props.adapters === undefined || this.props.context.currentOrganisation === undefined) {
       return <LoadingProgress/>;
@@ -43,12 +62,18 @@ class AdapterContainer extends React.Component {
     const {classes} = this.props;
     return (
       <div className={classes.root}>
+        <AutoHideNotification
+          showNotification={this.state.notify}
+          message={this.state.notifyMessage}
+          onClose={this.onCloseNotification}
+        />
         <AdapterList adapters={this.props.adapters}
                      updateAdapter={this.props.updateAdapter}
                      deleteAdapter={this.props.deleteAdapter}
         />
         <AdapterAdd organisation={this.props.context.currentOrganisation}
-          			createAdapter={this.props.createAdapter}
+                    notify={this.notify}
+                    afterAdd={this.afterAddAdapter}
         />
       </div>
 

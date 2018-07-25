@@ -29,18 +29,17 @@ class LogList extends Component {
     super(props);
     this.state = {};
   }
-  
+
   render() {
-	  console.log(this.props.loading)
 	const {classes} = this.props;
-	if (this.props.loading == true) {
+	if (this.props.loading === true) {
 		return (<LoadingProgress/>)
 	} else {
 
     return (
       <div className={classes.root}>
         {this.props.log.map((log) =>
-	      <ExpansionPanel>   
+	      <ExpansionPanel>
 	        <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
 	          <Typography className={classes.heading}><LogIcon/>{log.corrId}</Typography>
 	        </ExpansionPanelSummary>
@@ -49,7 +48,7 @@ class LogList extends Component {
 	        </ExpansionPanelDetails>
 	      </ExpansionPanel>
         )}
- 
+
     </div>
     );
 	}

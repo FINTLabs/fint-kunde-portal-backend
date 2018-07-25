@@ -10,7 +10,7 @@ import {DELETE_CLIENT_SUCCESS} from "../actions/types";
 import ClientApi from "../../api/ClientApi";
 
 
-export function fetchKlienter(organisation) {
+export function fetchClients(organisation) {
 
   return (dispatch) => {
     return ClientApi.getKlienter(organisation).then(([response, json]) => {
@@ -24,9 +24,9 @@ export function fetchKlienter(organisation) {
   }
 }
 
-export function createKlient(client, organisation) {
+export function createClient(client, organisation) {
   return function (dispatch) {
-    return ClientApi.createKlient(client, organisation.name).then(responseKlient => {
+    return ClientApi.createClient(client, organisation.name).then(responseKlient => {
       dispatch(createKlientSuccess(responseKlient));
       return responseKlient;
     }).catch(error => {
@@ -35,9 +35,9 @@ export function createKlient(client, organisation) {
   };
 }
 
-export function updateClient(client) {
+export function updateClient(client, organisation) {
   return function (dispatch) {
-    return ClientApi.updateClient(client).then(responseClient => {
+    return ClientApi.updateClient(client, organisation).then(responseClient => {
       dispatch(updateKlientSuccess(responseClient));
       return responseClient;
     }).catch(error => {
@@ -50,7 +50,7 @@ export function deleteKlientSuccess(client) {
   return {type: DELETE_CLIENT_SUCCESS, client}
 }
 
-export function deleteKlient(klient) {
+export function deleteClient(klient) {
   return function (dispatch) {
     return ClientApi.deleteKlient(klient).then(() => {
       dispatch(deleteKlientSuccess(klient));
@@ -61,7 +61,7 @@ export function deleteKlient(klient) {
 }
 
 
-export function addKlientToComponent(klient) {
+export function addClientToComponent(klient) {
   return function (dispatch) {
     return ClientApi.addKlient(klient).then(responseKlient => {
       dispatch(addKlientToComponentSuccess(responseKlient));
@@ -72,7 +72,7 @@ export function addKlientToComponent(klient) {
   };
 }
 
-export function deleteKlientFromComponent(klient) {
+export function deleteClientFromComponent(klient) {
   return function (dispatch) {
     return ClientApi.deleteKlientFromComponent(klient).then(() => {
       dispatch(deleteKlientFromComponentSuccess(klient));

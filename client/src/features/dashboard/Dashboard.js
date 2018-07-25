@@ -9,7 +9,7 @@ import ClientIcon from "@material-ui/icons/ImportantDevices";
 import {fetchAdapters} from "../../data/redux/dispatchers/adapter";
 import {bindActionCreators} from "redux";
 import {connect} from "react-redux";
-import {fetchKlienter} from "../../data/redux/dispatchers/client";
+import {fetchClients} from "../../data/redux/dispatchers/client";
 import {fetchComponents} from "../../data/redux/dispatchers/component";
 import LoadingProgress from "../../common/LoadingProgress";
 import {withContext} from "../../data/context/withContext";
@@ -26,6 +26,9 @@ const styles = theme => ({
   cardLink: {
     textDecoration: 'none'
   },
+  card: {},
+  cardHeader: {
+  },
   avatar: {
     margin: 10,
     color: '#fff',
@@ -38,18 +41,44 @@ class Dashboard extends Component {
 
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      //currentOrganisation: props.context.currentOrganisation,
+    };
   }
 
   componentDidMount() {
+    this.refresh();
+  }
+
+  /*
+  static getDerivedStateFromProps(nextProps, prevState) {
+    console.log(`nextProps: ${JSON.stringify(nextProps.context.currentOrganisation)}`);
+    console.log(`prevProps: ${JSON.stringify(prevState.currentOrganisation)}`);
+    if (nextProps.context.currentOrganisation !== prevState.currentOrganisation) {
+      return {
+        currentOrganisation: nextProps.context.currentOrganisation,
+      };
+    }
+
+    return null;
+  }
+  */
+
+  componentDidUpdate(prevProps, prevState, snapshot) {
+    if (this.props.context.currentOrganisation !== prevProps.context.currentOrganisation) {
+      this.refresh();
+    }
+  }
+
+  refresh = () => {
     this.props.fetchAdapters(this.props.context.currentOrganisation.name);
     this.props.fetchClients(this.props.context.currentOrganisation.name);
     this.props.fetchComponents();
-
-  }
+  };
 
 
   render() {
+
     const {classes, clients, adapters, components} = this.props;
     if (clients && adapters && components) {
       return (
@@ -67,10 +96,11 @@ class Dashboard extends Component {
                       </Avatar>
                     }
                     subheader="Antall"
+                    className={classes.cardHeader}
                   />
                   <Divider/>
                   <CardContent className={classes.cardContent}>
-                    <Typography type="display4">
+                    <Typography variant="display3">
                       {clients.length}
                     </Typography>
                   </CardContent>
@@ -94,7 +124,7 @@ class Dashboard extends Component {
                   />
                   <Divider/>
                   <CardContent className={classes.cardContent}>
-                    <Typography type="display4">
+                    <Typography variant="display3">
                       {adapters.length}
                     </Typography>
                   </CardContent>
@@ -104,7 +134,7 @@ class Dashboard extends Component {
             </Grid>
 
             <Grid item xs={4}>
-              <Link to="apis" className={classes.cardLink}>
+              <Link to="components" className={classes.cardLink}>
 
                 <Card className={classes.card}>
                   <CardHeader
@@ -118,7 +148,7 @@ class Dashboard extends Component {
                   />
                   <Divider/>
                   <CardContent className={classes.cardContent}>
-                    <Typography type="display4">
+                    <Typography variant="display3">
                       {this.props.context.currentOrganisation.components.length}
                     </Typography>
                   </CardContent>
@@ -153,7 +183,7 @@ function mapStateToProps(state) {
 function mapDispatchToProps(dispatch) {
   return bindActionCreators({
     fetchAdapters: fetchAdapters,
-    fetchClients: fetchKlienter,
+    fetchClients: fetchClients,
     fetchComponents: fetchComponents,
   }, dispatch);
 }

@@ -22,6 +22,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.UnknownHostException;
 import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 @RestController
@@ -46,8 +47,12 @@ public class AdapterController {
 
     Organisation organisation = portalApiService.getOrganisation(orgName);
 
-    if (adapterService.addAdapter(adapter, organisation)) {
-      return ResponseEntity.ok().body(adapter);
+    Optional<Adapter> optionalAdapter = adapterService.getAdapter(adapter.getName(), orgName);
+    if (!optionalAdapter.isPresent()) {
+      if (adapterService.addAdapter(adapter, organisation)) {
+        //return ResponseEntity.ok().body(adapter);
+        return ResponseEntity.status(HttpStatus.CREATED).body(adapter);
+      }
     }
 
     throw new EntityFoundException(
@@ -55,6 +60,7 @@ public class AdapterController {
         .fromCurrentRequest().path("/{name}")
         .buildAndExpand(adapter.getName()).toUri().toString()
     );
+
   }
 
   @ApiOperation("Update adapter")

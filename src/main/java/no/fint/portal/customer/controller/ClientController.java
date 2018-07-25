@@ -22,6 +22,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.UnknownHostException;
 import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 @RestController
@@ -44,14 +45,18 @@ public class ClientController {
                                   @RequestBody final Client client) {
 
     Organisation organisation = portalApiService.getOrganisation(orgName);
+    Optional<Client> optionalClient = clientService.getClient(client.getName(), orgName);
 
-    if (clientService.addClient(client, organisation)) {
-      return ResponseEntity.ok().body(client);
+    if (!optionalClient.isPresent()) {
+      if (clientService.addClient(client, organisation)) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(client);
+
+      }
     }
 
     throw new EntityFoundException(
       ServletUriComponentsBuilder
-        .fromCurrentRequest().path("/{uuid}")
+        .fromCurrentRequest().path("/{name}")
         .buildAndExpand(client.getName()).toUri().toString()
     );
   }

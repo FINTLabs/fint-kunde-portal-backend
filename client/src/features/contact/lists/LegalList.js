@@ -12,7 +12,7 @@ import {
   Typography,
   withStyles
 } from "@material-ui/core";
-import SettingsIcon from "@material-ui/icons/Settings";
+import EditIcon from "@material-ui/icons/Edit";
 import ContactIcon from "@material-ui/icons/Person";
 import blue from "@material-ui/core/colors/blue";
 import ContactView from "../view/ContactView";
@@ -96,7 +96,7 @@ class LegalList extends React.Component {
               />
               <ListItemSecondaryAction>
                 <IconButton aria-label="Settings" onClick={() => this.showContact()}>
-                  <SettingsIcon/>
+                  <EditIcon/>
                 </IconButton>
               </ListItemSecondaryAction>
             </ListItem>

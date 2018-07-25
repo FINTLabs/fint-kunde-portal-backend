@@ -4,7 +4,7 @@ import {Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, wi
 import TextField from "@material-ui/core/TextField";
 import {Add} from "@material-ui/icons";
 import UsernameValidationInput from "../../../common/UsernameValidationInput";
-import AdapterApi from "../../../data/api/AdapterApi";
+import ClientApi from "../../../data/api/ClientApi";
 
 const styles = () => ({
   addButton: {
@@ -18,37 +18,50 @@ const styles = () => ({
 
 });
 
-class AdapterAdd extends React.Component {
-  updateAdapterState = (event) => {
+class ClientAdd extends React.Component {
+
+  updateClientState = (event) => {
     const field = event.target.name;
-    const adapter = this.state.adapter;
-    adapter[field] = event.target.value;
-    return this.setState({adapter: adapter});
+    const client = this.state.client;
+    client[field] = event.target.value;
+    return this.setState({client: client});
   };
 
-  handleAddAdapter = () => {
+  handleAddClient = () => {
 
-    AdapterApi.createAdapter(this.state.adapter, this.props.organisation.name)
+    ClientApi.createClient(this.state.client, this.props.organisation.name)
       .then(response => {
         if (response.status === 201) {
           this.props.afterAdd();
-          this.props.notify("Adapteret ble opprettet");
+          this.props.notify("Klienten ble opprettet");
         }
         else if (response.status === 302) {
-          this.props.notify(`Adapteret "${this.state.adapter.name}" finnes fra før av. `);
+          this.props.notify(`Klienten "${this.state.client.name}" finnes fra før av. `);
         }
         else {
           this.props.notify("Oisann, dette gikk ikke helt etter planen! Prøv igjen ;)");
         }
         this.setState({
-          showAdapterAdd: false,
+          showClientAdd: false,
           notify: true,
-          adapter: this.getEmptyAdapter(),
+          client: this.getEmptyClient(),
         });
       })
       .catch(() => {
         this.props.notify("Oisann, dette gikk ikke helt etter planen! Prøv igjen ;)");
       });
+
+    /*
+    this.props.createClient(this.state.client, this.props.organisation).then(() => {
+      this.setState({
+        showClientAdd: false,
+        notify: true,
+        clientAddedName: this.state.client.name,
+        client: this.getEmptyClient(),
+      });
+    });
+    */
+
   };
 
   usernameIsValid = (valid) => {
@@ -56,11 +69,11 @@ class AdapterAdd extends React.Component {
   };
 
   openAddDialog = () => {
-    this.setState({showAdapterAdd: true, notify: false});
+    this.setState({showClientAdd: true, notify: false});
   };
 
   handleCancel = () => {
-    this.setState({showAdapterAdd: false, notify: false});
+    this.setState({showClientAdd: false, notify: false});
   };
 
   /*
@@ -71,7 +84,7 @@ class AdapterAdd extends React.Component {
   };
   */
 
-  getEmptyAdapter = () => {
+  getEmptyClient = () => {
     return {
       name: '',
       shortDescription: '',
@@ -79,14 +92,14 @@ class AdapterAdd extends React.Component {
     };
   };
   isFormValid = () => {
-    return (this.state.usernameIsValid && this.state.adapter.shortDescription.length > 0 && this.state.adapter.note.length > 0)
+    return (this.state.usernameIsValid && this.state.client.shortDescription.length > 0 && this.state.client.note.length > 0)
   };
 
   constructor(props, context) {
     super(props, context);
     this.state = {
-      adapter: this.getEmptyAdapter(),
-      showAdapterAdd: false,
+      client: this.getEmptyClient(),
+      showClientAdd: false,
       usernameIsValid: false,
     };
   }
@@ -99,20 +112,20 @@ class AdapterAdd extends React.Component {
           <Button variant="fab" color="secondary" className={classes.addButton}
                   onClick={this.openAddDialog}><Add/></Button>
           <Dialog
-            open={this.state.showAdapterAdd}
-            onClose={this.handleAddAdapter}
+            open={this.state.showClientAdd}
+            onClose={this.handleAddClient}
             aria-labelledby="form-dialog-title"
             maxWidth="md"
           >
-            <DialogTitle id="form-dialog-title">Nytt adapter</DialogTitle>
+            <DialogTitle id="form-dialog-title">Nytt client</DialogTitle>
             <DialogContent>
               <DialogContentText>
-                Vennligst fyll ut de obligatoriske feltene for å legge til ny adapter.
+                Vennligst fyll ut de obligatoriske feltene for å legge til ny client.
               </DialogContentText>
               <UsernameValidationInput
                 title="Brukernavn"
                 name="name"
-                onChange={this.updateAdapterState}
+                onChange={this.updateClientState}
                 usernameIsValid={this.usernameIsValid}
               />
               <TextField
@@ -120,7 +133,7 @@ class AdapterAdd extends React.Component {
                 label="Kort beskrivelse"
                 required
                 fullWidth
-                onChange={this.updateAdapterState}
+                onChange={this.updateClientState}
               />
               <TextField
                 name="note"
@@ -129,14 +142,14 @@ class AdapterAdd extends React.Component {
                 required
                 multiline
                 rows="4"
-                onChange={this.updateAdapterState}
+                onChange={this.updateClientState}
               />
             </DialogContent>
             <DialogActions>
               <Button onClick={this.handleCancel} variant="raised" color="primary">
                 Avbryt
               </Button>
-              <Button disabled={!this.isFormValid()} onClick={this.handleAddAdapter} variant="raised" color="primary">
+              <Button disabled={!this.isFormValid()} onClick={this.handleAddClient} variant="raised" color="primary">
                 Legg til
               </Button>
             </DialogActions>
@@ -148,9 +161,9 @@ class AdapterAdd extends React.Component {
 }
 
 
-AdapterAdd.propTypes = {};
+ClientAdd.propTypes = {};
 
-export default withStyles(styles)(AdapterAdd);
+export default withStyles(styles)(ClientAdd);
 
 
 

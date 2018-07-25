@@ -3,10 +3,11 @@ import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
 import {withStyles} from "@material-ui/core";
 import LoadingProgress from "../../common/LoadingProgress";
-import ClientsList from "./ClientsList";
-import ClientAdd from "./ClientAdd";
-import {createKlient, deleteKlient, fetchKlienter, updateClient} from "../../data/redux/dispatchers/client";
+import {createClient, deleteClient, fetchClients, updateClient} from "../../data/redux/dispatchers/client";
+import ClientList from "./ClientList";
+import ClientAdd from "./add/ClientAdd";
 import {withContext} from "../../data/context/withContext";
+import AutoHideNotification from "../../common/AutoHideNotification";
 
 
 const styles = () => ({
@@ -18,15 +19,41 @@ class ClientsContainer extends React.Component {
     super(props);
     this.state = {
       clientAdded: false,
-    }
+      notify: false,
+      notifyMessage: '',
+    };
   }
 
   componentDidMount() {
-    this.props.fetchKlienter(this.props.context.currentOrganisation.name);
+    this.props.fetchClients(this.props.context.currentOrganisation.name);
   }
 
+  componentDidUpdate(prevProps, prevState, snapshot) {
+    if (prevProps.context !== this.props.context) {
+      this.props.fetchClients(this.props.context.currentOrganisation.name);
+    }
+  }
+
+  notify = (message) => {
+    this.setState({
+      notify: true,
+      notifyMessage: message,
+    });
+  };
+
+  onCloseNotification = () => {
+    this.setState({
+      notify: false,
+      notifyMessage: '',
+    });
+  };
+
+  afterAddClient = () => {
+    this.props.fetchClients(this.props.context.currentOrganisation.name);
+  };
+
   render() {
-    if (!this.props.clients) {
+    if (this.props.clients === undefined || this.props.context.currentOrganisation === undefined) {
       return <LoadingProgress/>;
     } else {
       return this.renderClients();
@@ -37,12 +64,18 @@ class ClientsContainer extends React.Component {
     const {classes} = this.props;
     return (
       <div className={classes.root}>
-        <ClientsList clients={this.props.clients}
-                     updateClient={this.props.updateClient}
-                     deleteClient={this.props.deleteClient}
+        <AutoHideNotification
+          showNotification={this.state.notify}
+          message={this.state.notifyMessage}
+          onClose={this.onCloseNotification}
+        />
+        <ClientList clients={this.props.clients}
+                    updateClient={this.props.updateClient}
+                    deleteClient={this.props.deleteClient}
         />
         <ClientAdd organisation={this.props.context.currentOrganisation}
-          createClient={this.props.createClient}
+                   notify={this.notify}
+                   afterAdd={this.afterAddClient}
         />
       </div>
 
@@ -51,23 +84,21 @@ class ClientsContainer extends React.Component {
   }
 }
 
-ClientsContainer.propTypes = {
-  //clients: PropTypes.array.isRequired
-};
+ClientsContainer.propTypes = {};
 
 function mapStateToProps(state) {
-
   return {
-    clients: state.client.clients
+    clients: state.client.clients,
+    components: state.component.components,
   }
 }
 
 function mapDispatchToProps(dispatch) {
   return bindActionCreators({
-    fetchKlienter: fetchKlienter,
+    fetchClients: fetchClients,
     updateClient: updateClient,
-    deleteClient: deleteKlient,
-    createClient: createKlient,
+    deleteClient: deleteClient,
+    createClient: createClient,
   }, dispatch);
 }
 

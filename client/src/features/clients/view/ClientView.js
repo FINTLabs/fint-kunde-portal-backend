@@ -1,16 +1,26 @@
 import React from "react";
 import Button from "@material-ui/core/Button";
 import {Dialog, DialogActions, DialogContent, DialogTitle,} from "@material-ui/core";
-import {Snackbar, withStyles} from "@material-ui/core";
+import {withStyles} from "@material-ui/core";
 import ClientTabView from "./ClientTabView";
+import AutoHideNotification from "../../../common/AutoHideNotification";
 
 
 const styles = () => ({});
 
 class ClientView extends React.Component {
-  onCopy = () => {
-    this.setState({copiedToClipboard: true});
-  }
+
+  showUpdateButton = (show) => {
+    this.setState({showUpdateButton: show});
+  };
+
+  notify = (message) => {
+    this.setState({
+      notify: true,
+      notifyMessage: message,
+    });
+  };
+
   updateClientState = (event) => {
     const field = event.target.name;
     const client = this.state.client;
@@ -19,19 +29,22 @@ class ClientView extends React.Component {
       value: event.target.value
     });
   };
-  handleClose = () => {
-    this.props.updateAdapter(this.state.client);
+
+  handleUpdate = () => {
+
+    this.props.updateClient(this.state.client);
     this.props.onClose();
   };
+
   handleCancel = () => {
     this.props.onClose();
   };
-  handleCopySnackbarClose = (event, reason) => {
-    if (reason === "clickaway") {
-      return;
-    }
 
-    this.setState({copiedToClipboard: false});
+  onCloseNotification = () => {
+    this.setState({
+      notify: false,
+      notifyMessage: '',
+    });
   };
 
   constructor(props, context) {
@@ -40,6 +53,9 @@ class ClientView extends React.Component {
       client: Object.assign({}, this.props.client),
       isSaving: true,
       copiedToClipboard: false,
+      notify: false,
+      notifyMessage: '',
+      showUpdateButton: true,
     };
   }
 
@@ -54,43 +70,40 @@ class ClientView extends React.Component {
   }
 
   render() {
+
     return (
       <div>
-        <Snackbar
-          anchorOrigin={{
-            vertical: 'top',
-            horizontal: 'center',
-          }}
-          open={this.state.copiedToClipboard}
-          onClose={this.handleCopySnackbarClose}
-          ContentProps={{
-            'aria-describedby': 'message-id',
-          }}
-          message="Kopiert"
-          autoHideDuration={1500}
-        />
+        <AutoHideNotification
+          showNotification={this.state.notify}
+          message={this.state.notifyMessage}
+          onClose={this.onCloseNotification}/>
         <div>
           <Dialog
             open={this.props.open}
-            onClose={this.handleClose}
+            onClose={this.handleUpdate}
             aria-labelledby="form-dialog-title"
             maxWidth="md"
           >
-            <DialogTitle id="form-dialog-title">Oppdater klienten</DialogTitle>
+            <DialogTitle id="form-dialog-title">Oppdater client</DialogTitle>
             <DialogContent>
               <ClientTabView
-                klient={this.state.client}
+                client={this.state.client}
                 onCopy={this.onCopy}
                 updateClientState={this.updateClientState}
+                notify={this.notify}
+                showUpdateButton={this.showUpdateButton}
               />
             </DialogContent>
             <DialogActions>
-              <Button onClick={this.handleCancel} variant="raised" color="primary">
-                Avbryt
+
+
+              <Button onClick={this.handleCancel} variant="raised" color="secondary">
+                {this.state.showUpdateButton ? 'Avbryt' : 'Lukk'}
               </Button>
-              <Button onClick={this.handleClose} variant="raised" color="primary">
-                Oppdater
-              </Button>
+              {this.state.showUpdateButton ? (
+                < Button onClick={this.handleUpdate} variant="raised" color="secondary">
+                  Oppdater
+                </Button>) : null}
 
             </DialogActions>
           </Dialog>

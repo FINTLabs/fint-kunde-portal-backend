@@ -39,11 +39,19 @@ class AdapterApi {
         shortDescription: Adapter.shortDescription
       })
     });
+
+    return fetch(request).then(response => {
+      return response;
+    }).catch(error => {
+      return error;
+    });
+    /*
     return fetch(request).then(response => {
       return response.json();
     }).catch(error => {
       return error;
     });
+    */
   }
 
   static addAdapterToComponent(Adapter, component, organisation) {

@@ -25,12 +25,12 @@ export const MENU_ITEMS = (
         <ListItemText primary="Dashboard"/>
       </ListItem>
     </Link>
-    <Link to="/apis" style={menuLink}>
+    <Link to="/components" style={menuLink}>
       <ListItem button>
         <ListItemIcon>
           <ApiIcon/>
         </ListItemIcon>
-        <ListItemText primary="API"/>
+        <ListItemText primary="Komponenter"/>
       </ListItem>
     </Link>
     <Link to="/adapters" style={menuLink}>

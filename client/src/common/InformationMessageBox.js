@@ -57,10 +57,10 @@ class WarningMessageBox extends React.Component {
             </DialogContentText>
           </DialogContent>
           <DialogActions>
-            <Button onClick={() => this.handleClose(true)} color="primary" autoFocus>
+            <Button onClick={() => this.handleClose(true)} variant="raised" color="secondary" autoFocus>
               Ja
             </Button>
-            <Button onClick={() => this.handleClose(false)} color="primary">
+            <Button onClick={() => this.handleClose(false)} variant="raised" color="secondary">
               Nei
             </Button>
           </DialogActions>

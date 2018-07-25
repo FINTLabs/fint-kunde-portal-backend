@@ -49,8 +49,6 @@ export function addAdapterToComponent(adapter, component, org) {
 
 export function updateAdapter(adapter, organisation) {
   return function (dispatch) {
-    console.log(`org: ${organisation}`);
-
     return AdapterApi.updateAdapter(adapter, organisation).then(responseAdapter => {
       dispatch(updateAdapterSuccess(responseAdapter));
       return responseAdapter;

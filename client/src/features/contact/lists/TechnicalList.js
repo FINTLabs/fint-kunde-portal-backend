@@ -13,7 +13,7 @@ import {
   withStyles
 } from "@material-ui/core";
 import RemoveIcon from "@material-ui/icons/RemoveCircle";
-import SettingsIcon from "@material-ui/icons/Settings";
+import EditIcon from "@material-ui/icons/Edit";
 import ContactIcon from "@material-ui/icons/Person";
 import SetLegalIcon from "@material-ui/icons/AccountBalance";
 import blue from "@material-ui/core/colors/blue";
@@ -155,7 +155,7 @@ class TechnicalList extends React.Component {
                     <SetLegalIcon className={classes.setLegalIcon}/>
                   </IconButton>
                   <IconButton aria-label="Settings" onClick={() => this.showContact(contact)}>
-                    <SettingsIcon/>
+                    <EditIcon/>
                   </IconButton>
                 </ListItemSecondaryAction>
               </ListItem>,

@@ -20,7 +20,7 @@ class Routes extends React.Component {
         <Route path='/adapters' component={AdapterContainer}/>
         <Route path='/contacts' component={ContactContainer}/>
         <Route path='/assets' component={AssetContainer}/>
-        <Route path='/apis' component={ComponentContainer}/>
+        <Route path='/components' component={ComponentContainer}/>
         <Route path='/logs' component={LogContainer}/>
         <Route path='/support' component={Support}/>
       </div>

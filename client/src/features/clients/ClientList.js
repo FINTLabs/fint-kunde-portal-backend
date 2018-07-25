@@ -1,5 +1,4 @@
 import React, {Component} from "react";
-import KlientView from "./ClientView";
 import PropTypes from "prop-types";
 import {
   Avatar,
@@ -13,9 +12,10 @@ import {
   Typography,
   withStyles
 } from "@material-ui/core";
-import {green} from "@material-ui/core/colors";
-import {Delete, Edit, ImportantDevices} from "@material-ui/icons";
+import {Delete, Edit, InsertLink} from "@material-ui/icons";
 import AutoHideNotification from "../../common/AutoHideNotification";
+import ClientView from "./view/ClientView";
+import {withContext} from "../../data/context/withContext";
 
 const styles = theme => ({
   root: {
@@ -24,11 +24,6 @@ const styles = theme => ({
   },
   componentList: {
     width: '75%',
-  },
-  avtarstyle: {
-    margin: 1,
-    color: '#fff',
-    backgroundColor: green[500],
   },
   title: {
     paddingLeft: theme.spacing.unit * 3,
@@ -43,7 +38,7 @@ const styles = theme => ({
   }
 });
 
-class ClientsList extends Component {
+class ClientList extends Component {
   editClient = (client) => {
     this.setState({
       open: true,
@@ -54,14 +49,16 @@ class ClientsList extends Component {
     this.setState({open: false});
   };
   updateClient = (client) => {
-    this.props.updateClient(client);
+    const {currentOrganisation} = this.props.context;
+    this.props.updateClient(client, currentOrganisation.name);
   };
   deleteClient = (client) => {
+	const {currentOrganisation} = this.props.context;
+    this.props.deleteClient(client, currentOrganisation.name);
     this.setState({
-      clientDeleted: true,
+      notify: true,
       clientDeletedName: client.name,
     });
-    this.props.deleteClient(client);
   };
 
   onCloseNotification = () => {
@@ -73,10 +70,10 @@ class ClientsList extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      klienter: this.props.clients,
+      clients: this.props.clients,
       clientToEdit: null,
       open: false,
-      clientDeleted: false,
+      notify: false,
       clientDeletedName: null,
     };
 
@@ -87,9 +84,10 @@ class ClientsList extends Component {
     return (
       <div>
         <AutoHideNotification
-          showNotification={this.state.clientDeleted}
-          message={`Klient ${this.state.clientDeletedName} ble slettet!`}
+          showNotification={this.state.notify}
+          message={`Client ${this.state.clientDeletedName} ble slettet!`}
           onClose={this.onCloseNotification}
+
         />
         <div className={classes.root}>
           <div className={classes.componentList}>
@@ -100,7 +98,7 @@ class ClientsList extends Component {
                 <ListItem className={classes.listItem} key={client.dn}>
                   <ListItemAvatar>
                     <Avatar className={classes.itemAvatar}>
-                      <ImportantDevices/>
+                      <InsertLink/>
                     </Avatar>
                   </ListItemAvatar>
                   <ListItemText
@@ -120,7 +118,7 @@ class ClientsList extends Component {
             </List>
           </div>
         </div>
-        <KlientView
+        <ClientView
           open={this.state.open}
           client={this.state.clientToEdit}
           onClose={this.onCloseEdit}
@@ -132,11 +130,11 @@ class ClientsList extends Component {
 
 }
 
-ClientsList.propTypes = {
+ClientList.propTypes = {
   clients: PropTypes.array.isRequired
 };
 
 
-export default withStyles(styles)(ClientsList);
+export default withStyles(styles)(withContext(ClientList));
 
 

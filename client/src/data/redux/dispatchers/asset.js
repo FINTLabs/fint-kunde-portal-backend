@@ -6,7 +6,7 @@ import {
   updateAssetSuccess,
   deleteAssetSuccess
 } from "../actions/assets";
-import {fetchKlienter} from "./client";
+import {fetchClients} from "./client";
 import {fetchAdapters} from "./adapter";
 export function fetchAssets(org) {
   return (dispatch) => {
@@ -19,8 +19,8 @@ export function fetchAssets(org) {
       }
     })
   }
-  
-  
+
+
 }
 
 export function createAsset(asset, org) {
@@ -43,7 +43,7 @@ export function updateAsset(asset,org) {
       throw(error);
     });
   };
-} 
+}
 
 export function deleteAsset(asset,org) {
 	  return function (dispatch) {
@@ -76,13 +76,13 @@ export function addAdapterToAsset(adapter, asset, org) {
       throw(error);
     });
   }
-}  
+}
 
 export function deleteClientFromAsset(client, asset,  org) {
 	  return function (dispatch) {
 	    return AssetApi.deleteClientFromAsset(asset, client, org).then(() => {
     fetchAssets(org);
-    fetchKlienter(org);
+    fetchClients(org);
   }).catch(error => {
     throw(error);
   })
@@ -93,11 +93,11 @@ export function addClientToAsset(client, asset, org) {
 	return function (dispatch) {
 	  return AssetApi.addAdapterToAsset(asset, client, org).then(responseAdapter => {
 	    fetchAssets(org);
-	    fetchKlienter(org);
+	    fetchClients(org);
 	  }).catch(error => {
 	    throw(error);
 	  });
  }
-} 
+}
 
 
