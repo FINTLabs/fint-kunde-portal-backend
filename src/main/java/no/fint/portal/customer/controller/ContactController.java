@@ -13,7 +13,6 @@ import no.fint.portal.model.contact.Contact;
 import no.fint.portal.model.contact.ContactService;
 import no.fint.portal.model.organisation.Organisation;
 import no.fint.portal.model.organisation.OrganisationService;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -24,7 +23,9 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.UnknownHostException;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Slf4j
 @RestController
@@ -109,13 +110,11 @@ public class ContactController {
     return ResponseEntity.noContent().build();
   }
 
-  @ApiOperation("Get contact organisations")
+  @ApiOperation("Get contact's organisations")
   @GetMapping(value = "/organisations")
-  public ResponseEntity getContactOrganisations(@RequestHeader(value = "x-dn") final String dn) {
-    List<Organisation> organisations = organisationService.getOrganisations();
-    List<Organisation> contactOrganisations = organisations.stream().filter(
-      organisation -> StringUtils.equalsIgnoreCase(organisation.getLegalContact(), dn) || organisation.getTechicalContacts().contains(dn)
-    ).collect(Collectors.toList());
+  public ResponseEntity getContactOrganisations(@RequestHeader(value = "x-nin") final String nin) {
+    Contact contact = contactService.getContact(nin).orElseThrow(() -> new EntityNotFoundException("Contact not found"));
+    List<Organisation> contactOrganisations = Stream.concat(contact.getLegal().stream(), contact.getTechnical().stream()).map(organisationService::getOrganisationByDn).filter(Optional::isPresent).map(Optional::get).collect(Collectors.toList());
     return ResponseEntity.ok(contactOrganisations);
   }
 

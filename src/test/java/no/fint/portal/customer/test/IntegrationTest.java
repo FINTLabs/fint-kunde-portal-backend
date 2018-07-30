@@ -12,9 +12,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.equalTo;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(properties = "spring.profiles.active=test", webEnvironment = SpringBootTest.WebEnvironment.MOCK)
@@ -78,6 +76,7 @@ public class IntegrationTest {
     mockMvc.perform(delete("/api/organisations/testing/components/administrasjon_personal")).andExpect(status().is(204));
     mockMvc.perform(put("/api/organisations/testing/contacts/legal/12345678901")).andExpect(status().is(204));
     mockMvc.perform(get("/api/organisations/testing/contacts/legal")).andExpect(status().is(200)).andExpect(jsonPath("$.nin").value(equalTo("12345678901")));
+    mockMvc.perform(get("/api/contacts/organisations").header("x-nin", "12345678901")).andExpect(jsonPath("$[0].orgNumber").value(equalTo("123456789")));
     mockMvc.perform(delete("/api/organisations/testing/contacts/legal/12345678901")).andExpect(status().is(204));
     mockMvc.perform(get("/api/organisations/testing/contacts/technical")).andExpect(status().is(200));
     mockMvc.perform(put("/api/organisations/testing/contacts/technical/23456789012")).andExpect(status().is(204));
