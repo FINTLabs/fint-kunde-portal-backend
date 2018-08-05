@@ -93,6 +93,16 @@ objectclass: organizationalUnit
 objectclass: top
 ou: assets
 
+dn: ou=test_no,ou=assets,ou=testing,ou=organisations,o=fint-test
+fintAssetPrimary: TRUE
+fintAssetId: test.no
+fintAssetOrganisation: ou=testing,ou=organisations,o=fint-test
+ou: test_ou
+objectClass: organizationalUnit
+objectClass: Top
+objectClass: fintAsset
+
+
 dn: ou=clients,ou=testing,ou=organisations,o=fint-test
 objectclass: organizationalUnit
 objectclass: top
