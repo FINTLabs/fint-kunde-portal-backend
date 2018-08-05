@@ -118,7 +118,7 @@ public class AdapterController {
   public ResponseEntity getAllAdapters(@PathVariable("orgName") final String orgName) {
     Organisation organisation = portalApiService.getOrganisation(orgName);
 
-    List<Adapter> list = adapterService.getAdapters(organisation.getName());
+    List<Adapter> list = portalApiService.getAdapters(organisation);
     return ResponseEntity.ok().body(list);
   }
 

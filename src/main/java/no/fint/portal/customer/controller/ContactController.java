@@ -85,7 +85,7 @@ public class ContactController {
   @ApiOperation("Get all contacts")
   @RequestMapping(method = RequestMethod.GET)
   public ResponseEntity getContacts() {
-    List<Contact> contacts = contactService.getContacts();
+    List<Contact> contacts = portalApiService.getContacts();
 
     if (contacts != null) {
       return ResponseEntity.ok(contacts);

@@ -66,7 +66,7 @@ class AssetTabClient extends React.Component {
     this.setState({
       thisKlient: klient,
       askUnLink: true,
-      message: "Er du sikker på at du vil fjerne " + klient.shortDescription + " fra:  " + this.state.asset.name + "?",
+      message: "Er du sikker på at du vil fjerne " + klient.shortDescription + " fra:  " + this.props.asset.name + "?",
       klient: klient,
     });
 
@@ -92,9 +92,9 @@ class AssetTabClient extends React.Component {
         });
       });
       */
-    AssetApi.deleteClientFromAsset(this.state.thisKlient, this.state.asset, this.props.context.currentOrganisation)
+    AssetApi.deleteClientFromAsset(this.state.thisKlient, this.props.asset, this.props.context.currentOrganisation)
       .then(() => {
-        this.props.notify(`${this.state.thisKlient.shortDescription} ble slettet fra ${this.state.asset.name}`);
+        this.props.notify(`${this.state.thisKlient.shortDescription} ble slettet fra ${this.props.asset.name}`);
         this.setState({clientIsLinkedToAsset: false});
         this.props.fetchAssets(this.props.context.currentOrganisation.name);
         this.props.fetchClients(this.props.context.currentOrganisation.name);
@@ -116,9 +116,9 @@ class AssetTabClient extends React.Component {
 
       });
       */
-    AssetApi.addClientToAsset(this.state.thisKlient, this.state.asset, this.props.context.currentOrganisation)
+    AssetApi.addClientToAsset(this.state.thisKlient, this.props.asset, this.props.context.currentOrganisation)
       .then(() => {
-        this.props.notify(`${this.state.thisKlient.shortDescription} ble lagt til ${this.state.asset.name}`);
+        this.props.notify(`${this.state.thisKlient.shortDescription} ble lagt til ${this.props.asset.name}`);
         this.setState({clientIsLinkedToAsset: true});
         this.props.fetchAssets(this.props.context.currentOrganisation.name);
         this.props.fetchClients(this.props.context.currentOrganisation.name);

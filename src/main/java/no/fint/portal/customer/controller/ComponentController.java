@@ -41,7 +41,7 @@ public class ComponentController {
   @ApiOperation("Get all components")
   @RequestMapping(method = RequestMethod.GET)
   public ResponseEntity getComponents() {
-    List<Component> components = componentService.getComponents();
+    List<Component> components = portalApiService.getComponents();
 
     return ResponseEntity.ok(components);
   }
