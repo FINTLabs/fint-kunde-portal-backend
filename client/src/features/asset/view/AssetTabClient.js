@@ -13,16 +13,18 @@ import {
 import AddIcon from "@material-ui/icons/AddCircle";
 import RemoveIcon from "@material-ui/icons/RemoveCircle";
 import ComponentIcon from "@material-ui/icons/WebAsset";
+import ClientIcon from "@material-ui/icons/ImportantDevices";
 import {bindActionCreators} from "redux";
 import {connect} from "react-redux";
 import {fetchClients} from "../../../data/redux/dispatchers/client";
 import {green} from "@material-ui/core/colors/index";
 import LoadingProgress from "../../../common/LoadingProgress";
 import {addClientToAsset, deleteClientFromAsset} from "../../../data/redux/dispatchers/asset";
-import AssetApi from "../../../data/api/AssetApi";
 import WarningMessageBox from "../../../common/WarningMessageBox";
 import InformationMessageBox from "../../../common/InformationMessageBox";
 import {withContext} from "../../../data/context/withContext";
+import AssetApi from "../../../data/api/AssetApi";
+import {Link} from "react-router-dom";
 
 const styles = theme => ({
   root: {
@@ -64,7 +66,7 @@ class AssetTabClient extends React.Component {
     this.setState({
       thisKlient: klient,
       askUnLink: true,
-      message: "Er du sikker på at du vil fjerne " + klient.shortDescription + " fra:  " + this.props.asset.name + "?",
+      message: "Er du sikker på at du vil fjerne " + klient.shortDescription + " fra:  " + this.state.asset.name + "?",
       klient: klient,
     });
 
@@ -79,19 +81,47 @@ class AssetTabClient extends React.Component {
 
   };
   unLinkKlient = () => {
-    AssetApi.deleteClientFromAsset(this.state.thisKlient, this.props.asset, this.props.context.currentOrganisation.name)
+    /*
+    this.props.deleteClientFromAsset(this.state.thisKlient, this.state.asset, this.props.context.currentOrganisation)
       .then(() => {
-        this.props.notify(`${this.state.thisKlient.shortDescription} ble slettet fra ${this.props.asset.name}`);
-        this.props.fetchClients();
+        this.props.notify(`${this.state.thisKlient.shortDescription} ble slettet fra ${this.state.asset.name}`);
+        this.props.fetchAssets(this.props.context.currentOrganisation.name);
+        this.props.fetchClients(this.props.context.currentOrganisation.name);
+        this.setState({
+          clientIsLinkedToAsset: false,
+        });
+      });
+      */
+    AssetApi.deleteClientFromAsset(this.state.thisKlient, this.state.asset, this.props.context.currentOrganisation)
+      .then(() => {
+        this.props.notify(`${this.state.thisKlient.shortDescription} ble slettet fra ${this.state.asset.name}`);
+        this.setState({clientIsLinkedToAsset: false});
+        this.props.fetchAssets(this.props.context.currentOrganisation.name);
+        this.props.fetchClients(this.props.context.currentOrganisation.name);
       }).catch(error => {
     });
   };
-  linkKlient = () => {
-    AssetApi.addClientToAsset(this.state.thisKlient, this.props.asset,  this.props.context.currentOrganisation.name)
-      .then(() => {
 
-        this.props.notify(`${this.state.thisKlient.shortDescription} ble lagt til ${this.props.asset.name}`);
-        this.props.fetchClients();
+  linkKlient = () => {
+
+    /*
+    this.props.addClientToAsset(this.state.thisKlient, this.state.asset, this.props.context.currentOrganisation)
+      .then(() => {
+        this.props.notify(`${this.state.thisKlient.shortDescription} ble lagt til ${this.state.asset.name}`);
+        this.props.fetchAssets(this.props.context.currentOrganisation.name);
+        this.props.fetchClients(this.props.context.currentOrganisation.name);
+        this.setState({
+          clientIsLinkedToAsset: true,
+        });
+
+      });
+      */
+    AssetApi.addClientToAsset(this.state.thisKlient, this.state.asset, this.props.context.currentOrganisation)
+      .then(() => {
+        this.props.notify(`${this.state.thisKlient.shortDescription} ble lagt til ${this.state.asset.name}`);
+        this.setState({clientIsLinkedToAsset: true});
+        this.props.fetchAssets(this.props.context.currentOrganisation.name);
+        this.props.fetchClients(this.props.context.currentOrganisation.name);
       }).catch(error => {
     });
   };
@@ -114,18 +144,21 @@ class AssetTabClient extends React.Component {
     }
   };
   isLinkedToAsset = (klient) => {
-    for (let i = 0; i < this.props.clients.length; i++) {
-      if (klient.dn === this.props.asset.clients[i]) {
-        return true;
+    if (this.state.clientIsLinkedToAsset === null) {
+      for (let i = 0; i < this.props.asset.clients.length; i++) {
+        if (klient.dn === this.props.asset.clients[i]) {
+          return true;
+        }
       }
+      return false;
     }
-    return false;
+    return this.state.clientIsLinkedToAsset;
 
   };
-  getOrganisationKlienter = () => {
-    return this.props.adapers
-      .filter(klient => klient.organisations.length > 0)
-      .filter(klient => klient.organisations.find(o => o === this.props.context.currentOrganisation.dn));
+
+  hasAsset = (client) => {
+    console.log(client);
+    return client.assetId !== null;
   };
 
   constructor(props) {
@@ -134,24 +167,27 @@ class AssetTabClient extends React.Component {
       askLink: false,
       askUnLink: false,
       message: '',
+      clientIsLinkedToAsset: null
     };
   }
 
+
   static getDerivedStateFromProps(nextProps, prevState) {
-    if (nextProps.klient !== prevState.klient) {
+    if (nextProps.clients !== prevState.clients) {
       return {
-        klient: nextProps.klient,
+        clients: nextProps.clients,
       };
     }
     return null;
   }
+
 
   componentDidMount() {
     this.props.fetchClients(this.props.context.currentOrganisation.name);
   }
 
   render() {
-    if (!this.props.clients) {
+    if (!this.state.clients) {
       return <LoadingProgress/>;
     } else {
       return this.renderKlienter();
@@ -160,7 +196,7 @@ class AssetTabClient extends React.Component {
 
   renderKlienter() {
     const {classes} = this.props;
-    const organisationKlienter = this.props.clients;
+    const organisationKlienter = this.state.clients;
     if (organisationKlienter.length > 0) {
       return (
         <div>
@@ -188,13 +224,21 @@ class AssetTabClient extends React.Component {
                 />
                 <ListItemSecondaryAction>
                   {this.isLinkedToAsset(klient) ?
-                    (<IconButton aria-label="Remove" onClick={() => this.askToUnLinkKlient(klient)}>
-                      <RemoveIcon className={classes.removeIcon}/>
-                    </IconButton>)
-                    :
-                    (<IconButton aria-label="Add" onClick={() => this.askToLinkKlient(klient)}>
-                      <AddIcon className={classes.addIcon}/>
-                    </IconButton>)
+                    (
+                      <div>
+                        <IconButton aria-label="Remove" onClick={() => this.askToUnLinkKlient(klient)}>
+                          <RemoveIcon className={classes.removeIcon}/>
+                        </IconButton>
+                        <IconButton aria-label="Remove" component={Link} to="/clients">
+                          <ClientIcon/>
+                        </IconButton>
+                      </div>
+                    ) : (
+                      <IconButton aria-label="Add" disabled={this.hasAsset(klient)}
+                                  onClick={() => this.askToLinkKlient(klient)}>
+                        <AddIcon className={this.hasAsset(klient) ? null : classes.addIcon}/>
+                      </IconButton>
+                    )
                   }
                 </ListItemSecondaryAction>
               </ListItem>,
@@ -214,7 +258,7 @@ class AssetTabClient extends React.Component {
 
 function mapStateToProps(state) {
   return {
-	  clients: state.client.clients,
+    clients: state.client.clients,
   }
 }
 

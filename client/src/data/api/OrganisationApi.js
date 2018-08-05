@@ -141,6 +141,20 @@ class OrganisationApi {
       return error;
     });
   }
+
+  static getPrimaryAsset(organisation) {
+    const url = `/api/organisations/${organisation.name}/asset/primary`;
+    return fetch(url, {
+      method: 'GET',
+      credentials: 'same-origin'
+    }).then(response => {
+      return response;
+    }).catch(error => {
+      return error;
+    });
+    //.then(response => Promise.all([response, response.json()]));
+    //.then(response => {return response.json();});
+  }
 }
 
 export default OrganisationApi;

@@ -1,8 +1,7 @@
 import React from "react";
 import SwipeableViews from "react-swipeable-views";
 import AppBar from "@material-ui/core/AppBar";
-import {Tab, Tabs} from "@material-ui/core";
-import {withStyles} from "@material-ui/core";
+import {Tab, Tabs, withStyles} from "@material-ui/core";
 import TabContainer from "../../../common/TabContainer";
 import PropTypes from "prop-types";
 import AssetTabAdapter from "./AssetTabAdapter";
@@ -34,6 +33,16 @@ class AssetTabView extends React.Component {
     this.setState({value: index});
   };
 
+  static getDerivedStateFromProps(nextProps, prevState) {
+    if (nextProps.asset !== prevState.asset) {
+      return {
+        asset: nextProps.asset,
+      };
+    }
+
+    return null;
+  }
+
   constructor(props) {
     super(props);
     this.state = {
@@ -47,18 +56,18 @@ class AssetTabView extends React.Component {
     return (
 
       <div className={classes.root}>
-      	<AppBar position="static" color="default">
-      		<Tabs
-        	value={this.state.value}
-        	onChange={this.handleChange}
-        	indicatorColor="primary"
-        	textColor="primary"
-        	fullWidth
-        	>
-  			<Tab label="Generelt"/>
-    		<Tab label="Adapters"/>
-    		<Tab label="Klienter"/>
-        	</Tabs>
+        <AppBar position="static" color="default">
+          <Tabs
+            value={this.state.value}
+            onChange={this.handleChange}
+            indicatorColor="primary"
+            textColor="primary"
+            fullWidth
+          >
+            <Tab label="Generelt"/>
+            <Tab label="Adapters"/>
+            <Tab label="Klienter"/>
+          </Tabs>
         </AppBar>
         <SwipeableViews
           axis={theme.direction === "rtl" ? 'x-reverse' : 'x'}
@@ -68,14 +77,18 @@ class AssetTabView extends React.Component {
           <TabContainer dir={theme.direction}>
             <AssetTabGeneral asset={this.props.asset} updateAssetState={this.props.updateAssetState}/>
           </TabContainer>
-            
+
           <TabContainer dir={theme.direction}>
             <AssetTabAdapter asset={this.props.asset} notify={this.props.notify}/>
           </TabContainer>
-            
+
           <TabContainer dir={theme.direction}>
-            <AssetTabClient asset={this.props.asset} notify={this.props.notify}/>
-          </TabContainer>            
+            <AssetTabClient
+              asset={this.state.asset}
+              notify={this.props.notify}
+              fetchAssets={this.props.fetchAssets}
+            />
+          </TabContainer>
         </SwipeableViews>
 
       </div>

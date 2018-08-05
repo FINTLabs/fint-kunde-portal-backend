@@ -26,7 +26,7 @@ class ClientTabGeneral extends React.Component {
           name="note"
           label="Note"
           multiline
-          rows="4"
+          rows="10"
           onChange={this.props.updateClientState}
           value={this.props.client.note}
           fullWidth

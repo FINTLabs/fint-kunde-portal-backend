@@ -1,12 +1,13 @@
 import React from "react";
 import Button from "@material-ui/core/Button";
-import {Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle,} from "@material-ui/core";
+import {Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, withStyles} from "@material-ui/core";
 import TextField from "@material-ui/core/TextField";
 import {Add} from "@material-ui/icons";
-import {withStyles} from "@material-ui/core";
-import AutoHideNotification from "../../common/AutoHideNotification";
+import {withContext} from "../../data/context/withContext";
+import AssetNameValidationInput from "../../common/AssetNameValidationInput";
 
-const styles = () => ({
+
+const styles = (theme) => ({
   addButton: {
     margin: 0,
     top: 100,
@@ -14,7 +15,17 @@ const styles = () => ({
     bottom: 'auto',
     right: 50,
     position: 'fixed',
+  },
+  assetName: {
+    width: '55%',
+  },
+  primaryAssetId: {
+    width: '45%',
+  },
+  dialog: {
+    //width: '50%',
   }
+
 
 });
 
@@ -27,11 +38,11 @@ class AssetAdd extends React.Component {
   };
 
   handleAddAsset = () => {
-    this.props.createAsset(this.state.asset,this.props.organisation).then(() => {
+    this.props.createAsset(this.state.asset, this.props.organisation).then(() => {
+      this.props.notify(`Ressursen '${this.state.asset.description}' ble lagt til!`);
+      this.props.fetchAssets(this.props.context.currentOrganisation.name);
       this.setState({
         showAssetAdd: false,
-        notify: true,
-        assetAddedName: this.state.asset.name,
         asset: this.getEmptyAsset(),
         assetAdded: true,
       });
@@ -51,22 +62,19 @@ class AssetAdd extends React.Component {
     this.setState({showAssetAdd: false, notify: false});
   };
 
-  onCloseNotification = () => {
-    this.setState({
-      notify: false,
-      assetAdded: false,
-      assetAddedName: this.state.asset.name,
-    });
-  };
-
   getEmptyAsset = () => {
     return {
       name: '',
       description: '',
     };
   };
+
+  nameIsValid = (valid) => {
+    this.setState({nameIsValid: valid});
+  };
+
   isFormValid = () => {
-    return (this.state.asset.description.length > 0 && this.state.asset.name.length > 0)
+    return (this.state.nameIsValid && this.state.asset.description.length > 0)
   };
 
   constructor(props, context) {
@@ -74,26 +82,23 @@ class AssetAdd extends React.Component {
     this.state = {
       asset: this.getEmptyAsset(),
       showAssetAdd: false,
-      assetAddedName: null,
       assetAdded: false,
-      notify: false,
       usernameIsValid: false,
     };
+
   }
+
+
   componentDidUpdate(prevState) {
     if (prevState.assetAdded === true) {
       this.props.fetchAssets(this.props.organisation.name);
     }
   }
+
   render() {
     const {classes} = this.props;
     return (
       <div>
-        <AutoHideNotification
-          showNotification={this.state.notify}
-          message={`Asset ${this.state.assetAddedName} ble lagt til!`}
-          onClose={this.onCloseNotification}
-        />
         <div>
           <Button variant="fab" color="secondary" className={classes.addButton}
                   onClick={this.openAddDialog}><Add/></Button>
@@ -102,25 +107,35 @@ class AssetAdd extends React.Component {
             onClose={this.handleAddAsset}
             aria-labelledby="form-dialog-title"
             maxWidth="md"
+            className={classes.dialog}
           >
-            <DialogTitle id="form-dialog-title">Nytt asset</DialogTitle>
+            <DialogTitle id="form-dialog-title">Ny ressurs</DialogTitle>
             <DialogContent>
               <DialogContentText>
-                Vennligst fyll ut de obligatoriske feltene for å legge til ny asset.
+                Vennligst fyll ut de obligatoriske feltene for å legge til ny ressurs.
               </DialogContentText>
-                <TextField
-	              name="description"
-	              label="Beskrivelse"
-	              required
-	              fullWidth
-	              onChange={this.updateAssetState}
-	            />
-	            <TextField
-	              name="name"
-	              label="Navn"
-	              fullWidth
-	              onChange={this.updateAssetState}
-	            />
+              <AssetNameValidationInput
+                className={classes.assetName}
+                name="name"
+                title="Navn (f.eks. las eller skole.las)"
+                onChange={this.updateAssetState}
+                assetNameIsValid={this.nameIsValid}
+              />
+              <TextField
+                className={classes.primaryAssetId}
+                label={`.${this.props.primaryAssetId}`}
+                disabled
+                InputProps={{
+                  disableUnderline: true,
+                }}
+              />
+              <TextField
+                name="description"
+                label="Beskrivelse"
+                required
+                fullWidth
+                onChange={this.updateAssetState}
+              />
             </DialogContent>
             <DialogActions>
               <Button onClick={this.handleCancel} variant="raised" color="primary">
@@ -140,7 +155,7 @@ class AssetAdd extends React.Component {
 
 AssetAdd.propTypes = {};
 
-export default withStyles(styles)(AssetAdd);
+export default withStyles(styles)(withContext(AssetAdd));
 
 
 

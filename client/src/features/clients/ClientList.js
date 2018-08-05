@@ -12,7 +12,8 @@ import {
   Typography,
   withStyles
 } from "@material-ui/core";
-import {Delete, Edit, InsertLink} from "@material-ui/icons";
+import {Delete, Edit} from "@material-ui/icons";
+import ClientIcon from "@material-ui/icons/ImportantDevices";
 import AutoHideNotification from "../../common/AutoHideNotification";
 import ClientView from "./view/ClientView";
 import {withContext} from "../../data/context/withContext";
@@ -98,7 +99,7 @@ class ClientList extends Component {
                 <ListItem className={classes.listItem} key={client.dn}>
                   <ListItemAvatar>
                     <Avatar className={classes.itemAvatar}>
-                      <InsertLink/>
+                      <ClientIcon/>
                     </Avatar>
                   </ListItemAvatar>
                   <ListItemText

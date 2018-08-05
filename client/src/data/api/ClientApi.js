@@ -1,5 +1,6 @@
 class ClientApi {
 
+  /*
   static fetchKlienter(organisation) {
     const request = new Request(`/api/clients/${organisation}`, {
       method: 'GET',
@@ -12,6 +13,7 @@ class ClientApi {
       return error;
     });
   }
+  */
 
   static getKlienter(organisation) {
     const url = `/api/clients/${organisation}`;

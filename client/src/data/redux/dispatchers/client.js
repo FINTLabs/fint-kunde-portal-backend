@@ -50,9 +50,9 @@ export function deleteKlientSuccess(client) {
   return {type: DELETE_CLIENT_SUCCESS, client}
 }
 
-export function deleteClient(klient) {
+export function deleteClient(klient, organisation) {
   return function (dispatch) {
-    return ClientApi.deleteKlient(klient).then(() => {
+    return ClientApi.deleteKlient(klient, organisation).then(() => {
       dispatch(deleteKlientSuccess(klient));
     }).catch(error => {
       throw(error);

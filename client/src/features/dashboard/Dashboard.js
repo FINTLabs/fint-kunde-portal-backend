@@ -50,20 +50,6 @@ class Dashboard extends Component {
     this.refresh();
   }
 
-  /*
-  static getDerivedStateFromProps(nextProps, prevState) {
-    console.log(`nextProps: ${JSON.stringify(nextProps.context.currentOrganisation)}`);
-    console.log(`prevProps: ${JSON.stringify(prevState.currentOrganisation)}`);
-    if (nextProps.context.currentOrganisation !== prevState.currentOrganisation) {
-      return {
-        currentOrganisation: nextProps.context.currentOrganisation,
-      };
-    }
-
-    return null;
-  }
-  */
-
   componentDidUpdate(prevProps, prevState, snapshot) {
     if (this.props.context.currentOrganisation !== prevProps.context.currentOrganisation) {
       this.refresh();

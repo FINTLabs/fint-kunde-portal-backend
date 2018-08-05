@@ -40,7 +40,7 @@ export function deleteAdapterFromAsset(asset) {
 export function addClientToAssetSuccess(payload) {
 	  return {type: ADD_CLIENT_TO_ASSET, payload}
 }
-export function deleteClientFromAsset(payload) {
+export function deleteClientFromAssetSuccess(payload) {
 	  return {type: DELETE_CLIENT_FROM_ASSET, payload}
 }
 

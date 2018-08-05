@@ -2,12 +2,14 @@ import React from "react";
 import {CopyToClipboard} from "react-copy-to-clipboard";
 import {Button, FormControl, IconButton, Input, InputAdornment, InputLabel, Tooltip, withStyles} from "@material-ui/core";
 import {ContentCopy} from "@material-ui/icons";
-import PropTypes from "prop-types";
 import ClientApi from "../../../data/api/ClientApi";
 import * as PasswordGenerator from "generate-password";
 import GetSecretIcon from "@material-ui/icons/GetApp";
 import RefreshIcon from "@material-ui/icons/Refresh";
+import {Link} from "react-router-dom";
 import {withContext} from "../../../data/context/withContext";
+import PropTypes from "prop-types";
+
 
 
 const styles = theme => ({
@@ -32,8 +34,13 @@ const styles = theme => ({
   },
   copyAllAuthButtonIcon: {
     marginRight: theme.spacing.unit,
+    marginTop: theme.spacing.unit * 2,
   },
+  gotoAssetButton: {
+    marginTop: theme.spacing.unit,
+  }
 });
+
 
 class ClientTabAuthenticationInformation extends React.Component {
 
@@ -45,6 +52,7 @@ class ClientTabAuthenticationInformation extends React.Component {
         password: ' ',
         clientId: this.props.client.clientId,
         openIdSecret: ' ',
+        assetId: this.props.client.assetId,
       },
     };
   }
@@ -88,7 +96,6 @@ class ClientTabAuthenticationInformation extends React.Component {
   };
 
   render() {
-
     const {classes} = this.props;
     return (
       <div>
@@ -113,8 +120,6 @@ class ClientTabAuthenticationInformation extends React.Component {
               </InputAdornment>
             }
           />
-
-
         </FormControl>
 
         <FormControl className={classes.authSecret}>
@@ -172,7 +177,6 @@ class ClientTabAuthenticationInformation extends React.Component {
             disabled
             margin="dense"
             value={this.state.allAuthInfo.openIdSecret}
-            disableUnderline
             multiline
             rows="2"
             endAdornment={
@@ -195,10 +199,42 @@ class ClientTabAuthenticationInformation extends React.Component {
         </FormControl>
 
 
-        <CopyToClipboard text={JSON.stringify(this.state.allAuthInfo, null, 2)}
-                         onCopy={() => this.props.notify('Kopiert')}>
-          <Button variant="raised">
-            <ContentCopy className={classes.copyAllAuthButtonIcon}/>
+        {this.props.client.assetId ?
+          (
+            <FormControl className={classes.authSecret}>
+              <InputLabel htmlFor="name">RessursId</InputLabel>
+
+              <Input
+                margin="dense"
+                id="name"
+                name="name"
+                value={this.props.client.assetId ? this.props.client.assetId : 'Ingen ressursId er tilknyttet enda!'}
+                disabled
+                endAdornment={
+                  <InputAdornment position="end">
+                    <CopyToClipboard text={this.props.client.assetId}
+                                     onCopy={() => this.props.notify('Kopiert')}
+                    >
+                      <IconButton>
+                        <ContentCopy/>
+                      </IconButton>
+                    </CopyToClipboard>
+                  </InputAdornment>
+                }
+              />
+            </FormControl>
+          ) : (
+            <Button className={classes.gotoAssetButton} variant="raised" color="primary" size="small" fullWidth component={Link} to="/assets">
+              Klienten har ikke tilordnet en ressursId. Klikk her for å legge til en ressursId.
+            </Button>
+          )
+        }
+
+
+        < CopyToClipboard text={JSON.stringify(this.state.allAuthInfo, null, 2)}
+                          onCopy={() => this.props.notify('Kopiert')}>
+          <Button variant="raised" className={classes.copyAllAuthButtonIcon}>
+            <ContentCopy/>
             Kopier autentiseringsinformasjon
           </Button>
         </CopyToClipboard>

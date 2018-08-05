@@ -6,6 +6,7 @@ import {
 } from "../actions/types";
 
 export default function asset(state = [], action) {
+
   switch (action.type) {
     case FETCH_ASSETS_SUCCESS:
       return {...state, assets: action.payload};
@@ -14,7 +15,7 @@ export default function asset(state = [], action) {
     case CREATE_ASSET_SUCCESS:
       return {...state, assets: [...state.assets, action.asset]};
     case DELETE_ASSET_SUCCESS:
-        return {...state, assets: state.assets.filter(asset => action.asset !== asset)};      
+        return {...state, assets: state.assets.filter(asset => action.asset !== asset)};
     default:
       return state
   }

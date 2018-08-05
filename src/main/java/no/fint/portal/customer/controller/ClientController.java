@@ -112,7 +112,7 @@ public class ClientController {
   public ResponseEntity getAllClients(@PathVariable("orgName") final String orgName) {
     Organisation organisation = portalApiService.getOrganisation(orgName);
 
-    List<Client> list = clientService.getClients(organisation.getName());
+    List<Client> list = portalApiService.getClients(organisation);
     return ResponseEntity.ok(list);
   }
 

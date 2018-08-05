@@ -35,7 +35,7 @@ public class AssetController {
   @GetMapping("/")
   public ResponseEntity getAssets(@PathVariable("orgName") String orgName) {
     Organisation organisation = portalApiService.getOrganisation(orgName);
-    List<Asset> assets = assetService.getAssets(organisation);
+    List<Asset> assets = portalApiService.getAssets(organisation);
     return ResponseEntity.ok(assets);
   }
 
@@ -44,6 +44,10 @@ public class AssetController {
   public ResponseEntity addAsset(@PathVariable String orgName,
                                  @RequestBody Asset asset) {
     Organisation organisation = portalApiService.getOrganisation(orgName);
+
+    Asset primaryAsset = assetService.getPrimaryAsset(organisation);
+    // TODO: 31/07/2018 This should be moved to the portal-api
+    asset.setAssetId(String.format("%s.%s", asset.getAssetId(), primaryAsset.getAssetId()));
 
     if (!assetService.addAsset(asset, organisation)) throw new CreateEntityMismatchException(asset.getAssetId());
 

@@ -69,7 +69,7 @@ static deleteAsset(asset, organisation) {
 
 static addAdapterToAsset(adapter, asset, organisation) {
 
-    const request = new Request(`/api/assets/${organisation}/${asset.assetId}/adapters/${adapter.name}`, {
+    const request = new Request(`/api/assets/${organisation}/${asset.name}/adapters/${adapter.name}`, {
       method: 'PUT',
       headers: {
         'Accept': '*/*',
@@ -101,8 +101,7 @@ static deleteAdapterFromAsset(adapter, asset, organisation) {
   }
 
 static addClientToAsset(client, asset, organisation) {
-
-    const request = new Request(`/api/assets/${organisation}/${asset.assetId}/clients/${client.name}`, {
+    const request = new Request(`/api/assets/${organisation.name}/${asset.name}/clients/${client.name}`, {
       method: 'PUT',
       headers: {
         'Accept': '*/*',
@@ -121,7 +120,7 @@ static addClientToAsset(client, asset, organisation) {
   }
 static deleteClientFromAsset(client, asset, organisation) {
 
-    const request = new Request(`/api/assets/${organisation}/${asset.assetId}/clients/${client.name}`, {
+    const request = new Request(`/api/assets/${organisation.name}/${asset.name}/clients/${client.name}`, {
       method: 'DELETE',
       credentials: 'same-origin',
     });

@@ -1,13 +1,15 @@
 import AssetApi from "../../api/AssetApi";
 import {
+  addClientToAssetSuccess,
   createAssetSuccess,
+  deleteAssetSuccess, deleteClientFromAssetSuccess,
   fetchAssetError,
   fetchAssetsSuccess,
-  updateAssetSuccess,
-  deleteAssetSuccess
+  updateAssetSuccess
 } from "../actions/assets";
 import {fetchClients} from "./client";
 import {fetchAdapters} from "./adapter";
+
 export function fetchAssets(org) {
   return (dispatch) => {
     return AssetApi.fetchAssets(org).then(([response, json]) => {
@@ -19,24 +21,22 @@ export function fetchAssets(org) {
       }
     })
   }
-
-
 }
 
 export function createAsset(asset, org) {
-	  return function (dispatch) {
-	    return AssetApi.createAsset(asset, org.name).then(responseAsset => {
-	      dispatch(createAssetSuccess(responseAsset));
-	      return responseAsset;
-	    }).catch(error => {
-	      throw(error);
-	    });
-	  };
-	}
-
-export function updateAsset(asset,org) {
   return function (dispatch) {
-    return AssetApi.updateAsset(asset,org).then(responseAsset => {
+    return AssetApi.createAsset(asset, org.name).then(responseAsset => {
+      dispatch(createAssetSuccess(responseAsset));
+      return responseAsset;
+    }).catch(error => {
+      throw(error);
+    });
+  };
+}
+
+export function updateAsset(asset, org) {
+  return function (dispatch) {
+    return AssetApi.updateAsset(asset, org).then(responseAsset => {
       dispatch(updateAssetSuccess(responseAsset));
       return responseAsset;
     }).catch(error => {
@@ -45,20 +45,20 @@ export function updateAsset(asset,org) {
   };
 }
 
-export function deleteAsset(asset,org) {
-	  return function (dispatch) {
-	    return AssetApi.deleteAsset(asset,org).then(response => {
-		   dispatch(deleteAssetSuccess(asset));
-		   return;
-	    }).catch(error => {
-	      throw(error);
-	    });
-	  };
+export function deleteAsset(asset, org) {
+  return function (dispatch) {
+    return AssetApi.deleteAsset(asset, org).then(response => {
+      dispatch(deleteAssetSuccess(asset));
+      return;
+    }).catch(error => {
+      throw(error);
+    });
+  };
 }
 
-export function deleteAdapterFromAsset(adapter, asset,  org) {
-	  return function (dispatch) {
-	    return AssetApi.deleteAdapterFromAsset(asset, adapter, org).then(() => {
+export function deleteAdapterFromAsset(adapter, asset, org) {
+  return function (dispatch) {
+    return AssetApi.deleteAdapterFromAsset(asset, adapter, org).then(() => {
       fetchAssets(org);
       fetchAdapters(org);
     }).catch(error => {
@@ -78,26 +78,28 @@ export function addAdapterToAsset(adapter, asset, org) {
   }
 }
 
-export function deleteClientFromAsset(client, asset,  org) {
-	  return function (dispatch) {
-	    return AssetApi.deleteClientFromAsset(asset, client, org).then(() => {
-    fetchAssets(org);
-    fetchClients(org);
-  }).catch(error => {
-    throw(error);
-  })
- };
+export function deleteClientFromAsset(client, asset, org) {
+  return function (dispatch) {
+    return AssetApi.deleteClientFromAsset(client, asset, org).then((response) => {
+      dispatch(deleteClientFromAssetSuccess(response));
+      fetchAssets(org);
+      fetchClients(org);
+    }).catch(error => {
+      throw(error);
+    })
+  };
 }
 
 export function addClientToAsset(client, asset, org) {
-	return function (dispatch) {
-	  return AssetApi.addAdapterToAsset(asset, client, org).then(responseAdapter => {
-	    fetchAssets(org);
-	    fetchClients(org);
-	  }).catch(error => {
-	    throw(error);
-	  });
- }
+  return function (dispatch) {
+    return AssetApi.addClientToAsset(client, asset, org).then(response => {
+      dispatch(addClientToAssetSuccess(response));
+      fetchAssets(org);
+      fetchClients(org);
+    }).catch(error => {
+      throw(error);
+    });
+  }
 }
 
 

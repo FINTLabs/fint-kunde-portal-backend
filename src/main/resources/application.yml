@@ -11,6 +11,24 @@ fint:
     organisation-base: "ou=organisations,o=fint-test"
     contact-base: "ou=contacts,o=fint-test"
 
-security:
-  basic:
-    enabled: false
+
+info:
+  app:
+    name: FINT Kunde Portal
+    description: Portal for å administrere tilganger til FINT
+    version: 1.0.0
+
+management:
+  endpoint:
+    shutdown:
+      enabled: 'true'
+    health:
+      show-details: 'always'
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+  info:
+    git:
+      mode: 'full'
+

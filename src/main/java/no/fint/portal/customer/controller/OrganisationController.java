@@ -5,6 +5,8 @@ import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import no.fint.portal.customer.service.PortalApiService;
 import no.fint.portal.exceptions.EntityNotFoundException;
+import no.fint.portal.model.asset.Asset;
+import no.fint.portal.model.asset.AssetService;
 import no.fint.portal.model.component.Component;
 import no.fint.portal.model.contact.Contact;
 import no.fint.portal.model.organisation.Organisation;
@@ -14,6 +16,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 @RestController
@@ -27,6 +30,9 @@ public class OrganisationController {
 
   @Autowired
   private OrganisationService organisationService;
+
+  @Autowired
+  private AssetService assetService;
 
   @GetMapping("/")
   @ApiOperation("Get Organisation")
@@ -49,6 +55,27 @@ public class OrganisationController {
     organisationService.updateOrganisation(original);
 
     return ResponseEntity.ok(original);
+  }
+
+
+  @ApiOperation("Get primary asset")
+  @GetMapping(value = "/asset/primary")
+  public ResponseEntity getOrganizationPrimaryAsset(@PathVariable String orgName) {
+    Optional<Organisation> organisation = organisationService.getOrganisation(orgName);
+
+    if (organisation.isPresent()) {
+      Optional<Asset> primaryAsset = assetService.getAssets(organisation.get()).stream().filter(asset -> asset.isPrimaryAsset()).findFirst();
+      if (primaryAsset.isPresent()) {
+        return ResponseEntity.ok(primaryAsset.get());
+      }
+      throw new EntityNotFoundException(
+        String.format("Primary asset not present.")
+      );
+    }
+
+    throw new EntityNotFoundException(
+      String.format("Organisation %s could not be found so we can't find any primary asset for it either ;)", orgName)
+    );
   }
 
   @GetMapping("/contacts/legal")

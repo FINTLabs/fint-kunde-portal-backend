@@ -83,13 +83,14 @@ class AssetView extends React.Component {
             aria-labelledby="form-dialog-title"
             maxWidth="md"
           >
-            <DialogTitle id="form-dialog-title">Oppdater asset</DialogTitle>
+            <DialogTitle id="form-dialog-title">Oppdater ressurs</DialogTitle>
             <DialogContent>
               <AssetTabView
                 asset={this.state.asset}
                 updateAssetState={this.updateAssetState}
                 notify={this.notify}
                 showUpdateButton={this.showUpdateButton}
+                fetchAssets={this.props.fetchAssets}
               />
             </DialogContent>
             <DialogActions>

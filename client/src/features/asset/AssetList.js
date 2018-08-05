@@ -1,5 +1,4 @@
 import React, {Component} from "react";
-import PropTypes from "prop-types";
 import {
   Avatar,
   Divider,
@@ -13,9 +12,10 @@ import {
   withStyles
 } from "@material-ui/core";
 import {Delete, Edit, InsertLink} from "@material-ui/icons";
-import AutoHideNotification from "../../common/AutoHideNotification";
 import AssetView from "./view/AssetView";
+import PropTypes from "prop-types";
 import {withContext} from "../../data/context/withContext";
+
 
 const styles = theme => ({
   root: {
@@ -31,6 +31,10 @@ const styles = theme => ({
   },
   listItem: {
     borderBottom: '1px dashed lightgray',
+  },
+  primaryAsset: {
+    borderBottom: '1px dashed lightgray',
+    backgroundColor: theme.palette.secondary.light,
   },
   itemAvatar: {
     color: '#fff',
@@ -53,19 +57,20 @@ class AssetList extends Component {
     this.props.updateAsset(asset, currentOrganisation.name);
   };
   deleteAsset = (asset) => {
-	const {currentOrganisation} = this.props.context;
+    const {currentOrganisation} = this.props.context;
     this.props.deleteAsset(asset, currentOrganisation.name);
-    this.setState({
-      notify: true,
-      assetDeletedName: asset.name,
-    });
+    this.props.notify(`Ressursen ${asset.name} ble slettet!`);
   };
 
-  onCloseNotification = () => {
-    this.setState({
-      notify: false,
-    });
-  };
+  static getDerivedStateFromProps(nextProps, prevState) {
+    if (nextProps.assets !== prevState.assets) {
+      return {
+        assets: nextProps.assets,
+      };
+    }
+
+    return null;
+  }
 
   constructor(props) {
     super(props);
@@ -73,8 +78,6 @@ class AssetList extends Component {
       assets: this.props.assets,
       assetToEdit: null,
       open: false,
-      notify: false,
-      assetDeletedName: null,
     };
 
   }
@@ -83,44 +86,42 @@ class AssetList extends Component {
     const {classes} = this.props;
     return (
       <div>
-        <AutoHideNotification
-          showNotification={this.state.notify}
-          message={`Asset ${this.state.assetDeletedName} ble slettet!`}
-          onClose={this.onCloseNotification}
-
-        />
         <div className={classes.root}>
           <div className={classes.componentList}>
-            <Typography variant="headline" className={classes.title}>Asset</Typography>
+            <Typography variant="headline" className={classes.title}>Ressurser</Typography>
             <Divider/>
             <List>
-            {this.props.assets.map((asset) =>
-              <ListItem className={classes.listItem} key={asset.name}>
-                <ListItemAvatar>
-                  <Avatar className={classes.itemAvatar}>
-                    <InsertLink/>
-                  </Avatar>
-                </ListItemAvatar>
-                <ListItemText
-                  primary={asset.description}
-                  secondary={asset.name}
-                />
-                <ListItemSecondaryAction>
-                  <IconButton aria-label="Edit" onClick={() => this.editAsset(asset)}>
-                    <Edit/>
-                  </IconButton>
-                  <IconButton aria-label="Delete" onClick={() => this.deleteAsset(asset)}>
-                  	<Delete/>
-                  </IconButton>
-                </ListItemSecondaryAction>
-              </ListItem>,
-            )}
-          </List>
+              {this.props.assets.map((asset) =>
+                <ListItem className={(asset.primaryAsset === true) ? classes.primaryAsset : classes.listItem}
+                          key={asset.name}>
+                  <ListItemAvatar>
+                    <Avatar className={classes.itemAvatar}>
+                      <InsertLink/>
+                    </Avatar>
+                  </ListItemAvatar>
+                  <ListItemText
+                    primary={asset.description}
+                    secondary={asset.assetId}
+                  />
+                  <ListItemSecondaryAction>
+                    <IconButton aria-label="Edit" onClick={() => this.editAsset(asset)}>
+                      <Edit/>
+                    </IconButton>
+                    {asset.primaryAsset !== true &&
+                    <IconButton aria-label="Delete" onClick={() => this.deleteAsset(asset)}>
+                      <Delete/>
+                    </IconButton>
+                    }
+                  </ListItemSecondaryAction>
+                </ListItem>,
+              )}
+            </List>
           </div>
         </div>
         <AssetView
           open={this.state.open}
           asset={this.state.assetToEdit}
+          fetchAssets={this.props.fetchAssets}
           onClose={this.onCloseEdit}
           updateAsset={this.updateAsset}
         />
