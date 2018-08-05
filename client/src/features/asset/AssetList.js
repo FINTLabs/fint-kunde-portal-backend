@@ -15,6 +15,7 @@ import {Delete, Edit, InsertLink} from "@material-ui/icons";
 import AssetView from "./view/AssetView";
 import PropTypes from "prop-types";
 import {withContext} from "../../data/context/withContext";
+import WarningMessageBox from "../../common/WarningMessageBox";
 
 
 const styles = theme => ({
@@ -56,11 +57,32 @@ class AssetList extends Component {
     const {currentOrganisation} = this.props.context;
     this.props.updateAsset(asset, currentOrganisation.name);
   };
+
+  askToDeleteAsset = (asset) => {
+    this.setState({
+      assetToDelete: asset,
+      askToDeleteAsset: true,
+      message: "Er du sikker på at du vil slette ressursen '" + asset.description + "'?",
+    });
+  };
+
+  onCloseDeleteAsset = (confirmed) => {
+    this.setState({
+      askToDeleteAsset: false,
+    });
+
+    if (confirmed) {
+      this.deleteAsset(this.state.assetToDelete);
+    }
+  };
+
   deleteAsset = (asset) => {
     const {currentOrganisation} = this.props.context;
     this.props.deleteAsset(asset, currentOrganisation.name);
     this.props.notify(`Ressursen ${asset.name} ble slettet!`);
   };
+
+
 
   static getDerivedStateFromProps(nextProps, prevState) {
     if (nextProps.assets !== prevState.assets) {
@@ -78,6 +100,8 @@ class AssetList extends Component {
       assets: this.props.assets,
       assetToEdit: null,
       open: false,
+      askToDeleteAsset: false,
+      message: '',
     };
 
   }
@@ -86,6 +110,11 @@ class AssetList extends Component {
     const {classes} = this.props;
     return (
       <div>
+        <WarningMessageBox
+          show={this.state.askToDeleteAsset}
+          message={this.state.message}
+          onClose={this.onCloseDeleteAsset}
+        />
         <div className={classes.root}>
           <div className={classes.componentList}>
             <Typography variant="headline" className={classes.title}>Ressurser</Typography>
@@ -108,7 +137,7 @@ class AssetList extends Component {
                       <Edit/>
                     </IconButton>
                     {asset.primaryAsset !== true &&
-                    <IconButton aria-label="Delete" onClick={() => this.deleteAsset(asset)}>
+                    <IconButton aria-label="Delete" onClick={() => this.askToDeleteAsset(asset)}>
                       <Delete/>
                     </IconButton>
                     }
