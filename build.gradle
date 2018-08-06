@@ -18,6 +18,8 @@ buildscript {
   }
 }
 
+group = 'no.fint'
+
 plugins {
   id 'com.github.ben-manes.versions' version '0.17.0'
   //id "com.gorylenko.gradle-git-properties" version "1.4.21"
@@ -32,7 +34,6 @@ apply plugin: 'io.spring.dependency-management'
 
 
 jar {
-  baseName = 'fint-kunde-portal-backend'
   version = version
 }
 sourceCompatibility = 1.8
