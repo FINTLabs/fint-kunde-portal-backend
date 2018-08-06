@@ -10,5 +10,5 @@ COPY --from=node /src/client/build/ src/main/resources/public/
 RUN gradle --no-daemon build
 
 FROM openjdk:8-jre-alpine
-COPY --from=java /home/gradle/build/libs/fint-kunde-portal-backend*.jar /data/app.jar
+COPY --from=java /home/gradle/build/libs/fint-kunde-portal*.jar /data/app.jar
 CMD ["java", "-jar", "/data/app.jar"]
