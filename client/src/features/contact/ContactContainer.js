@@ -66,11 +66,14 @@ class ContactContainer extends React.Component {
 
   getSelectableContacts = () => {
 
-    return this.props.contacts.filter(c => {
-      return this.props.technicalContacts.every(tc => {
-        return tc.nin !== c.nin;
-      })
-    });
+    if (this.props.contacts) {
+      return this.props.contacts.filter(c => {
+        return this.props.technicalContacts.every(tc => {
+          return tc.nin !== c.nin;
+        })
+      });
+    }
+    return [];
   };
 
   afterUpdateLegalContact = () => {
