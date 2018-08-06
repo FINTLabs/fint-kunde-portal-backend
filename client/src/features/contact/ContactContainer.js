@@ -82,7 +82,7 @@ class ContactContainer extends React.Component {
   };
 
   render() {
-    if ((this.props.technicalContacts === undefined) || (this.props.legalContact === undefined)) {
+    if ((this.props.technicalContacts === undefined) || (this.props.legalContact === undefined) || (this.props.contacts === undefined)) {
       return <LoadingProgress/>;
     } else {
       return this.renderPosts();

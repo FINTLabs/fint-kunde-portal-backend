@@ -4,6 +4,12 @@ import {Dialog, DialogActions, DialogContent, DialogTitle,} from "@material-ui/c
 import {withStyles} from "@material-ui/core";
 import AssetTabView from "./AssetTabView";
 import AutoHideNotification from "../../../common/AutoHideNotification";
+import {bindActionCreators} from "redux";
+import {fetchAdapters} from "../../../data/redux/dispatchers/adapter";
+import {connect} from "react-redux";
+import {withContext} from "../../../data/context/withContext";
+import {fetchClients} from "../../../data/redux/dispatchers/client";
+
 
 
 const styles = () => ({});
@@ -46,6 +52,11 @@ class AssetView extends React.Component {
       notifyMessage: '',
     });
   };
+
+  componentDidMount() {
+    this.props.fetchAdapters(this.props.context.currentOrganisation.name);
+    this.props.fetchClients(this.props.context.currentOrganisation.name);
+  }
 
   constructor(props, context) {
     super(props, context);
@@ -91,6 +102,10 @@ class AssetView extends React.Component {
                 notify={this.notify}
                 showUpdateButton={this.showUpdateButton}
                 fetchAssets={this.props.fetchAssets}
+                fetchAdapters={this.props.fetchAdapters}
+                adapters={this.props.adapters}
+                fetchClients={this.props.fetchClients}
+                clients={this.props.clients}
               />
             </DialogContent>
             <DialogActions>
@@ -113,4 +128,19 @@ class AssetView extends React.Component {
 
 AssetView.propTypes = {};
 
-export default withStyles(styles)(AssetView);
+function mapStateToProps(state) {
+  return {
+    adapters: state.adapter.adapters,
+    clients: state.client.clients,
+  }
+}
+
+
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators({
+    fetchAdapters: fetchAdapters,
+    fetchClients: fetchClients,
+  }, dispatch);
+}
+
+export default withStyles(styles)(connect(mapStateToProps, mapDispatchToProps)(withContext(AssetView)));

@@ -67,6 +67,15 @@ class AssetContainer extends React.Component {
     });
   };
 
+  static getDerivedStateFromProps(nextProps, prevState) {
+    if (nextProps.assets !== prevState.assets) {
+      return {
+        assets: nextProps.assets,
+      };
+    }
+    return null;
+  }
+
   render() {
     if (this.props.assets === undefined || this.props.context.currentOrganisation === undefined) {
       return <LoadingProgress/>;

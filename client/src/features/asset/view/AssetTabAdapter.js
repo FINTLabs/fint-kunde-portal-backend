@@ -13,12 +13,8 @@ import {
 import AddIcon from "@material-ui/icons/AddCircle";
 import RemoveIcon from "@material-ui/icons/RemoveCircle";
 import ComponentIcon from "@material-ui/icons/WebAsset";
-import {bindActionCreators} from "redux";
-import {connect} from "react-redux";
-import {fetchAdapters} from "../../../data/redux/dispatchers/adapter";
 import {green} from "@material-ui/core/colors/index";
 import LoadingProgress from "../../../common/LoadingProgress";
-import {addAdapterToAsset, deleteAdapterFromAsset} from "../../../data/redux/dispatchers/asset";
 import AssetApi from "../../../data/api/AssetApi";
 import WarningMessageBox from "../../../common/WarningMessageBox";
 import InformationMessageBox from "../../../common/InformationMessageBox";
@@ -72,26 +68,31 @@ class AssetTabAdapter extends React.Component {
       askLink: true,
       message: "Vil du legge  " + adapter.shortDescription + " til asset?",
       adapter: adapter,
-      
+
     });
 
   };
+
   unLinkAdapter = (adapter) => {
     AssetApi.deleteAdapterFromAsset(adapter, this.props.asset, this.props.context.currentOrganisation.name)
       .then(() => {
         this.props.notify(`${this.state.adapter.shortDescription} ble slettet fra ${this.props.asset.name}`);
+        this.props.fetchAssets(this.props.context.currentOrganisation.name);
         this.props.fetchAdapters(this.props.context.currentOrganisation.name);
       }).catch(error => {
     });
   };
+
   linkAdapter = (adapter) => {
-    AssetApi.addAdapterToAsset(adapter, this.props.asset,  this.props.context.currentOrganisation.name)
+    AssetApi.addAdapterToAsset(adapter, this.props.asset, this.props.context.currentOrganisation.name)
       .then(() => {
         this.props.notify(`${this.state.adapter.shortDescription} ble lagt til ${this.props.asset.name}`);
-        this.props.fetchAdapters(this.props.context.currentOrganisation.name);
+        this.props.fetchAssets(this.props.context.currentOrganisation.name)
+        this.props.fetchAdapters(this.props.context.currentOrganisation.name)
       }).catch(error => {
     });
   };
+
   onCloseLink = (confirmed) => {
     this.setState({
       askLink: false,
@@ -111,18 +112,24 @@ class AssetTabAdapter extends React.Component {
     }
   };
   isLinkedToAsset = (adapter) => {
-	    for (let i = 0; i < this.props.asset.adapters.length; i++) {
-	      if (this.props.asset.adapters[i].toLowerCase() === adapter.dn.toLowerCase()) {
-	        return true;
-	      }
-	    }
+
+    for (let i = 0; i < adapter.assets.length; i++) {
+      if (adapter.assets[i].toLowerCase() === this.props.asset.dn.toLowerCase()) {
+        return true;
+      }
+    }
     return false;
   };
-  getOrganisationAdapters = () => {
-    return this.props.adapers
-      .filter(adapter => adapter.organisations.length > 0)
-      .filter(adapter => adapter.organisations.find(o => o === this.props.context.currentOrganisation.dn));
-  };
+
+  static getDerivedStateFromProps(nextProps, prevState) {
+    if (nextProps.adapters !== prevState.adapters) {
+      return {
+        adapters: nextProps.adapters,
+      };
+    }
+    return null;
+  }
+
 
   constructor(props) {
     super(props);
@@ -133,19 +140,6 @@ class AssetTabAdapter extends React.Component {
     };
   }
 
-  static getDerivedStateFromProps(nextProps, prevState) {
-    if (nextProps.asset !== prevState.asset) {
-      return {
-        asset: nextProps.asset,
-      };
-    }
-    return null;
-  }
-
-  componentDidMount() {
-    this.props.fetchAdapters(this.props.context.currentOrganisation.name);
-  }
-  
   render() {
     if (!this.props.adapters) {
       return <LoadingProgress/>;
@@ -158,6 +152,7 @@ class AssetTabAdapter extends React.Component {
 
     const {classes} = this.props;
     const organisationAdapters = this.props.adapters;
+
     if (organisationAdapters.length > 0) {
       return (
         <div>
@@ -180,7 +175,7 @@ class AssetTabAdapter extends React.Component {
                   </Avatar>
                 </ListItemAvatar>
                 <ListItemText
-                  primary={adapter.description}
+                  primary={adapter.shortDescription}
                   secondary={adapter.name}
                 />
                 <ListItemSecondaryAction>
@@ -209,18 +204,4 @@ class AssetTabAdapter extends React.Component {
   }
 }
 
-function mapStateToProps(state) {
-  return {
-    adapters: state.adapter.adapters,
-  }
-}
-
-function mapDispatchToProps(dispatch) {
-  return bindActionCreators({
-    fetchAdapters: fetchAdapters,
-    addAdapterToAsset: addAdapterToAsset,
-    deleteAdapterFromAsset: deleteAdapterFromAsset,
-  }, dispatch);
-}
-
-export default withStyles(styles)(connect(mapStateToProps, mapDispatchToProps)(withContext(AssetTabAdapter)));
+export default withStyles(styles)(withContext(AssetTabAdapter));

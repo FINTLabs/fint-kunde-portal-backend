@@ -88,7 +88,7 @@ static addAdapterToAsset(adapter, asset, organisation) {
   }
 static deleteAdapterFromAsset(adapter, asset, organisation) {
 
-    const request = new Request(`/api/assets/${organisation}/${asset.assetId}/adapters/${adapter.name}`, {
+    const request = new Request(`/api/assets/${organisation}/${asset.name}/adapters/${adapter.name}`, {
       method: 'DELETE',
       credentials: 'same-origin',
     });

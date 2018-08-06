@@ -83,7 +83,6 @@ class AssetList extends Component {
   };
 
 
-
   static getDerivedStateFromProps(nextProps, prevState) {
     if (nextProps.assets !== prevState.assets) {
       return {

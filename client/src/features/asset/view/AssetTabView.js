@@ -20,7 +20,6 @@ class AssetTabView extends React.Component {
 
   handleChange = (event, value) => {
     this.setState({value});
-
     if (value === 0) {
       this.props.showUpdateButton(true);
     }
@@ -79,7 +78,13 @@ class AssetTabView extends React.Component {
           </TabContainer>
 
           <TabContainer dir={theme.direction}>
-            <AssetTabAdapter asset={this.props.asset} notify={this.props.notify}/>
+            <AssetTabAdapter
+              asset={this.props.asset}
+              notify={this.props.notify}
+              fetchAssets={this.props.fetchAssets}
+              fetchAdapters={this.props.fetchAdapters}
+              adapters={this.props.adapters}
+            />
           </TabContainer>
 
           <TabContainer dir={theme.direction}>
@@ -87,6 +92,8 @@ class AssetTabView extends React.Component {
               asset={this.state.asset}
               notify={this.props.notify}
               fetchAssets={this.props.fetchAssets}
+              fetchClients={this.props.fetchClients}
+              clients={this.props.clients}
             />
           </TabContainer>
         </SwipeableViews>
