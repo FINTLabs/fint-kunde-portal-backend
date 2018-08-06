@@ -18,8 +18,6 @@ buildscript {
   }
 }
 
-group = 'no.fint'
-
 plugins {
   id 'com.github.ben-manes.versions' version '0.17.0'
   //id "com.gorylenko.gradle-git-properties" version "1.4.21"
@@ -32,10 +30,7 @@ apply plugin: 'maven'
 apply plugin: 'org.springframework.boot'
 apply plugin: 'io.spring.dependency-management'
 
-
-jar {
-  version = version
-}
+group = 'no.fint'
 sourceCompatibility = 1.8
 targetCompatibility = 1.8
 
