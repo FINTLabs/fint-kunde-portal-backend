@@ -8,6 +8,7 @@ import * as PasswordGenerator from "generate-password";
 import GetSecretIcon from "@material-ui/icons/GetApp";
 import RefreshIcon from "@material-ui/icons/Refresh";
 import {withContext} from "../../../data/context/withContext";
+import {Link} from "react-router-dom";
 
 
 const styles = theme => ({
@@ -32,6 +33,10 @@ const styles = theme => ({
   },
   copyAllAuthButtonIcon: {
     marginRight: theme.spacing.unit,
+    marginTop: theme.spacing.unit * 2,
+  },
+  gotoAssetButton: {
+    marginTop: theme.spacing.unit,
   },
 });
 
@@ -45,6 +50,8 @@ class AdapterTabAuthenticationInformation extends React.Component {
         password: ' ',
         clientId: this.props.adapter.clientId,
         openIdSecret: ' ',
+        assetIds: this.props.adapter.assetIds,
+
       },
     };
   }
@@ -172,7 +179,6 @@ class AdapterTabAuthenticationInformation extends React.Component {
             disabled
             margin="dense"
             value={this.state.allAuthInfo.openIdSecret}
-            disableUnderline
             multiline
             rows="2"
             endAdornment={
@@ -194,11 +200,42 @@ class AdapterTabAuthenticationInformation extends React.Component {
           />
         </FormControl>
 
+        {this.props.adapter.assetIds.length > 0 ?
+          (
+            <FormControl className={classes.authSecret}>
+              <InputLabel htmlFor="name">RessursId'er</InputLabel>
+
+              <Input
+                margin="dense"
+                id="name"
+                name="name"
+                value={this.props.adapter.assetIds ? this.props.adapter.assetIds : 'Ingen ressursId er tilknyttet enda!'}
+                disabled
+                endAdornment={
+                  <InputAdornment position="end">
+                    <CopyToClipboard text={this.props.adapter.assetIds}
+                                     onCopy={() => this.props.notify('Kopiert')}
+                    >
+                      <IconButton>
+                        <ContentCopy/>
+                      </IconButton>
+                    </CopyToClipboard>
+                  </InputAdornment>
+                }
+              />
+            </FormControl>
+          ) : (
+            <Button className={classes.gotoAssetButton} variant="raised" color="primary" size="small" fullWidth component={Link} to="/assets">
+              Adapteret har ikke tilordnet en ressursId. Klikk her for å legge til en ressursId.
+            </Button>
+          )
+        }
+
 
         <CopyToClipboard text={JSON.stringify(this.state.allAuthInfo, null, 2)}
                          onCopy={() => this.props.notify('Kopiert')}>
-          <Button variant="raised">
-            <ContentCopy className={classes.copyAllAuthButtonIcon}/>
+          <Button variant="raised" className={classes.copyAllAuthButtonIcon}>
+            <ContentCopy/>
             Kopier autentiseringsinformasjon
           </Button>
         </CopyToClipboard>

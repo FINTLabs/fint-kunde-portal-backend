@@ -19,6 +19,8 @@ class AdapterContainer extends React.Component {
     super(props);
     this.state = {
       adapterAdded: false,
+      notify: false,
+      notifyMessage: '',
     };
   }
 
