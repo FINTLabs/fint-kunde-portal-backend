@@ -93,11 +93,22 @@ public class PortalApiService {
     maxAttempts = 5
   )
   @Synchronized
-  public Component getComponent(String compName) {
+  public Component getComponentByName(String compName) {
     Component component = componentService.getComponentByName(compName).orElseThrow(() -> new EntityNotFoundException("Component " + compName + " not found."));
     if (component.getName() == null) throw new InvalidResourceException("Invalid component");
     return component;
-    //return componentService.getComponentByName(compName).orElseThrow(() -> new EntityNotFoundException("Component " + compName + " not found."));
+  }
+
+  @Retryable(
+    backoff = @Backoff(delay = 200L),
+    value = {InvalidResourceException.class},
+    maxAttempts = 5
+  )
+  @Synchronized
+  public Component getComponentByDn(String dn) {
+    Component component = componentService.getComponetByDn(dn).orElseThrow(() -> new EntityNotFoundException("Component " + dn + " not found."));
+    if (component.getName() == null) throw new InvalidResourceException("Invalid component");
+    return component;
   }
 
   @Retryable(

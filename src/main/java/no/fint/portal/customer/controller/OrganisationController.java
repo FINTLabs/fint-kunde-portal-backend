@@ -152,7 +152,7 @@ public class OrganisationController {
   @ApiOperation("Link Component")
   public ResponseEntity linkComponent(@PathVariable String orgName, @PathVariable String compName) {
     Organisation organisation = portalApiService.getOrganisation(orgName);
-    Component component = portalApiService.getComponent(compName);
+    Component component = portalApiService.getComponentByName(compName);
 
     organisationService.linkComponent(organisation, component);
 
@@ -164,7 +164,7 @@ public class OrganisationController {
   @ApiOperation("Unlink Component")
   public ResponseEntity unLinkComponent(@PathVariable String orgName, @PathVariable String compName) {
     Organisation organisation = portalApiService.getOrganisation(orgName);
-    Component component = portalApiService.getComponent(compName);
+    Component component = portalApiService.getComponentByName(compName);
 
     organisationService.unLinkComponent(organisation, component);
 

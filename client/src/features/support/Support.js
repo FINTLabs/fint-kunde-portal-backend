@@ -12,7 +12,10 @@ class Support extends Component {
     //const {classes} = this.props;
 
     return (
-      <h1>Support</h1>
+      <div>
+        <h1>Support</h1>
+
+      </div>
     );
   }
 }

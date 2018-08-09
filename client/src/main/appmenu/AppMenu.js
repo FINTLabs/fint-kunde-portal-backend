@@ -135,7 +135,7 @@ class AppMenu extends React.Component {
             >
               <MenuIcon/>
             </IconButton>
-            <img src="fint.svg" alt="logo" className={classes.logo}/>
+            <img src="/fint.svg" alt="logo" className={classes.logo}/>
             <Typography variant="title" color="inherit" noWrap className={classes.flex}>
               Kunde Portal
             </Typography>

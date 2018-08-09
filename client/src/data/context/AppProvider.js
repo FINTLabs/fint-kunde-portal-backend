@@ -5,6 +5,7 @@ import LoadingProgress from "../../common/LoadingProgress";
 import PropTypes from "prop-types";
 
 import {Cookies, withCookies} from "react-cookie";
+import ClientConfigApi from "../api/ClientConfigApi";
 
 
 class AppProvider extends Component {
@@ -15,6 +16,7 @@ class AppProvider extends Component {
     this.state = {
       currentOrganisation: undefined,
       organisations: undefined,
+      clientConfig: undefined,
       setCurrentOrganisation: (organisation) => {
         this.setCurrentOrganisation(organisation);
       },
@@ -31,7 +33,7 @@ class AppProvider extends Component {
 
   setCurrentOrganisation = (organisation) => {
     const {cookies} = this.props;
-    cookies.set('organisation', organisation, { path: '/' });
+    cookies.set('organisation', organisation, {path: '/'});
     this.setState({currentOrganisation: organisation});
   };
 
@@ -43,14 +45,22 @@ class AppProvider extends Component {
         return response.json();
       })
       .then(json => {
-
         this.setState({
           organisations: json,
           currentOrganisation: cookies.get('organisation') || json[1],
         });
-
-
       });
+
+    ClientConfigApi.fetchClientConfig()
+      .then(response => {
+        return response.json();
+      })
+      .then(json => {
+        this.setState({
+          clientConfig: json,
+        });
+      });
+
   };
 
   render() {

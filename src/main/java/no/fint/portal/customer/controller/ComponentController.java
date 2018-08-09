@@ -22,8 +22,8 @@ import org.springframework.ldap.NameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.UnknownHostException;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Slf4j
 @RestController
@@ -49,9 +49,20 @@ public class ComponentController {
   @ApiOperation("Get component by name")
   @RequestMapping(method = RequestMethod.GET, value = "/{compName}")
   public ResponseEntity getComponent(@PathVariable String compName) {
-    Component component = portalApiService.getComponent(compName);
+    Component component = portalApiService.getComponentByName(compName);
 
     return ResponseEntity.ok(component);
+  }
+
+  @ApiOperation(("Get components actived by an organisation"))
+  @GetMapping(value = "organisation/{orgName}")
+  public ResponseEntity getOrganisationComponents(@PathVariable String orgName) {
+    List<Component> components = new ArrayList<>();//portalApiService.getComponents();
+    Organisation organisation = portalApiService.getOrganisation(orgName);
+
+    organisation.getComponents().forEach(dn -> components.add(portalApiService.getComponentByDn(dn)));
+
+    return ResponseEntity.ok(components);
   }
 
   @ApiOperation("Add adapter to component")
@@ -62,7 +73,7 @@ public class ComponentController {
   public ResponseEntity addAdapterToComponent(@PathVariable final String adapterName, @PathVariable final String compName, @PathVariable("orgName") final String orgName) {
 
     Organisation organisation = portalApiService.getOrganisation(orgName);
-    Component component = portalApiService.getComponent(compName);
+    Component component = portalApiService.getComponentByName(compName);
     Adapter adapter = portalApiService.getAdapter(organisation, adapterName);
 
     componentService.linkAdapter(component, adapter);
@@ -77,7 +88,7 @@ public class ComponentController {
   public ResponseEntity removeAdapterFromComponent(@PathVariable final String adapterName, @PathVariable final String compName, @PathVariable("orgName") final String orgName) {
 
     Organisation organisation = portalApiService.getOrganisation(orgName);
-    Component component = portalApiService.getComponent(compName);
+    Component component = portalApiService.getComponentByName(compName);
     Adapter adapter = portalApiService.getAdapter(organisation, adapterName);
 
     componentService.unLinkAdapter(component, adapter);
@@ -94,7 +105,7 @@ public class ComponentController {
   public ResponseEntity addClientToComponent(@PathVariable final String clientName, @PathVariable final String compName, @PathVariable("orgName") final String orgName) {
 
     Organisation organisation = portalApiService.getOrganisation(orgName);
-    Component component = portalApiService.getComponent(compName);
+    Component component = portalApiService.getComponentByName(compName);
     Client client = portalApiService.getClient(organisation, clientName);
 
     componentService.linkClient(component, client);
@@ -109,7 +120,7 @@ public class ComponentController {
   public ResponseEntity removeClientFromComponent(@PathVariable final String clientName, @PathVariable final String compName, @PathVariable("orgName") final String orgName) {
 
     Organisation organisation = portalApiService.getOrganisation(orgName);
-    Component component = portalApiService.getComponent(compName);
+    Component component = portalApiService.getComponentByName(compName);
     Client client = portalApiService.getClient(organisation, clientName);
 
     componentService.unLinkClient(component, client);

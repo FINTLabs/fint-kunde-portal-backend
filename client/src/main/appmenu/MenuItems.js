@@ -8,6 +8,7 @@ import ContactIcon from "@material-ui/icons/Person";
 import LogIcon from "@material-ui/icons/Receipt";
 import SupportIcon from "@material-ui/icons/Help";
 import DocumentationIcon from "@material-ui/icons/Book";
+import RelationTestIcon from "@material-ui/icons/TrendingFlat";
 import AssetIcon from "@material-ui/icons/Storage";
 import {Link} from "react-router-dom";
 
@@ -63,6 +64,14 @@ export const MENU_ITEMS = (
           <ContactIcon/>
         </ListItemIcon>
         <ListItemText primary="Kontakter"/>
+      </ListItem>
+    </Link>
+    <Link to="/test/linkwalker" style={menuLink}>
+      <ListItem button>
+        <ListItemIcon>
+          <RelationTestIcon/>
+        </ListItemIcon>
+        <ListItemText primary="Relasjonstest"/>
       </ListItem>
     </Link>
     <Link to="/logs" style={menuLink}>

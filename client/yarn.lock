@@ -1549,6 +1549,10 @@ circular-json@^0.3.1:
   version "0.3.3"
   resolved "https://registry.yarnpkg.com/circular-json/-/circular-json-0.3.3.tgz#815c99ea84f6809529d2f45791bdf82711352d66"
 
+circular-json@^0.5.5:
+  version "0.5.5"
+  resolved "https://registry.yarnpkg.com/circular-json/-/circular-json-0.5.5.tgz#64182ef359042d37cd8e767fc9de878b1e9447d3"
+
 clap@^1.0.9:
   version "1.2.3"
   resolved "https://registry.yarnpkg.com/clap/-/clap-1.2.3.tgz#4f36745b32008492557f46412d66d50cb99bce51"
@@ -4627,6 +4631,10 @@ jest@20.0.4:
 js-base64@^2.1.9:
   version "2.4.5"
   resolved "https://registry.yarnpkg.com/js-base64/-/js-base64-2.4.5.tgz#e293cd3c7c82f070d700fc7a1ca0a2e69f101f92"
+
+js-file-download@^0.4.1:
+  version "0.4.1"
+  resolved "https://registry.yarnpkg.com/js-file-download/-/js-file-download-0.4.1.tgz#de0dd2d661d5635f506a73b962ab58ddb650bedb"
 
 js-tokens@^3.0.0, js-tokens@^3.0.2:
   version "3.0.2"

@@ -120,7 +120,7 @@ class ClientAdd extends React.Component {
             <DialogTitle id="form-dialog-title">Nytt client</DialogTitle>
             <DialogContent>
               <DialogContentText>
-                Vennligst fyll ut de obligatoriske feltene for å legge til ny client.
+                Vennligst fyll ut de obligatoriske feltene for å legge til en ny klient.
               </DialogContentText>
               <UsernameValidationInput
                 title="Brukernavn"

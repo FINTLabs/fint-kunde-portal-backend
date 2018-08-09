@@ -8,6 +8,7 @@ import AdapterContainer from "../../features/adapter/AdapterContainer";
 import ContactContainer from "../../features/contact/ContactContainer";
 import AssetContainer from "../../features/asset/AssetContainer";
 import LogContainer from "../../features/logs/LogContainer";
+import LinkWalkerContainer from "../../features/link-walker/LinkWalkerContainer";
 
 
 class Routes extends React.Component {
@@ -23,6 +24,7 @@ class Routes extends React.Component {
         <Route path='/components' component={ComponentContainer}/>
         <Route path='/logs' component={LogContainer}/>
         <Route path='/support' component={Support}/>
+        <Route path='/test/linkwalker' component={LinkWalkerContainer}/>
       </div>
     );
   }

@@ -7,6 +7,7 @@ import organisation from "../reducers/organisation";
 import adapter from "../reducers/adapter";
 import contact from "../reducers/contact";
 import asset from "../reducers/asset";
+import linkwalker from "../reducers/linkwalker";
 
 const logger = createLogger();
 const store = createStore(
@@ -17,6 +18,7 @@ const store = createStore(
     adapter,
     contact,
     asset,
+    linkwalker,
   }),
   applyMiddleware(thunkMiddleware, logger)
 );
