@@ -43,7 +43,6 @@ class LinkWalkerTestView extends React.Component {
 
 
   handleClose = () => {
-    console.log('close');
     this.setState({showLinkWalkerTestView: false});
     this.props.closeTestView();
   };
@@ -91,7 +90,6 @@ class LinkWalkerTestView extends React.Component {
     const {classes} = this.props;
     const test = Object.assign({}, this.props.test);
     const relations = Object.entries(test.relations);
-    console.log(relations);
     return (
       <div>
         <div>
@@ -139,7 +137,7 @@ class LinkWalkerTestView extends React.Component {
                 const relationName = relation[0];
                 const reports = relation[1];
                 return (
-                  <div>
+                  <div key={relationName}>
                     <h4>{relationName}</h4>
                     <Table className={classes.table}>
                       <TableHead>
@@ -152,7 +150,7 @@ class LinkWalkerTestView extends React.Component {
                       <TableBody>
                         {reports.map(report => {
                           return (
-                            <TableRow hover>
+                            <TableRow hover key={report.url}>
                               <TableCell><TrafficLight status={report.status}/></TableCell>
                               <TableCell>{report.url}</TableCell>
                               <TableCell>{report.reason}</TableCell>

@@ -69,6 +69,7 @@ class LinkWalkerContainer extends Component {
         />
         <LinkWalkerAddTest
           organisationName={this.props.context.currentOrganisation.name}
+          clientConfig={this.props.context.clientConfig}
           notify={this.notify}
           fetchLinkWalkerTests={this.props.fetchLinkWalkerTests}
         />
@@ -76,6 +77,7 @@ class LinkWalkerContainer extends Component {
           tests={this.props.tests}
           fetchLinkWalkerTests={this.props.fetchLinkWalkerTests}
           organisationName={this.props.context.currentOrganisation.name}
+          clientConfig={this.props.context.clientConfig}
           notify={this.notify}
         />
 
@@ -97,7 +99,6 @@ function mapStateToProps(state) {
 }
 
 function mapDispatchToProps(dispatch) {
-  console.log('mapDispatchToProps');
   return bindActionCreators({
     fetchLinkWalkerTests: fetchLinkWalkerTests,
   }, dispatch);

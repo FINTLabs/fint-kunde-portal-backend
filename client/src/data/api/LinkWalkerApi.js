@@ -1,8 +1,6 @@
 class LinkWalkerApi {
 
   static getTests(baseUrl, organisationName) {
-    console.log(baseUrl);
-    console.log(`${baseUrl}/tests/${organisationName}`);
     const url = `${baseUrl}/tests/${organisationName}`;
     return fetch(url, {
       method: 'GET',

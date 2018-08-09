@@ -33,12 +33,6 @@ class LinkWalkerAddTest extends React.Component {
           this.setState({components: json});
         }
       });
-    /*
-      .then((json) => {
-        console.log(json);
-        this.setState({components: json});
-      });
-      */
   };
 
   handleChange = (e) => {
@@ -67,18 +61,18 @@ class LinkWalkerAddTest extends React.Component {
   addTest = () => {
 
     let test = this.getTest();
-    console.log(`Adding test: ${JSON.stringify(test)}`);
+    const {organisationName, clientConfig} = this.props;
 
-    LinkWalkerApi.addTest(test, this.props.organisationName)
+    LinkWalkerApi.addTest(clientConfig.linkwalkerBaseUrl, test, organisationName)
       .then(response => {
         if (response.status === 201) {
           this.props.notify("Testen ble opprettet");
-          const {currentOrganisation, clientConfig} = this.props.context;
-          this.props.fetchLinkWalkerTests(clientConfig.linkwalkerBaseUrl, currentOrganisation.name);
+          this.props.fetchLinkWalkerTests(clientConfig.linkwalkerBaseUrl, organisationName);
         }
         else {
-          this.props.notify("Oisann, dette gikk ikke helt etter planen! Prøv igjen ;)");
+          this.props.notify("Oisann, dette gikk ikke helt etter planen!");
         }
+
         this.setState({
           showLinkWalkerAddTest: false,
           notify: true,
@@ -111,8 +105,8 @@ class LinkWalkerAddTest extends React.Component {
     };
   };
 
-  constructor(props, context) {
-    super(props, context);
+  constructor(props) {
+    super(props);
     this.state = {
       showLinkWalkerAddTest: false,
     };

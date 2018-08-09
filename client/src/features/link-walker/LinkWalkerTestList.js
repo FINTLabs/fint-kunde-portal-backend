@@ -58,17 +58,17 @@ class LinkWalkerTestList extends Component {
   };
 
   refreshTestList = () => {
-    const {currentOrganisation, clientConfig} = this.props.context;
-    this.props.fetchLinkWalkerTests(clientConfig.linkwalkerBaseUrl, currentOrganisation.name);
+    const {organisationName, clientConfig} = this.props;
+    this.props.fetchLinkWalkerTests(clientConfig.linkwalkerBaseUrl, organisationName);
   };
 
   clearTests = () => {
-    LinkWalkerApi.clearTests(this.props.organisationName)
+    const {organisationName, clientConfig} = this.props;
+    LinkWalkerApi.clearTests(clientConfig.linkwalkerBaseUrl, organisationName)
       .then((response) => {
         if (response.status === 200) {
           this.props.notify("Testloggen ble slette!");
-          const {currentOrganisation, clientConfig} = this.props.context;
-          this.props.fetchLinkWalkerTests(clientConfig.linkwalkerBaseUrl, currentOrganisation.name);
+          this.props.fetchLinkWalkerTests(clientConfig.linkwalkerBaseUrl, organisationName);
         }
         else {
           this.props.notify("Oh shit, noe gikk galt!");
