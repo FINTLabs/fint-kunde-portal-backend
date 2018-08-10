@@ -9,6 +9,8 @@ import {fetchLinkWalkerTests} from "../../data/redux/dispatchers/linkwalker";
 import PropTypes from "prop-types";
 import LoadingProgress from "../../common/LoadingProgress";
 import LinkWalkerAddTest from "./LinkWalkerAddTest";
+import {fetchClients} from "../../data/redux/dispatchers/client";
+import ComponentApi from "../../data/api/ComponentApi";
 
 const styles = () => ({
   root: {}
@@ -22,8 +24,18 @@ class LinkWalkerContainer extends Component {
     this.state = {
       notify: false,
       notifyMessage: '',
+      components: [],
     };
   }
+
+  getOrganisationComponents = (organisationName) => {
+    ComponentApi.getOrganisationComponents(organisationName)
+      .then(([response, json]) => {
+        if (response.status === 200) {
+          this.setState({components: json});
+        }
+      });
+  };
 
   notify = (message) => {
     this.setState({
@@ -42,22 +54,27 @@ class LinkWalkerContainer extends Component {
   componentDidMount() {
     const {currentOrganisation, clientConfig} = this.props.context;
     this.props.fetchLinkWalkerTests(clientConfig.linkwalkerBaseUrl, currentOrganisation.name);
+    this.props.fetchClients(currentOrganisation.name);
+    this.getOrganisationComponents(currentOrganisation.name);
   }
 
   componentDidUpdate(prevProps, prevState, snapshot) {
     const {currentOrganisation, clientConfig} = this.props.context;
     if (prevProps.context !== this.props.context) {
       this.props.fetchLinkWalkerTests(clientConfig.linkwalkerBaseUrl, currentOrganisation.name);
+      this.props.fetchClients(currentOrganisation.name);
+      this.getOrganisationComponents(currentOrganisation.name);
     }
   }
 
   render() {
-    if (this.props.tests === undefined || this.props.context.currentOrganisation === undefined) {
+    if (this.props.context.currentOrganisation === undefined) {
       return <LoadingProgress/>;
     } else {
       return this.renderTestList();
     }
   }
+
   renderTestList() {
     const {classes} = this.props;
     return (
@@ -72,6 +89,8 @@ class LinkWalkerContainer extends Component {
           clientConfig={this.props.context.clientConfig}
           notify={this.notify}
           fetchLinkWalkerTests={this.props.fetchLinkWalkerTests}
+          clients={this.props.clients}
+          components={this.state.components}
         />
         <LinkWalkerTestList
           tests={this.props.tests}
@@ -86,21 +105,31 @@ class LinkWalkerContainer extends Component {
   }
 }
 
+LinkWalkerContainer.defaultProps = {
+  clients: [],
+  tests: [],
+};
+
 LinkWalkerContainer.propTypes = {
   classes: PropTypes.object.isRequired,
+  clients: PropTypes.array,
   context: PropTypes.object.isRequired,
-  fetchLinkWalkerTests: PropTypes.func.isRequired
+  fetchClients: PropTypes.func.isRequired,
+  fetchLinkWalkerTests: PropTypes.func.isRequired,
+  tests: PropTypes.array
 };
 
 function mapStateToProps(state) {
   return {
     tests: state.linkwalker.tests,
+    clients: state.client.clients,
   }
 }
 
 function mapDispatchToProps(dispatch) {
   return bindActionCreators({
     fetchLinkWalkerTests: fetchLinkWalkerTests,
+    fetchClients: fetchClients,
   }, dispatch);
 }
 

@@ -1,5 +1,4 @@
 buildscript {
-  //apply from: 'https://raw.githubusercontent.com/FINTprosjektet/fint-buildscripts/master/dependencies.gradle'
   ext {
     springBootVersion = '2.0.3.RELEASE'
 
@@ -20,7 +19,6 @@ buildscript {
 
 plugins {
   id 'com.github.ben-manes.versions' version '0.17.0'
-  //id "com.gorylenko.gradle-git-properties" version "1.4.21"
   id 'com.github.ksoichiro.build.info' version '0.2.0'
 }
 
@@ -49,25 +47,18 @@ repositories {
     }
   }
   mavenLocal()
-  ////flatDir { dirs '../fint-kunde-portal-frontend/build/libs' }
 }
 
 
 dependencies {
-  //compile name: 'fint-kunde-portal-frontend'
   compile('org.springframework.boot:spring-boot-starter-web')
   compile('org.springframework.boot:spring-boot-starter-actuator')
   compile('org.springframework.retry:spring-retry:1.2.2.RELEASE')
-
-
-  //compile('pl.project13.maven:git-commit-id-plugin:2.2.4')
-  //compile('org.springframework.ldap:spring-ldap-core:2.2.0.RELEASE')
 
   compile("com.github.springfox.loader:springfox-loader:${springfoxLoaderVersion}")
   compile('no.rogfk:spring-hateoas-hal-extension:0.0.6')
   compile('no.fint:fint-portal-api:3.0.0-rc-17')
   compile('org.apache.commons:commons-lang3:3.0')
-
 
   runtime('org.springframework.boot:spring-boot-devtools')
 
@@ -78,22 +69,3 @@ dependencies {
   runtime("com.unboundid:unboundid-ldapsdk:3.1.1")
   testCompile("org.spockframework:spock-core:${spockSpringVersion}")
 }
-
-/*
-// run spring boot app (only applicable if run through an IDE)
-tasks.withType(org.springframework.boot.gradle.run.BootRunTask) {
-  if (project.hasProperty('url')) {
-    println "Using Gradle project properties"
-    systemProperty('url', "$url")
-    systemProperty('user', "$user")
-    systemProperty('password', "$password")
-  } else {
-    println "Using system environment variables"
-  }
-  classpath = sourceSets.main.runtimeClasspath
-}
-
-// run all task
-task runAll {}
-runAll.dependsOn(bootRun)
-*/

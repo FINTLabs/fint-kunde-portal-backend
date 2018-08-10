@@ -1,15 +1,13 @@
 import React from "react";
 import Button from "@material-ui/core/Button";
-import InputLabel from '@material-ui/core/InputLabel';
-import FormControl from '@material-ui/core/FormControl';
-import Select from '@material-ui/core/Select';
 import TextField from '@material-ui/core/TextField';
 import {Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, withStyles,} from "@material-ui/core";
 import {Add} from "@material-ui/icons";
-import ComponentApi from "../../data/api/ComponentApi";
-import LoadingProgress from "../../common/LoadingProgress";
 import LinkWalkerApi from "../../data/api/LinkWalkerApi";
 import PropTypes from 'prop-types';
+import ClientSelector from "../../common/ClientSelector";
+import ComponentSelector from "../../common/ComponentSelector";
+import EnvironmentSelector from "../../common/EnvironmentSelector";
 
 const styles = () => ({
   addButton: {
@@ -25,30 +23,23 @@ const styles = () => ({
 
 class LinkWalkerAddTest extends React.Component {
 
+  constructor(props) {
+    super(props);
+    this.state = {
+      showLinkWalkerAddTest: false,
+      baseUrl: '',
+      endpoint: '',
+      orgId: "pwf.no",
+      client: '',
 
-  getOrganisationComponents = () => {
-    ComponentApi.getOrganisationComponents(this.props.organisationName)
-      .then(([response, json]) => {
-        if (response.status === 200) {
-          this.setState({components: json});
-        }
-      });
-  };
+    };
+  }
 
   handleChange = (e) => {
     let change = {};
     change[e.target.name] = e.target.value;
     this.setState(change);
   };
-
-  addResourceToEndPoint = (event) => {
-    return this.setState({resource: event.target.value});
-  };
-
-  componentDidMount() {
-    this.getOrganisationComponents();
-  }
-
 
   openAddDialog = () => {
     this.setState({showLinkWalkerAddTest: true, notify: false});
@@ -61,6 +52,7 @@ class LinkWalkerAddTest extends React.Component {
   addTest = () => {
 
     let test = this.getTest();
+    console.log(`Adding test: ${JSON.stringify(test)}`);
     const {organisationName, clientConfig} = this.props;
 
     LinkWalkerApi.addTest(clientConfig.linkwalkerBaseUrl, test, organisationName)
@@ -90,39 +82,25 @@ class LinkWalkerAddTest extends React.Component {
       endpoint: `${this.state.endpoint}/${this.state.resource}`,
       baseUrl: this.state.baseUrl,
       orgId: 'pwf.no',
+      client: this.state.client,
     }
+  };
+
+  getEmptyTest = () => {
+    return {
+      baseUrl: '',
+      endpoint: '',
+      orgId: "pwf.no",
+      client: '',
+    };
   };
 
   isFormValid = () => {
     return (this.state.endpoint && this.state.baseUrl && this.state.resource);
   };
 
-  getEmptyTest = () => {
-    return {
-      baseUrl: "https://play-with-fint.felleskomponent.no",
-      endpoint: '',
-      orgId: "pwf.no"
-    };
-  };
-
-  constructor(props) {
-    super(props);
-    this.state = {
-      showLinkWalkerAddTest: false,
-    };
-  }
-
   render() {
-    if (this.state.components === undefined || this.props.organisationName === undefined) {
-      return <LoadingProgress/>;
-    } else {
-      return this.renderAddTest();
-    }
-  }
-
-  renderAddTest() {
-    const {classes} = this.props;
-    const {components} = this.state;
+    const {components, classes} = this.props;
     return (
       <div>
         <div>
@@ -140,52 +118,33 @@ class LinkWalkerAddTest extends React.Component {
                 Vennligst fyll ut de obligatoriske feltene for å legge til en ny test.
               </DialogContentText>
 
-              <FormControl fullWidth required>
-                <InputLabel htmlFor="age-native-simple">Komponent</InputLabel>
-                <Select
-                  native
-                  value={this.state.endpoint}
-                  onChange={this.handleChange}
-                  inputProps={{
-                    name: 'endpoint',
-                    id: 'age-native-simple',
-                  }}
-                >
-                  <option value=""/>
-                  {components.map(component => {
-                    return (
-                      <option key={component.dn} value={component.basePath}>{component.description}</option>
-                    );
-                  })}
+              <ComponentSelector
+                components={components}
+                handleChange={this.handleChange}
+                name="endpoint"
+                value={this.state.endpoint}
+              />
 
-                </Select>
-              </FormControl>
-
-              <FormControl fullWidth required>
-                <InputLabel htmlFor="age-native-simple">Miljø</InputLabel>
-                <Select
-                  native
-                  value={this.state.baseUrl}
-                  onChange={this.handleChange}
-                  inputProps={{
-                    name: 'baseUrl',
-                    id: 'age-native-simple',
-                  }}
-                >
-                  <option value=""/>
-                  <option value="https://play-with-fint.felleskomponent.no">Play-With-FINT</option>
-                  <option value="https://beta.felleskomponent.no">Beta</option>
-                  <option value="https://api.felleskomponent.no">Produksjon</option>
-                </Select>
-              </FormControl>
+              <EnvironmentSelector
+                handleChange={this.handleChange}
+                name="baseUrl"
+                value={this.state.baseUrl}
+              />
 
               <TextField
                 name="resource"
                 label="Ressurs"
                 required
                 fullWidth
-                disabled={(this.state.endpoint === undefined)}
+                disabled={(this.state.endpoint === '')}
                 onChange={this.handleChange}
+              />
+
+              <ClientSelector
+                handleChange={this.handleChange}
+                name="client"
+                value={this.state.client}
+                clients={this.props.clients}
               />
 
             </DialogContent>
@@ -206,10 +165,14 @@ class LinkWalkerAddTest extends React.Component {
 
 
 LinkWalkerAddTest.propTypes = {
-  classes: PropTypes.any.isRequired,
+  classes: PropTypes.object.isRequired,
+  clientConfig: PropTypes.object.isRequired,
+  clients: PropTypes.array.isRequired,
+  components: PropTypes.array.isRequired,
+  fetchLinkWalkerTests: PropTypes.func.isRequired,
   notify: PropTypes.func.isRequired,
-  organisationName: PropTypes.any.isRequired
-};
+  organisationName: PropTypes.string.isRequired
+}
 
 export default withStyles(styles)(LinkWalkerAddTest);
 
