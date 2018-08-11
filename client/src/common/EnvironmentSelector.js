@@ -21,6 +21,7 @@ class EnvironmentSelector extends Component {
           >
             <MenuItem value="https://play-with-fint.felleskomponent.no">Play-With-FINT</MenuItem>
             <MenuItem value="https://beta.felleskomponent.no">Beta</MenuItem>
+            <MenuItem value="https://beta1.felleskomponent.no">Beta1</MenuItem>
             <MenuItem value="https://api.felleskomponent.no">Produksjon</MenuItem>
           </Select>
         </FormControl>
