@@ -1,6 +1,5 @@
 package no.fint.portal.customer.service;
 
-import io.swagger.models.auth.In;
 import lombok.Synchronized;
 import no.fint.portal.customer.exception.InvalidResourceException;
 import no.fint.portal.exceptions.EntityNotFoundException;
