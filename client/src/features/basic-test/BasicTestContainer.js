@@ -280,7 +280,7 @@ class BasicTestContainer extends Component {
             </div>
           </div>
           <div>
-            <h4>Rapport</h4>
+            <h4>Cache status</h4>
             <Table className={classes.table}>
               <TableHead>
                 <TableRow>
