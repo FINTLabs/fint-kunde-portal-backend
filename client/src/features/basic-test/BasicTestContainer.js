@@ -124,7 +124,6 @@ class BasicTestContainer extends Component {
     });
     this.notify("Testen ble startet!");
     const test = this.getTest();
-    console.log(`Running test: ${JSON.stringify(test)}`);
 
     const {clientConfig} = this.props.context;
     BasicTestApi.runTest(clientConfig.testServiceBaseUrl, test)
@@ -133,7 +132,6 @@ class BasicTestContainer extends Component {
           this.setState({testCases: json.cases});
         }
         else {
-          console.log(response);
           this.notify("Oisann, dette gikk ikke helt etter planen!");
         }
         this.setState({
@@ -156,7 +154,6 @@ class BasicTestContainer extends Component {
           this.setState({healthResult: json});
         }
         else {
-          console.log(response);
           this.notify("Oisann, dette gikk ikke helt etter planen!");
         }
         this.setState({
@@ -192,7 +189,6 @@ class BasicTestContainer extends Component {
 
   renderContainer() {
     const {testCases, healthResult} = this.state;
-    console.log(testCases);
     const {classes} = this.props;
 
     return (

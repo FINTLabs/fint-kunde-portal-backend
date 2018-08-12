@@ -52,7 +52,6 @@ class LinkWalkerAddTest extends React.Component {
   addTest = () => {
 
     let test = this.getTest();
-    console.log(`Adding test: ${JSON.stringify(test)}`);
     const {organisationName, clientConfig} = this.props;
 
     LinkWalkerApi.addTest(clientConfig.linkwalkerBaseUrl, test, organisationName)
