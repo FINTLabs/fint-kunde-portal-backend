@@ -83,7 +83,12 @@ export const MENU_ITEMS = (
         <ListItemText primary="Relasjonstest"/>
       </ListItem>
     </Link>
-    <Link to="/logs" style={menuLink}>
+  </div>
+
+);
+
+  /*
+  <Link to="/logs" style={menuLink}>
       <ListItem button>
         <ListItemIcon>
           <LogIcon/>
@@ -107,7 +112,6 @@ export const MENU_ITEMS = (
         <ListItemText primary="Dokumentasjon"/>
       </ListItem>
     </Link>
-  </div>
-);
+   */
 
 
