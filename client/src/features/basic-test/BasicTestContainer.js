@@ -221,6 +221,9 @@ class BasicTestContainer extends Component {
               name="client"
               value={this.state.client}
               clients={this.props.clients}
+              disabled={this.state.baseUrl === 'https://play-with-fint.felleskomponent.no'
+              || this.state.baseUrl === ''
+              || this.state.endpoint === ''}
             />
           </div>
           <div className={classes.formActions}>

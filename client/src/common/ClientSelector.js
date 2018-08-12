@@ -18,13 +18,17 @@ const styles = (theme) => ({
 class ClientSelector extends Component {
 
   render() {
-    const {name, value, clients, classes} = this.props;
+    const {name, value, clients, classes, disabled} = this.props;
+    console.log(clients);
+    let selectableClients = clients.filter(c => c.assetId !== null);
+    console.log(selectableClients);
     return (
       <div>
 
         <FormControl
           className={classes.formControl}
           fullWidth
+          disabled={disabled}
         >
           <InputLabel htmlFor={name}>Klient</InputLabel>
           <Select
@@ -32,7 +36,7 @@ class ClientSelector extends Component {
             onChange={this.props.handleChange}
             input={<Input name={name} id={name}/>}
           >
-            {clients.map(client => {
+            {selectableClients.map(client => {
               return (
                 <MenuItem key={client.dn} value={client.dn}>{client.shortDescription}</MenuItem>
               );
