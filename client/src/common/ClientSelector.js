@@ -19,9 +19,8 @@ class ClientSelector extends Component {
 
   render() {
     const {name, value, clients, classes, disabled} = this.props;
-    console.log(clients);
     let selectableClients = clients.filter(c => c.assetId !== null);
-    console.log(selectableClients);
+
     return (
       <div>
 
