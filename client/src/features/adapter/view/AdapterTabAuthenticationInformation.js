@@ -9,6 +9,7 @@ import GetSecretIcon from "@material-ui/icons/GetApp";
 import RefreshIcon from "@material-ui/icons/Refresh";
 import {withContext} from "../../../data/context/withContext";
 import {Link} from "react-router-dom";
+import WarningMessageBox from "../../../common/WarningMessageBox";
 
 
 const styles = theme => ({
@@ -51,7 +52,7 @@ class AdapterTabAuthenticationInformation extends React.Component {
         clientId: this.props.adapter.clientId,
         openIdSecret: ' ',
         assetIds: this.props.adapter.assetIds,
-
+        askToResetPassword: false,
       },
     };
   }
@@ -94,11 +95,34 @@ class AdapterTabAuthenticationInformation extends React.Component {
 
   };
 
+  askToResetPassword = () => {
+    this.setState({
+      askToResetPassword: true,
+      message: 'Er du sikker på at du vil sette nytt passord? Hvis du gjør det må alle som ' +
+        'bruker autentiseringsinformasjonen få det nye passordet og konfigurere tjenesten sin på nytt!'
+    });
+  };
+
+  onCloseAskResetPassword = (confirmed) => {
+    this.setState({
+      askToResetPassword: false,
+    });
+
+    if (confirmed) {
+      this.setPassword();
+    }
+  };
+
   render() {
 
     const {classes} = this.props;
     return (
       <div>
+        <WarningMessageBox
+          show={this.state.askToResetPassword}
+          message={this.state.message}
+          onClose={this.onCloseAskResetPassword}
+        />
         <FormControl className={classes.authSecret}>
           <InputLabel htmlFor="name">Brukernavn</InputLabel>
 
@@ -135,7 +159,7 @@ class AdapterTabAuthenticationInformation extends React.Component {
             endAdornment={
               <InputAdornment position="end">
                 <Tooltip id="tooltip-fab" title="Trykk for å generere nytt passord">
-                  <IconButton onClick={() => this.setPassword()}>
+                  <IconButton onClick={() => this.askToResetPassword()}>
                     <RefreshIcon/>
                   </IconButton>
                 </Tooltip>
