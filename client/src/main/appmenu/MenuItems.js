@@ -27,6 +27,14 @@ export const MENU_ITEMS = (
         <ListItemText primary="Dashboard"/>
       </ListItem>
     </Link>
+    <Link to="/contacts" style={menuLink}>
+      <ListItem button>
+        <ListItemIcon>
+          <ContactIcon/>
+        </ListItemIcon>
+        <ListItemText primary="Kontakter"/>
+      </ListItem>
+    </Link>
     <Link to="/components" style={menuLink}>
       <ListItem button>
         <ListItemIcon>
@@ -57,14 +65,6 @@ export const MENU_ITEMS = (
           <AssetIcon/>
         </ListItemIcon>
         <ListItemText primary="Ressurser"/>
-      </ListItem>
-    </Link>
-    <Link to="/contacts" style={menuLink}>
-      <ListItem button>
-        <ListItemIcon>
-          <ContactIcon/>
-        </ListItemIcon>
-        <ListItemText primary="Kontakter"/>
       </ListItem>
     </Link>
     <Link to="/test/basic" style={menuLink}>
