@@ -57,8 +57,8 @@ class ClientTabView extends React.Component {
             fullWidth
           >
             <Tab label="Generelt"/>
-            <Tab label="Autentisering"/>
             <Tab label="Komponenter"/>
+            <Tab label="Autentisering"/>
           </Tabs>
         </AppBar>
         <SwipeableViews
@@ -71,12 +71,13 @@ class ClientTabView extends React.Component {
           </TabContainer>
 
           <TabContainer dir={theme.direction}>
-            <ClientTabAuthenticationInformation client={this.props.client} notify={this.props.notify}/>
+            <ClientTabComponent client={this.props.client} notify={this.props.notify}/>
           </TabContainer>
 
           <TabContainer dir={theme.direction}>
-            <ClientTabComponent client={this.props.client} notify={this.props.notify}/>
+            <ClientTabAuthenticationInformation client={this.props.client} notify={this.props.notify}/>
           </TabContainer>
+
         </SwipeableViews>
 
       </div>

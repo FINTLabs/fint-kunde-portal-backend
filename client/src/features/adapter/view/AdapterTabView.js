@@ -57,8 +57,8 @@ class AdapterTabView extends React.Component {
             fullWidth
           >
             <Tab label="Generelt"/>
-            <Tab label="Autentisering"/>
             <Tab label="Komponenter"/>
+            <Tab label="Autentisering"/>
           </Tabs>
         </AppBar>
         <SwipeableViews
@@ -71,12 +71,13 @@ class AdapterTabView extends React.Component {
           </TabContainer>
 
           <TabContainer dir={theme.direction}>
-            <AdapterTabAuthenticationInformation adapter={this.props.adapter} notify={this.props.notify}/>
+            <AdapterTabComponent adapter={this.props.adapter} notify={this.props.notify}/>
           </TabContainer>
 
           <TabContainer dir={theme.direction}>
-            <AdapterTabComponent adapter={this.props.adapter} notify={this.props.notify}/>
+            <AdapterTabAuthenticationInformation adapter={this.props.adapter} notify={this.props.notify}/>
           </TabContainer>
+
         </SwipeableViews>
 
       </div>
