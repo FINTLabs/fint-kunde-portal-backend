@@ -47,7 +47,7 @@ class AdapterTabAuthenticationInformation extends React.Component {
     this.state = {
       allAuthInfo: {
         username: this.props.adapter.name,
-        password: ' ',
+        password: 'topsecret',
         clientId: this.props.adapter.clientId,
         openIdSecret: ' ',
         assetIds: this.props.adapter.assetIds,
@@ -130,6 +130,7 @@ class AdapterTabAuthenticationInformation extends React.Component {
             disabled
             margin="dense"
             id="adornment-password"
+            type={this.state.allAuthInfo.password === 'topsecret' ? 'password' : 'text'}
             value={this.state.allAuthInfo.password}
             endAdornment={
               <InputAdornment position="end">
@@ -141,7 +142,7 @@ class AdapterTabAuthenticationInformation extends React.Component {
                 <CopyToClipboard text={this.state.allAuthInfo.password}
                                  onCopy={() => this.props.notify('Kopiert')}
                 >
-                  <IconButton>
+                  <IconButton disabled={this.state.allAuthInfo.password === 'topsecret'}>
                     <ContentCopy/>
                   </IconButton>
                 </CopyToClipboard>
