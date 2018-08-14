@@ -5,9 +5,9 @@ import {Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, wi
 import {Add} from "@material-ui/icons";
 import LinkWalkerApi from "../../data/api/LinkWalkerApi";
 import PropTypes from 'prop-types';
-import ClientSelector from "../../common/ClientSelector";
-import ComponentSelector from "../../common/ComponentSelector";
-import EnvironmentSelector from "../../common/EnvironmentSelector";
+import ClientSelector from "../../common/test/ClientSelector";
+import ComponentSelector from "../../common/test/ComponentSelector";
+import EnvironmentSelector from "../../common/test/EnvironmentSelector";
 
 const styles = () => ({
   addButton: {

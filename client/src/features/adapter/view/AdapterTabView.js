@@ -3,7 +3,7 @@ import SwipeableViews from "react-swipeable-views";
 import AppBar from "@material-ui/core/AppBar";
 import {Tab, Tabs} from "@material-ui/core";
 import {withStyles} from "@material-ui/core";
-import TabContainer from "../../../common/TabContainer";
+import TabContainer from "../../../common/tab/TabContainer";
 import PropTypes from "prop-types";
 import AdapterTabComponent from "./AdapterTabComponent";
 import AdapterTabGeneral from "./AdapterTabGeneral";

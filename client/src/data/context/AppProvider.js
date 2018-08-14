@@ -1,7 +1,7 @@
 import React, {Component} from "react";
 import AppContext from "./AppContext";
 import ContactApi from "../api/ContactApi";
-import LoadingProgress from "../../common/LoadingProgress";
+import LoadingProgress from "../../common/status/LoadingProgress";
 import PropTypes from "prop-types";
 
 import {Cookies, withCookies} from "react-cookie";

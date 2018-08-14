@@ -9,7 +9,7 @@ import GetSecretIcon from "@material-ui/icons/GetApp";
 import RefreshIcon from "@material-ui/icons/Refresh";
 import {withContext} from "../../../data/context/withContext";
 import {Link} from "react-router-dom";
-import WarningMessageBox from "../../../common/WarningMessageBox";
+import WarningMessageBox from "../../../common/message-box/WarningMessageBox";
 
 
 const styles = theme => ({

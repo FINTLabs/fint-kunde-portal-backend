@@ -14,10 +14,10 @@ import AddIcon from "@material-ui/icons/AddCircle";
 import RemoveIcon from "@material-ui/icons/RemoveCircle";
 import ComponentIcon from "@material-ui/icons/WebAsset";
 import {green} from "@material-ui/core/colors/index";
-import LoadingProgress from "../../../common/LoadingProgress";
+import LoadingProgress from "../../../common/status/LoadingProgress";
 import AssetApi from "../../../data/api/AssetApi";
-import WarningMessageBox from "../../../common/WarningMessageBox";
-import InformationMessageBox from "../../../common/InformationMessageBox";
+import WarningMessageBox from "../../../common/message-box/WarningMessageBox";
+import InformationMessageBox from "../../../common/message-box/InformationMessageBox";
 import {withContext} from "../../../data/context/withContext";
 
 const styles = theme => ({

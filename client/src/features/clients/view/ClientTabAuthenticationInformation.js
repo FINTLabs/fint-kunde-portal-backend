@@ -9,7 +9,7 @@ import RefreshIcon from "@material-ui/icons/Refresh";
 import {Link} from "react-router-dom";
 import {withContext} from "../../../data/context/withContext";
 import PropTypes from "prop-types";
-import WarningMessageBox from "../../../common/WarningMessageBox";
+import WarningMessageBox from "../../../common/message-box/WarningMessageBox";
 
 
 

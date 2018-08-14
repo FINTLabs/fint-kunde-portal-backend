@@ -2,7 +2,7 @@ import React from "react";
 import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
 import {withStyles} from "@material-ui/core";
-import LoadingProgress from "../../common/LoadingProgress";
+import LoadingProgress from "../../common/status/LoadingProgress";
 import ApisList from "./ComponentList";
 import {fetchComponents} from "../../data/redux/dispatchers/component";
 import {linkComponentToOrganisation, unlinkComponentFromOrganisation} from "../../data/redux/dispatchers/organisation";

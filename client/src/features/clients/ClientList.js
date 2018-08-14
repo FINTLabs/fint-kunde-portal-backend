@@ -14,10 +14,10 @@ import {
 } from "@material-ui/core";
 import { Delete, Edit } from "@material-ui/icons";
 import ClientIcon from "@material-ui/icons/ImportantDevices";
-import AutoHideNotification from "../../common/AutoHideNotification";
+import AutoHideNotification from "../../common/notification/AutoHideNotification";
 import ClientView from "./view/ClientView";
 import { withContext } from "../../data/context/withContext";
-import FeatureHelperText from "../../common/FeatureHelperText";
+import FeatureHelperText from "../../common/help/FeatureHelperText";
 
 const styles = theme => ({
   root: {

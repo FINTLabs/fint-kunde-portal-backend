@@ -1,11 +1,11 @@
 import React, {Component} from 'react';
-import AutoHideNotification from "../../common/AutoHideNotification";
+import AutoHideNotification from "../../common/notification/AutoHideNotification";
 import ComponentApi from "../../data/api/ComponentApi";
-import LoadingProgress from "../../common/LoadingProgress";
-import ComponentSelector from "../../common/ComponentSelector";
+import LoadingProgress from "../../common/status/LoadingProgress";
+import ComponentSelector from "../../common/test/ComponentSelector";
 import Typography from "@material-ui/core/Typography";
-import EnvironmentSelector from "../../common/EnvironmentSelector";
-import ClientSelector from "../../common/ClientSelector";
+import EnvironmentSelector from "../../common/test/EnvironmentSelector";
+import ClientSelector from "../../common/test/ClientSelector";
 import PropTypes from "prop-types";
 import {withContext} from "../../data/context/withContext";
 import {bindActionCreators} from "redux";
@@ -19,7 +19,7 @@ import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
-import TrafficLight from "../../common/TrafficLight";
+import TrafficLight from "../../common/status/TrafficLight";
 import HealthTestApi from "../../data/api/HealthTestApi";
 
 const styles = (theme) => ({

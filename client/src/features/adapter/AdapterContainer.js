@@ -2,12 +2,12 @@ import React from "react";
 import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
 import {withStyles} from "@material-ui/core";
-import LoadingProgress from "../../common/LoadingProgress";
+import LoadingProgress from "../../common/status/LoadingProgress";
 import {createAdapter, deleteAdapter, fetchAdapters, updateAdapter} from "../../data/redux/dispatchers/adapter";
 import AdapterList from "./AdapterList";
 import AdapterAdd from "./add/AdapterAdd";
 import {withContext} from "../../data/context/withContext";
-import AutoHideNotification from "../../common/AutoHideNotification";
+import AutoHideNotification from "../../common/notification/AutoHideNotification";
 
 
 const styles = () => ({

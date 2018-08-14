@@ -2,7 +2,7 @@ import React from "react";
 import Button from "@material-ui/core/Button";
 import {Dialog, DialogActions, DialogContent, DialogTitle, withStyles,} from "@material-ui/core";
 import ClientTabView from "./ClientTabView";
-import AutoHideNotification from "../../../common/AutoHideNotification";
+import AutoHideNotification from "../../../common/notification/AutoHideNotification";
 
 
 const styles = () => ({});

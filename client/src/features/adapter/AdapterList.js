@@ -12,11 +12,11 @@ import {
   withStyles
 } from "@material-ui/core";
 import {Delete, Edit, InsertLink} from "@material-ui/icons";
-import AutoHideNotification from "../../common/AutoHideNotification";
+import AutoHideNotification from "../../common/notification/AutoHideNotification";
 import AdapterView from "./view/AdapterView";
 import {withContext} from "../../data/context/withContext";
 import PropTypes from "prop-types";
-import FeatureHelperText from "../../common/FeatureHelperText";
+import FeatureHelperText from "../../common/help/FeatureHelperText";
 
 const styles = theme => ({
   root: {

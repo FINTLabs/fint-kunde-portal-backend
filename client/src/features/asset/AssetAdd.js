@@ -4,7 +4,7 @@ import {Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, wi
 import TextField from "@material-ui/core/TextField";
 import {Add} from "@material-ui/icons";
 import {withContext} from "../../data/context/withContext";
-import AssetNameValidationInput from "../../common/AssetNameValidationInput";
+import AssetNameValidationInput from "../../common/input-validation/AssetNameValidationInput";
 
 
 const styles = (theme) => ({

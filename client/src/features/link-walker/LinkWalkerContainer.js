@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import AutoHideNotification from "../../common/AutoHideNotification";
+import AutoHideNotification from "../../common/notification/AutoHideNotification";
 import {withStyles} from "@material-ui/core";
 import {withContext} from "../../data/context/withContext";
 import LinkWalkerTestList from "./LinkWalkerTestList";
@@ -7,7 +7,7 @@ import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
 import {fetchLinkWalkerTests} from "../../data/redux/dispatchers/linkwalker";
 import PropTypes from "prop-types";
-import LoadingProgress from "../../common/LoadingProgress";
+import LoadingProgress from "../../common/status/LoadingProgress";
 import LinkWalkerAddTest from "./LinkWalkerAddTest";
 import {fetchClients} from "../../data/redux/dispatchers/client";
 import ComponentApi from "../../data/api/ComponentApi";

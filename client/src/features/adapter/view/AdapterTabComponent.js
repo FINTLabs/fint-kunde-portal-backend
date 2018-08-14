@@ -17,11 +17,11 @@ import {bindActionCreators} from "redux";
 import {connect} from "react-redux";
 import {fetchComponents} from "../../../data/redux/dispatchers/component";
 import {green} from "@material-ui/core/colors/index";
-import LoadingProgress from "../../../common/LoadingProgress";
+import LoadingProgress from "../../../common/status/LoadingProgress";
 import {addAdapterToComponent, deleteAdapterFromComponent} from "../../../data/redux/dispatchers/adapter";
 import AdapterApi from "../../../data/api/AdapterApi";
-import WarningMessageBox from "../../../common/WarningMessageBox";
-import InformationMessageBox from "../../../common/InformationMessageBox";
+import WarningMessageBox from "../../../common/message-box/WarningMessageBox";
+import InformationMessageBox from "../../../common/message-box/InformationMessageBox";
 import {withContext} from "../../../data/context/withContext";
 
 const styles = theme => ({

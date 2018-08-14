@@ -12,7 +12,7 @@ import RefreshIcon from '@material-ui/icons/Refresh';
 import ClearIcon from '@material-ui/icons/Clear';
 import LinkWalkerApi from "../../data/api/LinkWalkerApi";
 import LinkWalkerTestView from "./LinkWalkerTestView";
-import TrafficLight from "../../common/TrafficLight";
+import TrafficLight from "../../common/status/TrafficLight";
 import Typography from "@material-ui/core/Typography";
 
 const styles = (theme) => ({

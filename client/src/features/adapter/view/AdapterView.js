@@ -3,7 +3,7 @@ import Button from "@material-ui/core/Button";
 import {Dialog, DialogActions, DialogContent, DialogTitle,} from "@material-ui/core";
 import {withStyles} from "@material-ui/core";
 import AdapterTabView from "./AdapterTabView";
-import AutoHideNotification from "../../../common/AutoHideNotification";
+import AutoHideNotification from "../../../common/notification/AutoHideNotification";
 
 
 const styles = () => ({});

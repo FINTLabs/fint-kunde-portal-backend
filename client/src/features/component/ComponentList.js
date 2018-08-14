@@ -16,11 +16,11 @@ import AddIcon from "@material-ui/icons/AddCircle";
 import RemoveIcon from "@material-ui/icons/RemoveCircle";
 import ComponentIcon from "@material-ui/icons/WebAsset";
 import OrganisationApi from "../../data/api/OrganisationApi";
-import AutoHideNotification from "../../common/AutoHideNotification";
+import AutoHideNotification from "../../common/notification/AutoHideNotification";
 import PropTypes from "prop-types";
 import ComponentsView from "./ComponentsView";
-import WarningMessageBox from "../../common/WarningMessageBox";
-import InformationMessageBox from "../../common/InformationMessageBox";
+import WarningMessageBox from "../../common/message-box/WarningMessageBox";
+import InformationMessageBox from "../../common/message-box/InformationMessageBox";
 import {withContext} from "../../data/context/withContext";
 
 

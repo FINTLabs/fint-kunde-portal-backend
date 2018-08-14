@@ -11,7 +11,7 @@ import {bindActionCreators} from "redux";
 import {connect} from "react-redux";
 import {fetchClients} from "../../data/redux/dispatchers/client";
 import {fetchComponents} from "../../data/redux/dispatchers/component";
-import LoadingProgress from "../../common/LoadingProgress";
+import LoadingProgress from "../../common/status/LoadingProgress";
 import {withContext} from "../../data/context/withContext";
 
 const styles = theme => ({

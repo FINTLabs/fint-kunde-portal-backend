@@ -18,7 +18,7 @@ import ContactIcon from "@material-ui/icons/Person";
 import SetLegalIcon from "@material-ui/icons/AccountBalance";
 import blue from "@material-ui/core/colors/blue";
 import OrganisationApi from "../../../data/api/OrganisationApi";
-import WarningMessageBox from "../../../common/WarningMessageBox";
+import WarningMessageBox from "../../../common/message-box/WarningMessageBox";
 import ContactView from "../view/ContactView";
 import {withContext} from "../../../data/context/withContext";
 

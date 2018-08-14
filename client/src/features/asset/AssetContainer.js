@@ -2,13 +2,13 @@ import React from "react";
 import {connect} from "react-redux";
 import {bindActionCreators} from "redux";
 import {withStyles} from "@material-ui/core";
-import LoadingProgress from "../../common/LoadingProgress";
+import LoadingProgress from "../../common/status/LoadingProgress";
 import {createAsset, deleteAsset, fetchAssets, updateAsset} from "../../data/redux/dispatchers/asset";
 import AssetList from "./AssetList";
 import AssetAdd from "./AssetAdd";
 import {withContext} from "../../data/context/withContext";
 import OrganisationApi from "../../data/api/OrganisationApi";
-import AutoHideNotification from "../../common/AutoHideNotification";
+import AutoHideNotification from "../../common/notification/AutoHideNotification";
 
 
 const styles = () => ({

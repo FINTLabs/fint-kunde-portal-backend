@@ -16,7 +16,7 @@ import {
 import ContactIcon from "@material-ui/icons/Person";
 import AddIconCircle from "@material-ui/icons/AddCircle";
 import OrganisationApi from "../../../data/api/OrganisationApi";
-import InformationMessageBox from "../../../common/InformationMessageBox";
+import InformationMessageBox from "../../../common/message-box/InformationMessageBox";
 import PropTypes from "prop-types";
 import ContactNew from "./ContactNew";
 import {withContext} from "../../../data/context/withContext";

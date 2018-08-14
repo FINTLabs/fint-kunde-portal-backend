@@ -15,7 +15,7 @@ import {Delete, Edit, InsertLink} from "@material-ui/icons";
 import AssetView from "./view/AssetView";
 import PropTypes from "prop-types";
 import {withContext} from "../../data/context/withContext";
-import WarningMessageBox from "../../common/WarningMessageBox";
+import WarningMessageBox from "../../common/message-box/WarningMessageBox";
 
 
 const styles = theme => ({

@@ -3,7 +3,7 @@ import Button from "@material-ui/core/Button";
 import {Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, withStyles,} from "@material-ui/core";
 import TextField from "@material-ui/core/TextField";
 import {Add} from "@material-ui/icons";
-import UsernameValidationInput from "../../../common/UsernameValidationInput";
+import UsernameValidationInput from "../../../common/input-validation/UsernameValidationInput";
 import AdapterApi from "../../../data/api/AdapterApi";
 
 const styles = () => ({

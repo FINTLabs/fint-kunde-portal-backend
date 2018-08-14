@@ -8,7 +8,7 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import PropTypes from 'prop-types';
-import TrafficLight from "../../common/TrafficLight";
+import TrafficLight from "../../common/status/TrafficLight";
 import fileDownload from 'js-file-download';
 import CircularJSON from 'circular-json';
 
