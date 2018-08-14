@@ -106,14 +106,19 @@ class TechnicalList extends React.Component {
   };
 
   setLegalContact = (contact) => {
-    OrganisationApi.setLegalContact(contact, this.props.context.currentOrganisation.name)
+    OrganisationApi.unsetLegalContact(this.props.legalContact, this.props.context.currentOrganisation.name)
       .then(() => {
-        this.props.notify("Juridisk ansvarlig er oppdatert.");
-        this.props.afterUpdateLegalContact();
-
+        OrganisationApi.setLegalContact(contact, this.props.context.currentOrganisation.name)
+          .then(() => {
+            this.props.notify("Juridisk ansvarlig er oppdatert.");
+            this.props.afterUpdateLegalContact();
+          })
+          .catch(error => {
+          });
       })
       .catch(error => {
       });
+
   };
 
   render() {

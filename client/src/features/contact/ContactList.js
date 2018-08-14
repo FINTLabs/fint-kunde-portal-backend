@@ -27,6 +27,7 @@ class ContactList extends React.Component {
                        fetchTechnicalContacts={this.props.fetchTechnicalContacts}
                        afterUpdateLegalContact={this.props.afterUpdateLegalContact}
                        notify={this.props.notify}
+                       legalContact={legalContact}
         />
       </div>
     );

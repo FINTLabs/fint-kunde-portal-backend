@@ -9,6 +9,8 @@ import no.fint.portal.exceptions.EntityFoundException;
 import no.fint.portal.exceptions.EntityNotFoundException;
 import no.fint.portal.exceptions.UpdateEntityMismatchException;
 import no.fint.portal.model.ErrorResponse;
+import no.fint.portal.model.asset.Asset;
+import no.fint.portal.model.asset.AssetService;
 import no.fint.portal.model.client.Client;
 import no.fint.portal.model.client.ClientService;
 import no.fint.portal.model.organisation.Organisation;
@@ -37,6 +39,8 @@ public class ClientController {
   @Autowired
   private ClientService clientService;
 
+
+
   @ApiOperation("Add client")
   @RequestMapping(method = RequestMethod.POST,
     consumes = MediaType.APPLICATION_JSON_VALUE
@@ -46,6 +50,7 @@ public class ClientController {
 
     Organisation organisation = portalApiService.getOrganisation(orgName);
     Optional<Client> optionalClient = clientService.getClient(client.getName(), orgName);
+
 
     if (!optionalClient.isPresent()) {
       if (clientService.addClient(client, organisation)) {
