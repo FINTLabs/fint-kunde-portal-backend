@@ -97,7 +97,7 @@ dn: ou=test_no,ou=assets,ou=testing,ou=organisations,o=fint-test
 fintAssetPrimary: TRUE
 fintAssetId: test.no
 fintAssetOrganisation: ou=testing,ou=organisations,o=fint-test
-ou: test_ou
+ou: test_no
 objectClass: organizationalUnit
 objectClass: Top
 objectClass: fintAsset
@@ -106,9 +106,11 @@ objectClass: fintAsset
 dn: ou=clients,ou=testing,ou=organisations,o=fint-test
 objectclass: organizationalUnit
 objectclass: top
+objectClass: fintClient
 ou: clients
 
 dn: ou=adapters,ou=testing,ou=organisations,o=fint-test
 objectclass: organizationalUnit
 objectclass: top
+objectClass: fintAdapter
 ou: adapters
