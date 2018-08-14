@@ -1,4 +1,4 @@
-import React, {Component} from "react";
+import React, { Component } from "react";
 import PropTypes from "prop-types";
 import {
   Avatar,
@@ -12,30 +12,31 @@ import {
   Typography,
   withStyles
 } from "@material-ui/core";
-import {Delete, Edit} from "@material-ui/icons";
+import { Delete, Edit } from "@material-ui/icons";
 import ClientIcon from "@material-ui/icons/ImportantDevices";
 import AutoHideNotification from "../../common/AutoHideNotification";
 import ClientView from "./view/ClientView";
-import {withContext} from "../../data/context/withContext";
+import { withContext } from "../../data/context/withContext";
+import FeatureHelperText from "../../common/FeatureHelperText";
 
 const styles = theme => ({
   root: {
-    display: 'flex',
-    justifyContent: 'center',
+    display: "flex",
+    justifyContent: "center"
   },
   componentList: {
-    width: '75%',
+    width: "75%"
   },
   title: {
     paddingLeft: theme.spacing.unit * 3,
-    paddingBottom: theme.spacing.unit,
+    paddingBottom: theme.spacing.unit
   },
   listItem: {
-    borderBottom: '1px dashed lightgray',
+    borderBottom: "1px dashed lightgray"
   },
   itemAvatar: {
-    color: '#fff',
-    backgroundColor: theme.palette.secondary.main,
+    color: "#fff",
+    backgroundColor: theme.palette.secondary.main
   }
 });
 
@@ -43,28 +44,28 @@ class ClientList extends Component {
   editClient = (client) => {
     this.setState({
       open: true,
-      clientToEdit: client,
+      clientToEdit: client
     });
   };
   onCloseEdit = () => {
-    this.setState({open: false});
+    this.setState({ open: false });
   };
   updateClient = (client) => {
-    const {currentOrganisation} = this.props.context;
+    const { currentOrganisation } = this.props.context;
     this.props.updateClient(client, currentOrganisation.name);
   };
   deleteClient = (client) => {
-	const {currentOrganisation} = this.props.context;
+    const { currentOrganisation } = this.props.context;
     this.props.deleteClient(client, currentOrganisation.name);
     this.setState({
       notify: true,
-      clientDeletedName: client.name,
+      clientDeletedName: client.name
     });
   };
 
   onCloseNotification = () => {
     this.setState({
-      notify: false,
+      notify: false
     });
   };
 
@@ -75,13 +76,13 @@ class ClientList extends Component {
       clientToEdit: null,
       open: false,
       notify: false,
-      clientDeletedName: null,
+      clientDeletedName: null
     };
 
   }
 
   render() {
-    const {classes} = this.props;
+    const { classes } = this.props;
     return (
       <div>
         <AutoHideNotification
@@ -93,6 +94,17 @@ class ClientList extends Component {
         <div className={classes.root}>
           <div className={classes.componentList}>
             <Typography variant="headline" className={classes.title}>Klienter</Typography>
+            <FeatureHelperText>
+              <p>
+                En klient er påloggingsinformasjon som brukes av en integrasjon for å få tilgang til en komponent.
+                Dette kan f.eks. være et IDM system, eller en integrasjonsbus (BizTalk).
+              </p>
+              <p>
+                Klienten må registreres før integrasjonen kan taes i bruk. En integrasjon må få opprettet påloggingsinformasjon
+                og bli gitt tilgang til de komponentene det skal levere data for. Påloggingsinformasjonen og informasjon
+                om endepunkter må oppgis til den som skal installere og konfigurere integrasjonen.
+              </p>
+            </FeatureHelperText>
             <Divider/>
             <List>
               {this.props.clients.map((client) =>
@@ -114,7 +126,7 @@ class ClientList extends Component {
                       <Delete/>
                     </IconButton>
                   </ListItemSecondaryAction>
-                </ListItem>,
+                </ListItem>
               )}
             </List>
           </div>

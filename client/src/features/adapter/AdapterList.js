@@ -1,5 +1,4 @@
 import React, {Component} from "react";
-import PropTypes from "prop-types";
 import {
   Avatar,
   Divider,
@@ -16,6 +15,8 @@ import {Delete, Edit, InsertLink} from "@material-ui/icons";
 import AutoHideNotification from "../../common/AutoHideNotification";
 import AdapterView from "./view/AdapterView";
 import {withContext} from "../../data/context/withContext";
+import PropTypes from "prop-types";
+import FeatureHelperText from "../../common/FeatureHelperText";
 
 const styles = theme => ({
   root: {
@@ -35,7 +36,7 @@ const styles = theme => ({
   itemAvatar: {
     color: '#fff',
     backgroundColor: theme.palette.secondary.main,
-  }
+  },
 });
 
 class AdapterList extends Component {
@@ -53,7 +54,7 @@ class AdapterList extends Component {
     this.props.updateAdapter(adapter, currentOrganisation.name);
   };
   deleteAdapter = (adapter) => {
-	const {currentOrganisation} = this.props.context;
+    const {currentOrganisation} = this.props.context;
     this.props.deleteAdapter(adapter, currentOrganisation.name);
     this.setState({
       notify: true,
@@ -89,9 +90,21 @@ class AdapterList extends Component {
           onClose={this.onCloseNotification}
 
         />
+
         <div className={classes.root}>
           <div className={classes.componentList}>
             <Typography variant="headline" className={classes.title}>Adapter</Typography>
+            <FeatureHelperText>
+                <p>
+                Ett adapter er påloggingsinformasjon som brukes av fagsystem adapterne for å få tilgang til en komponent.
+                Dette kan f.eks. Visma Enterprise eller Unit4 (Evry).
+                </p>
+                <p>
+                Adaptere må registreres før fagsystem adapteret kan tas i bruk. Et adapter må få opprettet påloggingsinformasjon
+                og bli gitt tilgang til de komponentene det skal levere data for. Påloggingsinformasjonen og informasjon
+                om endepunkter må oppgis til den som skal installere og konfigurere adapteret.
+                </p>
+            </FeatureHelperText>
             <Divider/>
             <List>
               {this.props.adapters.map((adapter) =>
