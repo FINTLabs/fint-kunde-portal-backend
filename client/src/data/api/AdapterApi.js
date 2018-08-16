@@ -30,7 +30,7 @@ class AdapterApi {
     });
   }
 
-  static createAdapter(Adapter, organisation) {
+  static createAdapter(adapter, organisation) {
     const request = new Request(`/api/adapters/${organisation}`, {
       method: 'POST',
       headers: {
@@ -39,9 +39,9 @@ class AdapterApi {
       },
       credentials: 'same-origin',
       body: JSON.stringify({
-        name: Adapter.name,
-        note: Adapter.note,
-        shortDescription: Adapter.shortDescription
+        name: adapter.name,
+        note: adapter.note,
+        shortDescription: adapter.shortDescription
       })
     });
 
@@ -59,9 +59,9 @@ class AdapterApi {
     */
   }
 
-  static addAdapterToComponent(Adapter, component, organisation) {
+  static addAdapterToComponent(adapter, component, organisation) {
 
-    const request = new Request(`/api/components/${component.name}/${organisation}/adapters/${Adapter.name}`, {
+    const request = new Request(`/api/components/${component.name}/${organisation}/adapters/${adapter.name}`, {
       method: 'PUT',
       headers: {
         'Accept': '*/*',
@@ -69,7 +69,7 @@ class AdapterApi {
       },
       credentials: 'same-origin',
       body: JSON.stringify({
-        name: Adapter.name
+        name: adapter.name
       })
     });
     return fetch(request).then(response => {
@@ -79,8 +79,8 @@ class AdapterApi {
     });
   }
 
-  static deleteAdapter(Adapter, organisation) {
-    const request = new Request(`/api/adapters/${organisation}/${Adapter.name}`, {
+  static deleteAdapter(adapter, organisation) {
+    const request = new Request(`/api/adapters/${organisation}/${adapter.name}`, {
       method: 'DELETE',
       credentials: 'same-origin'
     });

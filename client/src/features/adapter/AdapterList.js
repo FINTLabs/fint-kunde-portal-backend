@@ -1,4 +1,4 @@
-import React, {Component} from "react";
+import React, { Component } from "react";
 import {
   Avatar,
   Divider,
@@ -11,60 +11,79 @@ import {
   Typography,
   withStyles
 } from "@material-ui/core";
-import {Delete, Edit, InsertLink} from "@material-ui/icons";
+import { Delete, Edit, InsertLink } from "@material-ui/icons";
 import AutoHideNotification from "../../common/notification/AutoHideNotification";
 import AdapterView from "./view/AdapterView";
-import {withContext} from "../../data/context/withContext";
+import { withContext } from "../../data/context/withContext";
 import PropTypes from "prop-types";
 import FeatureHelperText from "../../common/help/FeatureHelperText";
+import WarningMessageBox from "../../common/message-box/WarningMessageBox";
 
 const styles = theme => ({
   root: {
-    display: 'flex',
-    justifyContent: 'center',
+    display: "flex",
+    justifyContent: "center"
   },
   componentList: {
-    width: '75%',
+    width: "75%"
   },
   title: {
     paddingLeft: theme.spacing.unit * 3,
-    paddingBottom: theme.spacing.unit,
+    paddingBottom: theme.spacing.unit
   },
   listItem: {
-    borderBottom: '1px dashed lightgray',
+    borderBottom: "1px dashed lightgray"
   },
   itemAvatar: {
-    color: '#fff',
-    backgroundColor: theme.palette.secondary.main,
-  },
+    color: "#fff",
+    backgroundColor: theme.palette.secondary.main
+  }
 });
 
 class AdapterList extends Component {
   editAdapter = (adapter) => {
     this.setState({
       open: true,
-      adapterToEdit: adapter,
+      adapterToEdit: adapter
     });
   };
   onCloseEdit = () => {
-    this.setState({open: false});
+    this.setState({ open: false });
   };
   updateAdapter = (adapter) => {
-    const {currentOrganisation} = this.props.context;
+    const { currentOrganisation } = this.props.context;
     this.props.updateAdapter(adapter, currentOrganisation.name);
   };
   deleteAdapter = (adapter) => {
-    const {currentOrganisation} = this.props.context;
+    const { currentOrganisation } = this.props.context;
     this.props.deleteAdapter(adapter, currentOrganisation.name);
     this.setState({
       notify: true,
-      adapterDeletedName: adapter.name,
+      adapterDeletedName: adapter.name
     });
+  };
+
+  askToDelete = (adapter) => {
+    this.setState({
+      askToDelete: true,
+      message: `Er du sikker på at du vil slette '${adapter.shortDescription}'? Endringen kan ikke tilbakestilles!`,
+      adapterToDelete: adapter,
+    });
+  };
+
+  onCloseDelete = (confirmed) => {
+    this.setState({
+      askToDelete: false,
+    });
+
+    if (confirmed) {
+      this.deleteAdapter(this.state.adapterToDelete);
+    }
   };
 
   onCloseNotification = () => {
     this.setState({
-      notify: false,
+      notify: false
     });
   };
 
@@ -73,15 +92,18 @@ class AdapterList extends Component {
     this.state = {
       adapters: this.props.adapters,
       adapterToEdit: null,
+      adapterToDelete: null,
       open: false,
       notify: false,
       adapterDeletedName: null,
+      askToDelete: false,
+      message: '',
     };
 
   }
 
   render() {
-    const {classes} = this.props;
+    const { classes } = this.props;
     return (
       <div>
         <AutoHideNotification
@@ -90,21 +112,25 @@ class AdapterList extends Component {
           onClose={this.onCloseNotification}
 
         />
-
+        <WarningMessageBox
+          show={this.state.askToDelete}
+          message={this.state.message}
+          onClose={this.onCloseDelete}
+        />
         <div className={classes.root}>
           <div className={classes.componentList}>
-            <Typography variant="headline" className={classes.title}>Adapter</Typography>
             <FeatureHelperText>
-                <p>
+              <p>
                 Ett adapter er påloggingsinformasjon som brukes av fagsystem adapterne for å få tilgang til en komponent.
                 Dette kan f.eks. Visma Enterprise eller Unit4 (Evry).
-                </p>
-                <p>
+              </p>
+              <p>
                 Adaptere må registreres før fagsystem adapteret kan tas i bruk. Et adapter må få opprettet påloggingsinformasjon
                 og bli gitt tilgang til de komponentene det skal levere data for. Påloggingsinformasjonen og informasjon
                 om endepunkter må oppgis til den som skal installere og konfigurere adapteret.
-                </p>
+              </p>
             </FeatureHelperText>
+            <Typography variant="headline" className={classes.title}>Adapter</Typography>
             <Divider/>
             <List>
               {this.props.adapters.map((adapter) =>
@@ -122,11 +148,11 @@ class AdapterList extends Component {
                     <IconButton aria-label="Edit" onClick={() => this.editAdapter(adapter)}>
                       <Edit/>
                     </IconButton>
-                    <IconButton aria-label="Delete" onClick={() => this.deleteAdapter(adapter)}>
+                    <IconButton aria-label="Delete" onClick={() => this.askToDelete(adapter)}>
                       <Delete/>
                     </IconButton>
                   </ListItemSecondaryAction>
-                </ListItem>,
+                </ListItem>
               )}
             </List>
           </div>

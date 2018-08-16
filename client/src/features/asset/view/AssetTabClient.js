@@ -10,47 +10,41 @@ import {
   Typography,
   withStyles
 } from "@material-ui/core";
-import AddIcon from "@material-ui/icons/AddCircle";
-import RemoveIcon from "@material-ui/icons/RemoveCircle";
 import ComponentIcon from "@material-ui/icons/WebAsset";
 import ClientIcon from "@material-ui/icons/ImportantDevices";
-import {green} from "@material-ui/core/colors/index";
+import { green } from "@material-ui/core/colors/index";
 import LoadingProgress from "../../../common/status/LoadingProgress";
 import WarningMessageBox from "../../../common/message-box/WarningMessageBox";
 import InformationMessageBox from "../../../common/message-box/InformationMessageBox";
-import {withContext} from "../../../data/context/withContext";
+import { withContext } from "../../../data/context/withContext";
 import AssetApi from "../../../data/api/AssetApi";
-import {Link} from "react-router-dom";
+import { Link } from "react-router-dom";
+import RemoveButton from "../../../common/button/RemoveButton";
+import AddButton from "../../../common/button/AddButton";
 
 const styles = theme => ({
   root: {
-    display: 'flex',
-    justifyContent: 'center',
+    display: "flex",
+    justifyContent: "center"
   },
   componentList: {
-    width: '75%',
+    width: "75%"
   },
   avtarstyle: {
     margin: 1,
-    color: '#fff',
-    backgroundColor: green[500],
+    color: "#fff",
+    backgroundColor: green[500]
   },
   title: {
     paddingLeft: theme.spacing.unit * 3,
-    paddingBottom: theme.spacing.unit,
+    paddingBottom: theme.spacing.unit
   },
   listItem: {
-    borderBottom: '1px dashed lightgray',
+    borderBottom: "1px dashed lightgray"
   },
   itemAvatar: {
-    color: '#fff',
-    backgroundColor: theme.palette.secondary.main,
-  },
-  addIcon: {
-    color: theme.palette.secondary.main,
-  },
-  removeIcon: {
-    color: theme.palette.primary.light,
+    color: "#fff",
+    backgroundColor: theme.palette.secondary.main
   },
 });
 
@@ -62,7 +56,7 @@ class AssetTabClient extends React.Component {
     this.setState({
       thisClient: client,
       askUnLink: true,
-      message: "Er du sikker på at du vil fjerne " + client.shortDescription + " fra:  " + this.props.asset.name + "?",
+      message: "Er du sikker på at du vil fjerne " + client.shortDescription + " fra:  " + this.props.asset.name + "?"
     });
 
   };
@@ -71,7 +65,7 @@ class AssetTabClient extends React.Component {
     this.setState({
       thisClient: client,
       askLink: true,
-      message: "Vil du legge  " + client.shortDescription + " til asset?",
+      message: "Vil du legge  " + client.shortDescription + " til asset?"
     });
 
   };
@@ -103,7 +97,7 @@ class AssetTabClient extends React.Component {
   onCloseLink = (confirmed) => {
 
     this.setState({
-      askLink: false,
+      askLink: false
     });
 
     if (confirmed) {
@@ -113,7 +107,7 @@ class AssetTabClient extends React.Component {
 
   onCloseUnLink = (confirmed) => {
     this.setState({
-      askUnLink: false,
+      askUnLink: false
     });
 
     if (confirmed) {
@@ -134,7 +128,7 @@ class AssetTabClient extends React.Component {
     this.state = {
       askLink: false,
       askUnLink: false,
-      message: '',
+      message: ""
     };
   }
 
@@ -142,13 +136,13 @@ class AssetTabClient extends React.Component {
 
     if (nextProps.clients !== prevState.clients) {
       return {
-        clients: nextProps.clients,
+        clients: nextProps.clients
       };
     }
     if (nextProps.asset !== prevState.asset) {
       return {
-        asset: nextProps.asset,
-      }
+        asset: nextProps.asset
+      };
     }
 
     return null;
@@ -163,7 +157,7 @@ class AssetTabClient extends React.Component {
   }
 
   renderClients() {
-    const {classes} = this.props;
+    const { classes } = this.props;
     const organisationClients = this.props.clients;
     if (organisationClients.length > 0) {
       return (
@@ -193,23 +187,17 @@ class AssetTabClient extends React.Component {
                 <ListItemSecondaryAction>
                   {this.isLinkedToAsset(client) ?
                     (
-                      <div>
-                        <IconButton aria-label="Remove" onClick={() => this.askToUnLinkClient(client)}>
-                          <RemoveIcon className={classes.removeIcon}/>
-                        </IconButton>
+                      <React.Fragment>
+                        <RemoveButton onClick={() => this.askToUnLinkClient(client)}
+                                      title="Fjerne klienten fra ressursen"/>
                         <IconButton aria-label="Remove" component={Link} to="/clients">
                           <ClientIcon/>
                         </IconButton>
-                      </div>
-                    ) : (
-                      <IconButton aria-label="Add" disabled={this.hasAsset(client)}
-                                  onClick={() => this.askToLinkClient(client)}>
-                        <AddIcon className={this.hasAsset(client) ? null : classes.addIcon}/>
-                      </IconButton>
-                    )
+                      </React.Fragment>
+                    ) : (<AddButton onClick={() => this.askToLinkClient(client)} title="Legge klienten til ressursen"/>)
                   }
                 </ListItemSecondaryAction>
-              </ListItem>,
+              </ListItem>
             )}
           </List>
         </div>

@@ -114,7 +114,12 @@ public class ContactController {
   @GetMapping(value = "/organisations")
   public ResponseEntity getContactOrganisations(@RequestHeader(value = "x-nin") final String nin) {
     Contact contact = contactService.getContact(nin).orElseThrow(() -> new EntityNotFoundException("Contact not found"));
-    List<Organisation> contactOrganisations = Stream.concat(contact.getLegal().stream(), contact.getTechnical().stream()).map(organisationService::getOrganisationByDn).filter(Optional::isPresent).map(Optional::get).collect(Collectors.toList());
+    List<Organisation> contactOrganisations = Stream.concat(contact.getLegal().stream(), contact.getTechnical()
+      .stream())
+      .map(organisationService::getOrganisationByDn)
+      .filter(Optional::isPresent).map(Optional::get)
+      .distinct()
+      .collect(Collectors.toList());
     return ResponseEntity.ok(contactOrganisations);
   }
 

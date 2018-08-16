@@ -16,6 +16,7 @@ import EditIcon from "@material-ui/icons/Edit";
 import ContactIcon from "@material-ui/icons/Person";
 import blue from "@material-ui/core/colors/blue";
 import ContactView from "../view/ContactView";
+import FeatureHelperText from "../../../common/help/FeatureHelperText";
 
 
 const styles = (theme) => ({
@@ -81,6 +82,21 @@ class LegalList extends React.Component {
           notify={this.props.notify}
         />
         <div className={classes.legalContactList}>
+          <FeatureHelperText>
+            <p>
+              Kontakter er personer som har tilgang til kundeportalen.
+            </p>
+            <p>
+              En juridisk kontakt er den som har det merkantile ansvaret.
+            </p>
+            <p>
+              Tekniske kontakter er organisasjonens FINT administratorer.
+              De vil få driftsmeldinger tilsendt ved behov.
+            </p>
+            <p>
+              Ordinære driftsmeldinger sendes på epost. Kritiske driftmeldinger sendes på epost og SMS.
+            </p>
+          </FeatureHelperText>
           <Typography variant="headline" className={classes.title}>Juridisk kontakt</Typography>
           <Divider/>
           <List>

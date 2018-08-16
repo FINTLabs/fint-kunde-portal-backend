@@ -1,7 +1,6 @@
 import React from "react";
 import {
   Avatar,
-  IconButton,
   List,
   ListItem,
   ListItemAvatar,
@@ -10,50 +9,44 @@ import {
   Typography,
   withStyles
 } from "@material-ui/core";
-import AddIcon from "@material-ui/icons/AddCircle";
-import RemoveIcon from "@material-ui/icons/RemoveCircle";
 import ComponentIcon from "@material-ui/icons/WebAsset";
-import {bindActionCreators} from "redux";
-import {connect} from "react-redux";
-import {fetchComponents} from "../../../data/redux/dispatchers/component";
-import {green} from "@material-ui/core/colors/index";
+import { bindActionCreators } from "redux";
+import { connect } from "react-redux";
+import { fetchComponents } from "../../../data/redux/dispatchers/component";
+import { green } from "@material-ui/core/colors/index";
 import LoadingProgress from "../../../common/status/LoadingProgress";
-import {addAdapterToComponent, deleteAdapterFromComponent} from "../../../data/redux/dispatchers/adapter";
+import { addAdapterToComponent, deleteAdapterFromComponent } from "../../../data/redux/dispatchers/adapter";
 import AdapterApi from "../../../data/api/AdapterApi";
 import WarningMessageBox from "../../../common/message-box/WarningMessageBox";
 import InformationMessageBox from "../../../common/message-box/InformationMessageBox";
-import {withContext} from "../../../data/context/withContext";
+import { withContext } from "../../../data/context/withContext";
+import RemoveButton from "../../../common/button/RemoveButton";
+import AddButton from "../../../common/button/AddButton";
 
 const styles = theme => ({
   root: {
-    display: 'flex',
-    justifyContent: 'center',
+    display: "flex",
+    justifyContent: "center"
   },
   componentList: {
-    width: '75%',
+    width: "75%"
   },
   avtarstyle: {
     margin: 1,
-    color: '#fff',
-    backgroundColor: green[500],
+    color: "#fff",
+    backgroundColor: green[500]
   },
   title: {
     paddingLeft: theme.spacing.unit * 3,
-    paddingBottom: theme.spacing.unit,
+    paddingBottom: theme.spacing.unit
   },
   listItem: {
-    borderBottom: '1px dashed lightgray',
+    borderBottom: "1px dashed lightgray"
   },
   itemAvatar: {
-    color: '#fff',
-    backgroundColor: theme.palette.secondary.main,
-  },
-  addIcon: {
-    color: theme.palette.secondary.main,
-  },
-  removeIcon: {
-    color: theme.palette.primary.light,
-  },
+    color: "#fff",
+    backgroundColor: theme.palette.secondary.main
+  }
 });
 
 class AdapterTabComponent extends React.Component {
@@ -64,7 +57,7 @@ class AdapterTabComponent extends React.Component {
     this.setState({
       askUnLink: true,
       message: "Er du sikker på at du vil fjerne adapteret fra:  " + component.description + "?",
-      component: component,
+      component: component
     });
 
   };
@@ -72,7 +65,7 @@ class AdapterTabComponent extends React.Component {
     this.setState({
       askLink: true,
       message: "Vil du legge adapteret til:  " + component.description + "?",
-      component: component,
+      component: component
     });
   };
   unLinkComponent = (component) => {
@@ -94,7 +87,7 @@ class AdapterTabComponent extends React.Component {
   };
   onCloseLink = (confirmed) => {
     this.setState({
-      askLink: false,
+      askLink: false
     });
 
     if (confirmed) {
@@ -103,7 +96,7 @@ class AdapterTabComponent extends React.Component {
   };
   onCloseUnLink = (confirmed) => {
     this.setState({
-      askUnLink: false,
+      askUnLink: false
     });
 
     if (this.isLinkedToAdapter(this.state.component) && confirmed) {
@@ -121,9 +114,17 @@ class AdapterTabComponent extends React.Component {
 
   };
   getOrganisationComponents = () => {
+    const { currentOrganisation } = this.props.context;
+    if (currentOrganisation.name === "fintlabs_no") {
+      return this.props.components
+        .filter(component => component.organisations.length > 0)
+        .filter(component => component.organisations.find(o => o === currentOrganisation.dn));
+    }
     return this.props.components
       .filter(component => component.organisations.length > 0)
-      .filter(component => component.organisations.find(o => o === this.props.context.currentOrganisation.dn));
+      .filter(component => component.organisations.find(o => o === currentOrganisation.dn))
+      .filter(component => !component.openData || !component.common);
+
   };
 
   constructor(props) {
@@ -131,14 +132,14 @@ class AdapterTabComponent extends React.Component {
     this.state = {
       askLink: false,
       askUnLink: false,
-      message: '',
+      message: ""
     };
   }
 
   static getDerivedStateFromProps(nextProps, prevState) {
     if (nextProps.adapter !== prevState.adapter) {
       return {
-        adapter: nextProps.adapter,
+        adapter: nextProps.adapter
       };
     }
     return null;
@@ -158,7 +159,7 @@ class AdapterTabComponent extends React.Component {
 
   renderComponents() {
 
-    const {classes} = this.props;
+    const { classes } = this.props;
     const organisationComponents = this.getOrganisationComponents();
     if (organisationComponents.length > 0) {
       return (
@@ -187,16 +188,14 @@ class AdapterTabComponent extends React.Component {
                 />
                 <ListItemSecondaryAction>
                   {this.isLinkedToAdapter(component) ?
-                    (<IconButton aria-label="Remove" onClick={() => this.askToUnLinkComponent(component)}>
-                      <RemoveIcon className={classes.removeIcon}/>
-                    </IconButton>)
+                    (<RemoveButton onClick={() => this.askToUnLinkComponent(component)}
+                                   title="Fjerne adapteret fra komponenten"/>)
                     :
-                    (<IconButton aria-label="Add" onClick={() => this.askToLinkComponent(component)}>
-                      <AddIcon className={classes.addIcon}/>
-                    </IconButton>)
+                    (<AddButton onClick={() => this.askToLinkComponent(component)}
+                                title="Legge adapteret til komponenten"/>)
                   }
                 </ListItemSecondaryAction>
-              </ListItem>,
+              </ListItem>
             )}
           </List>
         </div>
@@ -213,15 +212,15 @@ class AdapterTabComponent extends React.Component {
 
 function mapStateToProps(state) {
   return {
-    components: state.component.components,
-  }
+    components: state.component.components
+  };
 }
 
 function mapDispatchToProps(dispatch) {
   return bindActionCreators({
     fetchComponents: fetchComponents,
     addAdapterToComponent: addAdapterToComponent,
-    deleteAdapterFromComponent: deleteAdapterFromComponent,
+    deleteAdapterFromComponent: deleteAdapterFromComponent
   }, dispatch);
 }
 

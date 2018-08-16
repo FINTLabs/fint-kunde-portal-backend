@@ -1,20 +1,17 @@
 import React from "react";
-import {ListItem, ListItemIcon, ListItemText} from "@material-ui/core";
+import { ListItem, ListItemIcon, ListItemText } from "@material-ui/core";
 import DashboardIcon from "@material-ui/icons/Dashboard";
 import ClientIcon from "@material-ui/icons/ImportantDevices";
 import ApiIcon from "@material-ui/icons/WebAsset";
 import AdapterIcon from "@material-ui/icons/Link";
 import ContactIcon from "@material-ui/icons/Person";
-import LogIcon from "@material-ui/icons/Receipt";
-import SupportIcon from "@material-ui/icons/Help";
-import DocumentationIcon from "@material-ui/icons/Book";
 import RelationTestIcon from "@material-ui/icons/TrendingFlat";
 import BasicTestIcon from "@material-ui/icons/Done";
 import AssetIcon from "@material-ui/icons/Storage";
-import {Link} from "react-router-dom";
+import { Link } from "react-router-dom";
 
 const menuLink = {
-  textDecoration: 'none'
+  textDecoration: "none"
 };
 
 export const MENU_ITEMS = (
@@ -87,31 +84,31 @@ export const MENU_ITEMS = (
 
 );
 
-  /*
-  <Link to="/logs" style={menuLink}>
-      <ListItem button>
-        <ListItemIcon>
-          <LogIcon/>
-        </ListItemIcon>
-        <ListItemText primary="Logger"/>
-      </ListItem>
-    </Link>
-    <Link to="/support" style={menuLink}>
-      <ListItem button>
-        <ListItemIcon>
-          <SupportIcon/>
-        </ListItemIcon>
-        <ListItemText primary="Support"/>
-      </ListItem>
-    </Link>
-    <Link to="/documentation" style={menuLink}>
-      <ListItem button>
-        <ListItemIcon>
-          <DocumentationIcon/>
-        </ListItemIcon>
-        <ListItemText primary="Dokumentasjon"/>
-      </ListItem>
-    </Link>
-   */
+/*
+<Link to="/logs" style={menuLink}>
+    <ListItem button>
+      <ListItemIcon>
+        <LogIcon/>
+      </ListItemIcon>
+      <ListItemText primary="Logger"/>
+    </ListItem>
+  </Link>
+  <Link to="/support" style={menuLink}>
+    <ListItem button>
+      <ListItemIcon>
+        <SupportIcon/>
+      </ListItemIcon>
+      <ListItemText primary="Support"/>
+    </ListItem>
+  </Link>
+  <Link to="/documentation" style={menuLink}>
+    <ListItem button>
+      <ListItemIcon>
+        <DocumentationIcon/>
+      </ListItemIcon>
+      <ListItemText primary="Dokumentasjon"/>
+    </ListItem>
+  </Link>
+ */
 
 

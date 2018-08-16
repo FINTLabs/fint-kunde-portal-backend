@@ -1,4 +1,4 @@
-import React, {Component} from "react";
+import React, { Component } from "react";
 import {
   Avatar,
   Divider,
@@ -12,8 +12,6 @@ import {
   withStyles
 } from "@material-ui/core";
 import SettingsIcon from "@material-ui/icons/Settings";
-import AddIcon from "@material-ui/icons/AddCircle";
-import RemoveIcon from "@material-ui/icons/RemoveCircle";
 import ComponentIcon from "@material-ui/icons/WebAsset";
 import OrganisationApi from "../../data/api/OrganisationApi";
 import AutoHideNotification from "../../common/notification/AutoHideNotification";
@@ -21,35 +19,34 @@ import PropTypes from "prop-types";
 import ComponentsView from "./ComponentsView";
 import WarningMessageBox from "../../common/message-box/WarningMessageBox";
 import InformationMessageBox from "../../common/message-box/InformationMessageBox";
-import {withContext} from "../../data/context/withContext";
+import { withContext } from "../../data/context/withContext";
+import OpenDataLabel from "../../common/label/OpenDataLabel";
+import CommonComponentLabel from "../../common/label/CommonComponentLabel";
+import RemoveButton from "../../common/button/RemoveButton";
+import AddButton from "../../common/button/AddButton";
+import FeatureHelperText from "../../common/help/FeatureHelperText";
 
 
 const styles = theme => ({
   root: {
-    display: 'flex',
-    justifyContent: 'center',
+    display: "flex",
+    justifyContent: "center"
   },
   componentList: {
-    width: '75%',
+    width: "75%"
   },
 
   title: {
     paddingLeft: theme.spacing.unit * 3,
-    paddingBottom: theme.spacing.unit,
+    paddingBottom: theme.spacing.unit
   },
   listItem: {
-    borderBottom: '1px dashed lightgray',
+    borderBottom: "1px dashed lightgray"
   },
   itemAvatar: {
-    color: '#fff',
-    backgroundColor: theme.palette.secondary.main,
-  },
-  addIcon: {
-    color: theme.palette.secondary.dark,
-  },
-  removeIcon: {
-    color: theme.palette.primary.light,
-  },
+    color: "#fff",
+    backgroundColor: theme.palette.secondary.main
+  }
 });
 
 class ComponentList extends Component {
@@ -57,23 +54,23 @@ class ComponentList extends Component {
     this.setState({
       askLink: true,
       message: "Vil du legge til komponenten:  " + component.description + " til organisasjonen?",
-      component: component,
+      component: component
     });
   };
   askToUnLinkComponent = (component) => {
     this.setState({
       askUnLink: true,
       message: "Er du sikker på at du vil fjerne komponenten:  " + component.description + " fra organisasjonen?",
-      component: component,
+      component: component
     });
   };
   linkComponent = (component) => {
-    const {context} = this.props;
+    const { context } = this.props;
 
     OrganisationApi.linkComponent(component, context.currentOrganisation.name).then(responseApi => {
       this.setState({
         notify: true,
-        notifyMessage: `${component.description} ble lagt til!`,
+        notifyMessage: `${component.description} ble lagt til!`
       });
       context.refresh();
       this.props.fetchComponents();
@@ -82,12 +79,12 @@ class ComponentList extends Component {
     });
   };
   unlinkComponent = (component) => {
-    const {context} = this.props;
+    const { context } = this.props;
 
     OrganisationApi.unlinkComponent(component, context.currentOrganisation.name).then(responseApi => {
       this.setState({
         notify: true,
-        notifyMessage: `${component.description} ble fjernet!`,
+        notifyMessage: `${component.description} ble fjernet!`
       });
       context.refresh();
       this.props.fetchComponents();
@@ -97,7 +94,7 @@ class ComponentList extends Component {
   };
   onCloseLink = (confirmed) => {
     this.setState({
-      askLink: false,
+      askLink: false
     });
 
     if (confirmed) {
@@ -106,7 +103,7 @@ class ComponentList extends Component {
   };
   onCloseUnLink = (confirmed) => {
     this.setState({
-      askUnLink: false,
+      askUnLink: false
     });
 
     if (this.isLinkedToOrganisation(this.state.component) && confirmed) {
@@ -116,19 +113,19 @@ class ComponentList extends Component {
   onCloseNotification = () => {
     this.setState({
       notify: false,
-      notifyMessage: '',
+      notifyMessage: ""
     });
   };
   showComponent = (component) => {
     this.setState({
       showComponent: true,
-      component: component,
+      component: component
     });
   };
   onCloseShowComponent = () => {
     this.setState({
       showComponent: false,
-      component: null,
+      component: null
     });
   };
   isLinkedToOrganisation = (component) => {
@@ -142,21 +139,34 @@ class ComponentList extends Component {
     return false;
   };
 
+  renderAddRemove = (component) => {
+    return (
+      <React.Fragment>
+        {this.isLinkedToOrganisation(component) ?
+          (<RemoveButton onClick={() => this.askToUnLinkComponent(component)}
+                         title="Fjerne komponent fra organisasjonen"/>)
+          :
+          (<AddButton onClick={() => this.askToLinkComponent(component)} title="Legge komponent til organisasjonen"/>)
+        }
+      </React.Fragment>
+    );
+  };
+
   constructor(props) {
     super(props);
     this.state = {
       askLink: false,
       askUnLink: false,
-      message: '',
+      message: "",
       component: null,
       notify: false,
-      notifyMessage: '',
-      showComponent: false,
+      notifyMessage: "",
+      showComponent: false
     };
   }
 
   render() {
-    const {classes} = this.props;
+    const { classes, organisation } = this.props;
 
     return (
       <div className={classes.root}>
@@ -180,6 +190,19 @@ class ComponentList extends Component {
           onClose={this.onCloseShowComponent}
         />
         <div className={classes.componentList}>
+          <FeatureHelperText>
+            <p>
+              En komponent er en løsning fra FINT.
+            </p>
+            <p>
+              For at organisasjonen skal kunne ta i bruk en løsning fra FINT
+              må den legges til organisasjonen.
+            </p>
+            <p>
+              Komponenter som er merke Åpne Data/Felles kan ikke legges til. De
+              administreres av FINT.
+            </p>
+          </FeatureHelperText>
           <Typography variant="headline" className={classes.title}>Komponenter</Typography>
           <Divider/>
           <List>
@@ -195,20 +218,14 @@ class ComponentList extends Component {
                   secondary={component.basePath}
                 />
                 <ListItemSecondaryAction>
-                  {this.isLinkedToOrganisation(component) ?
-                    (<IconButton aria-label="Remove" onClick={() => this.askToUnLinkComponent(component)}>
-                      <RemoveIcon className={classes.removeIcon}/>
-                    </IconButton>)
-                    :
-                    (<IconButton aria-label="Add" onClick={() => this.askToLinkComponent(component)}>
-                      <AddIcon className={classes.addIcon}/>
-                    </IconButton>)
-                  }
+                  {component.openData && <OpenDataLabel/>}
+                  {component.common && <CommonComponentLabel/>}
+                  {(!component.openData || !component.common || organisation.name === "fintlabs_no") && this.renderAddRemove(component)}
                   <IconButton aria-label="Settings" onClick={() => this.showComponent(component)}>
                     <SettingsIcon/>
                   </IconButton>
                 </ListItemSecondaryAction>
-              </ListItem>,
+              </ListItem>
             )}
           </List>
         </div>
@@ -216,7 +233,6 @@ class ComponentList extends Component {
 
     );
   }
-
 }
 
 ComponentList.propTypes = {

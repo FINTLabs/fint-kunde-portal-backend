@@ -1,5 +1,5 @@
 import React from "react";
-import {withStyles} from "@material-ui/core";
+import { withStyles } from "@material-ui/core";
 import TechnicalList from "./lists/TechnicalList";
 import PropTypes from "prop-types";
 import LegalList from "./lists/LegalList";
@@ -16,9 +16,10 @@ class ContactList extends React.Component {
   }
 
   render() {
-    const {legalContact, technicalContacts} = this.props;
+    const { legalContact, technicalContacts } = this.props;
     return (
       <div>
+
         <LegalList
           legalContact={legalContact}
           notify={this.props.notify}
@@ -39,7 +40,7 @@ ContactList.propTypes = {
   legalContact: PropTypes.object.isRequired,
   notify: PropTypes.any.isRequired,
   technicalContacts: PropTypes.array.isRequired,
-  afterUpdateLegalContact: PropTypes.func.isRequired,
+  afterUpdateLegalContact: PropTypes.func.isRequired
 };
 
 export default withStyles(styles)(ContactList);

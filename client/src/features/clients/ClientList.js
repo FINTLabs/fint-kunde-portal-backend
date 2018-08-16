@@ -18,6 +18,7 @@ import AutoHideNotification from "../../common/notification/AutoHideNotification
 import ClientView from "./view/ClientView";
 import { withContext } from "../../data/context/withContext";
 import FeatureHelperText from "../../common/help/FeatureHelperText";
+import WarningMessageBox from "../../common/message-box/WarningMessageBox";
 
 const styles = theme => ({
   root: {
@@ -63,6 +64,24 @@ class ClientList extends Component {
     });
   };
 
+  askToDelete = (client) => {
+    this.setState({
+      askToDelete: true,
+      message: `Er du sikker på at du vil slette '${client.shortDescription}'? Endringen kan ikke tilbakestilles!`,
+      clientToDelete: client
+    });
+  };
+
+  onCloseDelete = (confirmed) => {
+    this.setState({
+      askToDelete: false
+    });
+
+    if (confirmed) {
+      this.deleteClient(this.state.clientToDelete);
+    }
+  };
+
   onCloseNotification = () => {
     this.setState({
       notify: false
@@ -74,9 +93,12 @@ class ClientList extends Component {
     this.state = {
       clients: this.props.clients,
       clientToEdit: null,
+      clientToDelete: null,
       open: false,
       notify: false,
-      clientDeletedName: null
+      clientDeletedName: null,
+      askToDelete: false,
+      message: '',
     };
 
   }
@@ -87,13 +109,17 @@ class ClientList extends Component {
       <div>
         <AutoHideNotification
           showNotification={this.state.notify}
-          message={`Client ${this.state.clientDeletedName} ble slettet!`}
+          message={`Klienten ${this.state.clientDeletedName} ble slettet!`}
           onClose={this.onCloseNotification}
 
         />
+        <WarningMessageBox
+          show={this.state.askToDelete}
+          message={this.state.message}
+          onClose={this.onCloseDelete}
+        />
         <div className={classes.root}>
           <div className={classes.componentList}>
-            <Typography variant="headline" className={classes.title}>Klienter</Typography>
             <FeatureHelperText>
               <p>
                 En klient er påloggingsinformasjon som brukes av en integrasjon for å få tilgang til en komponent.
@@ -105,6 +131,7 @@ class ClientList extends Component {
                 om endepunkter må oppgis til den som skal installere og konfigurere integrasjonen.
               </p>
             </FeatureHelperText>
+            <Typography variant="headline" className={classes.title}>Klienter</Typography>
             <Divider/>
             <List>
               {this.props.clients.map((client) =>
@@ -122,7 +149,7 @@ class ClientList extends Component {
                     <IconButton aria-label="Edit" onClick={() => this.editClient(client)}>
                       <Edit/>
                     </IconButton>
-                    <IconButton aria-label="Delete" onClick={() => this.deleteClient(client)}>
+                    <IconButton aria-label="Delete" onClick={() => this.askToDelete(client)}>
                       <Delete/>
                     </IconButton>
                   </ListItemSecondaryAction>

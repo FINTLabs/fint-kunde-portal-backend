@@ -12,7 +12,7 @@ import EnvironmentSelector from "../../common/test/EnvironmentSelector";
 const styles = () => ({
   addButton: {
     margin: 0,
-    top: 80,
+    top: 100,
     left: 'auto',
     bottom: 'auto',
     right: 50,

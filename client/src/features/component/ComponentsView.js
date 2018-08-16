@@ -101,18 +101,21 @@ class ComponentsView extends React.Component {
                   <TableCell variant='body'><a target="_blank"
                                                href={`https://api.felleskomponent.no${component.basePath}/swagger-ui.html`}>https://api.felleskomponent.no{component.basePath}/swagger-ui.html</a></TableCell>
                 </TableRow>
-                <TableRow>
+                {(!component.openData || !component.common) &&
+                <div>
+                  <TableRow>
+                    <TableCell variant='head' className={classes.endpointsCell}>Beta</TableCell>
+                    <TableCell variant='body'><a target="_blank"
+                                                 href={`https://beta.felleskomponent.no${component.basePath}/swagger-ui.html`}>https://beta.felleskomponent.no{component.basePath}/swagger-ui.html</a></TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell variant='head' className={classes.endpointsCell}>Play-with-FINT</TableCell>
+                    <TableCell variant='body'><a target="_blank"
+                                                 href={`https://play-with-fint.felleskomponent.no${component.basePath}/swagger-ui.html`}>https://play-with-fint.felleskomponent.no{component.basePath}/swagger-ui.html</a></TableCell>
+                  </TableRow>
+                </div>
+                }
 
-                  <TableCell variant='head' className={classes.endpointsCell}>Beta</TableCell>
-                  <TableCell variant='body'><a target="_blank"
-                                               href={`https://beta.felleskomponent.no${component.basePath}/swagger-ui.html`}>https://beta.felleskomponent.no{component.basePath}/swagger-ui.html</a></TableCell>
-                </TableRow>
-                <TableRow>
-
-                  <TableCell variant='head' className={classes.endpointsCell}>Play-with-FINT</TableCell>
-                  <TableCell variant='body'><a target="_blank"
-                                               href={`https://play-with-fint.felleskomponent.no${component.basePath}/swagger-ui.html`}>https://play-with-fint.felleskomponent.no{component.basePath}/swagger-ui.html</a></TableCell>
-                </TableRow>
               </Table>
             </DialogContent>
             <DialogActions>

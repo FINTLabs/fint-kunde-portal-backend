@@ -1,7 +1,6 @@
 import React from "react";
 import {
   Avatar,
-  IconButton,
   List,
   ListItem,
   ListItemAvatar,
@@ -10,50 +9,44 @@ import {
   Typography,
   withStyles
 } from "@material-ui/core";
-import AddIcon from "@material-ui/icons/AddCircle";
-import RemoveIcon from "@material-ui/icons/RemoveCircle";
 import ComponentIcon from "@material-ui/icons/WebAsset";
-import {bindActionCreators} from "redux";
-import {connect} from "react-redux";
-import {fetchComponents} from "../../../data/redux/dispatchers/component";
-import {green} from "@material-ui/core/colors/index";
+import { bindActionCreators } from "redux";
+import { connect } from "react-redux";
+import { fetchComponents } from "../../../data/redux/dispatchers/component";
+import { green } from "@material-ui/core/colors/index";
 import LoadingProgress from "../../../common/status/LoadingProgress";
-import {addClientToComponent, deleteClientFromComponent} from "../../../data/redux/dispatchers/client";
+import { addClientToComponent, deleteClientFromComponent } from "../../../data/redux/dispatchers/client";
 import ClientApi from "../../../data/api/ClientApi";
 import WarningMessageBox from "../../../common/message-box/WarningMessageBox";
 import InformationMessageBox from "../../../common/message-box/InformationMessageBox";
-import {withContext} from "../../../data/context/withContext";
+import { withContext } from "../../../data/context/withContext";
+import RemoveButton from "../../../common/button/RemoveButton";
+import AddButton from "../../../common/button/AddButton";
 
 const styles = theme => ({
   root: {
-    display: 'flex',
-    justifyContent: 'center',
+    display: "flex",
+    justifyContent: "center"
   },
   componentList: {
-    width: '75%',
+    width: "75%"
   },
   avtarstyle: {
     margin: 1,
-    color: '#fff',
-    backgroundColor: green[500],
+    color: "#fff",
+    backgroundColor: green[500]
   },
   title: {
     paddingLeft: theme.spacing.unit * 3,
-    paddingBottom: theme.spacing.unit,
+    paddingBottom: theme.spacing.unit
   },
   listItem: {
-    borderBottom: '1px dashed lightgray',
+    borderBottom: "1px dashed lightgray"
   },
   itemAvatar: {
-    color: '#fff',
-    backgroundColor: theme.palette.secondary.main,
-  },
-  addIcon: {
-    color: theme.palette.secondary.main,
-  },
-  removeIcon: {
-    color: theme.palette.primary.light,
-  },
+    color: "#fff",
+    backgroundColor: theme.palette.secondary.main
+  }
 });
 
 class ClientTabComponent extends React.Component {
@@ -64,7 +57,7 @@ class ClientTabComponent extends React.Component {
     this.setState({
       askUnLink: true,
       message: "Er du sikker på at du vil fjerne clientet fra:  " + component.description + "?",
-      component: component,
+      component: component
     });
 
   };
@@ -72,7 +65,7 @@ class ClientTabComponent extends React.Component {
     this.setState({
       askLink: true,
       message: "Vil du legge clientet til:  " + component.description + "?",
-      component: component,
+      component: component
     });
   };
   unLinkComponent = (component) => {
@@ -94,7 +87,7 @@ class ClientTabComponent extends React.Component {
   };
   onCloseLink = (confirmed) => {
     this.setState({
-      askLink: false,
+      askLink: false
     });
 
     if (confirmed) {
@@ -103,7 +96,7 @@ class ClientTabComponent extends React.Component {
   };
   onCloseUnLink = (confirmed) => {
     this.setState({
-      askUnLink: false,
+      askUnLink: false
     });
 
     if (this.isLinkedToClient(this.state.component) && confirmed) {
@@ -123,7 +116,8 @@ class ClientTabComponent extends React.Component {
   getOrganisationComponents = () => {
     return this.props.components
       .filter(component => component.organisations.length > 0)
-      .filter(component => component.organisations.find(o => o === this.props.context.currentOrganisation.dn));
+      .filter(component => component.organisations.find(o => o === this.props.context.currentOrganisation.dn))
+      .filter(component => !component.openData);
   };
 
   constructor(props) {
@@ -131,14 +125,14 @@ class ClientTabComponent extends React.Component {
     this.state = {
       askLink: false,
       askUnLink: false,
-      message: '',
+      message: ""
     };
   }
 
   static getDerivedStateFromProps(nextProps, prevState) {
     if (nextProps.client !== prevState.client) {
       return {
-        client: nextProps.client,
+        client: nextProps.client
       };
     }
     return null;
@@ -158,7 +152,7 @@ class ClientTabComponent extends React.Component {
 
   renderComponents() {
 
-    const {classes} = this.props;
+    const { classes } = this.props;
     const organisationComponents = this.getOrganisationComponents();
     if (organisationComponents.length > 0) {
       return (
@@ -187,16 +181,14 @@ class ClientTabComponent extends React.Component {
                 />
                 <ListItemSecondaryAction>
                   {this.isLinkedToClient(component) ?
-                    (<IconButton aria-label="Remove" onClick={() => this.askToUnLinkComponent(component)}>
-                      <RemoveIcon className={classes.removeIcon}/>
-                    </IconButton>)
+                    (<RemoveButton onClick={() => this.askToUnLinkComponent(component)}
+                                   title="Fjerne klienten fra komponenten"/>)
                     :
-                    (<IconButton aria-label="Add" onClick={() => this.askToLinkComponent(component)}>
-                      <AddIcon className={classes.addIcon}/>
-                    </IconButton>)
+                    (<AddButton onClick={() => this.askToLinkComponent(component)}
+                                title="Legge klienten til komponenten"/>)
                   }
                 </ListItemSecondaryAction>
-              </ListItem>,
+              </ListItem>
             )}
           </List>
         </div>
@@ -213,15 +205,15 @@ class ClientTabComponent extends React.Component {
 
 function mapStateToProps(state) {
   return {
-    components: state.component.components,
-  }
+    components: state.component.components
+  };
 }
 
 function mapDispatchToProps(dispatch) {
   return bindActionCreators({
     fetchComponents: fetchComponents,
     addClientToComponent: addClientToComponent,
-    deleteClientFromComponent: deleteClientFromComponent,
+    deleteClientFromComponent: deleteClientFromComponent
   }, dispatch);
 }
 

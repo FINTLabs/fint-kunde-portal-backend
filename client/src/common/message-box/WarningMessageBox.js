@@ -49,7 +49,7 @@ class WarningMessageBox extends React.Component {
           aria-labelledby="alert-dialog-title"
           aria-describedby="alert-dialog-description"
         >
-          <DialogTitle id="alert-dialog-title">{"Komponent"}</DialogTitle>
+          <DialogTitle id="alert-dialog-title">{this.props.title}</DialogTitle>
           <DialogContent className={classes.content}>
             <WarningIcon className={classes.warningIcon}/>
             <DialogContentText className={classes.text} id="alert-dialog-description">
@@ -70,9 +70,16 @@ class WarningMessageBox extends React.Component {
   }
 }
 
+WarningMessageBox.defaultProps = {
+  title: "Advarsel"
+};
+
 WarningMessageBox.propTypes = {
+  classes: PropTypes.any,
   message: PropTypes.string.isRequired,
-  show: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
+  show: PropTypes.bool.isRequired,
+  title: PropTypes.string.isRequired,
 };
 export default withStyles(styles)(WarningMessageBox);
+

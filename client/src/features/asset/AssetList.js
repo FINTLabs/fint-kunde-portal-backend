@@ -16,6 +16,7 @@ import AssetView from "./view/AssetView";
 import PropTypes from "prop-types";
 import {withContext} from "../../data/context/withContext";
 import WarningMessageBox from "../../common/message-box/WarningMessageBox";
+import FeatureHelperText from "../../common/help/FeatureHelperText";
 
 
 const styles = theme => ({
@@ -116,6 +117,17 @@ class AssetList extends Component {
         />
         <div className={classes.root}>
           <div className={classes.componentList}>
+            <FeatureHelperText>
+              <p>
+              En ressurs er identifikatoren som styrer en forespørsel mot en
+              komponent til riktig organisasjon. Alle adapter og klienter må
+              være knyttet til en ressurs.
+              </p>
+              <p>
+                Når man lager et nytt adapter eller klient vil disse automatisk
+                bli tilknyttet primærressursen.
+              </p>
+            </FeatureHelperText>
             <Typography variant="headline" className={classes.title}>Ressurser</Typography>
             <Divider/>
             <List>

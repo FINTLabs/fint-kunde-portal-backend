@@ -1,15 +1,18 @@
 import React from "react";
-import {connect} from "react-redux";
-import {bindActionCreators} from "redux";
-import {withStyles} from "@material-ui/core";
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
+import { withStyles } from "@material-ui/core";
 import LoadingProgress from "../../common/status/LoadingProgress";
-import ApisList from "./ComponentList";
-import {fetchComponents} from "../../data/redux/dispatchers/component";
-import {linkComponentToOrganisation, unlinkComponentFromOrganisation} from "../../data/redux/dispatchers/organisation";
-import {withContext} from "../../data/context/withContext";
+import ComponentList from "./ComponentList";
+import { fetchComponents } from "../../data/redux/dispatchers/component";
+import {
+  linkComponentToOrganisation,
+  unlinkComponentFromOrganisation
+} from "../../data/redux/dispatchers/organisation";
+import { withContext } from "../../data/context/withContext";
 
 const styles = () => ({
-  root: {},
+  root: {}
 });
 
 
@@ -23,6 +26,18 @@ class ComponentContainer extends React.Component {
     this.props.fetchComponents();
   }
 
+  /*
+  getComponentsList = () => {
+    const { currentOrganisation } = this.props.context;
+    const { components } = this.props;
+
+    if (currentOrganisation.name === "fintlabs_no") {
+      return components;
+    }
+    return components.filter(component => component.common === false);
+  };
+  */
+
   render() {
     if (this.props.components === undefined || this.props.context.currentOrganisation === undefined) {
       return <LoadingProgress/>;
@@ -32,12 +47,12 @@ class ComponentContainer extends React.Component {
   }
 
   renderPosts() {
-    const {classes} = this.props;
-
+    const { classes, components } = this.props;
+    //const components = this.getComponentsList();
     return (
       <div className={classes.root}>
-        <ApisList
-          components={this.props.components}
+        <ComponentList
+          components={components}
           organisation={this.props.context.currentOrganisation}
           linkComponentToOrganisation={this.props.linkComponentToOrganisation}
           unlinkComponentFromOrganisation={this.props.unlinkComponentFromOrganisation}
@@ -55,15 +70,15 @@ ComponentContainer.propTypes = {
 
 function mapStateToProps(state) {
   return {
-    components: state.component.components,
-  }
+    components: state.component.components
+  };
 }
 
 function matchDispatchToProps(dispatch) {
   return bindActionCreators({
     fetchComponents: fetchComponents,
     linkComponentToOrganisation: linkComponentToOrganisation,
-    unlinkComponentFromOrganisation: unlinkComponentFromOrganisation,
+    unlinkComponentFromOrganisation: unlinkComponentFromOrganisation
   }, dispatch);
 }
 

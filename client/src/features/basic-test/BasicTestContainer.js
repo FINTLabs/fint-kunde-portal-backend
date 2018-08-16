@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, { Component } from "react";
 import AutoHideNotification from "../../common/notification/AutoHideNotification";
 import ComponentApi from "../../data/api/ComponentApi";
 import LoadingProgress from "../../common/status/LoadingProgress";
@@ -7,42 +7,43 @@ import Typography from "@material-ui/core/Typography";
 import EnvironmentSelector from "../../common/test/EnvironmentSelector";
 import ClientSelector from "../../common/test/ClientSelector";
 import PropTypes from "prop-types";
-import {withContext} from "../../data/context/withContext";
-import {bindActionCreators} from "redux";
-import {connect} from "react-redux";
-import {fetchClients} from "../../data/redux/dispatchers/client";
-import {withStyles} from "@material-ui/core";
+import { withContext } from "../../data/context/withContext";
+import { bindActionCreators } from "redux";
+import { connect } from "react-redux";
+import { fetchClients } from "../../data/redux/dispatchers/client";
+import { withStyles } from "@material-ui/core";
 import BasicTestApi from "../../data/api/BasicTestApi";
 import BasicTestRunButton from "./BasicTestRunButton";
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableHead from '@material-ui/core/TableHead';
-import TableRow from '@material-ui/core/TableRow';
+import Table from "@material-ui/core/Table";
+import TableBody from "@material-ui/core/TableBody";
+import TableCell from "@material-ui/core/TableCell";
+import TableHead from "@material-ui/core/TableHead";
+import TableRow from "@material-ui/core/TableRow";
 import TrafficLight from "../../common/status/TrafficLight";
 import HealthTestApi from "../../data/api/HealthTestApi";
+import FeatureHelperText from "../../common/help/FeatureHelperText";
 
 const styles = (theme) => ({
   root: {
-    display: 'flex',
-    justifyContent: 'center',
+    display: "flex",
+    justifyContent: "center"
   },
   testForm: {
-    width: '75%',
+    width: "75%"
   },
   formControls: {
-    marginTop: theme.spacing.unit,
+    marginTop: theme.spacing.unit
   },
   formActions: {
-    display: 'inline-block',
+    display: "inline-block",
     marginTop: theme.spacing.unit * 2,
     //justifyContent: 'right',
-    borderBottom: 'lightgray dotted 1px',
-    width: '100%'
+    borderBottom: "lightgray dotted 1px",
+    width: "100%"
   },
   healthStatusLight: {},
   healthStatusMessage: {},
-  title: {},
+  title: {}
 });
 
 class BasicTestContainer extends Component {
@@ -51,29 +52,29 @@ class BasicTestContainer extends Component {
     super(props);
     this.state = {
       notify: false,
-      notifyMessage: '',
+      notifyMessage: "",
       components: [],
-      endpoint: '',
-      baseUrl: '',
-      client: '',
+      endpoint: "",
+      baseUrl: "",
+      client: "",
       runningTest: false,
       loading: false,
       success: true,
-      testCases: [],
+      testCases: []
     };
   }
 
   notify = (message) => {
     this.setState({
       notify: true,
-      notifyMessage: message,
+      notifyMessage: message
     });
   };
 
   onCloseNotification = () => {
     this.setState({
       notify: false,
-      notifyMessage: '',
+      notifyMessage: ""
     });
   };
 
@@ -81,19 +82,19 @@ class BasicTestContainer extends Component {
     ComponentApi.getOrganisationComponents(organisationName)
       .then(([response, json]) => {
         if (response.status === 200) {
-          this.setState({components: json});
+          this.setState({ components: json });
         }
       });
   };
 
   componentDidMount() {
-    const {currentOrganisation} = this.props.context;
+    const { currentOrganisation } = this.props.context;
     this.props.fetchClients(currentOrganisation.name);
     this.getOrganisationComponents(currentOrganisation.name);
   }
 
   componentDidUpdate(prevProps, prevState, snapshot) {
-    const {currentOrganisation} = this.props.context;
+    const { currentOrganisation } = this.props.context;
     if (prevProps.context !== this.props.context) {
       this.props.fetchClients(currentOrganisation.name);
       this.getOrganisationComponents(currentOrganisation.name);
@@ -110,8 +111,8 @@ class BasicTestContainer extends Component {
     return {
       endpoint: `${this.state.endpoint}`,
       baseUrl: this.state.baseUrl,
-      client: this.state.client,
-    }
+      client: this.state.client
+    };
   };
 
   runTest = () => {
@@ -120,38 +121,38 @@ class BasicTestContainer extends Component {
       loading: true,
       success: false,
       testCases: [],
-      healthResult: {},
+      healthResult: {}
     });
     this.notify("Testen ble startet!");
     const test = this.getTest();
 
-    const {clientConfig} = this.props.context;
+    const { clientConfig } = this.props.context;
     BasicTestApi.runTest(clientConfig.testServiceBaseUrl, test)
       .then(([response, json]) => {
         if (response.status === 200) {
-          this.setState({testCases: json.cases});
+          this.setState({ testCases: json.cases });
         }
         else {
           this.notify("Oisann, dette gikk ikke helt etter planen!");
         }
         this.setState({
           loading: false,
-          success: true,
+          success: true
         });
       })
       .catch(() => {
         this.notify("Oisann, dette gikk ikke helt etter planen! Prøv igjen ;)");
         this.setState({
           loading: false,
-          success: true,
+          success: true
         });
       });
 
-    this.setState({healthResult: {status: 'RUNNING', healthData: []}});
+    this.setState({ healthResult: { status: "RUNNING", healthData: [] } });
     HealthTestApi.runTest(clientConfig.testServiceBaseUrl, test)
       .then(([response, json]) => {
         if (response.status === 200) {
-          this.setState({healthResult: json});
+          this.setState({ healthResult: json });
         }
         else {
           this.notify("Oisann, dette gikk ikke helt etter planen!");
@@ -188,8 +189,8 @@ class BasicTestContainer extends Component {
   }
 
   renderContainer() {
-    const {testCases, healthResult} = this.state;
-    const {classes} = this.props;
+    const { testCases, healthResult } = this.state;
+    const { classes } = this.props;
 
     return (
       <div className={classes.root}>
@@ -201,6 +202,18 @@ class BasicTestContainer extends Component {
 
 
         <div className={classes.testForm}>
+          <FeatureHelperText>
+            <p>
+              En basistest undersøker om alle delene i FINT komponenten fungerer
+              som de skal. I tillegg sjekker den om cachen har data og at de
+              nylig ble oppdatert.
+            </p>
+            <p>
+              Dette er greit å kjøre i feilsøkingssammenheng. Det er også et
+              krav å sende med resultetet av denne testen hvis man kontakter
+              support.
+            </p>
+          </FeatureHelperText>
           <div className={classes.title}>
             <Typography variant="headline">Basistest</Typography>
           </div>
@@ -221,9 +234,9 @@ class BasicTestContainer extends Component {
               name="client"
               value={this.state.client}
               clients={this.props.clients}
-              disabled={this.state.baseUrl === 'https://play-with-fint.felleskomponent.no'
-              || this.state.baseUrl === ''
-              || this.state.endpoint === ''}
+              disabled={this.state.baseUrl === "https://play-with-fint.felleskomponent.no"
+              || this.state.baseUrl === ""
+              || this.state.endpoint === ""}
             />
           </div>
           <div className={classes.formActions}>
@@ -312,24 +325,24 @@ class BasicTestContainer extends Component {
 }
 
 BasicTestContainer.defaultProps = {
-  clients: [],
+  clients: []
 };
 
 BasicTestContainer.propTypes = {
   clients: PropTypes.array.isRequired,
   context: PropTypes.object.isRequired,
-  fetchClients: PropTypes.func.isRequired,
+  fetchClients: PropTypes.func.isRequired
 };
 
 function mapStateToProps(state) {
   return {
-    clients: state.client.clients,
-  }
+    clients: state.client.clients
+  };
 }
 
 function mapDispatchToProps(dispatch) {
   return bindActionCreators({
-    fetchClients: fetchClients,
+    fetchClients: fetchClients
   }, dispatch);
 }
 

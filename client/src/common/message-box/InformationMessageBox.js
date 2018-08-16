@@ -70,9 +70,16 @@ class WarningMessageBox extends React.Component {
   }
 }
 
+WarningMessageBox.defaultProps = {
+  show: false
+}
+;
 WarningMessageBox.propTypes = {
+  classes: PropTypes.any,
   message: PropTypes.string.isRequired,
-  show: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
+  show: PropTypes.bool.isRequired
 };
+
 export default withStyles(styles)(WarningMessageBox);
+

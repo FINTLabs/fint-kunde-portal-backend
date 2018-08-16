@@ -1,45 +1,48 @@
-import React, {Component} from 'react';
-import PropTypes from 'prop-types';
-import {withStyles} from "@material-ui/core";
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableHead from '@material-ui/core/TableHead';
-import TableRow from '@material-ui/core/TableRow';
-import Paper from '@material-ui/core/Paper';
-import IconButton from '@material-ui/core/IconButton';
-import RefreshIcon from '@material-ui/icons/Refresh';
-import ClearIcon from '@material-ui/icons/Clear';
+import React, { Component } from "react";
+import PropTypes from "prop-types";
+import { withStyles } from "@material-ui/core";
+import Table from "@material-ui/core/Table";
+import TableBody from "@material-ui/core/TableBody";
+import TableCell from "@material-ui/core/TableCell";
+import TableHead from "@material-ui/core/TableHead";
+import TableRow from "@material-ui/core/TableRow";
+import Paper from "@material-ui/core/Paper";
+import IconButton from "@material-ui/core/IconButton";
+import RefreshIcon from "@material-ui/icons/Refresh";
+import ClearIcon from "@material-ui/icons/Clear";
 import LinkWalkerApi from "../../data/api/LinkWalkerApi";
 import LinkWalkerTestView from "./LinkWalkerTestView";
 import TrafficLight from "../../common/status/TrafficLight";
 import Typography from "@material-ui/core/Typography";
+import FeatureHelperText from "../../common/help/FeatureHelperText";
 
 const styles = (theme) => ({
   root: {
-    width: '100%',
-    //marginTop: theme.spacing.unit * 3,
-    overflowX: 'auto',
+    width: "90%",
+    overflowX: "auto"
   },
   table: {
-    minWidth: 700,
+    minWidth: 700
   },
   statusFailed: {
-    color: "red",
+    color: "red"
   },
   statusRunning: {
-    color: "#f4a142",
+    color: "#f4a142"
   },
   statusOk: {
-    color: "green",
+    color: "green"
   },
   button: {
-    margin: theme.spacing.unit,
+    margin: theme.spacing.unit
   },
   title: {
     paddingLeft: theme.spacing.unit,
-    paddingBottom: theme.spacing.unit,
+    paddingBottom: theme.spacing.unit
   },
+  help: {
+    margin: theme.spacing.unit / 2,
+  }
 });
 
 class LinkWalkerTestList extends Component {
@@ -52,18 +55,18 @@ class LinkWalkerTestList extends Component {
   }
 
   getStatusClass = (status) => {
-    if (status === 'OK') return this.props.classes.statusOk;
-    if (status === 'RUNNING') return this.props.classes.statusRunning;
-    if (status === 'FAILED') return this.props.classes.statusFailed;
+    if (status === "OK") return this.props.classes.statusOk;
+    if (status === "RUNNING") return this.props.classes.statusRunning;
+    if (status === "FAILED") return this.props.classes.statusFailed;
   };
 
   refreshTestList = () => {
-    const {organisationName, clientConfig} = this.props;
+    const { organisationName, clientConfig } = this.props;
     this.props.fetchLinkWalkerTests(clientConfig.linkwalkerBaseUrl, organisationName);
   };
 
   clearTests = () => {
-    const {organisationName, clientConfig} = this.props;
+    const { organisationName, clientConfig } = this.props;
     LinkWalkerApi.clearTests(clientConfig.linkwalkerBaseUrl, organisationName)
       .then((response) => {
         if (response.status === 200) {
@@ -73,26 +76,31 @@ class LinkWalkerTestList extends Component {
         else {
           this.props.notify("Oh shit, noe gikk galt!");
         }
-      })
+      });
   };
 
   showTestView = (test) => {
     this.setState({
       showLinkWalkerTestView: true,
-      test: test,
+      test: test
     });
   };
 
   closeTestView = () => {
-    this.setState({showLinkWalkerTestView: false});
+    this.setState({ showLinkWalkerTestView: false });
   };
 
 
   render() {
 
-    const {tests, classes} = this.props;
+    const { tests, classes } = this.props;
     return (
-      <div>
+      <div className={classes.root}>
+        <div className={classes.help}>
+          <FeatureHelperText>
+            En relasjonstest sjekker at alle relasjonene i en komponent virker.
+          </FeatureHelperText>
+        </div>
         <Typography variant="headline" className={classes.title}>Relasjonstest</Typography>
 
         <IconButton className={classes.button} aria-label="Refresh" color="primary"
@@ -103,7 +111,7 @@ class LinkWalkerTestList extends Component {
                     onClick={() => this.clearTests()}>
           <ClearIcon/>
         </IconButton>
-        <Paper className={classes.root}>
+        <Paper>
           <Table className={classes.table}>
             <TableHead>
               <TableRow>

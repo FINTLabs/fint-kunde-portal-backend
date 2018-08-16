@@ -1,14 +1,23 @@
 import React from "react";
-import {CopyToClipboard} from "react-copy-to-clipboard";
-import {Button, FormControl, IconButton, Input, InputAdornment, InputLabel, Tooltip, withStyles} from "@material-ui/core";
-import {ContentCopy} from "@material-ui/icons";
+import { CopyToClipboard } from "react-copy-to-clipboard";
+import {
+  Button,
+  FormControl,
+  IconButton,
+  Input,
+  InputAdornment,
+  InputLabel,
+  Tooltip,
+  withStyles
+} from "@material-ui/core";
+import { ContentCopy } from "@material-ui/icons";
 import PropTypes from "prop-types";
 import AdapterApi from "../../../data/api/AdapterApi";
 import * as PasswordGenerator from "generate-password";
 import GetSecretIcon from "@material-ui/icons/GetApp";
 import RefreshIcon from "@material-ui/icons/Refresh";
-import {withContext} from "../../../data/context/withContext";
-import {Link} from "react-router-dom";
+import { withContext } from "../../../data/context/withContext";
+import { Link } from "react-router-dom";
 import WarningMessageBox from "../../../common/message-box/WarningMessageBox";
 
 
@@ -52,8 +61,9 @@ class AdapterTabAuthenticationInformation extends React.Component {
         clientId: this.props.adapter.clientId,
         openIdSecret: ' ',
         assetIds: this.props.adapter.assetIds,
-        askToResetPassword: false,
       },
+      askToResetPassword: false,
+      message: ""
     };
   }
 
@@ -232,8 +242,8 @@ class AdapterTabAuthenticationInformation extends React.Component {
 
               <Input
                 margin="dense"
-                id="name"
-                name="name"
+                id="asset-id"
+                name="asset-id"
                 value={this.props.adapter.assetIds ? this.props.adapter.assetIds : 'Ingen ressursId er tilknyttet enda!'}
                 disabled
                 endAdornment={

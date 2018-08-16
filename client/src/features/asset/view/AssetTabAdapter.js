@@ -1,7 +1,6 @@
 import React from "react";
 import {
   Avatar,
-  IconButton,
   List,
   ListItem,
   ListItemAvatar,
@@ -10,15 +9,15 @@ import {
   Typography,
   withStyles
 } from "@material-ui/core";
-import AddIcon from "@material-ui/icons/AddCircle";
-import RemoveIcon from "@material-ui/icons/RemoveCircle";
 import ComponentIcon from "@material-ui/icons/WebAsset";
-import {green} from "@material-ui/core/colors/index";
+import { green } from "@material-ui/core/colors/index";
 import LoadingProgress from "../../../common/status/LoadingProgress";
 import AssetApi from "../../../data/api/AssetApi";
 import WarningMessageBox from "../../../common/message-box/WarningMessageBox";
 import InformationMessageBox from "../../../common/message-box/InformationMessageBox";
-import {withContext} from "../../../data/context/withContext";
+import { withContext } from "../../../data/context/withContext";
+import RemoveButton from "../../../common/button/RemoveButton";
+import AddButton from "../../../common/button/AddButton";
 
 const styles = theme => ({
   root: {
@@ -43,12 +42,6 @@ const styles = theme => ({
   itemAvatar: {
     color: '#fff',
     backgroundColor: theme.palette.secondary.main,
-  },
-  addIcon: {
-    color: theme.palette.secondary.main,
-  },
-  removeIcon: {
-    color: theme.palette.primary.light,
   },
 });
 
@@ -180,13 +173,9 @@ class AssetTabAdapter extends React.Component {
                 />
                 <ListItemSecondaryAction>
                   {this.isLinkedToAsset(adapter) ?
-                    (<IconButton aria-label="Remove" onClick={() => this.askToUnLinkAdapter(adapter)}>
-                      <RemoveIcon className={classes.removeIcon}/>
-                    </IconButton>)
+                    (<RemoveButton onClick={() => this.askToUnLinkAdapter(adapter)} title="Fjerne adapteret fra ressursen"/>)
                     :
-                    (<IconButton aria-label="Add" onClick={() => this.askToLinkAdapter(adapter)}>
-                      <AddIcon className={classes.addIcon}/>
-                    </IconButton>)
+                    (<AddButton onClick={() => this.askToLinkAdapter(adapter)} title="Legge adapteret til ressursen"/>)
                   }
                 </ListItemSecondaryAction>
               </ListItem>,

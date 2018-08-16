@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types'
 import React from "react";
 import Button from "@material-ui/core/Button";
 import {Dialog, DialogActions, DialogContent, DialogTitle,} from "@material-ui/core";
@@ -50,7 +51,7 @@ class AdapterView extends React.Component {
   constructor(props, context) {
     super(props, context);
     this.state = {
-      adapter: Object.assign({}, this.props.adapter),
+      adapter: this.props.adapter,
       isSaving: true,
       copiedToClipboard: false,
       notify: false,
@@ -114,6 +115,16 @@ class AdapterView extends React.Component {
   }
 }
 
-AdapterView.propTypes = {};
+AdapterView.defaultProps = {
+  open: false,
+};
+
+AdapterView.propTypes = {
+  adapter: PropTypes.object,
+  onClose: PropTypes.func.isRequired,
+  open: PropTypes.bool.isRequired,
+  updateAdapter: PropTypes.func.isRequired
+};
 
 export default withStyles(styles)(AdapterView);
+

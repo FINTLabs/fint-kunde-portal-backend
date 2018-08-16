@@ -1,16 +1,24 @@
 import React from "react";
-import {CopyToClipboard} from "react-copy-to-clipboard";
-import {Button, FormControl, IconButton, Input, InputAdornment, InputLabel, Tooltip, withStyles} from "@material-ui/core";
-import {ContentCopy} from "@material-ui/icons";
+import { CopyToClipboard } from "react-copy-to-clipboard";
+import {
+  Button,
+  FormControl,
+  IconButton,
+  Input,
+  InputAdornment,
+  InputLabel,
+  Tooltip,
+  withStyles
+} from "@material-ui/core";
+import { ContentCopy } from "@material-ui/icons";
 import ClientApi from "../../../data/api/ClientApi";
 import * as PasswordGenerator from "generate-password";
 import GetSecretIcon from "@material-ui/icons/GetApp";
 import RefreshIcon from "@material-ui/icons/Refresh";
-import {Link} from "react-router-dom";
-import {withContext} from "../../../data/context/withContext";
+import { Link } from "react-router-dom";
+import { withContext } from "../../../data/context/withContext";
 import PropTypes from "prop-types";
 import WarningMessageBox from "../../../common/message-box/WarningMessageBox";
-
 
 
 const styles = theme => ({
@@ -54,8 +62,9 @@ class ClientTabAuthenticationInformation extends React.Component {
         clientId: this.props.client.clientId,
         openIdSecret: ' ',
         assetId: this.props.client.assetId,
-        askToResetPassword: false,
       },
+      askToResetPassword: false,
+      message: ""
     };
   }
 
@@ -232,8 +241,8 @@ class ClientTabAuthenticationInformation extends React.Component {
 
               <Input
                 margin="dense"
-                id="name"
-                name="name"
+                id="asset-id"
+                name="asset-id"
                 value={this.props.client.assetId ? this.props.client.assetId : 'Ingen ressursId er tilknyttet enda!'}
                 disabled
                 endAdornment={
