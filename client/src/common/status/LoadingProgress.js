@@ -4,12 +4,12 @@ import {CircularProgress, withStyles} from "@material-ui/core";
 
 const styles = theme => ({
   progress: {
-    margin: `0 ${theme.spacing.unit * 2}px`,
+    //margin: `0 ${theme.spacing.unit * 2}px`,
     position: 'absolute',
     top: '30%',
     left: '50%',
     marginRight: '-50%',
-    transform: 'translate(-50%, -50%)'
+    //transform: 'translate(-50%, -50%)'
   },
 });
 
@@ -34,7 +34,7 @@ LoadingProgress.propTypes = {
 
 LoadingProgress.defaultProps = {
   color: 'secondary',
-  size: 150
+  size: 125,
 };
 
 export default withStyles(styles)(LoadingProgress);

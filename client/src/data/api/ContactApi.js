@@ -3,8 +3,8 @@ class ContactApi {
   static fetchContacts() {
     const url = "/api/contacts";
     return fetch(url, {
-      method: 'GET',
-      credentials: 'same-origin',
+      method: "GET",
+      credentials: "same-origin"
     })
       .then(response => Promise.all([response, response.json()]));
   }
@@ -12,20 +12,20 @@ class ContactApi {
   static fetchContactOrganisatons() {
     const url = "/api/contacts/organisations";
     return fetch(url, {
-      method: 'GET',
-      credentials: 'same-origin',
+      method: "GET",
+      credentials: "same-origin"
     }).then(response => {
-      return response
+      return response;
     });
   }
 
   static updateContact(contact) {
     const request = new Request(`/api/contacts/${contact.nin}`, {
-      method: 'PUT',
+      method: "PUT",
       headers: new Headers({
-        'Content-Type': 'application/json'
+        "Content-Type": "application/json"
       }),
-      credentials: 'same-origin',
+      credentials: "same-origin",
       body: JSON.stringify({
         nin: contact.nin,
         firstName: contact.firstName,
@@ -44,12 +44,12 @@ class ContactApi {
 
   static createContact(contact) {
     const request = new Request(`/api/contacts`, {
-      method: 'POST',
+      method: "POST",
       headers: {
-        'Accept': '*/*',
-        'Content-Type': 'application/json'
+        "Accept": "*/*",
+        "Content-Type": "application/json"
       },
-      credentials: 'same-origin',
+      credentials: "same-origin",
       body: JSON.stringify({
         nin: contact.nin,
         firstName: contact.firstName,
@@ -68,8 +68,8 @@ class ContactApi {
 
   static deleteContact(contact) {
     const request = new Request(`/api/contacts/${contact.nin}`, {
-      method: 'DELETE',
-      credentials: 'same-origin',
+      method: "DELETE",
+      credentials: "same-origin"
     });
 
     return fetch(request).then(response => {

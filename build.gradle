@@ -1,13 +1,7 @@
 buildscript {
+  apply from: 'https://raw.githubusercontent.com/FINTlibs/fint-buildscripts/v1.4.0/dependencies.gradle'
   ext {
     springBootVersion = '2.0.3.RELEASE'
-
-    gradleVersion = '4.5'
-    springfoxLoaderVersion = '1.3.0'
-    lombokVersion = '1.18.2'
-    spockSpringVersion = '1.1-groovy-2.4'
-    cglibVersion = '3.2.5'
-    slf4jVersion = '1.7.25'
   }
   repositories {
     mavenCentral()
