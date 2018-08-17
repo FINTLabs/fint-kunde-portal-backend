@@ -9,7 +9,7 @@ class NoGoContainer extends Component {
     let message, gotoUrl, buttonTitle;
     if (!contactExists) {
       message = "Du har ikke opprettet bruker.";
-      gotoUrl = "https://kunde-selvregistrering.felleskomponent.no";
+      gotoUrl = "https://registrering.felleskomponent.no";
       buttonTitle = "Trykk her for å opprette konto";
     }
     if (contactExists && !contactHasOrganisations) {
