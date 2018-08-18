@@ -47,7 +47,7 @@ class AppProvider extends Component {
       .then(json => {
         this.setState({
           organisations: json,
-          currentOrganisation: cookies.get('organisation') || json[1],
+          currentOrganisation: cookies.get('organisation') || json[0],
         });
       });
 
