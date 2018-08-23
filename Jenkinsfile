@@ -3,36 +3,29 @@ pipeline {
     stages {
         stage('Build') {
             steps {
-                sh "docker build --tag ${GIT_COMMIT} ."
+                script {
+                    props=readProperties file: 'gradle.properties'
+                }
+                sh "docker build --tag ${GIT_COMMIT} --build-arg apiVersion=${props.apiVersion} ."
             }
         }
         stage('Publish') {
-            when { branch 'master' }
+            when {
+                branch 'master'
+            }
             steps {
-                sh "docker tag ${GIT_COMMIT} dtr.fintlabs.no/beta/kunde-portal:latest"
+                sh "docker tag ${GIT_COMMIT} dtr.fintlabs.no/beta/felles-kodeverk:latest"
                 withDockerRegistry([credentialsId: 'dtr-fintlabs-no', url: 'https://dtr.fintlabs.no']) {
-                    sh "docker push 'dtr.fintlabs.no/beta/kunde-portal:latest'"
-                }
-                withDockerServer([credentialsId: "ucp-fintlabs-jenkins-bundle", uri: "tcp://ucp.fintlabs.no:443"]) {
-                    sh "docker service update customer-portal_customer-portal --image dtr.fintlabs.no/beta/kunde-portal:latest --detach=false"
+                    sh "docker push 'dtr.fintlabs.no/beta/felles-kodeverk:latest'"
                 }
             }
         }
         stage('Publish PR') {
             when { changeRequest() }
             steps {
-                sh "docker tag ${GIT_COMMIT} dtr.fintlabs.no/beta/kunde-portal:${BRANCH_NAME}"
+                sh "docker tag ${GIT_COMMIT} dtr.fintlabs.no/beta/felles-kodeverk:${BRANCH_NAME}"
                 withDockerRegistry([credentialsId: 'dtr-fintlabs-no', url: 'https://dtr.fintlabs.no']) {
-                    sh "docker push 'dtr.fintlabs.no/beta/kunde-portal:${BRANCH_NAME}'"
-                }
-            }
-        }
-        stage('Publish Tag') {
-            when { buildingTag() }
-            steps {
-                sh "docker tag ${GIT_COMMIT} dtr.fintlabs.no/beta/kunde-portal:${TAG_NAME}"
-                withDockerRegistry([credentialsId: 'dtr-fintlabs-no', url: 'https://dtr.fintlabs.no']) {
-                    sh "docker push 'dtr.fintlabs.no/beta/kunde-portal:${TAG_NAME}'"
+                    sh "docker push 'dtr.fintlabs.no/beta/felles-kodeverk:${BRANCH_NAME}'"
                 }
             }
         }
