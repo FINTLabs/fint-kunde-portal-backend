@@ -5,7 +5,8 @@ class TestAuthApi {
       method: 'GET',
       headers: {
         'Accept': '*/*',
-        'x-client-dn': test.client
+        'x-client-dn': test.client,
+        'x-base-url': test.baseUrl,
       },
       credentials: 'same-origin',
     });
