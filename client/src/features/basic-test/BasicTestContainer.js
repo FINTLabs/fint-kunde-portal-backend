@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, {Component} from "react";
 import AutoHideNotification from "../../common/notification/AutoHideNotification";
 import ComponentApi from "../../data/api/ComponentApi";
 import LoadingProgress from "../../common/status/LoadingProgress";
@@ -7,11 +7,11 @@ import Typography from "@material-ui/core/Typography";
 import EnvironmentSelector from "../../common/test/EnvironmentSelector";
 import ClientSelector from "../../common/test/ClientSelector";
 import PropTypes from "prop-types";
-import { withContext } from "../../data/context/withContext";
-import { bindActionCreators } from "redux";
-import { connect } from "react-redux";
-import { fetchClients } from "../../data/redux/dispatchers/client";
-import { withStyles } from "@material-ui/core";
+import {withContext} from "../../data/context/withContext";
+import {bindActionCreators} from "redux";
+import {connect} from "react-redux";
+import {fetchClients} from "../../data/redux/dispatchers/client";
+import {withStyles} from "@material-ui/core";
 import BasicTestApi from "../../data/api/BasicTestApi";
 import BasicTestRunButton from "./BasicTestRunButton";
 import Table from "@material-ui/core/Table";
@@ -22,6 +22,7 @@ import TableRow from "@material-ui/core/TableRow";
 import TrafficLight from "../../common/status/TrafficLight";
 import HealthTestApi from "../../data/api/HealthTestApi";
 import FeatureHelperText from "../../common/help/FeatureHelperText";
+import TestAuthApi from "../../data/api/TestAuthApi";
 
 const styles = (theme) => ({
   root: {
@@ -60,7 +61,7 @@ class BasicTestContainer extends Component {
       runningTest: false,
       loading: false,
       success: true,
-      testCases: []
+      testCases: [],
     };
   }
 
@@ -82,19 +83,19 @@ class BasicTestContainer extends Component {
     ComponentApi.getOrganisationComponents(organisationName)
       .then(([response, json]) => {
         if (response.status === 200) {
-          this.setState({ components: json });
+          this.setState({components: json});
         }
       });
   };
 
   componentDidMount() {
-    const { currentOrganisation } = this.props.context;
+    const {currentOrganisation} = this.props.context;
     this.props.fetchClients(currentOrganisation.name);
     this.getOrganisationComponents(currentOrganisation.name);
   }
 
   componentDidUpdate(prevProps, prevState, snapshot) {
-    const { currentOrganisation } = this.props.context;
+    const {currentOrganisation} = this.props.context;
     if (prevProps.context !== this.props.context) {
       this.props.fetchClients(currentOrganisation.name);
       this.getOrganisationComponents(currentOrganisation.name);
@@ -126,49 +127,56 @@ class BasicTestContainer extends Component {
     this.notify("Testen ble startet!");
     const test = this.getTest();
 
-    const { clientConfig } = this.props.context;
-    BasicTestApi.runTest(clientConfig.testServiceBaseUrl, test)
-      .then(([response, json]) => {
-        if (response.status === 200) {
-          this.setState({ testCases: json.cases });
+    const {clientConfig} = this.props.context;
+
+
+    this.setState({healthResult: {status: "RUNNING", healthData: []}});
+    
+    TestAuthApi.authInit(clientConfig.testServiceBaseUrl, test)
+      .then(([response]) => {
+        if (response.status < 400) {
+
+          BasicTestApi.runTest(clientConfig.testServiceBaseUrl, test)
+            .then(([response, json]) => {
+              if (response.status === 200) {
+                this.setState({testCases: json.cases});
+              }
+              else {
+                this.notify("Oisann, dette gikk ikke helt etter planen!");
+              }
+              this.setState({
+                loading: false,
+                success: true
+              });
+            })
+            .catch(() => {
+              this.notify("Oisann, dette gikk ikke helt etter planen! Prøv igjen ;)");
+              this.setState({
+                loading: false,
+                success: true
+              });
+            });
+
+          HealthTestApi.runTest(clientConfig.testServiceBaseUrl, test)
+            .then(([response, json]) => {
+              if (response.status === 200) {
+                this.setState({healthResult: json});
+              }
+              else {
+                this.notify("Oisann, dette gikk ikke helt etter planen!");
+              }
+            })
+            .catch(() => {
+              this.notify("Oisann, dette gikk ikke helt etter planen! Prøv igjen ;)");
+            });
+
         }
-        else {
-          this.notify("Oisann, dette gikk ikke helt etter planen!");
-        }
-        this.setState({
-          loading: false,
-          success: true
-        });
       })
-      .catch(() => {
+      .catch((e) => {
+        console.log(e);
         this.notify("Oisann, dette gikk ikke helt etter planen! Prøv igjen ;)");
-        this.setState({
-          loading: false,
-          success: true
-        });
       });
 
-    this.setState({ healthResult: { status: "RUNNING", healthData: [] } });
-    HealthTestApi.runTest(clientConfig.testServiceBaseUrl, test)
-      .then(([response, json]) => {
-        if (response.status === 200) {
-          this.setState({ healthResult: json });
-        }
-        else {
-          this.notify("Oisann, dette gikk ikke helt etter planen!");
-        }
-        this.setState({
-          //loading: false,
-          //success: true,
-        });
-      })
-      .catch(() => {
-        this.notify("Oisann, dette gikk ikke helt etter planen! Prøv igjen ;)");
-        this.setState({
-          //loading: false,
-          //success: true,
-        });
-      });
 
   };
 
@@ -189,8 +197,8 @@ class BasicTestContainer extends Component {
   }
 
   renderContainer() {
-    const { testCases, healthResult } = this.state;
-    const { classes } = this.props;
+    const {testCases, healthResult} = this.state;
+    const {classes} = this.props;
 
     return (
       <div className={classes.root}>
