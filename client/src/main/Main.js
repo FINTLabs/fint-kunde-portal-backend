@@ -1,13 +1,13 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { withStyles } from "@material-ui/core/styles";
-import { BrowserRouter } from "react-router-dom";
+import {withStyles} from "@material-ui/core/styles";
+import {BrowserRouter} from "react-router-dom";
 import AppMenu from "./appmenu/AppMenu";
 import MeApi from "../data/api/MeApi";
 import NoGoContainer from "../features/nogo/NoGoContainer";
 import Provider from "react-redux/es/components/Provider";
 import store from "../data/redux/store/configure-store";
-import { CookiesProvider } from "react-cookie";
+import {CookiesProvider} from "react-cookie";
 import AppProvider from "../data/context/AppProvider";
 
 
@@ -30,7 +30,6 @@ class Main extends React.Component {
   }
 
   componentDidMount() {
-    console.log("me");
     MeApi.getMe()
       .then(([response, json]) => {
         if (response.status === 200) {
@@ -50,7 +49,7 @@ class Main extends React.Component {
   }
 
   render() {
-    const { contactExists, contactHasOrganisations } = this.state;
+    const {contactExists, contactHasOrganisations} = this.state;
     if (contactExists && contactHasOrganisations) {
       return this.renderAppMenu();
     }
@@ -58,10 +57,7 @@ class Main extends React.Component {
   }
 
   renderAppMenu() {
-    const { classes } = this.props;
-    const { contactExists, contactHasOrganisations } = this.state;
-    console.log(contactExists);
-    console.log(contactHasOrganisations);
+    const {classes} = this.props;
     return (
       <Provider store={store}>
         <CookiesProvider>
@@ -83,4 +79,4 @@ Main.propTypes = {
   theme: PropTypes.object.isRequired
 };
 
-export default withStyles(styles, { withTheme: true })(Main);
+export default withStyles(styles, {withTheme: true})(Main);

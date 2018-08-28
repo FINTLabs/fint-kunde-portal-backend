@@ -30,7 +30,7 @@ class NoGoMessage extends Component {
       <React.Fragment>
         <Paper className={classes.message}>
           <Grid container justify="center" alignItems="center">
-            <img src="fint.svg" alt="logo" className={classes.logo}/>
+            <img src="/fint.svg" alt="logo" className={classes.logo}/>
           </Grid>
           <Grid container justify="center" alignItems="center">
             {this.props.message}

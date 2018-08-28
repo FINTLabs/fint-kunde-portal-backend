@@ -131,7 +131,7 @@ class BasicTestContainer extends Component {
 
 
     this.setState({healthResult: {status: "RUNNING", healthData: []}});
-    
+
     TestAuthApi.authInit(clientConfig.testServiceBaseUrl, test)
       .then(([response]) => {
         if (response.status < 400) {
@@ -173,7 +173,6 @@ class BasicTestContainer extends Component {
         }
       })
       .catch((e) => {
-        console.log(e);
         this.notify("Oisann, dette gikk ikke helt etter planen! Prøv igjen ;)");
       });
 
@@ -284,7 +283,7 @@ class BasicTestContainer extends Component {
                     <TableBody>
                       {healthResult.healthData.map(h => {
                         return (
-                          <TableRow hover key={h.time}>
+                          <TableRow hover key={h.status}>
                             <TableCell>{h.status}</TableCell>
                             <TableCell>{h.component}</TableCell>
                             <TableCell>{h.time}</TableCell>

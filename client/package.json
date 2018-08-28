@@ -41,7 +41,8 @@
     "redux-thunk": "^2.2.0",
     "roboto-fontface": "^0.9.0",
     "semantic-ui-react": "^0.80.2",
-    "typeface-roboto": "^0.0.54"
+    "typeface-roboto": "^0.0.54",
+    "with-query": "^1.1.2"
   },
   "scripts": {
     "start": "react-scripts start",
