@@ -22,6 +22,7 @@ import InformationMessageBox from "../../../common/message-box/InformationMessag
 import { withContext } from "../../../data/context/withContext";
 import RemoveButton from "../../../common/button/RemoveButton";
 import AddButton from "../../../common/button/AddButton";
+import TestAuthApi from "../../../data/api/TestAuthApi";
 
 const styles = theme => ({
   root: {
@@ -69,19 +70,30 @@ class ClientTabComponent extends React.Component {
     });
   };
   unLinkComponent = (component) => {
-    ClientApi.deleteClientFromComponent(this.props.client, component, this.props.context.currentOrganisation.name)
+    const {clientConfig, currentOrganisation} = this.props.context;
+
+    ClientApi.deleteClientFromComponent(this.props.client, component, currentOrganisation.name)
       .then(() => {
         this.props.notify(`${this.props.client.name} ble lagt til ${component.description}`);
         this.props.fetchComponents();
+        TestAuthApi.clearAuth(clientConfig.testServiceBaseUrl, currentOrganisation.name)
+          .then((response) => {
+            console.log(response, "response");
+          })
       }).catch(error => {
     });
   };
   linkComponent = (component) => {
-    ClientApi.addClientToComponent(this.props.client, component, this.props.context.currentOrganisation.name)
-      .then(() => {
+    const {clientConfig, currentOrganisation} = this.props.context;
 
+    ClientApi.addClientToComponent(this.props.client, component, currentOrganisation.name)
+      .then(() => {
         this.props.notify(`${this.props.client.name} ble lagt til ${component.description}`);
         this.props.fetchComponents();
+        TestAuthApi.clearAuth(clientConfig.testServiceBaseUrl, currentOrganisation.name)
+          .then((response) => {
+            console.log(response, "response");
+          })
       }).catch(error => {
     });
   };
