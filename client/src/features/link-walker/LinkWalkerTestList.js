@@ -1,6 +1,6 @@
-import React, { Component } from "react";
+import React, {Component} from "react";
 import PropTypes from "prop-types";
-import { withStyles } from "@material-ui/core";
+import {withStyles} from "@material-ui/core";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
@@ -61,12 +61,12 @@ class LinkWalkerTestList extends Component {
   };
 
   refreshTestList = () => {
-    const { organisationName, clientConfig } = this.props;
+    const {organisationName, clientConfig} = this.props;
     this.props.fetchLinkWalkerTests(clientConfig.linkwalkerBaseUrl, organisationName);
   };
 
   clearTests = () => {
-    const { organisationName, clientConfig } = this.props;
+    const {organisationName, clientConfig} = this.props;
     LinkWalkerApi.clearTests(clientConfig.linkwalkerBaseUrl, organisationName)
       .then((response) => {
         if (response.status === 200) {
@@ -80,20 +80,27 @@ class LinkWalkerTestList extends Component {
   };
 
   showTestView = (test) => {
-    this.setState({
-      showLinkWalkerTestView: true,
-      test: test
-    });
+    const {organisationName, clientConfig} = this.props;
+    LinkWalkerApi.getFailedTestResults(clientConfig.linkwalkerBaseUrl, organisationName, test.id)
+      .then(([response, json]) => {
+        if (response.status === 200) {
+          this.setState({
+            showLinkWalkerTestView: true,
+            test: json
+          });
+        }
+
+      });
   };
 
   closeTestView = () => {
-    this.setState({ showLinkWalkerTestView: false });
+    this.setState({showLinkWalkerTestView: false});
   };
 
 
   render() {
 
-    const { tests, classes } = this.props;
+    const {tests, classes} = this.props;
     return (
       <div className={classes.root}>
         <div className={classes.help}>
@@ -142,7 +149,11 @@ class LinkWalkerTestList extends Component {
           showLinkWalkerTestView={this.state.showLinkWalkerTestView}
           closeTestView={this.closeTestView}
           test={this.state.test}
-        />
+          organisationName={this.props.organisationName}
+          clientConfig={this.props.clientConfig}
+
+
+      />
       </div>
     );
   }

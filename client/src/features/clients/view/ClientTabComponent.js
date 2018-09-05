@@ -78,7 +78,6 @@ class ClientTabComponent extends React.Component {
         this.props.fetchComponents();
         TestAuthApi.clearAuth(clientConfig.testServiceBaseUrl, currentOrganisation.name)
           .then((response) => {
-            console.log(response, "response");
           })
       }).catch(error => {
     });
@@ -92,7 +91,6 @@ class ClientTabComponent extends React.Component {
         this.props.fetchComponents();
         TestAuthApi.clearAuth(clientConfig.testServiceBaseUrl, currentOrganisation.name)
           .then((response) => {
-            console.log(response, "response");
           })
       }).catch(error => {
     });

@@ -9,29 +9,22 @@ import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import PropTypes from 'prop-types';
 import TrafficLight from "../../common/status/TrafficLight";
-import fileDownload from 'js-file-download';
-import CircularJSON from 'circular-json';
+import Typography from "../../../node_modules/@material-ui/core/Typography/Typography";
+import Divider from "../../../node_modules/@material-ui/core/Divider/Divider";
+import CvsReport from "./CvsReport";
+import downloadCsv from "download-csv";
+import dateFormat from "dateformat";
+import LinkWalkerApi from "../../data/api/LinkWalkerApi";
+
 
 const styles = (theme) => ({
   root: {
     width: '100%',
-    //marginTop: theme.spacing.unit * 3,
     overflowX: 'auto',
   },
   table: {
     minWidth: '100%',
   },
-  /*
-  statusFailed: {
-    color: "red",
-  },
-  statusRunning: {
-    color: "#f4a142",
-  },
-  statusOk: {
-    color: "green",
-  },
-  */
   tableHeader: {
     fontWeight: 'bold',
     fontStyle: 'italic',
@@ -47,14 +40,6 @@ class LinkWalkerTestView extends React.Component {
     this.props.closeTestView();
   };
 
-  /*
-  getStatusClass = (status) => {
-    if (status === 'OK') return this.props.classes.statusOk;
-    if (status === 'RUNNING') return this.props.classes.statusRunning;
-    if (status === 'FAILED') return this.props.classes.statusFailed;
-  };
-  */
-
   static getDerivedStateFromProps(nextProps, prevState) {
     if (nextProps.showLinkWalkerTestView !== prevState.showLinkWalkerTestView) {
       return {
@@ -65,8 +50,16 @@ class LinkWalkerTestView extends React.Component {
     return null;
   }
 
-  downloadTestToJson = (testReport) => {
-    fileDownload(CircularJSON.stringify(testReport), 'report.json');
+  downloadTestToJson = (test) => {
+
+    const {organisationName, clientConfig} = this.props;
+    LinkWalkerApi.getAllTestResults(clientConfig.linkwalkerBaseUrl, organisationName, test.id)
+      .then(([response, json]) => {
+        if (response.status === 200) {
+          downloadCsv(CvsReport.getReport(json), null, `${organisationName}_relasjonstest_${dateFormat(new Date(), 'ddmmyyyyHHMMssl')}.csv`)
+        }
+      });
+
   };
 
 
@@ -131,44 +124,62 @@ class LinkWalkerTestView extends React.Component {
                 </Table>
               </Paper>
 
-              <h3>Detaljert feil beskrivelse</h3>
+
+              {(relations.length > 0) &&
+              (
+                <div>
+                  <h3>Detaljert feil beskrivelse</h3>
+                  <Divider/>
+                </div>
+              )
+              }
 
               {relations.map(relation => {
                 const relationName = relation[0];
                 const reports = relation[1];
-                return (
-                  <div key={relationName}>
-                    <h4>{relationName}</h4>
-                    <Table className={classes.table}>
-                      <TableHead>
-                        <TableRow>
-                          <TableCell>Status</TableCell>
-                          <TableCell>Url</TableCell>
-                          <TableCell>Beskrivelse av feil</TableCell>
-                        </TableRow>
-                      </TableHead>
-                      <TableBody>
-                        {reports.map(report => {
-                          return (
-                            <TableRow hover key={report.url}>
-                              <TableCell><TrafficLight status={report.status}/></TableCell>
-                              <TableCell>{report.url}</TableCell>
-                              <TableCell>{report.reason}</TableCell>
-                            </TableRow>
-                          );
-                        })}
+                if (reports.length === 0) {
+                  return (
+                    <div key={relationName}>
+                      <h4>{relationName}</h4>
+                      <Typography variant="caption">Ingen feil</Typography>
+                    </div>
+                  );
+                }
+                else {
+                  return (
+                    <div key={relationName}>
+                      <h4>{relationName}</h4>
+                      <Table className={classes.table}>
+                        <TableHead>
+                          <TableRow>
+                            <TableCell>Status</TableCell>
+                            <TableCell>Url</TableCell>
+                            <TableCell>Beskrivelse av feil</TableCell>
+                          </TableRow>
+                        </TableHead>
+                        <TableBody>
+                          {reports.map(report => {
+                            return (
+                              <TableRow hover key={report.url}>
+                                <TableCell><TrafficLight status={report.status}/></TableCell>
+                                <TableCell>{report.url}</TableCell>
+                                <TableCell>{report.reason}</TableCell>
+                              </TableRow>
+                            );
+                          })}
 
 
-                      </TableBody>
-                    </Table>
-                  </div>
-                );
+                        </TableBody>
+                      </Table>
+                    </div>
+                  );
+                }
               })}
 
             </DialogContent>
             <DialogActions>
               <Button onClick={() => this.downloadTestToJson(test)} variant="raised" color="primary">
-                Last ned test rapport (JSON)
+                Last ned test rapport (.csv)
               </Button>
               <Button onClick={this.handleClose} variant="raised" color="primary">
                 Ok

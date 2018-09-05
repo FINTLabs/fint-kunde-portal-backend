@@ -50,10 +50,8 @@ class LinkWalkerAddTest extends React.Component {
   };
 
   addTest = () => {
-
     let test = this.getTest();
     const {organisationName, clientConfig} = this.props;
-
     LinkWalkerApi.addTest(clientConfig.linkwalkerBaseUrl, test, organisationName)
       .then(response => {
         if (response.status === 201) {

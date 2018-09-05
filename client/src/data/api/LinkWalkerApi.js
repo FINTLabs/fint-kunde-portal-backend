@@ -9,6 +9,24 @@ class LinkWalkerApi {
       .then(response => Promise.all([response, response.json()]));
   }
 
+  static getFailedTestResults(baseUrl, organisationName, id) {
+    const url = `${baseUrl}/tests/${organisationName}/${id}?status=FAILED`;
+    return fetch(url, {
+      method: 'GET',
+      credentials: 'same-origin',
+    })
+      .then(response => Promise.all([response, response.json()]));
+  }
+
+  static getAllTestResults(baseUrl, organisationName, id) {
+    const url = `${baseUrl}/tests/${organisationName}/${id}`;
+    return fetch(url, {
+      method: 'GET',
+      credentials: 'same-origin',
+    })
+      .then(response => Promise.all([response, response.json()]));
+  }
+
   static addTest(baseUrl, test, organisationName) {
     const request = new Request(`${baseUrl}/tests/${organisationName}`, {
       method: 'POST',

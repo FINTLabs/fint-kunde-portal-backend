@@ -6,43 +6,23 @@
   "dependencies": {
     "@material-ui/core": "^1.1.0",
     "@material-ui/icons": "^1.1.0",
-    "axios": "^0.18.0",
-    "circular-json": "^0.5.5",
     "classnames": "^2.2.5",
-    "copy-to-clipboard": "^3.0.8",
+    "dateformat": "^3.0.3",
+    "download-csv": "^1.1.1",
     "expect": "^23.0.0",
-    "expect-redux": "^3.2.2",
-    "fetchmock": "^1.0.1",
     "generate-password": "^1.4.0",
-    "glob-to-regexp": "^0.4.0",
-    "immutable": "^3.8.2",
-    "js-file-download": "^0.4.1",
     "prop-types": "^15.6.1",
     "react": "^16.4.0",
     "react-cookie": "^2.1.6",
     "react-copy-to-clipboard": "^5.0.1",
     "react-dom": "^16.4.0",
-    "react-form-validator-core": "^0.4.4",
-    "react-inline-grid": "^0.5.3",
-    "react-json-view": "^1.16.6",
-    "react-pretty-json": "^2.0.2",
     "react-redux": "^5.0.7",
     "react-router-dom": "^4.2.2",
-    "react-router-redux": "^4.0.8",
     "react-scripts": "^1.1.4",
-    "react-search": "^2.0.5",
     "react-swipeable-views": "^0.12.13",
-    "react-tap-event-plugin": "^3.0.2",
     "redux": "^4.0.0",
-    "redux-form": "^7.3.0",
     "redux-logger": "^3.0.6",
-    "redux-persist": "^5.9.1",
-    "redux-promise": "^0.6.0",
-    "redux-thunk": "^2.2.0",
-    "roboto-fontface": "^0.9.0",
-    "semantic-ui-react": "^0.80.2",
-    "typeface-roboto": "^0.0.54",
-    "with-query": "^1.1.2"
+    "redux-thunk": "^2.2.0"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -50,13 +30,5 @@
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject"
   },
-  "devDependencies": {
-    "enzyme": "^3.3.0",
-    "enzyme-adapter-react-16": "^1.1.1",
-    "husky": "^0.14.3",
-    "lint-staged": "^7.1.2",
-    "prettier": "^1.12.1",
-    "react-test-renderer": "^16.4.0",
-    "redux-mock-store": "^1.5.1"
-  }
+  "devDependencies": {}
 }
