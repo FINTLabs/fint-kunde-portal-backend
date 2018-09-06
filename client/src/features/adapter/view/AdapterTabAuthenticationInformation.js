@@ -80,9 +80,9 @@ class AdapterTabAuthenticationInformation extends React.Component {
 
   generatePassord = () => {
     return PasswordGenerator.generate({
-      length: 64,
+      length: 32,
       numbers: true,
-      symbols: true,
+      symbols: false,
       strict: true,
     });
   };
