@@ -58,9 +58,11 @@ class ClientTabAuthenticationInformation extends React.Component {
     this.state = {
       allAuthInfo: {
         username: this.props.client.name,
-        password: 'topsecret',
+        password: '**********',
         clientId: this.props.client.clientId,
         openIdSecret: ' ',
+        scope: 'fint-client',
+        idpUri: 'https://idp.felleskomponent.no/nidp/oauth/nam/token',
         assetId: this.props.client.assetId,
       },
       askToResetPassword: false,

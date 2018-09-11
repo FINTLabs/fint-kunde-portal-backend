@@ -57,9 +57,11 @@ class AdapterTabAuthenticationInformation extends React.Component {
     this.state = {
       allAuthInfo: {
         username: this.props.adapter.name,
-        password: 'topsecret',
+        password: '**********',
         clientId: this.props.adapter.clientId,
         openIdSecret: ' ',
+        scope: 'fint-client',
+        idpUri: 'https://idp.felleskomponent.no/nidp/oauth/nam/token',
         assetIds: this.props.adapter.assetIds,
       },
       askToResetPassword: false,
