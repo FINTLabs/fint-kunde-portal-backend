@@ -217,7 +217,7 @@ class BasicTestContainer extends Component {
             </p>
             <p>
               Dette er greit å kjøre i feilsøkingssammenheng. Det er også et
-              krav å sende med resultetet av denne testen hvis man kontakter
+              krav å sende med resultatet av denne testen før man kontakter
               support.
             </p>
           </FeatureHelperText>

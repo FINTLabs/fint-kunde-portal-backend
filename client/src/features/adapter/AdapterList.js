@@ -121,11 +121,11 @@ class AdapterList extends Component {
           <div className={classes.componentList}>
             <FeatureHelperText>
               <p>
-                Ett adapter er påloggingsinformasjon som brukes av fagsystem adapterne for å få tilgang til en komponent.
+                Ett adapter er påloggingsinformasjon som brukes av fagsystem-adapterne for å få tilgang til en komponent.
                 Dette kan f.eks. Visma Enterprise eller Unit4 (Evry).
               </p>
               <p>
-                Adaptere må registreres før fagsystem adapteret kan tas i bruk. Et adapter må få opprettet påloggingsinformasjon
+                Adaptere må registreres før fagsystem-adapteret kan tas i bruk. Et adapter må få opprettet påloggingsinformasjon
                 og bli gitt tilgang til de komponentene det skal levere data for. Påloggingsinformasjonen og informasjon
                 om endepunkter må oppgis til den som skal installere og konfigurere adapteret.
               </p>

@@ -199,7 +199,7 @@ class ComponentList extends Component {
               må den legges til organisasjonen.
             </p>
             <p>
-              Komponenter som er merke Åpne Data/Felles kan ikke legges til. De
+              Komponenter som er merket Åpne Data/Felles kan ikke legges til. De
               administreres av FINT.
             </p>
           </FeatureHelperText>

@@ -123,7 +123,7 @@ class ClientList extends Component {
             <FeatureHelperText>
               <p>
                 En klient er påloggingsinformasjon som brukes av en integrasjon for å få tilgang til en komponent.
-                Dette kan f.eks. være et IDM system, eller en integrasjonsbus (BizTalk).
+                Dette kan f.eks. være et IDM system, eller en integrasjonsbuss (BizTalk).
               </p>
               <p>
                 Klienten må registreres før integrasjonen kan taes i bruk. En integrasjon må få opprettet påloggingsinformasjon
