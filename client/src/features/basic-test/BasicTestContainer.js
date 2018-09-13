@@ -315,7 +315,7 @@ class BasicTestContainer extends Component {
                   return (
                     <TableRow hover key={c.resource}>
                       <TableCell><TrafficLight status={c.status}/></TableCell>
-                      <TableCell>{c.resource.toUpperCase()}</TableCell>
+                      <TableCell style={{textTransform: 'capitalize'}}>{c.resource}</TableCell>
                       <TableCell>{this.getDateFromUnixTimeStamp(c.lastUpdated)}</TableCell>
                       <TableCell>{c.size}</TableCell>
                       <TableCell>{c.message}</TableCell>
