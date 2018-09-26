@@ -38,13 +38,14 @@ const styles = (theme) => ({
   formActions: {
     display: "inline-block",
     marginTop: theme.spacing.unit * 2,
-    //justifyContent: 'right',
     borderBottom: "lightgray dotted 1px",
     width: "100%"
   },
   healthStatusLight: {},
   healthStatusMessage: {},
-  title: {}
+  resourceCell: {
+    textTransform: "capitalize",
+  },
 });
 
 class BasicTestContainer extends Component {
@@ -315,7 +316,7 @@ class BasicTestContainer extends Component {
                   return (
                     <TableRow hover key={c.resource}>
                       <TableCell><TrafficLight status={c.status}/></TableCell>
-                      <TableCell style={{textTransform: 'capitalize'}}>{c.resource}</TableCell>
+                      <TableCell className={classes.resourceCell}>{c.resource}</TableCell>
                       <TableCell>{this.getDateFromUnixTimeStamp(c.lastUpdated)}</TableCell>
                       <TableCell>{c.size}</TableCell>
                       <TableCell>{c.message}</TableCell>
