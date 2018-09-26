@@ -25,6 +25,7 @@ import CommonComponentLabel from "../../common/label/CommonComponentLabel";
 import RemoveButton from "../../common/button/RemoveButton";
 import AddButton from "../../common/button/AddButton";
 import FeatureHelperText from "../../common/help/FeatureHelperText";
+import Sort from "../../common/utils/Sort";
 
 
 const styles = theme => ({
@@ -167,6 +168,7 @@ class ComponentList extends Component {
 
   render() {
     const { classes, organisation } = this.props;
+    const components = this.props.components.sort(Sort.alphabetically);
 
     return (
       <div className={classes.root}>
@@ -206,7 +208,7 @@ class ComponentList extends Component {
           <Typography variant="headline" className={classes.title}>Komponenter</Typography>
           <Divider/>
           <List>
-            {this.props.components.map((component) =>
+            {components.map((component) =>
               <ListItem className={classes.listItem} key={component.dn}>
                 <ListItemAvatar>
                   <Avatar className={classes.itemAvatar}>

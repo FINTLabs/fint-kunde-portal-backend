@@ -18,6 +18,7 @@ import { withContext } from "../../data/context/withContext";
 import PropTypes from "prop-types";
 import FeatureHelperText from "../../common/help/FeatureHelperText";
 import WarningMessageBox from "../../common/message-box/WarningMessageBox";
+import Sort from "../../common/utils/Sort";
 
 const styles = theme => ({
   root: {
@@ -104,6 +105,8 @@ class AdapterList extends Component {
 
   render() {
     const { classes } = this.props;
+    const adapters = this.props.adapters.sort(Sort.alphabetically);
+
     return (
       <div>
         <AutoHideNotification
@@ -133,7 +136,7 @@ class AdapterList extends Component {
             <Typography variant="headline" className={classes.title}>Adapter</Typography>
             <Divider/>
             <List>
-              {this.props.adapters.map((adapter) =>
+              {adapters.map((adapter) =>
                 <ListItem className={classes.listItem} key={adapter.dn}>
                   <ListItemAvatar>
                     <Avatar className={classes.itemAvatar}>

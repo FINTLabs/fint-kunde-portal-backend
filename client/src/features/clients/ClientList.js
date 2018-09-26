@@ -19,6 +19,7 @@ import ClientView from "./view/ClientView";
 import { withContext } from "../../data/context/withContext";
 import FeatureHelperText from "../../common/help/FeatureHelperText";
 import WarningMessageBox from "../../common/message-box/WarningMessageBox";
+import Sort from "../../common/utils/Sort";
 
 const styles = theme => ({
   root: {
@@ -105,6 +106,8 @@ class ClientList extends Component {
 
   render() {
     const { classes } = this.props;
+    const clients = this.props.clients.sort(Sort.alphabetically);
+
     return (
       <div>
         <AutoHideNotification
@@ -134,7 +137,7 @@ class ClientList extends Component {
             <Typography variant="headline" className={classes.title}>Klienter</Typography>
             <Divider/>
             <List>
-              {this.props.clients.map((client) =>
+              {clients.map((client) =>
                 <ListItem className={classes.listItem} key={client.dn}>
                   <ListItemAvatar>
                     <Avatar className={classes.itemAvatar}>
