@@ -67,7 +67,7 @@ class AdapterList extends Component {
   askToDelete = (adapter) => {
     this.setState({
       askToDelete: true,
-      message: `Er du sikker på at du vil slette '${adapter.shortDescription}'? Endringen kan ikke tilbakestilles!`,
+      message: `Er du sikker på at du vil slette '${adapter.name}'? Endringen kan ikke tilbakestilles!`,
       adapterToDelete: adapter,
     });
   };

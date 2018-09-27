@@ -68,7 +68,7 @@ class ClientList extends Component {
   askToDelete = (client) => {
     this.setState({
       askToDelete: true,
-      message: `Er du sikker på at du vil slette '${client.shortDescription}'? Endringen kan ikke tilbakestilles!`,
+      message: `Er du sikker på at du vil slette '${client.name}'? Endringen kan ikke tilbakestilles!`,
       clientToDelete: client
     });
   };
