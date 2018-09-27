@@ -5,6 +5,7 @@ import TextField from "@material-ui/core/TextField";
 import {Add} from "@material-ui/icons";
 import UsernameValidationInput from "../../../common/input-validation/UsernameValidationInput";
 import ClientApi from "../../../data/api/ClientApi";
+import AssetApi from "../../../data/api/AssetApi";
 
 const styles = () => ({
   addButton: {
@@ -14,8 +15,7 @@ const styles = () => ({
     bottom: 'auto',
     right: 50,
     position: 'fixed',
-  }
-
+  },
 });
 
 class ClientAdd extends React.Component {
@@ -51,17 +51,6 @@ class ClientAdd extends React.Component {
         this.props.notify("Oisann, dette gikk ikke helt etter planen! Prøv igjen ;)");
       });
 
-    /*
-    this.props.createClient(this.state.client, this.props.organisation).then(() => {
-      this.setState({
-        showClientAdd: false,
-        notify: true,
-        clientAddedName: this.state.client.name,
-        client: this.getEmptyClient(),
-      });
-    });
-    */
-
   };
 
   usernameIsValid = (valid) => {
@@ -69,20 +58,24 @@ class ClientAdd extends React.Component {
   };
 
   openAddDialog = () => {
-    this.setState({showClientAdd: true, notify: false});
+    AssetApi.getPrimaryAsset(this.props.organisation.name)
+      .then(([response, json]) => {
+        if (response.status === 200) {
+          this.setState({
+            showClientAdd: true,
+            notify: false,
+            realm: `@client.${json.assetId}`
+          });
+        }
+        else {
+          this.props.notify("Det oppstod problemer med å hente primær ressurs id.");
+        }
+      });
   };
 
   handleCancel = () => {
     this.setState({showClientAdd: false, notify: false});
   };
-
-  /*
-  onCloseNotification = () => {
-    this.setState({
-      notify: false,
-    });
-  };
-  */
 
   getEmptyClient = () => {
     return {
@@ -127,6 +120,8 @@ class ClientAdd extends React.Component {
                 name="name"
                 onChange={this.updateClientState}
                 usernameIsValid={this.usernameIsValid}
+                className={classes.username}
+                realm={this.state.realm}
               />
               <TextField
                 name="shortDescription"

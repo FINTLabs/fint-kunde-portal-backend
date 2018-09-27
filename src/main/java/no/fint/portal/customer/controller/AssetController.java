@@ -39,6 +39,16 @@ public class AssetController {
     return ResponseEntity.ok(assets);
   }
 
+  @ApiOperation("Get Primary Asset ID")
+  @GetMapping("/primary")
+  public ResponseEntity<Asset> getPrimaryAsset(@PathVariable("orgName") String orgName) {
+    Organisation organisation = portalApiService.getOrganisation(orgName);
+    Asset primaryAsset = assetService.getPrimaryAsset(organisation);
+
+    return ResponseEntity.ok(primaryAsset);
+
+  }
+
   @ApiOperation("Create Asset")
   @PostMapping("/")
   public ResponseEntity addAsset(@PathVariable String orgName,

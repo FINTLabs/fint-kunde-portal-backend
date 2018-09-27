@@ -5,6 +5,7 @@ import TextField from "@material-ui/core/TextField";
 import {Add} from "@material-ui/icons";
 import UsernameValidationInput from "../../../common/input-validation/UsernameValidationInput";
 import AdapterApi from "../../../data/api/AdapterApi";
+import AssetApi from "../../../data/api/AssetApi";
 
 const styles = () => ({
   addButton: {
@@ -56,20 +57,24 @@ class AdapterAdd extends React.Component {
   };
 
   openAddDialog = () => {
-    this.setState({showAdapterAdd: true, notify: false});
+    AssetApi.getPrimaryAsset(this.props.organisation.name)
+      .then(([response, json]) => {
+        if (response.status === 200) {
+          this.setState({
+            showAdapterAdd: true,
+            notify: false,
+            realm: `@adapter.${json.assetId}`
+          });
+        }
+        else {
+          this.props.notify("Det oppstod problemer med å hente primær ressurs id.");
+        }
+      });
   };
 
   handleCancel = () => {
     this.setState({showAdapterAdd: false, notify: false});
   };
-
-  /*
-  onCloseNotification = () => {
-    this.setState({
-      notify: false,
-    });
-  };
-  */
 
   getEmptyAdapter = () => {
     return {
@@ -114,6 +119,7 @@ class AdapterAdd extends React.Component {
                 name="name"
                 onChange={this.updateAdapterState}
                 usernameIsValid={this.usernameIsValid}
+                realm={this.state.realm}
               />
               <TextField
                 name="shortDescription"

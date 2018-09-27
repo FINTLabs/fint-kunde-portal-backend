@@ -10,6 +10,14 @@ class AssetApi {
 
   }
 
+  static getPrimaryAsset(organisation) {
+    return fetch(`/api/assets/${organisation}/primary`, {
+      method: 'GET',
+      credentials: 'same-origin'
+    })
+      .then(response => Promise.all([response, response.json()]));
+  }
+
   static createAsset(asset, organisation) {
 
     const request = new Request(`/api/assets/${organisation}/`, {
