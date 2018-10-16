@@ -7,7 +7,7 @@ class BasicTestApi {
         'Accept': '*/*',
         'Content-Type': 'application/json'
       },
-      credentials: 'include',
+      credentials: 'same-origin',
       body: JSON.stringify(test)
     });
 

@@ -4,7 +4,7 @@ class LinkWalkerApi {
     const url = `${baseUrl}/api/tests/links/${organisationName}`;
     return fetch(url, {
       method: 'GET',
-      credentials: 'include',
+      credentials: 'same-origin',
     })
       .then(response => Promise.all([response, response.json()]));
   }
@@ -13,7 +13,7 @@ class LinkWalkerApi {
     const url = `${baseUrl}/api/tests/links/${organisationName}/${id}?status=FAILED`;
     return fetch(url, {
       method: 'GET',
-      credentials: 'include',
+      credentials: 'same-origin',
     })
       .then(response => Promise.all([response, response.json()]));
   }
@@ -22,7 +22,7 @@ class LinkWalkerApi {
     const url = `${baseUrl}/api/tests/links/${organisationName}/${id}`;
     return fetch(url, {
       method: 'GET',
-      credentials: 'include',
+      credentials: 'same-origin',
     })
       .then(response => Promise.all([response, response.json()]));
   }
@@ -34,7 +34,7 @@ class LinkWalkerApi {
         'Accept': '*/*',
         'Content-Type': 'application/json'
       },
-      credentials: 'include',
+      credentials: 'same-origin',
       body: JSON.stringify(test)
     });
 
@@ -51,7 +51,7 @@ class LinkWalkerApi {
       headers: new Headers({
         'Content-Type': 'application/json'
       }),
-      credentials: 'include',
+      credentials: 'same-origin',
       //body: JSON.stringify({})
     });
 
