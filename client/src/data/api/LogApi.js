@@ -5,7 +5,7 @@ class LogApi {
 	const url = `http://ucp.rogfk.no:8102/audit/events/search/${query}`;
     return fetch(url, {
       method: 'GET',
-      credentials: 'same-origin',
+      credentials: 'include',
     })
       .then(response => Promise.all([response, response.json()]));
   }

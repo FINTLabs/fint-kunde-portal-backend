@@ -8,7 +8,7 @@ class TestAuthApi {
         'Accept': '*/*',
         'Content-Type': 'application/json',
       },
-      credentials: 'same-origin',
+      credentials: 'include',
       body: JSON.stringify(test),
     });
 
@@ -21,7 +21,7 @@ class TestAuthApi {
     const url = `${baseUrl}/api/tests/auth/clear/${organisationName}`; //.concat(org);
     return fetch(url, {
       method: 'GET',
-      credentials: 'same-origin'
+      credentials: 'include'
     })
       .then(response => Promise.all([response]));
   }
