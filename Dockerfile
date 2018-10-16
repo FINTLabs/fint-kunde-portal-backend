@@ -1,15 +1,10 @@
-FROM node:9 AS node
-WORKDIR /src/client
-COPY client .
-RUN yarn install && yarn build
+FROM dtr.fintlabs.no/beta/kunde-portal-frontend:latest as client
 
 FROM gradle:4.9-jdk8-alpine as java
 USER root
-RUN pwd
 COPY . .
-COPY --from=node /src/client/build/ src/main/resources/public/
+COPY --from=client /src/client/build/ src/main/resources/public/
 RUN gradle --no-daemon build
-RUN ls -l build/libs
 
 FROM openjdk:8-jre-alpine
 COPY --from=java /home/gradle/build/libs/fint-kunde-portal-*.jar /data/app.jar
