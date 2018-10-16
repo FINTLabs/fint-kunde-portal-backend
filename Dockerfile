@@ -3,7 +3,7 @@ FROM dtr.fintlabs.no/beta/kunde-portal-frontend:latest as client
 FROM gradle:4.9-jdk8-alpine as java
 USER root
 COPY . .
-COPY --from=client /src/client/build/ src/main/resources/public/
+COPY --from=client /src/build/ src/main/resources/public/
 RUN gradle --no-daemon build
 
 FROM openjdk:8-jre-alpine
