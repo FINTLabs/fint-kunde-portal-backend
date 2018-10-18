@@ -12,6 +12,7 @@ import no.fint.portal.model.asset.AssetService;
 import no.fint.portal.model.client.Client;
 import no.fint.portal.model.organisation.Organisation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.CacheControl;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -36,7 +37,7 @@ public class AssetController {
   public ResponseEntity getAssets(@PathVariable("orgName") String orgName) {
     Organisation organisation = portalApiService.getOrganisation(orgName);
     List<Asset> assets = portalApiService.getAssets(organisation);
-    return ResponseEntity.ok(assets);
+    return ResponseEntity.ok().cacheControl(CacheControl.noStore()).body(assets);
   }
 
   @ApiOperation("Get Primary Asset ID")
@@ -45,7 +46,7 @@ public class AssetController {
     Organisation organisation = portalApiService.getOrganisation(orgName);
     Asset primaryAsset = assetService.getPrimaryAsset(organisation);
 
-    return ResponseEntity.ok(primaryAsset);
+    return ResponseEntity.ok().cacheControl(CacheControl.noStore()).body(primaryAsset);
 
   }
 
@@ -61,7 +62,7 @@ public class AssetController {
 
     if (!assetService.addAsset(asset, organisation)) throw new CreateEntityMismatchException(asset.getAssetId());
 
-    return ResponseEntity.created(ServletUriComponentsBuilder.fromCurrentRequestUri().scheme(null).pathSegment(asset.getName()).build().toUri()).build();
+    return ResponseEntity.created(ServletUriComponentsBuilder.fromCurrentRequestUri().scheme(null).pathSegment(asset.getName()).build().toUri()).cacheControl(CacheControl.noStore()).build();
   }
 
   @ApiOperation("Get Asset by Name")
@@ -70,7 +71,7 @@ public class AssetController {
                                        @PathVariable String assetId) {
     Organisation organisation = portalApiService.getOrganisation(orgName);
     Asset asset = portalApiService.getAsset(organisation, assetId);
-    return ResponseEntity.ok(asset);
+    return ResponseEntity.ok().cacheControl(CacheControl.noStore()).body(asset);
   }
 
   @ApiOperation("Update Asset")
@@ -87,7 +88,7 @@ public class AssetController {
 
     assetService.updateAsset(original);
 
-    return ResponseEntity.ok(original);
+    return ResponseEntity.ok().cacheControl(CacheControl.noStore()).body(original);
   }
 
   @ApiOperation("Delete Asset")
@@ -99,7 +100,7 @@ public class AssetController {
 
     assetService.removeAsset(asset);
 
-    return ResponseEntity.noContent().build();
+    return ResponseEntity.noContent().cacheControl(CacheControl.noStore()).build();
   }
 
   @ApiOperation("Link Client to Asset")
@@ -113,7 +114,7 @@ public class AssetController {
 
     assetService.linkClientToAsset(asset, client);
 
-    return ResponseEntity.noContent().build();
+    return ResponseEntity.noContent().cacheControl(CacheControl.noStore()).build();
   }
 
   @ApiOperation("Unlink Client from Asset")
@@ -127,7 +128,7 @@ public class AssetController {
 
     assetService.unlinkClientFromAsset(asset, client);
 
-    return ResponseEntity.noContent().build();
+    return ResponseEntity.noContent().cacheControl(CacheControl.noStore()).build();
   }
 
   @ApiOperation("Link Adapter to Asset")
@@ -141,7 +142,7 @@ public class AssetController {
 
     assetService.linkAdapterToAsset(asset, adapter);
 
-    return ResponseEntity.noContent().build();
+    return ResponseEntity.noContent().cacheControl(CacheControl.noStore()).build();
   }
 
   @ApiOperation("Unlink Adapter from Asset")
@@ -155,7 +156,7 @@ public class AssetController {
 
     assetService.unlinkAdapterFromAsset(asset, adapter);
 
-    return ResponseEntity.noContent().build();
+    return ResponseEntity.noContent().cacheControl(CacheControl.noStore()).build();
   }
 
 

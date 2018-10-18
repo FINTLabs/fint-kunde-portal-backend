@@ -13,6 +13,7 @@ import no.fint.portal.model.adapter.Adapter;
 import no.fint.portal.model.adapter.AdapterService;
 import no.fint.portal.model.organisation.Organisation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.CacheControl;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -51,7 +52,7 @@ public class AdapterController {
     if (!optionalAdapter.isPresent()) {
       if (adapterService.addAdapter(adapter, organisation)) {
         //return ResponseEntity.ok().body(adapter);
-        return ResponseEntity.status(HttpStatus.CREATED).body(adapter);
+        return ResponseEntity.status(HttpStatus.CREATED).cacheControl(CacheControl.noStore()).body(adapter);
       }
     }
 
@@ -91,7 +92,7 @@ public class AdapterController {
       throw new EntityNotFoundException(String.format("Could not update adapter: %s", adapterName));
     }
 
-    return ResponseEntity.ok().body(original);
+    return ResponseEntity.ok().cacheControl(CacheControl.noStore()).body(original);
 
   }
 
@@ -108,7 +109,7 @@ public class AdapterController {
 
     Adapter adapter = portalApiService.getAdapter(organisation, adapterName);
     adapterService.resetAdapterPassword(adapter, newPassword);
-    return ResponseEntity.ok().body(adapter);
+    return ResponseEntity.ok().cacheControl(CacheControl.noStore()).body(adapter);
   }
 
   @ApiOperation("Get all adapters")
@@ -120,7 +121,7 @@ public class AdapterController {
 
     List<Adapter> adapters = portalApiService.getAdapters(organisation);
 
-    return ResponseEntity.ok().body(adapters);
+    return ResponseEntity.ok().cacheControl(CacheControl.noStore()).body(adapters);
   }
 
   @ApiOperation("Get adapter")
@@ -133,7 +134,7 @@ public class AdapterController {
     Organisation organisation = portalApiService.getOrganisation(orgName);
 
     Adapter adapter = portalApiService.getAdapter(organisation, adapterName);
-    return ResponseEntity.ok().body(adapter);
+    return ResponseEntity.ok().cacheControl(CacheControl.noStore()).body(adapter);
   }
 
   @ApiOperation("Get Adapter OpenID Secret")
@@ -146,7 +147,7 @@ public class AdapterController {
     Organisation organisation = portalApiService.getOrganisation(orgName);
     Adapter adapter = portalApiService.getAdapter(organisation, adapterName);
 
-    return ResponseEntity.ok().body(adapterService.getAdapterSecret(adapter));
+    return ResponseEntity.ok().cacheControl(CacheControl.noStore()).body(adapterService.getAdapterSecret(adapter));
   }
 
   @ApiOperation("Delete adapter")
@@ -159,7 +160,7 @@ public class AdapterController {
     Adapter adapter = portalApiService.getAdapter(organisation, adapterName);
 
     adapterService.deleteAdapter(adapter);
-    return ResponseEntity.noContent().build();
+    return ResponseEntity.noContent().cacheControl(CacheControl.noStore()).build();
   }
 
 

@@ -6,6 +6,7 @@ import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import no.fint.portal.customer.config.ClientConfig;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.CacheControl;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,6 +27,6 @@ public class ClientConfigController {
   @ApiOperation("Get client config")
   @RequestMapping(method = RequestMethod.GET)
   public ResponseEntity getClientConfig() {
-    return ResponseEntity.ok(clientConfig);
+    return ResponseEntity.ok().cacheControl(CacheControl.noStore()).body(clientConfig);
   }
 }

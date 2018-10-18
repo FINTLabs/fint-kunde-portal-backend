@@ -14,6 +14,7 @@ import no.fint.portal.model.contact.ContactService;
 import no.fint.portal.model.organisation.Organisation;
 import no.fint.portal.model.organisation.OrganisationService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.CacheControl;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -53,7 +54,7 @@ public class ContactController {
           .buildAndExpand(contact.getNin()).toUri().toString()
       );
     }
-    return ResponseEntity.status(HttpStatus.CREATED).body(contact);
+    return ResponseEntity.status(HttpStatus.CREATED).cacheControl(CacheControl.noStore()).body(contact);
   }
 
   @ApiOperation("Update contact")
@@ -79,7 +80,7 @@ public class ContactController {
       throw new EntityNotFoundException(String.format("Could not find contact: %s", nin));
     }
 
-    return ResponseEntity.ok(original);
+    return ResponseEntity.ok().cacheControl(CacheControl.noStore()).body(original);
   }
 
   @ApiOperation("Get all contacts")
@@ -88,7 +89,7 @@ public class ContactController {
     List<Contact> contacts = portalApiService.getContacts();
 
     if (contacts != null) {
-      return ResponseEntity.ok(contacts);
+      return ResponseEntity.ok().cacheControl(CacheControl.noStore()).body(contacts);
     }
 
     throw new EntityNotFoundException("No contacts found.");
@@ -98,7 +99,7 @@ public class ContactController {
   @RequestMapping(method = RequestMethod.GET, value = "/{nin}")
   public ResponseEntity getContact(@PathVariable final String nin) {
     Contact contact = portalApiService.getContact(nin);
-    return ResponseEntity.ok(contact);
+    return ResponseEntity.ok().cacheControl(CacheControl.noStore()).body(contact);
   }
 
   @ApiOperation("Delete a contact")
@@ -107,7 +108,7 @@ public class ContactController {
     Contact contact = portalApiService.getContact(nin);
 
     contactService.deleteContact(contact);
-    return ResponseEntity.noContent().build();
+    return ResponseEntity.noContent().cacheControl(CacheControl.noStore()).build();
   }
 
   @ApiOperation("Get contact's organisations")
@@ -120,7 +121,7 @@ public class ContactController {
       .filter(Optional::isPresent).map(Optional::get)
       .distinct()
       .collect(Collectors.toList());
-    return ResponseEntity.ok(contactOrganisations);
+    return ResponseEntity.ok().cacheControl(CacheControl.noStore()).body(contactOrganisations);
   }
 
   //

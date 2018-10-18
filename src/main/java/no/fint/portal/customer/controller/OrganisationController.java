@@ -15,6 +15,7 @@ import no.fint.portal.model.contact.Contact;
 import no.fint.portal.model.organisation.Organisation;
 import no.fint.portal.model.organisation.OrganisationService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.CacheControl;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.ldap.NameNotFoundException;
@@ -45,7 +46,7 @@ public class OrganisationController {
   public ResponseEntity getOrganisationDetails(@PathVariable String orgName) {
     Organisation organisation = portalApiService.getOrganisation(orgName);
 
-    return ResponseEntity.ok(organisation);
+    return ResponseEntity.ok().cacheControl(CacheControl.noStore()).body(organisation);
   }
 
   @PutMapping("/")
@@ -60,7 +61,7 @@ public class OrganisationController {
 
     organisationService.updateOrganisation(original);
 
-    return ResponseEntity.ok(original);
+    return ResponseEntity.ok().cacheControl(CacheControl.noStore()).body(original);
   }
 
 
@@ -72,7 +73,7 @@ public class OrganisationController {
     if (organisation.isPresent()) {
       Optional<Asset> primaryAsset = assetService.getAssets(organisation.get()).stream().filter(asset -> asset.isPrimaryAsset()).findFirst();
       if (primaryAsset.isPresent()) {
-        return ResponseEntity.ok(primaryAsset.get());
+        return ResponseEntity.ok().cacheControl(CacheControl.noStore()).body(primaryAsset.get());
       }
       throw new EntityNotFoundException(
         String.format("Primary asset not present.")
@@ -92,7 +93,7 @@ public class OrganisationController {
     Contact legalContact = organisationService.getLegalContact(organisation);
     if (legalContact == null) throw new EntityNotFoundException("Legal Contact not found");
 
-    return ResponseEntity.ok(legalContact);
+    return ResponseEntity.ok().cacheControl(CacheControl.noStore()).body(legalContact);
   }
 
   @PutMapping("/contacts/legal/{nin}")
@@ -103,7 +104,7 @@ public class OrganisationController {
 
     organisationService.linkLegalContact(organisation, contact);
 
-    return ResponseEntity.noContent().build();
+    return ResponseEntity.noContent().cacheControl(CacheControl.noStore()).build();
   }
 
   @DeleteMapping("/contacts/legal/{nin}")
@@ -114,7 +115,7 @@ public class OrganisationController {
 
     organisationService.unLinkLegalContact(organisation, contact);
 
-    return ResponseEntity.noContent().build();
+    return ResponseEntity.noContent().cacheControl(CacheControl.noStore()).build();
   }
 
   @GetMapping("/contacts/technical")
@@ -123,7 +124,7 @@ public class OrganisationController {
     Organisation organisation = portalApiService.getOrganisation(orgName);
     List<Contact> technicalContacts = organisationService.getTechnicalContacts(organisation);
 
-    return ResponseEntity.ok(technicalContacts);
+    return ResponseEntity.ok().cacheControl(CacheControl.noStore()).body(technicalContacts);
   }
 
   @PutMapping("/contacts/technical/{nin}")
@@ -134,7 +135,7 @@ public class OrganisationController {
 
     organisationService.linkTechnicalContact(organisation, contact);
 
-    return ResponseEntity.noContent().build();
+    return ResponseEntity.noContent().cacheControl(CacheControl.noStore()).build();
   }
 
   @DeleteMapping("/contacts/technical/{nin}")
@@ -145,7 +146,7 @@ public class OrganisationController {
 
     organisationService.unLinkTechnicalContact(organisation, contact);
 
-    return ResponseEntity.noContent().build();
+    return ResponseEntity.noContent().cacheControl(CacheControl.noStore()).build();
   }
 
   @PutMapping("/components/{compName}")
@@ -156,7 +157,7 @@ public class OrganisationController {
 
     organisationService.linkComponent(organisation, component);
 
-    return ResponseEntity.noContent().build();
+    return ResponseEntity.noContent().cacheControl(CacheControl.noStore()).build();
   }
 
 
@@ -168,7 +169,7 @@ public class OrganisationController {
 
     organisationService.unLinkComponent(organisation, component);
 
-    return ResponseEntity.noContent().build();
+    return ResponseEntity.noContent().cacheControl(CacheControl.noStore()).build();
   }
 
   //

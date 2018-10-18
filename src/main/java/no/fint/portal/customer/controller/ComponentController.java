@@ -15,6 +15,7 @@ import no.fint.portal.model.component.Component;
 import no.fint.portal.model.component.ComponentService;
 import no.fint.portal.model.organisation.Organisation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.CacheControl;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -43,7 +44,7 @@ public class ComponentController {
   public ResponseEntity getComponents() {
     List<Component> components = portalApiService.getComponents();
 
-    return ResponseEntity.ok(components);
+    return ResponseEntity.ok().cacheControl(CacheControl.noStore()).body(components);
   }
 
   @ApiOperation("Get component by name")
@@ -51,7 +52,7 @@ public class ComponentController {
   public ResponseEntity getComponent(@PathVariable String compName) {
     Component component = portalApiService.getComponentByName(compName);
 
-    return ResponseEntity.ok(component);
+    return ResponseEntity.ok().cacheControl(CacheControl.noStore()).body(component);
   }
 
   @ApiOperation(("Get components actived by an organisation"))
@@ -62,7 +63,7 @@ public class ComponentController {
 
     organisation.getComponents().forEach(dn -> components.add(portalApiService.getComponentByDn(dn)));
 
-    return ResponseEntity.ok(components);
+    return ResponseEntity.ok().cacheControl(CacheControl.noStore()).body(components);
   }
 
   @ApiOperation("Add adapter to component")
@@ -78,7 +79,7 @@ public class ComponentController {
 
     componentService.linkAdapter(component, adapter);
 
-    return ResponseEntity.noContent().build();
+    return ResponseEntity.noContent().cacheControl(CacheControl.noStore()).build();
   }
 
   @ApiOperation("Remove adapter from component")
@@ -93,7 +94,7 @@ public class ComponentController {
 
     componentService.unLinkAdapter(component, adapter);
 
-    return ResponseEntity.noContent().build();
+    return ResponseEntity.noContent().cacheControl(CacheControl.noStore()).build();
   }
 
 
@@ -110,7 +111,7 @@ public class ComponentController {
 
     componentService.linkClient(component, client);
 
-    return ResponseEntity.noContent().build();
+    return ResponseEntity.noContent().cacheControl(CacheControl.noStore()).build();
   }
 
   @ApiOperation("Remove client from component")
@@ -125,7 +126,7 @@ public class ComponentController {
 
     componentService.unLinkClient(component, client);
 
-    return ResponseEntity.noContent().build();
+    return ResponseEntity.noContent().cacheControl(CacheControl.noStore()).build();
   }
 
 

@@ -15,6 +15,7 @@ import no.fint.portal.model.organisation.Organisation;
 import no.fint.portal.model.organisation.OrganisationService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.CacheControl;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -46,7 +47,7 @@ public class MeController {
       throw new EntityNotFoundException("Nin is empty");
     }
     Contact contact = portalApiService.getContact(nin);
-    return ResponseEntity.ok(contact);
+    return ResponseEntity.ok().cacheControl(CacheControl.noStore()).body(contact);
   }
 
 

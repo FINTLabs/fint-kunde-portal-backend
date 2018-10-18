@@ -15,6 +15,7 @@ import no.fint.portal.model.client.Client;
 import no.fint.portal.model.client.ClientService;
 import no.fint.portal.model.organisation.Organisation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.CacheControl;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -54,7 +55,7 @@ public class ClientController {
 
     if (!optionalClient.isPresent()) {
       if (clientService.addClient(client, organisation)) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(client);
+        return ResponseEntity.status(HttpStatus.CREATED).cacheControl(CacheControl.noStore()).body(client);
 
       }
     }
@@ -94,7 +95,7 @@ public class ClientController {
       throw new EntityNotFoundException(String.format("Could not update client: %s", clientName));
     }
 
-    return ResponseEntity.ok().body(original);
+    return ResponseEntity.ok().cacheControl(CacheControl.noStore()).body(original);
   }
 
 
@@ -109,7 +110,7 @@ public class ClientController {
     Client client = portalApiService.getClient(organisation, clientName);
 
     clientService.resetClientPassword(client, newPassword);
-    return ResponseEntity.ok().body(client);
+    return ResponseEntity.ok().cacheControl(CacheControl.noStore()).body(client);
   }
 
   @ApiOperation("Get all clients")
@@ -118,7 +119,7 @@ public class ClientController {
     Organisation organisation = portalApiService.getOrganisation(orgName);
 
     List<Client> list = portalApiService.getClients(organisation);
-    return ResponseEntity.ok(list);
+    return ResponseEntity.ok().cacheControl(CacheControl.noStore()).body(list);
   }
 
   @ApiOperation("Get client")
@@ -130,7 +131,7 @@ public class ClientController {
     Organisation organisation = portalApiService.getOrganisation(orgName);
     Client client = portalApiService.getClient(organisation, clientName);
 
-    return ResponseEntity.ok().body(client);
+    return ResponseEntity.ok().cacheControl(CacheControl.noStore()).body(client);
   }
 
   @ApiOperation("Get Client OpenID Secret")
@@ -143,7 +144,7 @@ public class ClientController {
     Organisation organisation = portalApiService.getOrganisation(orgName);
     Client client = portalApiService.getClient(organisation, clientName);
 
-    return ResponseEntity.ok().body(clientService.getClientSecret(client));
+    return ResponseEntity.ok().cacheControl(CacheControl.noStore()).body(clientService.getClientSecret(client));
   }
 
 
@@ -157,7 +158,7 @@ public class ClientController {
     Client client = portalApiService.getClient(organisation, clientName);
 
     clientService.deleteClient(client);
-    return ResponseEntity.noContent().build();
+    return ResponseEntity.noContent().cacheControl(CacheControl.noStore()).build();
   }
 
 
