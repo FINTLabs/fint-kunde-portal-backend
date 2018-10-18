@@ -31,10 +31,6 @@ spring:
       validation:
         enabled: false
 
-security:
-  basic:
-    enabled: false
-
 logging:
   level:
     org:
