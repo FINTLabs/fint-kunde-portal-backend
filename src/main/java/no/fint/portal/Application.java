@@ -16,22 +16,22 @@ import java.util.Properties;
 @SpringBootApplication
 @EnableRetry
 public class Application {
-  public static void main(String[] args) {
-    SpringApplication app = new SpringApplication(Application.class);
+    public static void main(String[] args) {
+        SpringApplication app = new SpringApplication(Application.class);
 
-    // Modify default properties
-    Properties properties = new Properties();
-    properties.put("spring.mvc.throw-exception-if-no-handler-found", true);
-    app.setDefaultProperties(properties);
+        // Modify default properties
+        Properties properties = new Properties();
+        properties.put("spring.mvc.throw-exception-if-no-handler-found", true);
+        app.setDefaultProperties(properties);
 
-    // Run spring application
-    app.run(args);
-  }
+        // Run spring application
+        app.run(args);
+    }
 
 
-  @Bean
-  public CustomContainer containerCustomizer() {
-    return new CustomContainer();
-  }
+    @Bean
+    public CustomContainer containerCustomizer() {
+        return new CustomContainer();
+    }
 
 }

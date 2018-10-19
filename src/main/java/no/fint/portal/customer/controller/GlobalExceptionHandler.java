@@ -11,11 +11,11 @@ import org.springframework.web.servlet.NoHandlerFoundException;
  */
 @ControllerAdvice
 class GlobalExceptionHandler {
-  private static final Logger logger = LoggerFactory.getLogger(GlobalExceptionHandler.class);
+    private static final Logger logger = LoggerFactory.getLogger(GlobalExceptionHandler.class);
 
-  @ExceptionHandler(NoHandlerFoundException.class)
-  public String handle(Exception ex) {
-    logger.error("Exception caught: NoHandlerFoundException - " + ex.getMessage());
-    return "forward:/index.html";
-  }
+    @ExceptionHandler(NoHandlerFoundException.class)
+    public String handle(Exception ex) {
+        logger.error("Exception caught: NoHandlerFoundException - " + ex.getMessage());
+        return "forward:/index.html";
+    }
 }

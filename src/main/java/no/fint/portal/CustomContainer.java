@@ -8,7 +8,7 @@ import org.springframework.http.HttpStatus;
 public class CustomContainer implements WebServerFactoryCustomizer<ConfigurableServletWebServerFactory> {
 
     public void customize(ConfigurableServletWebServerFactory factory) {
-      ErrorPage error404Page = new ErrorPage(HttpStatus.NOT_FOUND, "/");
-      factory.addErrorPages(error404Page);
-     }
+        ErrorPage error404Page = new ErrorPage(HttpStatus.NOT_FOUND, "/");
+        factory.addErrorPages(error404Page);
+    }
 }

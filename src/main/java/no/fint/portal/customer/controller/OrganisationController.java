@@ -32,173 +32,173 @@ import java.util.Optional;
 @RequestMapping(value = "/api/organisations/{orgName}")
 public class OrganisationController {
 
-  @Autowired
-  PortalApiService portalApiService;
+    @Autowired
+    PortalApiService portalApiService;
 
-  @Autowired
-  private OrganisationService organisationService;
+    @Autowired
+    private OrganisationService organisationService;
 
-  @Autowired
-  private AssetService assetService;
+    @Autowired
+    private AssetService assetService;
 
-  @GetMapping("/")
-  @ApiOperation("Get Organisation")
-  public ResponseEntity getOrganisationDetails(@PathVariable String orgName) {
-    Organisation organisation = portalApiService.getOrganisation(orgName);
+    @GetMapping("/")
+    @ApiOperation("Get Organisation")
+    public ResponseEntity getOrganisationDetails(@PathVariable String orgName) {
+        Organisation organisation = portalApiService.getOrganisation(orgName);
 
-    return ResponseEntity.ok().cacheControl(CacheControl.noStore()).body(organisation);
-  }
-
-  @PutMapping("/")
-  @ApiOperation("Update Organisation")
-  public ResponseEntity updateOrganisation(@PathVariable String orgName,
-                                           @RequestBody Organisation organisation) {
-    Organisation original = portalApiService.getOrganisation(orgName);
-    if (organisation.getDisplayName() != null)
-      original.setDisplayName(organisation.getDisplayName());
-    if (organisation.getOrgNumber() != null)
-      original.setOrgNumber(organisation.getOrgNumber());
-
-    organisationService.updateOrganisation(original);
-
-    return ResponseEntity.ok().cacheControl(CacheControl.noStore()).body(original);
-  }
-
-
-  @ApiOperation("Get primary asset")
-  @GetMapping(value = "/asset/primary")
-  public ResponseEntity getOrganizationPrimaryAsset(@PathVariable String orgName) {
-    Optional<Organisation> organisation = organisationService.getOrganisation(orgName);
-
-    if (organisation.isPresent()) {
-      Optional<Asset> primaryAsset = assetService.getAssets(organisation.get()).stream().filter(asset -> asset.isPrimaryAsset()).findFirst();
-      if (primaryAsset.isPresent()) {
-        return ResponseEntity.ok().cacheControl(CacheControl.noStore()).body(primaryAsset.get());
-      }
-      throw new EntityNotFoundException(
-        String.format("Primary asset not present.")
-      );
+        return ResponseEntity.ok().cacheControl(CacheControl.noStore()).body(organisation);
     }
 
-    throw new EntityNotFoundException(
-      String.format("Organisation %s could not be found so we can't find any primary asset for it either ;)", orgName)
-    );
-  }
+    @PutMapping("/")
+    @ApiOperation("Update Organisation")
+    public ResponseEntity updateOrganisation(@PathVariable String orgName,
+                                             @RequestBody Organisation organisation) {
+        Organisation original = portalApiService.getOrganisation(orgName);
+        if (organisation.getDisplayName() != null)
+            original.setDisplayName(organisation.getDisplayName());
+        if (organisation.getOrgNumber() != null)
+            original.setOrgNumber(organisation.getOrgNumber());
 
-  @GetMapping("/contacts/legal")
-  @ApiOperation("Get Legal Contact")
-  public ResponseEntity getLegalContact(@PathVariable String orgName) {
-    Organisation organisation = portalApiService.getOrganisation(orgName);
+        organisationService.updateOrganisation(original);
 
-    Contact legalContact = organisationService.getLegalContact(organisation);
-    if (legalContact == null) throw new EntityNotFoundException("Legal Contact not found");
-
-    return ResponseEntity.ok().cacheControl(CacheControl.noStore()).body(legalContact);
-  }
-
-  @PutMapping("/contacts/legal/{nin}")
-  @ApiOperation("Set Legal Contact")
-  public ResponseEntity linkLegalContact(@PathVariable String orgName, @PathVariable String nin) {
-    Organisation organisation = portalApiService.getOrganisation(orgName);
-    Contact contact = portalApiService.getContact(nin);
-
-    organisationService.linkLegalContact(organisation, contact);
-
-    return ResponseEntity.noContent().cacheControl(CacheControl.noStore()).build();
-  }
-
-  @DeleteMapping("/contacts/legal/{nin}")
-  @ApiOperation("Unset Legal Contact")
-  public ResponseEntity unLinkLegalContact(@PathVariable String orgName, @PathVariable String nin) {
-    Organisation organisation = portalApiService.getOrganisation(orgName);
-    Contact contact = portalApiService.getContact(nin);
-
-    organisationService.unLinkLegalContact(organisation, contact);
-
-    return ResponseEntity.noContent().cacheControl(CacheControl.noStore()).build();
-  }
-
-  @GetMapping("/contacts/technical")
-  @ApiOperation("Get Technical Contacts")
-  public ResponseEntity getTechnicalContacts(@PathVariable String orgName) {
-    Organisation organisation = portalApiService.getOrganisation(orgName);
-    List<Contact> technicalContacts = organisationService.getTechnicalContacts(organisation);
-
-    return ResponseEntity.ok().cacheControl(CacheControl.noStore()).body(technicalContacts);
-  }
-
-  @PutMapping("/contacts/technical/{nin}")
-  @ApiOperation("Add Technical Contact")
-  public ResponseEntity linkTechnicalContact(@PathVariable String orgName, @PathVariable String nin) {
-    Organisation organisation = portalApiService.getOrganisation(orgName);
-    Contact contact = portalApiService.getContact(nin);
-
-    organisationService.linkTechnicalContact(organisation, contact);
-
-    return ResponseEntity.noContent().cacheControl(CacheControl.noStore()).build();
-  }
-
-  @DeleteMapping("/contacts/technical/{nin}")
-  @ApiOperation("Remove Technical Contact")
-  public ResponseEntity unLinkTechnicalContact(@PathVariable String orgName, @PathVariable String nin) {
-    Organisation organisation = portalApiService.getOrganisation(orgName);
-    Contact contact = portalApiService.getContact(nin);
-
-    organisationService.unLinkTechnicalContact(organisation, contact);
-
-    return ResponseEntity.noContent().cacheControl(CacheControl.noStore()).build();
-  }
-
-  @PutMapping("/components/{compName}")
-  @ApiOperation("Link Component")
-  public ResponseEntity linkComponent(@PathVariable String orgName, @PathVariable String compName) {
-    Organisation organisation = portalApiService.getOrganisation(orgName);
-    Component component = portalApiService.getComponentByName(compName);
-
-    organisationService.linkComponent(organisation, component);
-
-    return ResponseEntity.noContent().cacheControl(CacheControl.noStore()).build();
-  }
+        return ResponseEntity.ok().cacheControl(CacheControl.noStore()).body(original);
+    }
 
 
-  @DeleteMapping("/components/{compName}")
-  @ApiOperation("Unlink Component")
-  public ResponseEntity unLinkComponent(@PathVariable String orgName, @PathVariable String compName) {
-    Organisation organisation = portalApiService.getOrganisation(orgName);
-    Component component = portalApiService.getComponentByName(compName);
+    @ApiOperation("Get primary asset")
+    @GetMapping(value = "/asset/primary")
+    public ResponseEntity getOrganizationPrimaryAsset(@PathVariable String orgName) {
+        Optional<Organisation> organisation = organisationService.getOrganisation(orgName);
 
-    organisationService.unLinkComponent(organisation, component);
+        if (organisation.isPresent()) {
+            Optional<Asset> primaryAsset = assetService.getAssets(organisation.get()).stream().filter(asset -> asset.isPrimaryAsset()).findFirst();
+            if (primaryAsset.isPresent()) {
+                return ResponseEntity.ok().cacheControl(CacheControl.noStore()).body(primaryAsset.get());
+            }
+            throw new EntityNotFoundException(
+                    String.format("Primary asset not present.")
+            );
+        }
 
-    return ResponseEntity.noContent().cacheControl(CacheControl.noStore()).build();
-  }
+        throw new EntityNotFoundException(
+                String.format("Organisation %s could not be found so we can't find any primary asset for it either ;)", orgName)
+        );
+    }
 
-  //
-  // Exception handlers
-  //
-  @ExceptionHandler(UpdateEntityMismatchException.class)
-  public ResponseEntity handleUpdateEntityMismatch(Exception e) {
-    return ResponseEntity.badRequest().body(new ErrorResponse(e.getMessage()));
-  }
+    @GetMapping("/contacts/legal")
+    @ApiOperation("Get Legal Contact")
+    public ResponseEntity getLegalContact(@PathVariable String orgName) {
+        Organisation organisation = portalApiService.getOrganisation(orgName);
 
-  @ExceptionHandler(EntityNotFoundException.class)
-  public ResponseEntity handleEntityNotFound(Exception e) {
-    return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponse(e.getMessage()));
-  }
+        Contact legalContact = organisationService.getLegalContact(organisation);
+        if (legalContact == null) throw new EntityNotFoundException("Legal Contact not found");
 
-  @ExceptionHandler(EntityFoundException.class)
-  public ResponseEntity handleEntityFound(Exception e) {
-    return ResponseEntity.status(HttpStatus.FOUND).body(new ErrorResponse(e.getMessage()));
-  }
+        return ResponseEntity.ok().cacheControl(CacheControl.noStore()).body(legalContact);
+    }
 
-  @ExceptionHandler(NameNotFoundException.class)
-  public ResponseEntity handleNameNotFound(Exception e) {
-    return ResponseEntity.badRequest().body(new ErrorResponse(e.getMessage()));
-  }
+    @PutMapping("/contacts/legal/{nin}")
+    @ApiOperation("Set Legal Contact")
+    public ResponseEntity linkLegalContact(@PathVariable String orgName, @PathVariable String nin) {
+        Organisation organisation = portalApiService.getOrganisation(orgName);
+        Contact contact = portalApiService.getContact(nin);
 
-  @ExceptionHandler(UnknownHostException.class)
-  public ResponseEntity handleUnkownHost(Exception e) {
-    return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body(new ErrorResponse(e.getMessage()));
-  }
+        organisationService.linkLegalContact(organisation, contact);
+
+        return ResponseEntity.noContent().cacheControl(CacheControl.noStore()).build();
+    }
+
+    @DeleteMapping("/contacts/legal/{nin}")
+    @ApiOperation("Unset Legal Contact")
+    public ResponseEntity unLinkLegalContact(@PathVariable String orgName, @PathVariable String nin) {
+        Organisation organisation = portalApiService.getOrganisation(orgName);
+        Contact contact = portalApiService.getContact(nin);
+
+        organisationService.unLinkLegalContact(organisation, contact);
+
+        return ResponseEntity.noContent().cacheControl(CacheControl.noStore()).build();
+    }
+
+    @GetMapping("/contacts/technical")
+    @ApiOperation("Get Technical Contacts")
+    public ResponseEntity getTechnicalContacts(@PathVariable String orgName) {
+        Organisation organisation = portalApiService.getOrganisation(orgName);
+        List<Contact> technicalContacts = organisationService.getTechnicalContacts(organisation);
+
+        return ResponseEntity.ok().cacheControl(CacheControl.noStore()).body(technicalContacts);
+    }
+
+    @PutMapping("/contacts/technical/{nin}")
+    @ApiOperation("Add Technical Contact")
+    public ResponseEntity linkTechnicalContact(@PathVariable String orgName, @PathVariable String nin) {
+        Organisation organisation = portalApiService.getOrganisation(orgName);
+        Contact contact = portalApiService.getContact(nin);
+
+        organisationService.linkTechnicalContact(organisation, contact);
+
+        return ResponseEntity.noContent().cacheControl(CacheControl.noStore()).build();
+    }
+
+    @DeleteMapping("/contacts/technical/{nin}")
+    @ApiOperation("Remove Technical Contact")
+    public ResponseEntity unLinkTechnicalContact(@PathVariable String orgName, @PathVariable String nin) {
+        Organisation organisation = portalApiService.getOrganisation(orgName);
+        Contact contact = portalApiService.getContact(nin);
+
+        organisationService.unLinkTechnicalContact(organisation, contact);
+
+        return ResponseEntity.noContent().cacheControl(CacheControl.noStore()).build();
+    }
+
+    @PutMapping("/components/{compName}")
+    @ApiOperation("Link Component")
+    public ResponseEntity linkComponent(@PathVariable String orgName, @PathVariable String compName) {
+        Organisation organisation = portalApiService.getOrganisation(orgName);
+        Component component = portalApiService.getComponentByName(compName);
+
+        organisationService.linkComponent(organisation, component);
+
+        return ResponseEntity.noContent().cacheControl(CacheControl.noStore()).build();
+    }
+
+
+    @DeleteMapping("/components/{compName}")
+    @ApiOperation("Unlink Component")
+    public ResponseEntity unLinkComponent(@PathVariable String orgName, @PathVariable String compName) {
+        Organisation organisation = portalApiService.getOrganisation(orgName);
+        Component component = portalApiService.getComponentByName(compName);
+
+        organisationService.unLinkComponent(organisation, component);
+
+        return ResponseEntity.noContent().cacheControl(CacheControl.noStore()).build();
+    }
+
+    //
+    // Exception handlers
+    //
+    @ExceptionHandler(UpdateEntityMismatchException.class)
+    public ResponseEntity handleUpdateEntityMismatch(Exception e) {
+        return ResponseEntity.badRequest().body(new ErrorResponse(e.getMessage()));
+    }
+
+    @ExceptionHandler(EntityNotFoundException.class)
+    public ResponseEntity handleEntityNotFound(Exception e) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponse(e.getMessage()));
+    }
+
+    @ExceptionHandler(EntityFoundException.class)
+    public ResponseEntity handleEntityFound(Exception e) {
+        return ResponseEntity.status(HttpStatus.FOUND).body(new ErrorResponse(e.getMessage()));
+    }
+
+    @ExceptionHandler(NameNotFoundException.class)
+    public ResponseEntity handleNameNotFound(Exception e) {
+        return ResponseEntity.badRequest().body(new ErrorResponse(e.getMessage()));
+    }
+
+    @ExceptionHandler(UnknownHostException.class)
+    public ResponseEntity handleUnkownHost(Exception e) {
+        return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body(new ErrorResponse(e.getMessage()));
+    }
 
 
 }

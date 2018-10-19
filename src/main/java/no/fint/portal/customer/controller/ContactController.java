@@ -35,126 +35,126 @@ import java.util.stream.Stream;
 @RequestMapping(value = "/api/contacts")
 public class ContactController {
 
-  @Autowired
-  PortalApiService portalApiService;
-  @Autowired
-  OrganisationService organisationService;
-  @Autowired
-  private ContactService contactService;
+    @Autowired
+    PortalApiService portalApiService;
+    @Autowired
+    OrganisationService organisationService;
+    @Autowired
+    private ContactService contactService;
 
-  @ApiOperation("Create new contact")
-  @RequestMapping(method = RequestMethod.POST,
-    consumes = MediaType.APPLICATION_JSON_UTF8_VALUE
-  )
-  public ResponseEntity createContact(@RequestBody final Contact contact) {
-    if (!contactService.addContact(contact)) {
-      throw new EntityFoundException(
-        ServletUriComponentsBuilder
-          .fromCurrentRequest().path("/{nin}")
-          .buildAndExpand(contact.getNin()).toUri().toString()
-      );
-    }
-    return ResponseEntity.status(HttpStatus.CREATED).cacheControl(CacheControl.noStore()).body(contact);
-  }
-
-  @ApiOperation("Update contact")
-  @RequestMapping(method = RequestMethod.PUT,
-    consumes = MediaType.APPLICATION_JSON_UTF8_VALUE,
-    value = "/{nin}"
-  )
-  public ResponseEntity updateContact(@RequestBody final Contact contact, @PathVariable final String nin) {
-    if (!nin.equals(contact.getNin())) {
-      throw new UpdateEntityMismatchException("The contact to updateEntry is not the contact in endpoint.");
-    }
-    Contact original = portalApiService.getContact(nin);
-    if (contact.getFirstName() != null)
-      original.setFirstName(contact.getFirstName());
-    if (contact.getLastName() != null)
-      original.setLastName(contact.getLastName());
-    if (contact.getMail() != null)
-      original.setMail(contact.getMail());
-    if (contact.getMobile() != null)
-      original.setMobile(contact.getMobile());
-
-    if (!contactService.updateContact(original)) {
-      throw new EntityNotFoundException(String.format("Could not find contact: %s", nin));
+    @ApiOperation("Create new contact")
+    @RequestMapping(method = RequestMethod.POST,
+            consumes = MediaType.APPLICATION_JSON_UTF8_VALUE
+    )
+    public ResponseEntity createContact(@RequestBody final Contact contact) {
+        if (!contactService.addContact(contact)) {
+            throw new EntityFoundException(
+                    ServletUriComponentsBuilder
+                            .fromCurrentRequest().path("/{nin}")
+                            .buildAndExpand(contact.getNin()).toUri().toString()
+            );
+        }
+        return ResponseEntity.status(HttpStatus.CREATED).cacheControl(CacheControl.noStore()).body(contact);
     }
 
-    return ResponseEntity.ok().cacheControl(CacheControl.noStore()).body(original);
-  }
+    @ApiOperation("Update contact")
+    @RequestMapping(method = RequestMethod.PUT,
+            consumes = MediaType.APPLICATION_JSON_UTF8_VALUE,
+            value = "/{nin}"
+    )
+    public ResponseEntity updateContact(@RequestBody final Contact contact, @PathVariable final String nin) {
+        if (!nin.equals(contact.getNin())) {
+            throw new UpdateEntityMismatchException("The contact to updateEntry is not the contact in endpoint.");
+        }
+        Contact original = portalApiService.getContact(nin);
+        if (contact.getFirstName() != null)
+            original.setFirstName(contact.getFirstName());
+        if (contact.getLastName() != null)
+            original.setLastName(contact.getLastName());
+        if (contact.getMail() != null)
+            original.setMail(contact.getMail());
+        if (contact.getMobile() != null)
+            original.setMobile(contact.getMobile());
 
-  @ApiOperation("Get all contacts")
-  @RequestMapping(method = RequestMethod.GET)
-  public ResponseEntity getContacts() {
-    List<Contact> contacts = portalApiService.getContacts();
+        if (!contactService.updateContact(original)) {
+            throw new EntityNotFoundException(String.format("Could not find contact: %s", nin));
+        }
 
-    if (contacts != null) {
-      return ResponseEntity.ok().cacheControl(CacheControl.noStore()).body(contacts);
+        return ResponseEntity.ok().cacheControl(CacheControl.noStore()).body(original);
     }
 
-    throw new EntityNotFoundException("No contacts found.");
-  }
+    @ApiOperation("Get all contacts")
+    @RequestMapping(method = RequestMethod.GET)
+    public ResponseEntity getContacts() {
+        List<Contact> contacts = portalApiService.getContacts();
 
-  @ApiOperation("Get contact by nin")
-  @RequestMapping(method = RequestMethod.GET, value = "/{nin}")
-  public ResponseEntity getContact(@PathVariable final String nin) {
-    Contact contact = portalApiService.getContact(nin);
-    return ResponseEntity.ok().cacheControl(CacheControl.noStore()).body(contact);
-  }
+        if (contacts != null) {
+            return ResponseEntity.ok().cacheControl(CacheControl.noStore()).body(contacts);
+        }
 
-  @ApiOperation("Delete a contact")
-  @RequestMapping(method = RequestMethod.DELETE, value = "/{nin}")
-  public ResponseEntity deleteContacts(@PathVariable final String nin) {
-    Contact contact = portalApiService.getContact(nin);
+        throw new EntityNotFoundException("No contacts found.");
+    }
 
-    contactService.deleteContact(contact);
-    return ResponseEntity.noContent().cacheControl(CacheControl.noStore()).build();
-  }
+    @ApiOperation("Get contact by nin")
+    @RequestMapping(method = RequestMethod.GET, value = "/{nin}")
+    public ResponseEntity getContact(@PathVariable final String nin) {
+        Contact contact = portalApiService.getContact(nin);
+        return ResponseEntity.ok().cacheControl(CacheControl.noStore()).body(contact);
+    }
 
-  @ApiOperation("Get contact's organisations")
-  @GetMapping(value = "/organisations")
-  public ResponseEntity getContactOrganisations(@RequestHeader(value = "x-nin") final String nin) {
-    Contact contact = contactService.getContact(nin).orElseThrow(() -> new EntityNotFoundException("Contact not found"));
-    List<Organisation> contactOrganisations = Stream.concat(contact.getLegal().stream(), contact.getTechnical()
-      .stream())
-      .map(organisationService::getOrganisationByDn)
-      .filter(Optional::isPresent).map(Optional::get)
-      .distinct()
-      .collect(Collectors.toList());
-    return ResponseEntity.ok().cacheControl(CacheControl.noStore()).body(contactOrganisations);
-  }
+    @ApiOperation("Delete a contact")
+    @RequestMapping(method = RequestMethod.DELETE, value = "/{nin}")
+    public ResponseEntity deleteContacts(@PathVariable final String nin) {
+        Contact contact = portalApiService.getContact(nin);
 
-  //
-  // Exception handlers
-  //
-  @ExceptionHandler(UpdateEntityMismatchException.class)
-  public ResponseEntity handleUpdateEntityMismatch(Exception e) {
-    return ResponseEntity.badRequest().body(new ErrorResponse(e.getMessage()));
-  }
+        contactService.deleteContact(contact);
+        return ResponseEntity.noContent().cacheControl(CacheControl.noStore()).build();
+    }
 
-  @ExceptionHandler(EntityNotFoundException.class)
-  public ResponseEntity handleEntityNotFound(Exception e) {
-    return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponse(e.getMessage()));
-  }
+    @ApiOperation("Get contact's organisations")
+    @GetMapping(value = "/organisations")
+    public ResponseEntity getContactOrganisations(@RequestHeader(value = "x-nin") final String nin) {
+        Contact contact = contactService.getContact(nin).orElseThrow(() -> new EntityNotFoundException("Contact not found"));
+        List<Organisation> contactOrganisations = Stream.concat(contact.getLegal().stream(), contact.getTechnical()
+                .stream())
+                .map(organisationService::getOrganisationByDn)
+                .filter(Optional::isPresent).map(Optional::get)
+                .distinct()
+                .collect(Collectors.toList());
+        return ResponseEntity.ok().cacheControl(CacheControl.noStore()).body(contactOrganisations);
+    }
 
-  @ExceptionHandler(CreateEntityMismatchException.class)
-  public ResponseEntity handleCreateEntityMismatch(Exception e) {
-    return ResponseEntity.badRequest().body(new ErrorResponse(e.getMessage()));
-  }
+    //
+    // Exception handlers
+    //
+    @ExceptionHandler(UpdateEntityMismatchException.class)
+    public ResponseEntity handleUpdateEntityMismatch(Exception e) {
+        return ResponseEntity.badRequest().body(new ErrorResponse(e.getMessage()));
+    }
 
-  @ExceptionHandler(EntityFoundException.class)
-  public ResponseEntity handleEntityFound(Exception e) {
-    return ResponseEntity.status(HttpStatus.FOUND).body(new ErrorResponse(e.getMessage()));
-  }
+    @ExceptionHandler(EntityNotFoundException.class)
+    public ResponseEntity handleEntityNotFound(Exception e) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponse(e.getMessage()));
+    }
 
-  @ExceptionHandler(NameNotFoundException.class)
-  public ResponseEntity handleNameNotFound(Exception e) {
-    return ResponseEntity.badRequest().body(new ErrorResponse(e.getMessage()));
-  }
+    @ExceptionHandler(CreateEntityMismatchException.class)
+    public ResponseEntity handleCreateEntityMismatch(Exception e) {
+        return ResponseEntity.badRequest().body(new ErrorResponse(e.getMessage()));
+    }
 
-  @ExceptionHandler(UnknownHostException.class)
-  public ResponseEntity handleUnkownHost(Exception e) {
-    return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body(new ErrorResponse(e.getMessage()));
-  }
+    @ExceptionHandler(EntityFoundException.class)
+    public ResponseEntity handleEntityFound(Exception e) {
+        return ResponseEntity.status(HttpStatus.FOUND).body(new ErrorResponse(e.getMessage()));
+    }
+
+    @ExceptionHandler(NameNotFoundException.class)
+    public ResponseEntity handleNameNotFound(Exception e) {
+        return ResponseEntity.badRequest().body(new ErrorResponse(e.getMessage()));
+    }
+
+    @ExceptionHandler(UnknownHostException.class)
+    public ResponseEntity handleUnkownHost(Exception e) {
+        return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body(new ErrorResponse(e.getMessage()));
+    }
 
 }

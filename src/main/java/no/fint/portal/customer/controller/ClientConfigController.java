@@ -21,12 +21,12 @@ import org.springframework.web.bind.annotation.RestController;
 public class ClientConfigController {
 
 
-  @Autowired
-  private ClientConfig clientConfig;
+    @Autowired
+    private ClientConfig clientConfig;
 
-  @ApiOperation("Get client config")
-  @RequestMapping(method = RequestMethod.GET)
-  public ResponseEntity getClientConfig() {
-    return ResponseEntity.ok().cacheControl(CacheControl.noStore()).body(clientConfig);
-  }
+    @ApiOperation("Get client config")
+    @RequestMapping(method = RequestMethod.GET)
+    public ResponseEntity getClientConfig() {
+        return ResponseEntity.ok().cacheControl(CacheControl.noStore()).body(clientConfig);
+    }
 }
