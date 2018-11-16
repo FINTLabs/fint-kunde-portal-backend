@@ -16,6 +16,10 @@ pipeline {
         withDockerRegistry([credentialsId: 'dtr-fintlabs-no', url: 'https://dtr.fintlabs.no']) {
           sh "docker push 'dtr.fintlabs.no/beta/kunde-portal:latest'"
         }
+        withDockerRegistry([credentialsId: 'fintlabs.azurecr.io', url: 'https://fintlabs.azurecr.io']) {
+          sh "docker tag ${GIT_COMMIT} fintlabs.azurecr.io/kunde-portal:latest"
+          sh "docker push 'fintlabs.azurecr.io/kunde-portal:latest'"
+        }
         withDockerServer([credentialsId: "ucp-fintlabs-jenkins-bundle", uri: "tcp://ucp.fintlabs.no:443"]) {
           sh "docker service update customer-portal-beta_customer-portal --image dtr.fintlabs.no/beta/kunde-portal:latest --detach=false"
         }
