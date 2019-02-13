@@ -1,4 +1,4 @@
-FROM dtr.fintlabs.no/beta/kunde-portal-frontend:latest as client
+FROM fintlabs.azurecr.io/kunde-portal-frontend:latest as client
 
 FROM gradle:4.9-jdk8-alpine as java
 USER root
