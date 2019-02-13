@@ -3,8 +3,10 @@ pipeline {
     stages {
         stage('Build') {
             steps {
-                sh "docker pull fintlabs.azurecr.io/kunde-portal-frontend:latest"
-                sh "docker build --tag ${GIT_COMMIT} ."
+                withDockerRegistry([credentialsId: 'fintlabs.azurecr.io', url: 'https://fintlabs.azurecr.io']) {
+                    sh "docker pull fintlabs.azurecr.io/kunde-portal-frontend:latest"
+                    sh "docker build --tag ${GIT_COMMIT} ."
+                }
             }
         }
         stage('Publish') {
