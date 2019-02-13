@@ -3,7 +3,7 @@ pipeline {
     stages {
         stage('Build') {
             steps {
-                sh "docker pull dtr.fintlabs.no/beta/kunde-portal-frontend:latest"
+                sh "docker pull fintlabs.azurecr.io/kunde-portal-frontend:latest"
                 sh "docker build --tag ${GIT_COMMIT} ."
             }
         }
