@@ -16,6 +16,8 @@ pipeline {
                     sh "docker tag ${GIT_COMMIT} fintlabs.azurecr.io/kunde-portal:build.${BUILD_NUMBER}"
                     sh "docker push fintlabs.azurecr.io/kunde-portal:build.${BUILD_NUMBER}"
                 }
+                kubernetesDeploy configs: k8s-beta.yaml', kubeconfigId: 'aks-beta-fint'
+
             }
         }
         stage('Publish PR') {
