@@ -12,11 +12,11 @@ pipeline {
         stage('Publish') {
             when { branch 'master' }
             steps {
+                sh "docker tag ${GIT_COMMIT} fintlabs.azurecr.io/kunde-portal:build.${BUILD_NUMBER}"
                 withDockerRegistry([credentialsId: 'fintlabs.azurecr.io', url: 'https://fintlabs.azurecr.io']) {
-                    sh "docker tag ${GIT_COMMIT} fintlabs.azurecr.io/kunde-portal:build.${BUILD_NUMBER}"
                     sh "docker push fintlabs.azurecr.io/kunde-portal:build.${BUILD_NUMBER}"
                 }
-                kubernetesDeploy configs: k8s-beta.yaml', kubeconfigId: 'aks-beta-fint'
+                kubernetesDeploy configs: 'admin-portal-beta.yaml', kubeconfigId: 'aks-beta-fint'
 
             }
         }
