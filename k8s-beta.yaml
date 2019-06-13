@@ -148,7 +148,8 @@ spec:
           initialDelaySeconds: 30
           timeoutSeconds: 5
       - name: nginx
-        image: nginx:1.15
+        image: nginx:1.15.10
+#        image: fintlabs.azurecr.io/nginx:1.15.10-1
         resources:
           limits:
             cpu: "500m"
@@ -216,7 +217,7 @@ spec:
                 key: nam.oauth.password
                 name: fint-portal-user
       - name: link-walker
-        image: fintlabs.azurecr.io/link-walker:build.3
+        image: fintlabs.azurecr.io/link-walker:build.5
         resources:
           limits:
             cpu: "2"

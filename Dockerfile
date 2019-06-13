@@ -1,6 +1,6 @@
 FROM fintlabs.azurecr.io/kunde-portal-frontend:latest as client
 
-FROM gradle:4.9-jdk8-alpine as java
+FROM gradle:4.10.3-jdk8-alpine as java
 USER root
 COPY . .
 COPY --from=client /src/build/ src/main/resources/public/
