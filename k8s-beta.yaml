@@ -221,13 +221,15 @@ spec:
         resources:
           limits:
             cpu: "2"
-            memory: "2Gi"
+            memory: "4Gi"
           requests:
             cpu: "250m"
-            memory: "1Gi"
+            memory: "3Gi"
         ports:
           - containerPort: 8081
         env:
+          - name: JAVA_TOOL_OPTIONS
+            value: '-XX:+ExitOnOutOfMemoryError -Xmx3G -verbose:gc'
           - name: server.port
             value: "8081"
           - name: fint.rest-template.provider
