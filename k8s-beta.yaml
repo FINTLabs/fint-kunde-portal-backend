@@ -217,7 +217,7 @@ spec:
                 key: nam.oauth.password
                 name: fint-portal-user
       - name: link-walker
-        image: fintlabs.azurecr.io/link-walker:build.5
+        image: fintlabs.azurecr.io/link-walker:PR-12.1
         resources:
           limits:
             cpu: "2"
@@ -230,6 +230,8 @@ spec:
         env:
           - name: server.port
             value: "8081"
+          - name: fint.rest-template.provider
+            value: portal-api
           - name: fint.ldap.url
             value: ldap://10.0.0.55
           - name: fint.ldap.component-base
