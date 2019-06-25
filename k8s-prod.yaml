@@ -1,0 +1,271 @@
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    service.beta.kubernetes.io/azure-load-balancer-internal: "true"
+  labels:
+    io.kompose.service: kunde-portal-prod
+  name: kunde-portal-prod
+spec:
+  ports:
+  - name: "80"
+    port: 80
+  selector:
+    io.kompose.service: kunde-portal-prod
+  type: LoadBalancer
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: nginx-kunde-portal
+data:
+  nginx.conf: |
+    server {
+      listen 80 default_server;
+      listen [::]:80 default_server;
+
+      server_name kunde.felleskomponent.no;
+
+      location / {
+          proxy_pass http://localhost:8080;
+          proxy_set_header Connection '';
+          proxy_http_version 1.1;
+          chunked_transfer_encoding off;
+          proxy_buffering off;
+          proxy_cache off;
+      }
+
+      location /api/tests/links/ {
+          proxy_pass http://localhost:8081;
+          proxy_set_header Connection '';
+          proxy_http_version 1.1;
+          chunked_transfer_encoding off;
+          proxy_buffering off;
+          proxy_cache off;
+      }
+
+      location /api/tests/ {
+          proxy_pass http://localhost:8082;
+          proxy_set_header Connection '';
+          proxy_http_version 1.1;
+          chunked_transfer_encoding off;
+          proxy_buffering off;
+          proxy_cache off;
+      }
+    }
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    io.kompose.service: kunde-portal-prod
+  name: kunde-portal-prod
+spec:
+  progressDeadlineSeconds: 600
+  replicas: 1
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      io.kompose.service: kunde-portal-prod
+  strategy:
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  template:
+    metadata:
+      labels:
+        io.kompose.service: kunde-portal-prod
+    spec:
+      restartPolicy: Always
+      volumes:
+        - name: nginx-kunde-portal
+          configMap:
+            name: nginx-kunde-portal
+      containers:
+      - env:
+        - name: TZ
+          value: Europe/Oslo
+        - name: fint.client-config.test-service-base-url
+          value: ""
+        - name: fint.client-config.linkwalker-base-url
+          value: ""
+        - name: fint.ldap.url
+          value: ldap://10.0.0.55
+        - name: fint.ldap.component-base
+          value: ou=components,o=fint
+        - name: fint.ldap.contact-base
+          value: ou=contacts,o=fint
+        - name: fint.ldap.organisation-base
+          value: ou=organisations,o=fint
+        - name: fint.ldap.user
+          valueFrom:
+            secretKeyRef:
+              key: ldap.user
+              name: fint-portal-user
+        - name: fint.ldap.password
+          valueFrom:
+            secretKeyRef:
+              key: ldap.password
+              name: fint-portal-user
+        - name: fint.nam.oauth.idp-hostname
+          value: idp.felleskomponent.no
+        - name: fint.nam.oauth.clientId
+          valueFrom:
+            secretKeyRef:
+              key: nam.oauth.clientId
+              name: fint-portal-user
+        - name: fint.nam.oauth.clientSecret
+          valueFrom:
+            secretKeyRef:
+              key: nam.oauth.clientSecret
+              name: fint-portal-user
+        - name: fint.nam.oauth.username
+          valueFrom:
+            secretKeyRef:
+              key: nam.oauth.username
+              name: fint-portal-user
+        - name: fint.nam.oauth.password
+          valueFrom:
+            secretKeyRef:
+              key: nam.oauth.password
+              name: fint-portal-user
+        image: fintlabs.azurecr.io/kunde-portal:1.1.0
+        name: kunde-portal-prod
+        ports:
+        - containerPort: 8080
+          protocol: TCP
+        resources:
+          limits:
+            cpu: "2"
+            memory: "2Gi"
+          requests:
+            cpu: "250m"
+            memory: "1Gi"
+        readinessProbe:
+          httpGet:
+            path: /actuator/health
+            port: 8080
+          initialDelaySeconds: 30
+          timeoutSeconds: 5
+      - name: nginx
+        image: nginx:1.15
+        resources:
+          limits:
+            cpu: "500m"
+            memory: "128Mi"
+        env:
+          - name: TZ
+            value: Europe/Oslo
+        ports:
+          - containerPort: 80
+        volumeMounts:
+          - mountPath: /etc/nginx/conf.d
+            name: nginx-kunde-portal
+      - name: test-runner
+        image: fintlabs.azurecr.io/test-runner:1.0.0
+        resources:
+          limits:
+            cpu: "2"
+            memory: "2Gi"
+          requests:
+            cpu: "250m"
+            memory: "1Gi"
+        ports:
+          - containerPort: 8082
+        env:
+          - name: server.port
+            value: "8082"
+          - name: fint.ldap.url
+            value: ldap://10.0.0.55
+          - name: fint.ldap.component-base
+            value: ou=components,o=fint
+          - name: fint.ldap.contact-base
+            value: ou=contacts,o=fint
+          - name: fint.ldap.organisation-base
+            value: ou=organisations,o=fint
+          - name: fint.ldap.user
+            valueFrom:
+              secretKeyRef:
+                key: ldap.user
+                name: fint-portal-user
+          - name: fint.ldap.password
+            valueFrom:
+              secretKeyRef:
+                key: ldap.password
+                name: fint-portal-user
+          - name: fint.nam.oauth.idp-hostname
+            value: idp.felleskomponent.no
+          - name: fint.nam.oauth.clientId
+            valueFrom:
+              secretKeyRef:
+                key: nam.oauth.clientId
+                name: fint-portal-user
+          - name: fint.nam.oauth.clientSecret
+            valueFrom:
+              secretKeyRef:
+                key: nam.oauth.clientSecret
+                name: fint-portal-user
+          - name: fint.nam.oauth.username
+            valueFrom:
+              secretKeyRef:
+                key: nam.oauth.username
+                name: fint-portal-user
+          - name: fint.nam.oauth.password
+            valueFrom:
+              secretKeyRef:
+                key: nam.oauth.password
+                name: fint-portal-user
+      - name: link-walker
+        image: fintlabs.azurecr.io/link-walker:1.0.0
+        resources:
+          limits:
+            cpu: "2"
+            memory: "2Gi"
+          requests:
+            cpu: "250m"
+            memory: "1Gi"
+        ports:
+          - containerPort: 8081
+        env:
+          - name: server.port
+            value: "8081"
+          - name: fint.ldap.url
+            value: ldap://10.0.0.55
+          - name: fint.ldap.component-base
+            value: ou=components,o=fint
+          - name: fint.ldap.contact-base
+            value: ou=contacts,o=fint
+          - name: fint.ldap.organisation-base
+            value: ou=organisations,o=fint
+          - name: fint.ldap.user
+            valueFrom:
+              secretKeyRef:
+                key: ldap.user
+                name: fint-portal-user
+          - name: fint.ldap.password
+            valueFrom:
+              secretKeyRef:
+                key: ldap.password
+                name: fint-portal-user
+          - name: fint.nam.oauth.idp-hostname
+            value: idp.felleskomponent.no
+          - name: fint.nam.oauth.clientId
+            valueFrom:
+              secretKeyRef:
+                key: nam.oauth.clientId
+                name: fint-portal-user
+          - name: fint.nam.oauth.clientSecret
+            valueFrom:
+              secretKeyRef:
+                key: nam.oauth.clientSecret
+                name: fint-portal-user
+          - name: fint.nam.oauth.username
+            valueFrom:
+              secretKeyRef:
+                key: nam.oauth.username
+                name: fint-portal-user
+          - name: fint.nam.oauth.password
+            valueFrom:
+              secretKeyRef:
+                key: nam.oauth.password
+                name: fint-portal-user
