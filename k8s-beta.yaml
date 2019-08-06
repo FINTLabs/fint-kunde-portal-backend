@@ -53,7 +53,7 @@ data:
           proxy_cache off;
       }
 
-      location /tickets/ {
+      location /tickets {
            proxy_pass http://localhost:8083;
            proxy_set_header Connection '';
            proxy_http_version 1.1;
