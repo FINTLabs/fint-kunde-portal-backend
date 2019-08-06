@@ -52,6 +52,15 @@ data:
           proxy_buffering off;
           proxy_cache off;
       }
+
+      location /tickets/ {
+           proxy_pass http://localhost:8083;
+           proxy_set_header Connection '';
+           proxy_http_version 1.1;
+           chunked_transfer_encoding off;
+           proxy_buffering off;
+           proxy_cache off;
+       }
     }
 ---
 apiVersion: apps/v1
@@ -234,6 +243,70 @@ spec:
             value: "8081"
           - name: fint.rest-template.provider
             value: portal-api
+          - name: fint.ldap.url
+            value: ldap://10.0.0.55
+          - name: fint.ldap.component-base
+            value: ou=components,o=fint
+          - name: fint.ldap.contact-base
+            value: ou=contacts,o=fint
+          - name: fint.ldap.organisation-base
+            value: ou=organisations,o=fint
+          - name: fint.ldap.user
+            valueFrom:
+              secretKeyRef:
+                key: ldap.user
+                name: fint-portal-user
+          - name: fint.ldap.password
+            valueFrom:
+              secretKeyRef:
+                key: ldap.password
+                name: fint-portal-user
+          - name: fint.nam.oauth.idp-hostname
+            value: idp.felleskomponent.no
+          - name: fint.nam.oauth.clientId
+            valueFrom:
+              secretKeyRef:
+                key: nam.oauth.clientId
+                name: fint-portal-user
+          - name: fint.nam.oauth.clientSecret
+            valueFrom:
+              secretKeyRef:
+                key: nam.oauth.clientSecret
+                name: fint-portal-user
+          - name: fint.nam.oauth.username
+            valueFrom:
+              secretKeyRef:
+                key: nam.oauth.username
+                name: fint-portal-user
+          - name: fint.nam.oauth.password
+            valueFrom:
+              secretKeyRef:
+                key: nam.oauth.password
+                name: fint-portal-user
+      - name: zendesk-integration
+        image: fintlabs.azurecr.io/zendesk-integration:1.0.0-alpha-1
+        resources:
+          limits:
+            cpu: "2"
+            memory: "2Gi"
+          requests:
+            cpu: "250m"
+            memory: "1Gi"
+        ports:
+          - containerPort: 8083
+        env:
+          - name: server.port
+            value: "8083"
+          - name: fint.zendesk.username
+            valueFrom:
+              secretKeyRef:
+                key: username
+                name: zendesk-integration
+          - name: fint.zendesk.token
+            valueFrom:
+              secretKeyRef:
+                key: token
+                name: zendesk-integration
           - name: fint.ldap.url
             value: ldap://10.0.0.55
           - name: fint.ldap.component-base
