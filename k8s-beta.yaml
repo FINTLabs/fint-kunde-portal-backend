@@ -172,7 +172,7 @@ spec:
           - mountPath: /etc/nginx/conf.d
             name: nginx-kunde-portal
       - name: test-runner
-        image: fintlabs.azurecr.io/test-runner:build.3
+        image: fintlabs.azurecr.io/test-runner:PR-5.1
         resources:
           limits:
             cpu: "2"
