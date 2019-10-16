@@ -236,6 +236,8 @@ spec:
         ports:
           - containerPort: 8081
         env:
+          - name: TZ
+            value: Europe/Oslo
           - name: JAVA_TOOL_OPTIONS
             value: '-XX:+ExitOnOutOfMemoryError -Xmx3G -verbose:gc'
           - name: server.port
