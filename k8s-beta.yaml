@@ -226,7 +226,7 @@ spec:
                 key: nam.oauth.password
                 name: fint-portal-user
       - name: link-walker
-        image: fintlabs.azurecr.io/link-walker:PR-16.4
+        image: fintlabs.azurecr.io/link-walker:PR-16.5
         resources:
           limits:
             cpu: "2"
@@ -237,6 +237,8 @@ spec:
         ports:
           - containerPort: 8081
         env:
+          - name: TZ
+            value: Europe/Oslo
           - name: JAVA_TOOL_OPTIONS
             value: '-XX:+ExitOnOutOfMemoryError -Xmx3G -verbose:gc'
           - name: server.port
