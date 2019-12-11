@@ -3,6 +3,9 @@ package no.fint.portal.customer.controller;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
+import no.fint.audit.FintAuditService;
+import no.fint.event.model.Event;
+import no.fint.event.model.Operation;
 import no.fint.portal.customer.service.PortalApiService;
 import no.fint.portal.exceptions.EntityFoundException;
 import no.fint.portal.exceptions.EntityNotFoundException;
@@ -41,9 +44,12 @@ public class OrganisationController {
     @Autowired
     private AssetService assetService;
 
+    @Autowired
+    private FintAuditService fintAuditService;
+
     @GetMapping("/")
     @ApiOperation("Get Organisation")
-    public ResponseEntity getOrganisationDetails(@PathVariable String orgName) {
+    public ResponseEntity<Organisation> getOrganisationDetails(@PathVariable String orgName) {
         Organisation organisation = portalApiService.getOrganisation(orgName);
 
         return ResponseEntity.ok().cacheControl(CacheControl.noStore()).body(organisation);
@@ -51,8 +57,17 @@ public class OrganisationController {
 
     @PutMapping("/")
     @ApiOperation("Update Organisation")
-    public ResponseEntity updateOrganisation(@PathVariable String orgName,
-                                             @RequestBody Organisation organisation) {
+    public ResponseEntity<Organisation> updateOrganisation(
+            @PathVariable String orgName,
+            @RequestBody Organisation organisation,
+            @RequestHeader(name = "x-nin") final String client,
+            @RequestHeader(name = "x-source") final String source
+    ) {
+        Event<Organisation> event = new Event<>(organisation.getPrimaryAssetId(), "kundeportal", "ORGANISATION", client);
+        event.setOperation(Operation.UPDATE);
+        event.setQuery(orgName);
+        event.setMessage(source);
+        event.addData(organisation);
         Organisation original = portalApiService.getOrganisation(orgName);
         if (organisation.getDisplayName() != null)
             original.setDisplayName(organisation.getDisplayName());
@@ -60,6 +75,7 @@ public class OrganisationController {
             original.setOrgNumber(organisation.getOrgNumber());
 
         organisationService.updateOrganisation(original);
+        fintAuditService.audit(event);
 
         return ResponseEntity.ok().cacheControl(CacheControl.noStore()).body(original);
     }
@@ -67,16 +83,16 @@ public class OrganisationController {
 
     @ApiOperation("Get primary asset")
     @GetMapping(value = "/asset/primary")
-    public ResponseEntity getOrganizationPrimaryAsset(@PathVariable String orgName) {
+    public ResponseEntity<Asset> getOrganizationPrimaryAsset(@PathVariable String orgName) {
         Optional<Organisation> organisation = organisationService.getOrganisation(orgName);
 
         if (organisation.isPresent()) {
-            Optional<Asset> primaryAsset = assetService.getAssets(organisation.get()).stream().filter(asset -> asset.isPrimaryAsset()).findFirst();
+            Optional<Asset> primaryAsset = assetService.getAssets(organisation.get()).stream().filter(Asset::isPrimaryAsset).findFirst();
             if (primaryAsset.isPresent()) {
                 return ResponseEntity.ok().cacheControl(CacheControl.noStore()).body(primaryAsset.get());
             }
             throw new EntityNotFoundException(
-                    String.format("Primary asset not present.")
+                    "Primary asset not present."
             );
         }
 
@@ -87,7 +103,7 @@ public class OrganisationController {
 
     @GetMapping("/contacts/legal")
     @ApiOperation("Get Legal Contact")
-    public ResponseEntity getLegalContact(@PathVariable String orgName) {
+    public ResponseEntity<Contact> getLegalContact(@PathVariable String orgName) {
         Organisation organisation = portalApiService.getOrganisation(orgName);
 
         Contact legalContact = organisationService.getLegalContact(organisation);
@@ -98,29 +114,53 @@ public class OrganisationController {
 
     @PutMapping("/contacts/legal/{nin}")
     @ApiOperation("Set Legal Contact")
-    public ResponseEntity linkLegalContact(@PathVariable String orgName, @PathVariable String nin) {
+    public ResponseEntity<Void> linkLegalContact(
+            @PathVariable String orgName,
+            @PathVariable String nin,
+            @RequestHeader(name = "x-nin") final String client,
+            @RequestHeader(name = "x-source") final String source
+    ) {
         Organisation organisation = portalApiService.getOrganisation(orgName);
         Contact contact = portalApiService.getContact(nin);
 
         organisationService.linkLegalContact(organisation, contact);
+
+        Event<Organisation> event = new Event<>(organisation.getPrimaryAssetId(), "kundeportal", "ORGANISATION_LEGAL_CONTACT", client);
+        event.setOperation(Operation.CREATE);
+        event.setQuery(orgName + "/" + nin);
+        event.setMessage(source);
+        event.addData(organisation);
+        fintAuditService.audit(event);
 
         return ResponseEntity.noContent().cacheControl(CacheControl.noStore()).build();
     }
 
     @DeleteMapping("/contacts/legal/{nin}")
     @ApiOperation("Unset Legal Contact")
-    public ResponseEntity unLinkLegalContact(@PathVariable String orgName, @PathVariable String nin) {
+    public ResponseEntity<Void> unLinkLegalContact(
+            @PathVariable String orgName,
+            @PathVariable String nin,
+            @RequestHeader(name = "x-nin") final String client,
+            @RequestHeader(name = "x-source") final String source
+    ) {
         Organisation organisation = portalApiService.getOrganisation(orgName);
         Contact contact = portalApiService.getContact(nin);
 
         organisationService.unLinkLegalContact(organisation, contact);
+
+        Event<Organisation> event = new Event<>(organisation.getPrimaryAssetId(), "kundeportal", "ORGANISATION_LEGAL_CONTACT", client);
+        event.setOperation(Operation.DELETE);
+        event.setQuery(orgName + "/" + nin);
+        event.setMessage(source);
+        event.addData(organisation);
+        fintAuditService.audit(event);
 
         return ResponseEntity.noContent().cacheControl(CacheControl.noStore()).build();
     }
 
     @GetMapping("/contacts/technical")
     @ApiOperation("Get Technical Contacts")
-    public ResponseEntity getTechnicalContacts(@PathVariable String orgName) {
+    public ResponseEntity<List<Contact>> getTechnicalContacts(@PathVariable String orgName) {
         Organisation organisation = portalApiService.getOrganisation(orgName);
         List<Contact> technicalContacts = organisationService.getTechnicalContacts(organisation);
 
@@ -129,33 +169,69 @@ public class OrganisationController {
 
     @PutMapping("/contacts/technical/{nin}")
     @ApiOperation("Add Technical Contact")
-    public ResponseEntity linkTechnicalContact(@PathVariable String orgName, @PathVariable String nin) {
+    public ResponseEntity<Void> linkTechnicalContact(
+            @PathVariable String orgName,
+            @PathVariable String nin,
+            @RequestHeader(name = "x-nin") final String client,
+            @RequestHeader(name = "x-source") final String source
+    ) {
         Organisation organisation = portalApiService.getOrganisation(orgName);
         Contact contact = portalApiService.getContact(nin);
 
         organisationService.linkTechnicalContact(organisation, contact);
+
+        Event<Organisation> event = new Event<>(organisation.getPrimaryAssetId(), "kundeportal", "ORGANISATION_TECHNICAL_CONTACT", client);
+        event.setOperation(Operation.CREATE);
+        event.setQuery(orgName + "/" + nin);
+        event.setMessage(source);
+        event.addData(organisation);
+        fintAuditService.audit(event);
 
         return ResponseEntity.noContent().cacheControl(CacheControl.noStore()).build();
     }
 
     @DeleteMapping("/contacts/technical/{nin}")
     @ApiOperation("Remove Technical Contact")
-    public ResponseEntity unLinkTechnicalContact(@PathVariable String orgName, @PathVariable String nin) {
+    public ResponseEntity<Void> unLinkTechnicalContact(
+            @PathVariable String orgName,
+            @PathVariable String nin,
+            @RequestHeader(name = "x-nin") final String client,
+            @RequestHeader(name = "x-source") final String source
+    ) {
         Organisation organisation = portalApiService.getOrganisation(orgName);
         Contact contact = portalApiService.getContact(nin);
 
         organisationService.unLinkTechnicalContact(organisation, contact);
+
+        Event<Organisation> event = new Event<>(organisation.getPrimaryAssetId(), "kundeportal", "ORGANISATION_TECHNICAL_CONTACT", client);
+        event.setOperation(Operation.DELETE);
+        event.setQuery(orgName + "/" + nin);
+        event.setMessage(source);
+        event.addData(organisation);
+        fintAuditService.audit(event);
 
         return ResponseEntity.noContent().cacheControl(CacheControl.noStore()).build();
     }
 
     @PutMapping("/components/{compName}")
     @ApiOperation("Link Component")
-    public ResponseEntity linkComponent(@PathVariable String orgName, @PathVariable String compName) {
+    public ResponseEntity<Void> linkComponent(
+            @PathVariable String orgName,
+            @PathVariable String compName,
+            @RequestHeader(name = "x-nin") final String client,
+            @RequestHeader(name = "x-source") final String source
+    ) {
         Organisation organisation = portalApiService.getOrganisation(orgName);
         Component component = portalApiService.getComponentByName(compName);
 
         organisationService.linkComponent(organisation, component);
+
+        Event<Organisation> event = new Event<>(organisation.getPrimaryAssetId(), "kundeportal", "ORGANISATION_COMPONENT", client);
+        event.setOperation(Operation.CREATE);
+        event.setQuery(orgName + "/" + compName);
+        event.setMessage(source);
+        event.addData(organisation);
+        fintAuditService.audit(event);
 
         return ResponseEntity.noContent().cacheControl(CacheControl.noStore()).build();
     }
@@ -163,11 +239,23 @@ public class OrganisationController {
 
     @DeleteMapping("/components/{compName}")
     @ApiOperation("Unlink Component")
-    public ResponseEntity unLinkComponent(@PathVariable String orgName, @PathVariable String compName) {
+    public ResponseEntity<Void> unLinkComponent(
+            @PathVariable String orgName,
+            @PathVariable String compName,
+            @RequestHeader(name = "x-nin") final String client,
+            @RequestHeader(name = "x-source") final String source
+    ) {
         Organisation organisation = portalApiService.getOrganisation(orgName);
         Component component = portalApiService.getComponentByName(compName);
 
         organisationService.unLinkComponent(organisation, component);
+
+        Event<Organisation> event = new Event<>(organisation.getPrimaryAssetId(), "kundeportal", "ORGANISATION_COMPONENT", client);
+        event.setOperation(Operation.DELETE);
+        event.setQuery(orgName + "/" + compName);
+        event.setMessage(source);
+        event.addData(organisation);
+        fintAuditService.audit(event);
 
         return ResponseEntity.noContent().cacheControl(CacheControl.noStore()).build();
     }
@@ -176,29 +264,28 @@ public class OrganisationController {
     // Exception handlers
     //
     @ExceptionHandler(UpdateEntityMismatchException.class)
-    public ResponseEntity handleUpdateEntityMismatch(Exception e) {
+    public ResponseEntity<ErrorResponse> handleUpdateEntityMismatch(Exception e) {
         return ResponseEntity.badRequest().body(new ErrorResponse(e.getMessage()));
     }
 
     @ExceptionHandler(EntityNotFoundException.class)
-    public ResponseEntity handleEntityNotFound(Exception e) {
+    public ResponseEntity<ErrorResponse> handleEntityNotFound(Exception e) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponse(e.getMessage()));
     }
 
     @ExceptionHandler(EntityFoundException.class)
-    public ResponseEntity handleEntityFound(Exception e) {
+    public ResponseEntity<ErrorResponse> handleEntityFound(Exception e) {
         return ResponseEntity.status(HttpStatus.FOUND).body(new ErrorResponse(e.getMessage()));
     }
 
     @ExceptionHandler(NameNotFoundException.class)
-    public ResponseEntity handleNameNotFound(Exception e) {
+    public ResponseEntity<ErrorResponse> handleNameNotFound(Exception e) {
         return ResponseEntity.badRequest().body(new ErrorResponse(e.getMessage()));
     }
 
     @ExceptionHandler(UnknownHostException.class)
-    public ResponseEntity handleUnkownHost(Exception e) {
+    public ResponseEntity<ErrorResponse> handleUnkownHost(Exception e) {
         return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body(new ErrorResponse(e.getMessage()));
     }
-
 
 }

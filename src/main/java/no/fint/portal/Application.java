@@ -1,6 +1,7 @@
 package no.fint.portal;
 
 import com.github.springfox.loader.EnableSpringfox;
+import no.fint.audit.EnableFintAudit;
 import no.rogfk.hateoas.extension.annotations.EnableHalHypermediaSupport;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -13,6 +14,7 @@ import java.util.Properties;
 
 @EnableHalHypermediaSupport
 @EnableSpringfox
+@EnableFintAudit
 @SpringBootApplication
 @EnableRetry
 public class Application {
