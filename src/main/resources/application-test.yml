@@ -4,6 +4,8 @@ springfox:
  version: '@version@'
 
 fint:
+  audit:
+    test-mode: true
   ldap:
     url: "ldap://localhost:12345"
     user: "uid=user"

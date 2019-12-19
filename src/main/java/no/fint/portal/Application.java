@@ -7,6 +7,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.server.ErrorPage;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.http.HttpStatus;
 import org.springframework.retry.annotation.EnableRetry;
 
@@ -17,6 +18,7 @@ import java.util.Properties;
 @EnableFintAudit
 @SpringBootApplication
 @EnableRetry
+@ComponentScan("no.fint")
 public class Application {
     public static void main(String[] args) {
         SpringApplication app = new SpringApplication(Application.class);
