@@ -286,7 +286,7 @@ spec:
                 key: nam.oauth.password
                 name: fint-portal-user
       - name: zendesk-integration
-        image: fintlabs.azurecr.io/zendesk-integration:PR-13.4
+        image: fintlabs.azurecr.io/zendesk-integration:PR-15.2
         resources:
           limits:
             cpu: "2"
@@ -298,7 +298,7 @@ spec:
           - containerPort: 8083
         env:
           - name: fint.zendesk.users.enabled
-            value: "false"
+            value: "true"
           - name: server.port
             value: "8083"
           - name: fint.zendesk.username
