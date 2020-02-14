@@ -53,7 +53,7 @@ data:
           proxy_cache off;
       }
 
-      location /tickets {
+      location /api/zendesk/ {
            proxy_pass http://localhost:8083;
            proxy_set_header Connection '';
            proxy_http_version 1.1;
@@ -297,10 +297,12 @@ spec:
         ports:
           - containerPort: 8083
         env:
-          - name: fint.zendesk.users.enabled
-            value: "true"
           - name: server.port
             value: "8083"
+          - name: server.servlet.context-path
+            value: /api/zendesk
+          - name: fint.zendesk.users.enabled
+            value: "true"
           - name: fint.zendesk.username
             valueFrom:
               secretKeyRef:
