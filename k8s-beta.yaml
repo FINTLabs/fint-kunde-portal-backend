@@ -297,6 +297,8 @@ spec:
         ports:
           - containerPort: 8083
         env:
+          - name: fint.zendesk.prov.user.queuing.delay
+            value: "600000"
           - name: server.port
             value: "8083"
           - name: server.servlet.context-path
