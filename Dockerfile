@@ -6,6 +6,7 @@ COPY . .
 COPY --from=client /src/build/ src/main/resources/public/
 RUN gradle --no-daemon build
 
-FROM openjdk:8-jre-alpine
-COPY --from=java /home/gradle/build/libs/fint-kunde-portal-*.jar /data/app.jar
-CMD ["java", "-jar", "/data/app.jar"]
+FROM gcr.io/distroless/java:8
+ENV JAVA_TOOL_OPTIONS -XX:+ExitOnOutOfMemoryError
+COPY --from=java /home/gradle/build/libs/fint-kunde-portal-*.jar /data/fint-kunde-portal.jar
+CMD ["/data/fint-kunde-portal.jar"]
