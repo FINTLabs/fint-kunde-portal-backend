@@ -4,6 +4,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import no.fint.portal.customer.service.PortalApiService;
+import no.fint.portal.customer.service.ZendeskService;
 import no.fint.portal.exceptions.CreateEntityMismatchException;
 import no.fint.portal.exceptions.EntityFoundException;
 import no.fint.portal.exceptions.EntityNotFoundException;
@@ -36,17 +37,19 @@ import java.util.stream.Stream;
 public class ContactController {
 
     @Autowired
-    PortalApiService portalApiService;
+    private PortalApiService portalApiService;
     @Autowired
-    OrganisationService organisationService;
+    private OrganisationService organisationService;
     @Autowired
     private ContactService contactService;
+    @Autowired
+    private ZendeskService zendeskService;
 
     @ApiOperation("Create new contact")
     @RequestMapping(method = RequestMethod.POST,
             consumes = MediaType.APPLICATION_JSON_UTF8_VALUE
     )
-    public ResponseEntity createContact(@RequestBody final Contact contact) {
+    public ResponseEntity<Contact> createContact(@RequestBody final Contact contact) {
         if (!contactService.addContact(contact)) {
             throw new EntityFoundException(
                     ServletUriComponentsBuilder
@@ -54,6 +57,7 @@ public class ContactController {
                             .buildAndExpand(contact.getNin()).toUri().toString()
             );
         }
+        zendeskService.updateContact(contact);
         return ResponseEntity.status(HttpStatus.CREATED).cacheControl(CacheControl.noStore()).body(contact);
     }
 
@@ -62,7 +66,7 @@ public class ContactController {
             consumes = MediaType.APPLICATION_JSON_UTF8_VALUE,
             value = "/{nin}"
     )
-    public ResponseEntity updateContact(@RequestBody final Contact contact, @PathVariable final String nin) {
+    public ResponseEntity<Contact> updateContact(@RequestBody final Contact contact, @PathVariable final String nin) {
         if (!nin.equals(contact.getNin())) {
             throw new UpdateEntityMismatchException("The contact to updateEntry is not the contact in endpoint.");
         }
@@ -85,7 +89,7 @@ public class ContactController {
 
     @ApiOperation("Get all contacts")
     @RequestMapping(method = RequestMethod.GET)
-    public ResponseEntity getContacts() {
+    public ResponseEntity<List<Contact>> getContacts() {
         List<Contact> contacts = portalApiService.getContacts();
 
         if (contacts != null) {
@@ -97,23 +101,24 @@ public class ContactController {
 
     @ApiOperation("Get contact by nin")
     @RequestMapping(method = RequestMethod.GET, value = "/{nin}")
-    public ResponseEntity getContact(@PathVariable final String nin) {
+    public ResponseEntity<Contact> getContact(@PathVariable final String nin) {
         Contact contact = portalApiService.getContact(nin);
         return ResponseEntity.ok().cacheControl(CacheControl.noStore()).body(contact);
     }
 
     @ApiOperation("Delete a contact")
     @RequestMapping(method = RequestMethod.DELETE, value = "/{nin}")
-    public ResponseEntity deleteContacts(@PathVariable final String nin) {
+    public ResponseEntity<Void> deleteContacts(@PathVariable final String nin) {
         Contact contact = portalApiService.getContact(nin);
 
         contactService.deleteContact(contact);
+        zendeskService.deleteContact(contact);
         return ResponseEntity.noContent().cacheControl(CacheControl.noStore()).build();
     }
 
     @ApiOperation("Get contact's organisations")
     @GetMapping(value = "/organisations")
-    public ResponseEntity getContactOrganisations(@RequestHeader(value = "x-nin") final String nin) {
+    public ResponseEntity<List<Organisation>> getContactOrganisations(@RequestHeader(value = "x-nin") final String nin) {
         Contact contact = contactService.getContact(nin).orElseThrow(() -> new EntityNotFoundException("Contact not found"));
         List<Organisation> contactOrganisations = Stream.concat(contact.getLegal().stream(), contact.getTechnical()
                 .stream())
@@ -128,32 +133,32 @@ public class ContactController {
     // Exception handlers
     //
     @ExceptionHandler(UpdateEntityMismatchException.class)
-    public ResponseEntity handleUpdateEntityMismatch(Exception e) {
+    public ResponseEntity<ErrorResponse> handleUpdateEntityMismatch(Exception e) {
         return ResponseEntity.badRequest().body(new ErrorResponse(e.getMessage()));
     }
 
     @ExceptionHandler(EntityNotFoundException.class)
-    public ResponseEntity handleEntityNotFound(Exception e) {
+    public ResponseEntity<ErrorResponse> handleEntityNotFound(Exception e) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponse(e.getMessage()));
     }
 
     @ExceptionHandler(CreateEntityMismatchException.class)
-    public ResponseEntity handleCreateEntityMismatch(Exception e) {
+    public ResponseEntity<ErrorResponse> handleCreateEntityMismatch(Exception e) {
         return ResponseEntity.badRequest().body(new ErrorResponse(e.getMessage()));
     }
 
     @ExceptionHandler(EntityFoundException.class)
-    public ResponseEntity handleEntityFound(Exception e) {
+    public ResponseEntity<ErrorResponse> handleEntityFound(Exception e) {
         return ResponseEntity.status(HttpStatus.FOUND).body(new ErrorResponse(e.getMessage()));
     }
 
     @ExceptionHandler(NameNotFoundException.class)
-    public ResponseEntity handleNameNotFound(Exception e) {
+    public ResponseEntity<ErrorResponse> handleNameNotFound(Exception e) {
         return ResponseEntity.badRequest().body(new ErrorResponse(e.getMessage()));
     }
 
     @ExceptionHandler(UnknownHostException.class)
-    public ResponseEntity handleUnkownHost(Exception e) {
+    public ResponseEntity<ErrorResponse> handleUnkownHost(Exception e) {
         return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body(new ErrorResponse(e.getMessage()));
     }
 

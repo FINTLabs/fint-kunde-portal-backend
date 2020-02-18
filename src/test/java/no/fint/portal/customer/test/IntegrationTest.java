@@ -1,16 +1,26 @@
 package no.fint.portal.customer.test;
 
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.web.client.ExpectedCount;
+import org.springframework.test.web.client.MockRestServiceServer;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.web.client.RestTemplate;
 
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.equalTo;
+import static org.springframework.test.web.client.match.MockRestRequestMatchers.method;
+import static org.springframework.test.web.client.match.MockRestRequestMatchers.requestTo;
+import static org.springframework.test.web.client.response.MockRestResponseCreators.withStatus;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -22,6 +32,11 @@ public class IntegrationTest {
     @Autowired
     MockMvc mockMvc;
 
+    @Autowired
+    @Qualifier("zendesk")
+    private RestTemplate restTemplate;
+    private MockRestServiceServer mockServer;
+
     String org = "testing";
     String component = "administrasjon_personal";
     String asset = "test_test_no";
@@ -29,6 +44,11 @@ public class IntegrationTest {
     String client = "testclient@client.test.no";
     String contact1 = "12345678901";
     String contact2 = "23456789012";
+
+    @Before
+    public void init() {
+        mockServer = MockRestServiceServer.createServer(restTemplate);
+    }
 
     @Test
     public void components() throws Exception {
@@ -42,13 +62,13 @@ public class IntegrationTest {
         mockMvc.perform(get("/api/assets/{org}/", org)).andExpect(status().isOk());
         mockMvc.perform(post("/api/assets/{org}/", org).content("{ \"assetId\": \"test\", \"description\": \"Test Norge AS\" }").contentType(MediaType.APPLICATION_JSON)).andExpect(status().is(201));
         mockMvc.perform(get("/api/assets/{org}/{asset}", org, asset)).andExpect(status().isOk()).andExpect(jsonPath("$.name").value(equalTo(asset)));
-        mockMvc.perform(put("/api/assets/{org}/{asset}", org, asset).content("{ \"assetId\": \"test.no\", \"name\": \""+asset+"\", \"description\": \"Test Mer Norge AS\" }").contentType(MediaType.APPLICATION_JSON)).andExpect(status().isOk()).andExpect(jsonPath("$.description").value(equalTo("Test Mer Norge AS")));
+        mockMvc.perform(put("/api/assets/{org}/{asset}", org, asset).content("{ \"assetId\": \"test.no\", \"name\": \"" + asset + "\", \"description\": \"Test Mer Norge AS\" }").contentType(MediaType.APPLICATION_JSON)).andExpect(status().isOk()).andExpect(jsonPath("$.description").value(equalTo("Test Mer Norge AS")));
         mockMvc.perform(get("/api/adapters/{org}", org)).andExpect(status().isOk());
         mockMvc.perform(post("/api/adapters/{org}", org).content("{ \"name\": \"testadapter\", \"note\": \"Test Adapter\", \"secret\": \"Open Sesame!\", \"shortDescription\": \"This is a Test Adapter\" }").contentType(MediaType.APPLICATION_JSON)).andExpect(status().is(201));
         mockMvc.perform(get("/api/adapters/{org}/{adapter}", org, adapter)).andExpect(status().isOk()).andExpect(jsonPath("$.name").value(equalTo(adapter)));
         mockMvc.perform(get("/api/adapters/{org}/{adapter}/secret", org, adapter)).andExpect(status().isOk()).andExpect(content().string(containsString("_ClientSecret")));
         mockMvc.perform(put("/api/adapters/{org}/{adapter}/password", org, adapter).content("This is the new password").contentType(MediaType.TEXT_PLAIN)).andExpect(status().isOk());
-        mockMvc.perform(put("/api/adapters/{org}/{adapter}", org, adapter).content("{ \"name\": \""+adapter+"\", \"note\": \"Test Adapter With New Note\", \"shortDescription\": \"This is a Brand Spanking New Test Adapter\" }").contentType(MediaType.APPLICATION_JSON)).andExpect(status().isOk()).andExpect(jsonPath("$.shortDescription").value(containsString("Spanking")));
+        mockMvc.perform(put("/api/adapters/{org}/{adapter}", org, adapter).content("{ \"name\": \"" + adapter + "\", \"note\": \"Test Adapter With New Note\", \"shortDescription\": \"This is a Brand Spanking New Test Adapter\" }").contentType(MediaType.APPLICATION_JSON)).andExpect(status().isOk()).andExpect(jsonPath("$.shortDescription").value(containsString("Spanking")));
         mockMvc.perform(put("/api/assets/{org}/{asset}/adapters/{adapter}", org, asset, adapter)).andExpect(status().is(204));
         mockMvc.perform(put("/api/components/{component}/{org}/adapters/{adapter}", component, org, adapter).contentType(MediaType.APPLICATION_JSON)).andExpect(status().is(204));
         mockMvc.perform(delete("/api/components/{component}/{org}/adapters/{adapter}", component, org, adapter)).andExpect(status().is(204));
@@ -58,7 +78,7 @@ public class IntegrationTest {
         mockMvc.perform(post("/api/clients/{org}", org).content("{ \"name\": \"testclient\", \"note\": \"Test Client\", \"secret\": \"password\", \"shortDescription\": \"This is a Test Client.\" }").contentType(MediaType.APPLICATION_JSON)).andExpect(status().is(201)).andExpect(jsonPath("$.name").value(equalTo(client)));
         mockMvc.perform(get("/api/clients/{org}/{client}", org, client)).andExpect(status().isOk()).andExpect(jsonPath("$.name").value(equalTo(client)));
         mockMvc.perform(get("/api/clients/{org}/{client}/secret", org, client)).andExpect(status().isOk()).andExpect(content().string(containsString("_ClientSecret")));
-        mockMvc.perform(put("/api/clients/{org}/{client}", org, client).content("{ \"name\": \""+client+"\", \"note\": \"Testing Client\", \"shortDescription\": \"This is an updated Test Client.\" }").contentType(MediaType.APPLICATION_JSON)).andExpect(status().isOk()).andExpect(jsonPath("$.shortDescription").value(containsString("updated")));
+        mockMvc.perform(put("/api/clients/{org}/{client}", org, client).content("{ \"name\": \"" + client + "\", \"note\": \"Testing Client\", \"shortDescription\": \"This is an updated Test Client.\" }").contentType(MediaType.APPLICATION_JSON)).andExpect(status().isOk()).andExpect(jsonPath("$.shortDescription").value(containsString("updated")));
         mockMvc.perform(put("/api/clients/{org}/{client}/password", org, client).content("This is the new password").contentType(MediaType.TEXT_PLAIN)).andExpect(status().isOk());
         mockMvc.perform(put("/api/assets/{org}/{asset}/clients/{client}", org, asset, client)).andExpect(status().is(204));
         mockMvc.perform(put("/api/components/{component}/{org}/clients/{client}", component, org, client).contentType(MediaType.APPLICATION_JSON)).andExpect(status().is(204));
@@ -70,6 +90,16 @@ public class IntegrationTest {
 
     @Test
     public void contacts() throws Exception {
+
+        mockServer.expect(ExpectedCount.once(),
+                requestTo("http://localhost:8083/users/"))
+                .andExpect(method(HttpMethod.POST))
+                .andRespond(withStatus(HttpStatus.NO_CONTENT));
+        mockServer.expect(ExpectedCount.once(),
+                requestTo("http://localhost:8083/users/"))
+                .andExpect(method(HttpMethod.DELETE))
+                .andRespond(withStatus(HttpStatus.NO_CONTENT));
+
         mockMvc.perform(get("/api/contacts")).andExpect(status().is(200));
         mockMvc.perform(get("/api/contacts/{contact}", contact1)).andExpect(status().is(200)).andExpect(jsonPath("$.nin").value(containsString(contact1)));
         mockMvc.perform(put("/api/contacts/{contact}", contact1).content("{ \"nin\": \"12345678901\", \"firstName\": \"Tore Martin\", \"lastName\": \"Testesen\", \"mail\": \"test123@example.com\", \"mobile\": \"98765431\" }").contentType(MediaType.APPLICATION_JSON)).andExpect(status().is(200)).andExpect(jsonPath("$.mail").value(equalTo("test123@example.com")));
