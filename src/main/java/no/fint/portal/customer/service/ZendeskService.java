@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import no.fint.portal.model.contact.Contact;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
@@ -12,6 +13,7 @@ import org.springframework.web.client.RestTemplate;
 
 @Service
 @Slf4j
+@ConditionalOnProperty("fint.zendesk.enabled")
 public class ZendeskService {
     @Autowired @Qualifier("zendesk")
     private RestTemplate restTemplate;

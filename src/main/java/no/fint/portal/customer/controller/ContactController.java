@@ -42,7 +42,7 @@ public class ContactController {
     private OrganisationService organisationService;
     @Autowired
     private ContactService contactService;
-    @Autowired
+    @Autowired(required = false)
     private ZendeskService zendeskService;
 
     @ApiOperation("Create new contact")
@@ -57,7 +57,9 @@ public class ContactController {
                             .buildAndExpand(contact.getNin()).toUri().toString()
             );
         }
-        zendeskService.updateContact(contact);
+        if (zendeskService != null) {
+            zendeskService.updateContact(contact);
+        }
         return ResponseEntity.status(HttpStatus.CREATED).cacheControl(CacheControl.noStore()).body(contact);
     }
 
@@ -112,7 +114,9 @@ public class ContactController {
         Contact contact = portalApiService.getContact(nin);
 
         contactService.deleteContact(contact);
-        zendeskService.deleteContact(contact);
+        if (zendeskService != null) {
+            zendeskService.deleteContact(contact);
+        }
         return ResponseEntity.noContent().cacheControl(CacheControl.noStore()).build();
     }
 
