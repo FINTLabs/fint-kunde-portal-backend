@@ -286,7 +286,7 @@ spec:
                 key: nam.oauth.password
                 name: fint-portal-user
       - name: zendesk-integration
-        image: fintlabs.azurecr.io/zendesk-integration:PR-15.2
+        image: fintlabs.azurecr.io/zendesk-integration:build.10
         resources:
           limits:
             cpu: "2"
