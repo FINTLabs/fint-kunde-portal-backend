@@ -286,7 +286,7 @@ spec:
                 key: nam.oauth.password
                 name: fint-portal-user
       - name: zendesk-integration
-        image: fintlabs.azurecr.io/zendesk-integration:PR-18.5
+        image: fintlabs.azurecr.io/zendesk-integration:PR-18.6
         resources:
           limits:
             cpu: "2"
@@ -297,6 +297,8 @@ spec:
         ports:
           - containerPort: 8083
         env:
+          - name: logging.level.no.fint.provisioning.TicketSynchronizingService
+            value: debug
           - name: TZ
             value: Europe/Oslo
           - name: fint.zendesk.prov.user.queuing.delay
