@@ -299,6 +299,10 @@ spec:
         env:
           - name: logging.level.no.fint.provisioning.TicketSynchronizingService
             value: debug
+          - name: fint.webclient.connection-provider.type
+            value: NEW
+          - name: fint.zendesk.timeout
+            value: PT10S
           - name: TZ
             value: Europe/Oslo
           - name: fint.zendesk.prov.user.queuing.delay
