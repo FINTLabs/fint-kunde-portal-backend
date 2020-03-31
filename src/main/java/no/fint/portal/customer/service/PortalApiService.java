@@ -1,6 +1,7 @@
 package no.fint.portal.customer.service;
 
 import lombok.Synchronized;
+import no.fint.portal.customer.component_with_entities.EntityResponse;
 import no.fint.portal.customer.exception.InvalidResourceException;
 import no.fint.portal.exceptions.EntityNotFoundException;
 import no.fint.portal.model.adapter.Adapter;
@@ -16,9 +17,13 @@ import no.fint.portal.model.contact.ContactService;
 import no.fint.portal.model.organisation.Organisation;
 import no.fint.portal.model.organisation.OrganisationService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.retry.annotation.Backoff;
 import org.springframework.retry.annotation.Retryable;
 import org.springframework.stereotype.Service;
+import org.springframework.web.reactive.function.client.WebClient;
+import reactor.core.publisher.Mono;
 
 import java.util.Collections;
 import java.util.List;
@@ -216,5 +221,17 @@ public class PortalApiService {
         if (contact.getFirstName() == null) throw new InvalidResourceException("Invalid contact");
         return contact;
         //return contactService.getContact(nin).orElseThrow(() -> new EntityNotFoundException("Contact " + nin + " not found."));
+    }
+
+    public Mono<EntityResponse> getEntities(){
+        WebClient weclient = WebClient.builder()
+                .defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_UTF8_VALUE)
+                .defaultHeader("x-org-id", "fintlabs.no")
+                .defaultHeader("x-client", "fintlabs.no")
+                .baseUrl("https://beta.felleskomponent.no/fint/")
+                .build();
+        return weclient.get().uri("metamodell/klasse/")
+                .retrieve()
+                .bodyToMono(EntityResponse.class);
     }
 }

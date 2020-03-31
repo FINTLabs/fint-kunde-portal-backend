@@ -3,7 +3,12 @@ package no.fint.portal.customer.controller;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
+import no.fint.portal.customer.component_with_entities.ComponentWithEntities;
+import no.fint.portal.customer.component_with_entities.Entity;
+import no.fint.portal.customer.component_with_entities.EntityResponse;
+import no.fint.portal.customer.component_with_entities._embedded;
 import no.fint.portal.customer.service.PortalApiService;
 import no.fint.portal.exceptions.EntityFoundException;
 import no.fint.portal.exceptions.EntityNotFoundException;
@@ -21,10 +26,12 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.ldap.NameNotFoundException;
 import org.springframework.web.bind.annotation.*;
+import reactor.core.publisher.Mono;
 
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Slf4j
 @RestController
@@ -46,6 +53,40 @@ public class ComponentController {
 
         return ResponseEntity.ok().cacheControl(CacheControl.noStore()).body(components);
     }
+
+    @ApiOperation("Get all components with entities")
+    @RequestMapping(method = RequestMethod.GET, value= "/entities")
+    public ResponseEntity getComponentsWithEntities() {
+        List<Component> components = portalApiService.getComponents();
+        Mono<EntityResponse> entities = portalApiService.getEntities();
+        EntityResponse entityList = entities.block();
+
+        List<ComponentWithEntities> componentWithEntitiesList = new ArrayList<>();
+
+        components.forEach(component -> {
+            ComponentWithEntities componentWithEntities = new ComponentWithEntities();
+            componentWithEntities.setDn(component.getDn());
+            componentWithEntities.setBasePath(component.getBasePath());
+            componentWithEntities.setDescription(component.getDescription());
+            componentWithEntities.setName(component.getName());
+            componentWithEntities.setOpenData(component.isOpenData());
+            componentWithEntities.setCommon(component.isCommon());
+            componentWithEntities.setEntities(getEntities(component, entityList));
+            componentWithEntitiesList.add(componentWithEntities);
+        });
+
+        return ResponseEntity.ok().cacheControl(CacheControl.noStore()).body(componentWithEntitiesList);
+    }
+
+    private List<Entity> getEntities(Component component, EntityResponse entityList) {
+        return entityList.get_embedded().get_entries().stream().filter(entity -> {
+                String componentStringForMatch = "no.fint" + component.getBasePath().replace("/", ".");
+                String entityIdForMatch = entity.getId().getIdentifikatorverdi().substring(0, entity.getId().getIdentifikatorverdi().lastIndexOf("."));
+                return componentStringForMatch.equals(entityIdForMatch);
+        })
+                .collect(Collectors.toList());
+    }
+
 
     @ApiOperation("Get component by name")
     @RequestMapping(method = RequestMethod.GET, value = "/{compName}")
