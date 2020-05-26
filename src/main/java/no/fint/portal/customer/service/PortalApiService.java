@@ -3,6 +3,8 @@ package no.fint.portal.customer.service;
 import lombok.Synchronized;
 import no.fint.portal.customer.exception.InvalidResourceException;
 import no.fint.portal.exceptions.EntityNotFoundException;
+import no.fint.portal.model.access.Access;
+import no.fint.portal.model.access.AccessService;
 import no.fint.portal.model.adapter.Adapter;
 import no.fint.portal.model.adapter.AdapterService;
 import no.fint.portal.model.asset.Asset;
@@ -43,6 +45,9 @@ public class PortalApiService {
 
     @Autowired
     private ContactService contactService;
+
+    @Autowired
+    private AccessService accessService;
 
   /*
   @Retryable(
@@ -216,5 +221,25 @@ public class PortalApiService {
         if (contact.getFirstName() == null) throw new InvalidResourceException("Invalid contact");
         return contact;
         //return contactService.getContact(nin).orElseThrow(() -> new EntityNotFoundException("Contact " + nin + " not found."));
+    }
+
+    @Retryable(
+            backoff = @Backoff(delay = 200L),
+            value = {InvalidResourceException.class},
+            maxAttempts = 5
+    )
+    @Synchronized
+    public List<Access> getAccesses(Organisation organisation) {
+        return accessService.getAccesses(organisation.getName());
+    }
+
+    @Retryable(
+            backoff = @Backoff(delay = 200L),
+            value = {InvalidResourceException.class},
+            maxAttempts = 5
+    )
+    @Synchronized
+    public Access getAccess(Organisation organisation, String accessId) {
+        return accessService.getAccess(accessId, organisation.getName());
     }
 }
