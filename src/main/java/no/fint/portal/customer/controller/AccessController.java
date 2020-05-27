@@ -20,9 +20,9 @@ import java.util.List;
 
 @Slf4j
 @RestController
-@Api(tags = "Access")
+@Api(tags = "Accesses")
 @CrossOrigin(origins = "*")
-@RequestMapping(value = "/api/access/{orgName}")
+@RequestMapping(value = "/api/accesses/{orgName}")
 public class AccessController {
 
     @Autowired

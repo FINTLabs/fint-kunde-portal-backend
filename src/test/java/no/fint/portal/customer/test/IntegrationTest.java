@@ -95,8 +95,8 @@ public class IntegrationTest {
 
     @Test
     public void access() throws Exception {
-        mockMvc.perform(get("/api/access/{org}/", org)).andExpect(status().is(200)).andExpect(jsonPath("$", is(Collections.emptyList())));
-        mockMvc.perform(post("/api/access/{org}/", org).content("{" +
+        mockMvc.perform(get("/api/accesses/{org}/", org)).andExpect(status().is(200)).andExpect(jsonPath("$", is(Collections.emptyList())));
+        mockMvc.perform(post("/api/accesses/{org}/", org).content("{" +
                 "\"name\": \"personal\"," +
                 "\"collection\": [" +
                 "\"/administrasjon/personal/personalressurs\"" +
@@ -110,8 +110,8 @@ public class IntegrationTest {
                 "\"/administrasjon/personal/fravar\"" +
                 "]" +
                 "}").contentType(MediaType.APPLICATION_JSON)).andExpect(status().is2xxSuccessful());
-        mockMvc.perform(get("/api/access/{org}/{name}", org, "personal")).andExpect(status().is2xxSuccessful()).andExpect(jsonPath("$.name", is("personal")));
-        mockMvc.perform(put("/api/access/{org}/{name}", org, "personal").content("{" +
+        mockMvc.perform(get("/api/accesses/{org}/{name}", org, "personal")).andExpect(status().is2xxSuccessful()).andExpect(jsonPath("$.name", is("personal")));
+        mockMvc.perform(put("/api/accesses/{org}/{name}", org, "personal").content("{" +
                 "\"name\": \"personal\"," +
                 "\"collection\":[" +
                 "]," +
@@ -120,6 +120,6 @@ public class IntegrationTest {
                 "\"modify\":[" +
                 "]" +
                 "}").contentType(MediaType.APPLICATION_JSON)).andExpect(status().is2xxSuccessful()).andExpect(jsonPath("$.collection", is(Collections.emptyList())));
-        mockMvc.perform(delete("/api/access/{org}/{name}", org, "personal")).andExpect(status().is2xxSuccessful());
+        mockMvc.perform(delete("/api/accesses/{org}/{name}", org, "personal")).andExpect(status().is2xxSuccessful());
     }
 }
