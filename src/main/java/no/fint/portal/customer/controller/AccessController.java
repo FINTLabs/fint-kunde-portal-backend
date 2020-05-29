@@ -26,7 +26,7 @@ import java.util.List;
 public class AccessController {
 
     @Autowired
-    PortalApiService portalApiService;
+    private PortalApiService portalApiService;
 
     @Autowired
     private AccessService accessService;

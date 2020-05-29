@@ -19,6 +19,10 @@ fint:
       clientId: "dummy"
       clientSecret: "dummy"
 
+  portal:
+    admin:
+      uri: https://admin-beta.fintlabs.no
+
 spring:
   ldap:
     embedded:
