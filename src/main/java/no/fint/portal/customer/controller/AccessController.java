@@ -6,11 +6,10 @@ import lombok.extern.slf4j.Slf4j;
 import no.fint.portal.customer.service.PortalApiService;
 import no.fint.portal.exceptions.CreateEntityMismatchException;
 import no.fint.portal.exceptions.UpdateEntityMismatchException;
-import no.fint.portal.model.access.Access;
+import no.fint.portal.model.access.AccessPackage;
 import no.fint.portal.model.access.AccessService;
 import no.fint.portal.model.client.Client;
 import no.fint.portal.model.organisation.Organisation;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.CacheControl;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -25,52 +24,56 @@ import java.util.List;
 @RequestMapping(value = "/api/accesses/{orgName}")
 public class AccessController {
 
-    @Autowired
-    private PortalApiService portalApiService;
+    private final PortalApiService portalApiService;
 
-    @Autowired
-    private AccessService accessService;
+    private final AccessService accessService;
+
+    public AccessController(PortalApiService portalApiService, AccessService accessService) {
+        this.portalApiService = portalApiService;
+        this.accessService = accessService;
+    }
 
     @ApiOperation("Get all Accesses")
     @GetMapping("/")
-    public ResponseEntity<List<Access>> getAccesses(@PathVariable("orgName") String orgName) {
+    public ResponseEntity<List<AccessPackage>> getAccesses(@PathVariable("orgName") String orgName) {
         Organisation organisation = portalApiService.getOrganisation(orgName);
-        List<Access> accesses = portalApiService.getAccesses(organisation);
-        return ResponseEntity.ok().cacheControl(CacheControl.noStore()).body(accesses);
+        List<AccessPackage> accessPackages = portalApiService.getAccesses(organisation);
+        return ResponseEntity.ok().cacheControl(CacheControl.noStore()).body(accessPackages);
     }
 
     @ApiOperation("Create Access")
     @PostMapping("/")
-    public ResponseEntity<Access> addAccess(@PathVariable String orgName,
-                                   @RequestBody Access access) {
+    public ResponseEntity<AccessPackage> addAccess(@PathVariable String orgName,
+                                                   @RequestBody AccessPackage accessPackage) {
         Organisation organisation = portalApiService.getOrganisation(orgName);
 
-        if (!accessService.addAccess(access, organisation)) throw new CreateEntityMismatchException(access.getName());
+        if (!accessService.addAccess(accessPackage, organisation))
+            throw new CreateEntityMismatchException(accessPackage.getName());
 
-        return ResponseEntity.created(ServletUriComponentsBuilder.fromCurrentRequestUri().scheme(null).pathSegment(access.getName()).build().toUri()).cacheControl(CacheControl.noStore()).body(access);
+        return ResponseEntity.created(ServletUriComponentsBuilder.fromCurrentRequestUri().scheme(null).pathSegment(accessPackage.getName()).build().toUri()).cacheControl(CacheControl.noStore()).body(accessPackage);
     }
 
     @ApiOperation("Get Access by Name")
     @GetMapping("/{accessId}")
-    public ResponseEntity<Access> getAccessByName(@PathVariable String orgName,
-                                         @PathVariable String accessId) {
+    public ResponseEntity<AccessPackage> getAccessByName(@PathVariable String orgName,
+                                                         @PathVariable String accessId) {
         Organisation organisation = portalApiService.getOrganisation(orgName);
-        Access access = portalApiService.getAccess(organisation, accessId);
-        return ResponseEntity.ok().cacheControl(CacheControl.noStore()).body(access);
+        AccessPackage accessPackage = portalApiService.getAccess(organisation, accessId);
+        return ResponseEntity.ok().cacheControl(CacheControl.noStore()).body(accessPackage);
     }
 
     @ApiOperation("Update Access")
     @PutMapping("/{accessId}")
-    public ResponseEntity<Access> updateAccess(@PathVariable String orgName,
-                                      @PathVariable String accessId,
-                                      @RequestBody Access access) {
+    public ResponseEntity<AccessPackage> updateAccess(@PathVariable String orgName,
+                                                      @PathVariable String accessId,
+                                                      @RequestBody AccessPackage accessPackage) {
         Organisation organisation = portalApiService.getOrganisation(orgName);
-        Access original = portalApiService.getAccess(organisation, accessId);
-        if (!accessId.equals(access.getName())) throw new UpdateEntityMismatchException(accessId);
+        AccessPackage original = portalApiService.getAccess(organisation, accessId);
+        if (!accessId.equals(accessPackage.getName())) throw new UpdateEntityMismatchException(accessId);
 
-        original.setCollection(access.getCollection());
-        original.setModify(access.getModify());
-        original.setRead(access.getRead());
+        original.setCollection(accessPackage.getCollection());
+        original.setModify(accessPackage.getModify());
+        original.setRead(accessPackage.getRead());
         if (!accessService.updateAccess(original)) throw new UpdateEntityMismatchException(accessId);
 
         return ResponseEntity.ok().cacheControl(CacheControl.noStore()).body(original);
@@ -79,11 +82,11 @@ public class AccessController {
     @ApiOperation("Delete Access")
     @DeleteMapping("/{accessId}")
     public ResponseEntity<Void> removeAccess(@PathVariable String orgName,
-                                      @PathVariable String accessId) {
+                                             @PathVariable String accessId) {
         Organisation organisation = portalApiService.getOrganisation(orgName);
-        Access access = portalApiService.getAccess(organisation, accessId);
+        AccessPackage accessPackage = portalApiService.getAccess(organisation, accessId);
 
-        accessService.removeAccess(access);
+        accessService.removeAccess(accessPackage);
 
         return ResponseEntity.noContent().cacheControl(CacheControl.noStore()).build();
     }
@@ -91,13 +94,13 @@ public class AccessController {
     @ApiOperation("Link Client to Access")
     @PutMapping("/{accessId}/clients/{clientName}")
     public ResponseEntity<Void> linkClientToAccess(@PathVariable String orgName,
-                                            @PathVariable String accessId,
-                                            @PathVariable String clientName) {
+                                                   @PathVariable String accessId,
+                                                   @PathVariable String clientName) {
         Organisation organisation = portalApiService.getOrganisation(orgName);
-        Access access = portalApiService.getAccess(organisation, accessId);
+        AccessPackage accessPackage = portalApiService.getAccess(organisation, accessId);
         Client client = portalApiService.getClient(organisation, clientName);
 
-        accessService.linkClientToAccess(access, client);
+        accessService.linkClientToAccess(accessPackage, client);
 
         return ResponseEntity.noContent().cacheControl(CacheControl.noStore()).build();
     }
@@ -105,47 +108,14 @@ public class AccessController {
     @ApiOperation("Unlink Client from Access")
     @DeleteMapping("/{accessId}/clients/{clientName}")
     public ResponseEntity<Void> unlinkClientFromAccess(@PathVariable String orgName,
-                                                @PathVariable String accessId,
-                                                @PathVariable String clientName) {
+                                                       @PathVariable String accessId,
+                                                       @PathVariable String clientName) {
         Organisation organisation = portalApiService.getOrganisation(orgName);
-        Access access = portalApiService.getAccess(organisation, accessId);
+        AccessPackage accessPackage = portalApiService.getAccess(organisation, accessId);
         Client client = portalApiService.getClient(organisation, clientName);
 
-        accessService.unlinkClientFromAccess(access, client);
+        accessService.unlinkClientFromAccess(accessPackage, client);
 
         return ResponseEntity.noContent().cacheControl(CacheControl.noStore()).build();
     }
-
-    /*
-
-    @ApiOperation("Link Adapter to Access")
-    @PutMapping("/{accessId}/adapters/{adapterName}")
-    public ResponseEntity linkAdapterToAccess(@PathVariable String orgName,
-                                             @PathVariable String accessId,
-                                             @PathVariable String adapterName) {
-        Organisation organisation = portalApiService.getOrganisation(orgName);
-        Access access = portalApiService.getAccess(organisation, accessId);
-        Adapter adapter = portalApiService.getAdapter(organisation, adapterName);
-
-        accessService.linkAdapterToAccess(access, adapter);
-
-        return ResponseEntity.noContent().cacheControl(CacheControl.noStore()).build();
-    }
-
-    @ApiOperation("Unlink Adapter from Access")
-    @DeleteMapping("/{accessId}/adapters/{adapterName}")
-    public ResponseEntity unlinkAdapterFromAccess(@PathVariable String orgName,
-                                                 @PathVariable String accessId,
-                                                 @PathVariable String adapterName) {
-        Organisation organisation = portalApiService.getOrganisation(orgName);
-        Access access = portalApiService.getAccess(organisation, accessId);
-        Adapter adapter = portalApiService.getAdapter(organisation, adapterName);
-
-        accessService.unlinkAdapterFromAccess(access, adapter);
-
-        return ResponseEntity.noContent().cacheControl(CacheControl.noStore()).build();
-    }
-     */
-
-
 }

@@ -3,7 +3,7 @@ package no.fint.portal.customer.service;
 import lombok.Synchronized;
 import no.fint.portal.customer.exception.InvalidResourceException;
 import no.fint.portal.exceptions.EntityNotFoundException;
-import no.fint.portal.model.access.Access;
+import no.fint.portal.model.access.AccessPackage;
 import no.fint.portal.model.access.AccessService;
 import no.fint.portal.model.adapter.Adapter;
 import no.fint.portal.model.adapter.AdapterService;
@@ -229,7 +229,7 @@ public class PortalApiService {
             maxAttempts = 5
     )
     @Synchronized
-    public List<Access> getAccesses(Organisation organisation) {
+    public List<AccessPackage> getAccesses(Organisation organisation) {
         return accessService.getAccesses(organisation.getName());
     }
 
@@ -239,7 +239,7 @@ public class PortalApiService {
             maxAttempts = 5
     )
     @Synchronized
-    public Access getAccess(Organisation organisation, String accessId) {
+    public AccessPackage getAccess(Organisation organisation, String accessId) {
         return accessService.getAccess(accessId, organisation.getName());
     }
 }
