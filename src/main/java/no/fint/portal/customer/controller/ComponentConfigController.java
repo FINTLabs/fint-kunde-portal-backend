@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Slf4j
 @RestController
@@ -34,14 +35,18 @@ public class ComponentConfigController {
 
     @GetMapping
     public ResponseEntity<List<ComponentConfiguration>> getComponentConfigurations() {
-        return restTemplate
+        List<ComponentConfiguration> componentConfigurationList = restTemplate
                 .exchange(
                         rootUri + "/api/components/configurations",
                         HttpMethod.GET,
                         null,
                         new ParameterizedTypeReference<List<ComponentConfiguration>>() {
                         }
-                );
+                ).getBody();
+
+        return ResponseEntity.ok(componentConfigurationList.stream()
+                .filter(c -> c.isCore())
+                .collect(Collectors.toList()));
     }
 
 }
