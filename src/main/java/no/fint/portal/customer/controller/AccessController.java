@@ -67,16 +67,11 @@ public class AccessController {
     public ResponseEntity<AccessPackage> updateAccess(@PathVariable String orgName,
                                                       @PathVariable String accessId,
                                                       @RequestBody AccessPackage accessPackage) {
-        Organisation organisation = portalApiService.getOrganisation(orgName);
-        AccessPackage original = portalApiService.getAccess(organisation, accessId);
         if (!accessId.equals(accessPackage.getName())) throw new UpdateEntityMismatchException(accessId);
 
-        original.setCollection(accessPackage.getCollection());
-        original.setModify(accessPackage.getModify());
-        original.setRead(accessPackage.getRead());
-        if (!accessService.updateAccess(original)) throw new UpdateEntityMismatchException(accessId);
+        if (!accessService.updateAccess(accessPackage)) throw new UpdateEntityMismatchException(accessId);
 
-        return ResponseEntity.ok().cacheControl(CacheControl.noStore()).body(original);
+        return ResponseEntity.ok().cacheControl(CacheControl.noStore()).body(accessPackage);
     }
 
     @ApiOperation("Delete Access")
