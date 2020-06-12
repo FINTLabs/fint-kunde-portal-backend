@@ -1,14 +1,12 @@
 package no.fint.portal.model;
 
-import lombok.Builder;
 import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
 
 import java.util.List;
 
 @Data
 public class ComponentConfiguration {
+    private String dn;
     private String name;
     private String displayName;
     private String path;
