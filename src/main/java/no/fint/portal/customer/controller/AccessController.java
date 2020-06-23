@@ -64,8 +64,7 @@ public class AccessController {
 
     @ApiOperation("Update Access")
     @PutMapping("/{accessId}")
-    public ResponseEntity<AccessPackage> updateAccess(@PathVariable String orgName,
-                                                      @PathVariable String accessId,
+    public ResponseEntity<AccessPackage> updateAccess(@PathVariable String accessId,
                                                       @RequestBody AccessPackage accessPackage) {
         if (!accessId.equals(accessPackage.getName())) throw new UpdateEntityMismatchException(accessId);
 
