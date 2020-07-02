@@ -75,13 +75,13 @@ public class AccessController {
             original.setClients(accessPackage.getClients());
         }
         if (accessPackage.getCollection() != null) {
-            original.setCollection(accessPackage.getClients());
+            original.setCollection(accessPackage.getCollection());
         }
         if (accessPackage.getModify() != null) {
-            original.setModify(accessPackage.getClients());
+            original.setModify(accessPackage.getModify());
         }
         if (accessPackage.getRead() != null) {
-            original.setRead(accessPackage.getClients());
+            original.setRead(accessPackage.getRead());
         }
 
         if (!accessService.updateAccess(original)) throw new UpdateEntityMismatchException(accessId);
