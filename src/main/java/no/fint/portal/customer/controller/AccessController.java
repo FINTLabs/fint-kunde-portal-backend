@@ -71,6 +71,9 @@ public class AccessController {
         Organisation organisation = portalApiService.getOrganisation(orgName);
         AccessPackage original = portalApiService.getAccess(organisation, accessId);
 
+        if (accessPackage.getComponents() != null) {
+            original.setComponents(accessPackage.getComponents());
+        }
         if (accessPackage.getClients() != null) {
             original.setClients(accessPackage.getClients());
         }
