@@ -64,11 +64,27 @@ public class AccessController {
 
     @ApiOperation("Update Access")
     @PutMapping("/{accessId}")
-    public ResponseEntity<AccessPackage> updateAccess(@PathVariable String accessId,
+    public ResponseEntity<AccessPackage> updateAccess(@PathVariable String orgName,
+                                                      @PathVariable String accessId,
                                                       @RequestBody AccessPackage accessPackage) {
         if (!accessId.equals(accessPackage.getName())) throw new UpdateEntityMismatchException(accessId);
+        Organisation organisation = portalApiService.getOrganisation(orgName);
+        AccessPackage original = portalApiService.getAccess(organisation, accessId);
 
-        if (!accessService.updateAccess(accessPackage)) throw new UpdateEntityMismatchException(accessId);
+        if (accessPackage.getClients() != null) {
+            original.setClients(accessPackage.getClients());
+        }
+        if (accessPackage.getCollection() != null) {
+            original.setCollection(accessPackage.getClients());
+        }
+        if (accessPackage.getModify() != null) {
+            original.setModify(accessPackage.getClients());
+        }
+        if (accessPackage.getRead() != null) {
+            original.setRead(accessPackage.getClients());
+        }
+
+        if (!accessService.updateAccess(original)) throw new UpdateEntityMismatchException(accessId);
 
         return ResponseEntity.ok().cacheControl(CacheControl.noStore()).body(accessPackage);
     }

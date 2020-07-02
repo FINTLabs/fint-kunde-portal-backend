@@ -118,6 +118,8 @@ public class IntegrationTest {
                 "\"read\":[" +
                 "]," +
                 "\"modify\":[" +
+                "]," +
+                "\"clients\":[" +
                 "]" +
                 "}").contentType(MediaType.APPLICATION_JSON)).andExpect(status().is2xxSuccessful()).andExpect(jsonPath("$.collection", is(Collections.emptyList())));
         mockMvc.perform(delete("/api/accesses/{org}/{name}", org, "personal")).andExpect(status().is2xxSuccessful());
