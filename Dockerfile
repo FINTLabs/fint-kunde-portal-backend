@@ -1,4 +1,4 @@
-FROM fintlabs.azurecr.io/kunde-portal-frontend:PR-48 as client
+FROM fintlabsacr.azurecr.io/kunde-portal-frontend:PR-48 as client
 
 FROM gradle:4.10.3-jdk8-alpine as java
 USER root
