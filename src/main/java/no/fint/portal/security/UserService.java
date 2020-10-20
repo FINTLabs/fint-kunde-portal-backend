@@ -9,13 +9,12 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @Service
 public class UserService {
 
-    private  final PortalApiService portalApiService;
+    private final PortalApiService portalApiService;
     private final OrganisationService organisationService;
 
     public UserService(PortalApiService portalApiService, OrganisationService organisationService) {
@@ -36,7 +35,7 @@ public class UserService {
                         .filter(Optional::isPresent)
                         .map(Optional::get)
                         .map(Organisation::getName)
-                        .collect(Collectors.toList()));
+                        .toArray(String[]::new));
         return user;
     }
 }

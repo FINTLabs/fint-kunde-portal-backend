@@ -42,18 +42,14 @@ public class CustomerPortalSecurityInterceptor implements HandlerInterceptor {
                 .filter(it -> StringUtils.startsWith(request.getServletPath(), it))
                 .findFirst()
                 .map(path ->
-                        StringUtils.substringBefore(
-                                StringUtils.replaceIgnoreCase(
-                                        request.getServletPath(),
-                                        path,
-                                        ""
-                                ),
-                                "/")
+                        StringUtils.substringAfter(
+                                request.getServletPath(),
+                                path)
                 )
-                .ifPresent(org -> {
-                    log.debug("Org: {}", org);
-                    if (!user.getOrganizations().contains(org)) {
-                        log.warn("User {} has no access to {}!!!", user.getId(), org);
+                .ifPresent(path -> {
+                    log.debug("Path: {}", path);
+                    if (!StringUtils.startsWithAny(path, user.getOrganizations())) {
+                        log.warn("User {} has no access to {} !!!", user.getId(), request.getServletPath());
                         throw new ForbiddenException();
                     }
                 });
