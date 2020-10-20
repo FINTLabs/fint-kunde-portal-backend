@@ -35,21 +35,29 @@ public class CustomerPortalSecurityInterceptor implements HandlerInterceptor {
         if (StringUtils.isBlank(request.getHeader("x-nin"))) {
             throw new ForbiddenException();
         }
-        if (StringUtils.equalsAny(request.getMethod(), "POST", "PUT", "DELETE")) {
-            final User user = getUser(request);
-            log.debug("User: {}", user);
-            Arrays.stream(securePaths)
-                    .filter(it -> StringUtils.startsWith(request.getServletPath(), it))
-                    .findFirst()
-                    .map(path -> StringUtils.substringBetween(request.getServletPath(), path, "/"))
-                    .ifPresent(org -> {
-                log.debug("Org: {}", org);
-                if (!user.getOrganizations().contains(org)) {
-                    log.warn("User {} has no access to {}!!!", user.getId(), org);
-                    throw new ForbiddenException();
-                }
-            });
-        }
+
+        final User user = getUser(request);
+        log.debug("User: {}", user);
+        Arrays.stream(securePaths)
+                .filter(it -> StringUtils.startsWith(request.getServletPath(), it))
+                .findFirst()
+                .map(path ->
+                        StringUtils.substringBefore(
+                                StringUtils.replaceIgnoreCase(
+                                        request.getServletPath(),
+                                        path,
+                                        ""
+                                ),
+                                "/")
+                )
+                .ifPresent(org -> {
+                    log.debug("Org: {}", org);
+                    if (!user.getOrganizations().contains(org)) {
+                        log.warn("User {} has no access to {}!!!", user.getId(), org);
+                        throw new ForbiddenException();
+                    }
+                });
+
         return true;
     }
 
