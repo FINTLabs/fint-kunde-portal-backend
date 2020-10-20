@@ -45,6 +45,8 @@ repositories {
 dependencies {
   compile('org.springframework.boot:spring-boot-starter-web')
   compile('org.springframework.boot:spring-boot-starter-actuator')
+  compile('org.springframework.boot:spring-boot-starter-cache')
+  compile('com.github.ben-manes.caffeine:caffeine')
   compile('org.springframework.retry:spring-retry:1.2.2.RELEASE')
 
   compile("com.github.springfox.loader:springfox-loader:${springfoxLoaderVersion}")
@@ -52,7 +54,7 @@ dependencies {
   compile('no.fint:fint-portal-api:3.5.0-beta-1')
   compile('no.fint:fint-spring-secrets:0.1.0')
   //compile('no.fint:fint-portal-api:3.0.0-SNAPSHOT')
-  compile('org.apache.commons:commons-lang3:3.0')
+  compile('org.apache.commons:commons-lang3:3.7')
 
   runtime('org.springframework.boot:spring-boot-devtools')
 

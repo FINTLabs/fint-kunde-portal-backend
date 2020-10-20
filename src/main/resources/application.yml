@@ -32,3 +32,10 @@ management:
     git:
       mode: 'full'
 
+spring:
+  cache:
+    cache-names: users
+    type: caffeine
+    caffeine:
+      spec: expireAfterWrite=5m
+
