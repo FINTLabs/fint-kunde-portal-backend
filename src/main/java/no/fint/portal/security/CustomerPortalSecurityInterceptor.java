@@ -26,6 +26,9 @@ public class CustomerPortalSecurityInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+        if (StringUtils.isBlank(request.getHeader("x-nin"))) {
+            throw new ForbiddenException();
+        }
         if (StringUtils.equalsAny(request.getMethod(), "POST", "PUT", "DELETE")) {
             final User user = getUser(request);
             log.debug("User: {}", user);
@@ -40,22 +43,13 @@ public class CustomerPortalSecurityInterceptor implements HandlerInterceptor {
                     throw new ForbiddenException();
                 }
             });
-            return true;
-
-        }
-        if (StringUtils.isBlank(request.getHeader("x-nin"))) {
-            throw new ForbiddenException();
         }
         return true;
     }
 
     private User getUser(HttpServletRequest request) {
-        String nin = request.getHeader("x-nin");
-        if (StringUtils.isBlank(nin)) {
-            throw new ForbiddenException();
-        }
         try {
-            return userService.getUser(nin);
+            return userService.getUser(request.getHeader("x-nin"));
         } catch (EntityNotFoundException | InvalidResourceException e) {
             throw new ForbiddenException();
         }
