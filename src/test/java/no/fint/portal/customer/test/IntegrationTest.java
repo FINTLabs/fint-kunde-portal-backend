@@ -94,7 +94,7 @@ public class IntegrationTest {
 
     @Test
     public void security() throws Exception {
-        mockMvc.perform(get("/api/organisations/{org}/", org)).andExpect(status().is(403));
+        //mockMvc.perform(get("/api/organisations/{org}/", org)).andExpect(status().is(403));
         mockMvc.perform(put("/api/organisations/{org}/contacts/legal/{contact}", org, contact1).header("x-nin", "23456789012")).andExpect(status().is(403));
         mockMvc.perform(post("/api/adapters/{org}", org).header("x-nin", "23456789012").content("{ \"name\": \"testadapter\", \"note\": \"Test Adapter\", \"secret\": \"Open Sesame!\", \"shortDescription\": \"This is a Test Adapter\" }").contentType(MediaType.APPLICATION_JSON)).andExpect(status().is(403));
     }
