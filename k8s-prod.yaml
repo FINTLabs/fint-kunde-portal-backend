@@ -138,7 +138,7 @@ spec:
             secretKeyRef:
               key: nam.oauth.password
               name: fint-portal-user
-        image: fintlabs.azurecr.io/kunde-portal:1.2.0
+        image: fintlabsacr.azurecr.io/kunde-portal:1.2.0
         name: kunde-portal-prod
         ports:
         - containerPort: 8080
@@ -171,7 +171,7 @@ spec:
           - mountPath: /etc/nginx/conf.d
             name: nginx-kunde-portal
       - name: test-runner
-        image: fintlabs.azurecr.io/test-runner:1.1.0
+        image: fintlabsacr.azurecr.io/test-runner:1.1.0
         resources:
           limits:
             cpu: "2"
@@ -225,7 +225,7 @@ spec:
                 key: nam.oauth.password
                 name: fint-portal-user
       - name: link-walker
-        image: fintlabs.azurecr.io/link-walker:1.1.0
+        image: fintlabsacr.azurecr.io/link-walker:1.1.0
         resources:
           limits:
             cpu: "2"
@@ -285,7 +285,7 @@ spec:
                 key: nam.oauth.password
                 name: fint-portal-user
       - name: zendesk-integration
-        image: fintlabs.azurecr.io/zendesk-integration:build.9
+        image: fintlabsacr.azurecr.io/zendesk-integration:build.9
         resources:
           limits:
             cpu: "2"
