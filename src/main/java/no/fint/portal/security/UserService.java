@@ -31,7 +31,7 @@ public class UserService implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         final Contact contact = portalApiService.getContact(username);
         return User.withDefaultPasswordEncoder()
-                .username(contact.getDn())
+                .username(contact.getMail())
                 .password(contact.getNin())
                 .authorities(Stream.concat(
                         Optional.ofNullable(contact.getLegal()).map(List::stream).orElseGet(Stream::empty),

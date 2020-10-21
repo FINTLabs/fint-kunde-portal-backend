@@ -98,45 +98,14 @@ spec:
           value: ""
         - name: fint.client-config.linkwalker-base-url
           value: ""
-        - name: fint.ldap.url
-          value: ldap://10.0.0.55
         - name: fint.ldap.component-base
           value: ou=components,o=fint
         - name: fint.ldap.contact-base
           value: ou=contacts,o=fint
         - name: fint.ldap.organisation-base
           value: ou=organisations,o=fint
-        - name: fint.ldap.user
-          valueFrom:
-            secretKeyRef:
-              key: ldap.user
-              name: fint-portal-user
-        - name: fint.ldap.password
-          valueFrom:
-            secretKeyRef:
-              key: ldap.password
-              name: fint-portal-user
-        - name: fint.nam.oauth.idp-hostname
-          value: idp.felleskomponent.no
-        - name: fint.nam.oauth.clientId
-          valueFrom:
-            secretKeyRef:
-              key: nam.oauth.clientId
-              name: fint-portal-user
-        - name: fint.nam.oauth.clientSecret
-          valueFrom:
-            secretKeyRef:
-              key: nam.oauth.clientSecret
-              name: fint-portal-user
-        - name: fint.nam.oauth.username
-          valueFrom:
-            secretKeyRef:
-              key: nam.oauth.username
-              name: fint-portal-user
-        - name: fint.nam.oauth.password
-          valueFrom:
-            secretKeyRef:
-              key: nam.oauth.password
+        envFrom:
+          - secretRef:
               name: fint-portal-user
         image: fintlabsacr.azurecr.io/kunde-portal:build.${BUILD_NUMBER}
         name: kunde-portal-beta
