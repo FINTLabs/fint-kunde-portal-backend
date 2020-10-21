@@ -35,7 +35,7 @@ public class SecureUrlAccessDecisionVoter implements AccessDecisionVoter<FilterI
     public int vote(Authentication authentication, FilterInvocation invocation, Collection<ConfigAttribute> attributes) {
         log.debug("VOTING FOR:\nAuthorities: {}\nURL: {}", authentication.getAuthorities(), invocation.getRequestUrl());
         if (!StringUtils.startsWithAny(invocation.getRequestUrl(), securePaths)) {
-            log.info("Unsecured URL");
+            log.debug("Unsecured URL {}", invocation.getRequestUrl());
             return ACCESS_GRANTED;
         }
         final String[] authorities = authentication.getAuthorities().stream().map(GrantedAuthority::getAuthority).toArray(String[]::new);
