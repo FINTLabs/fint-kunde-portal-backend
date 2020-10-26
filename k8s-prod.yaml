@@ -150,12 +150,12 @@ spec:
           requests:
             cpu: "250m"
             memory: "1Gi"
-        readinessProbe:
-          httpGet:
-            path: /actuator/health
-            port: 8080
-          initialDelaySeconds: 30
-          timeoutSeconds: 5
+#        readinessProbe:
+#          httpGet:
+#            path: /actuator/health
+#            port: 8080
+#          initialDelaySeconds: 30
+#          timeoutSeconds: 5
       - name: nginx
         image: nginx:1.15
         resources:
