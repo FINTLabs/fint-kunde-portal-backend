@@ -27,6 +27,15 @@ data:
       server_name kunde-beta.felleskomponent.no;
 
       location / {
+          proxy_pass http://localhost:8000;
+          proxy_set_header Connection '';
+          proxy_http_version 1.1;
+          chunked_transfer_encoding off;
+          proxy_buffering off;
+          proxy_cache off;
+      }
+
+      location /api/ {
           proxy_pass http://localhost:8080;
           proxy_set_header Connection '';
           proxy_http_version 1.1;
@@ -141,6 +150,17 @@ spec:
         volumeMounts:
           - mountPath: /etc/nginx/conf.d
             name: nginx-kunde-portal
+      - name: frontend
+        image: fintlabsacr.azurecr.io/kunde-portal-frontend:PR-56.4
+        resources:
+          limits:
+            cpu: 500m
+            memory: 128Mi
+        ports:
+          - containerPort: 8000
+        env:
+          - name: TZ
+            value: Europe/Oslo
       - name: test-runner
         image: fintlabsacr.azurecr.io/test-runner:PR-6.1
         resources:
