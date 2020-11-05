@@ -117,7 +117,6 @@ spec:
           requests:
             cpu: "250m"
             memory: "1Gi"
-# TODO: Unauthenticated request
         readinessProbe:
           httpGet:
             path: /actuator/health
