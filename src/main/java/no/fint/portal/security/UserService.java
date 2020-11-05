@@ -29,6 +29,9 @@ public class UserService implements UserDetailsService {
     @Override
     @Cacheable("users")
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        if ("0".equals(username)) {
+            return User.withUsername("DUMMY").build();
+        }
         final Contact contact = portalApiService.getContact(username);
         return User.withDefaultPasswordEncoder()
                 .username(contact.getMail())

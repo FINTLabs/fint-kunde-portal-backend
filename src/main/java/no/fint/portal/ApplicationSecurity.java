@@ -54,6 +54,8 @@ public class ApplicationSecurity extends WebSecurityConfigurerAdapter {
                 .addFilter(requestHeaderAuthenticationFilter())
                 .authenticationProvider(preAuthenticatedAuthenticationProvider())
                 .authorizeRequests()
+                .mvcMatchers("/actuator/health")
+                .permitAll()
                 .anyRequest()
                 .authenticated()
                 .accessDecisionManager(accessDecisionManager());
