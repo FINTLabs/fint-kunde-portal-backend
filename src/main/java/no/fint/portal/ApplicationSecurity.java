@@ -6,7 +6,6 @@ import no.fint.portal.security.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.access.AccessDecisionManager;
 import org.springframework.security.access.vote.UnanimousBased;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -55,8 +54,6 @@ public class ApplicationSecurity extends WebSecurityConfigurerAdapter {
                 .addFilter(requestHeaderAuthenticationFilter())
                 .authenticationProvider(preAuthenticatedAuthenticationProvider())
                 .authorizeRequests()
-                .antMatchers(HttpMethod.GET, "/actuator/health")
-                .permitAll()
                 .anyRequest()
                 .authenticated()
                 .accessDecisionManager(accessDecisionManager());

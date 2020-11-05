@@ -127,6 +127,7 @@ spec:
                 value: '0'
           initialDelaySeconds: 30
           timeoutSeconds: 5
+          periodSeconds: 300
       - name: nginx
         image: nginx:1.15.10
 #        image: fintlabsacr.azurecr.io/nginx:1.15.10-1
