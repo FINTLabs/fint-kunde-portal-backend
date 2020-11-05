@@ -11,6 +11,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
@@ -30,7 +31,7 @@ public class UserService implements UserDetailsService {
     @Cacheable("users")
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         if ("0".equals(username)) {
-            return User.withUsername("DUMMY").password("").build();
+            return User.withUsername("DUMMY").password("").authorities(Collections.emptyList()).build();
         }
         final Contact contact = portalApiService.getContact(username);
         return User.withDefaultPasswordEncoder()
