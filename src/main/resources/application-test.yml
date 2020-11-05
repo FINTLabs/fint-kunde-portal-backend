@@ -37,6 +37,11 @@ spring:
 
 logging:
   level:
+    no:
+      fint:
+        portal:
+          security: debug
     org:
       springframework:
-        ldap: TRACE
+        security: debug
+#        ldap: TRACE

@@ -63,6 +63,7 @@ givenName: Tore
 sn: Test
 mail: test@example.com
 mobile: 98765432
+fintContactLegal: ou=testing,ou=organisations,o=fint-test
 
 dn: cn=23456789012,ou=contacts,o=fint-test
 objectclass: inetOrgPerson
@@ -87,6 +88,7 @@ objectclass: fintOrganisation
 ou: testing
 fintOrganisationNumber: 123456789
 fintOrganisationDisplayName: Testing Limited
+fintOrganisationLegal: cn=12345678901,ou=contacts,o=fint-test
 
 dn: ou=assets,ou=testing,ou=organisations,o=fint-test
 objectclass: organizationalUnit
