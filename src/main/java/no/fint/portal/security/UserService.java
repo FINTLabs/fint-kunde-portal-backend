@@ -1,6 +1,7 @@
 package no.fint.portal.security;
 
 import no.fint.portal.customer.service.PortalApiService;
+import no.fint.portal.exceptions.EntityNotFoundException;
 import no.fint.portal.model.contact.Contact;
 import no.fint.portal.model.organisation.Organisation;
 import no.fint.portal.model.organisation.OrganisationService;
@@ -33,18 +34,22 @@ public class UserService implements UserDetailsService {
         if ("0".equals(username)) {
             return User.withUsername("DUMMY").password("").authorities(Collections.emptyList()).build();
         }
-        final Contact contact = portalApiService.getContact(username);
-        return User.withDefaultPasswordEncoder()
-                .username(contact.getMail())
-                .password(contact.getNin())
-                .authorities(Stream.concat(
-                        Optional.ofNullable(contact.getLegal()).map(List::stream).orElseGet(Stream::empty),
-                        Optional.ofNullable(contact.getTechnical()).map(List::stream).orElseGet(Stream::empty))
-                        .map(organisationService::getOrganisationByDn)
-                        .filter(Optional::isPresent)
-                        .map(Optional::get)
-                        .map(Organisation::getName)
-                        .toArray(String[]::new))
-                .build();
+        try {
+            final Contact contact = portalApiService.getContact(username);
+            return User.withDefaultPasswordEncoder()
+                    .username(contact.getMail())
+                    .password(contact.getNin())
+                    .authorities(Stream.concat(
+                            Optional.ofNullable(contact.getLegal()).map(List::stream).orElseGet(Stream::empty),
+                            Optional.ofNullable(contact.getTechnical()).map(List::stream).orElseGet(Stream::empty))
+                            .map(organisationService::getOrganisationByDn)
+                            .filter(Optional::isPresent)
+                            .map(Optional::get)
+                            .map(Organisation::getName)
+                            .toArray(String[]::new))
+                    .build();
+        } catch (EntityNotFoundException e) {
+            throw new UsernameNotFoundException(username);
+        }
     }
 }
