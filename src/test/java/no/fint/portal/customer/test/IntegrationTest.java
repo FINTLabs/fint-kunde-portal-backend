@@ -102,8 +102,8 @@ public class IntegrationTest {
 
     @Test
     public void access() throws Exception {
-        mockMvc.perform(get("/api/accesses/{org}/", org)).andExpect(status().is(200)).andExpect(jsonPath("$", is(Collections.emptyList())));
-        mockMvc.perform(post("/api/accesses/{org}/", org).content("{" +
+        mockMvc.perform(get("/api/accesses/{org}/", org).header("x-nin", "12345678901")).andExpect(status().is(200)).andExpect(jsonPath("$", is(Collections.emptyList())));
+        mockMvc.perform(post("/api/accesses/{org}/", org).header("x-nin", "12345678901").content("{" +
                 "\"name\": \"personal\"," +
                 "\"collection\": [" +
                 "\"/administrasjon/personal/personalressurs\"" +
@@ -117,8 +117,8 @@ public class IntegrationTest {
                 "\"/administrasjon/personal/fravar\"" +
                 "]" +
                 "}").contentType(MediaType.APPLICATION_JSON)).andExpect(status().is2xxSuccessful());
-        mockMvc.perform(get("/api/accesses/{org}/{name}", org, "personal")).andExpect(status().is2xxSuccessful()).andExpect(jsonPath("$.name", is("personal")));
-        mockMvc.perform(put("/api/accesses/{org}/{name}", org, "personal").content("{" +
+        mockMvc.perform(get("/api/accesses/{org}/{name}", org, "personal").header("x-nin", "12345678901")).andExpect(status().is2xxSuccessful()).andExpect(jsonPath("$.name", is("personal")));
+        mockMvc.perform(put("/api/accesses/{org}/{name}", org, "personal").header("x-nin", "12345678901").content("{" +
                 "\"name\": \"personal\"," +
                 "\"collection\":[" +
                 "]," +
@@ -129,6 +129,6 @@ public class IntegrationTest {
                 "\"clients\":[" +
                 "]" +
                 "}").contentType(MediaType.APPLICATION_JSON)).andExpect(status().is2xxSuccessful()).andExpect(jsonPath("$.collection", is(Collections.emptyList())));
-        mockMvc.perform(delete("/api/accesses/{org}/{name}", org, "personal")).andExpect(status().is2xxSuccessful());
+        mockMvc.perform(delete("/api/accesses/{org}/{name}", org, "personal").header("x-nin", "12345678901")).andExpect(status().is2xxSuccessful());
     }
 }
