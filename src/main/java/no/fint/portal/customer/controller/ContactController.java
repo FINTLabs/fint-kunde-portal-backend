@@ -102,6 +102,7 @@ public class ContactController {
         return ResponseEntity.ok().cacheControl(CacheControl.noStore()).body(contact);
     }
 
+    /* TODO Removed for security reasons.
     @ApiOperation("Delete a contact")
     @RequestMapping(method = RequestMethod.DELETE, value = "/{nin}")
     public ResponseEntity deleteContacts(@PathVariable final String nin) {
@@ -110,6 +111,7 @@ public class ContactController {
         contactService.deleteContact(contact);
         return ResponseEntity.noContent().cacheControl(CacheControl.noStore()).build();
     }
+    */
 
     @ApiOperation("Get contact's organisations")
     @GetMapping(value = "/organisations")

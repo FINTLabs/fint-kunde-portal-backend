@@ -91,58 +91,25 @@ spec:
           configMap:
             name: nginx-kunde-portal
       containers:
-      - env:
+      - name: kunde-portal-beta
+        image: fintlabsacr.azurecr.io/kunde-portal:build.${BUILD_NUMBER}
+        ports:
+        - containerPort: 8080
+          protocol: TCP
+        envFrom:
+          - secretRef:
+              name: fint-portal-user
+        env:
         - name: TZ
           value: Europe/Oslo
         - name: fint.client-config.test-service-base-url
           value: ""
         - name: fint.client-config.linkwalker-base-url
           value: ""
-        - name: fint.ldap.url
-          value: ldap://10.0.0.55
-        - name: fint.ldap.component-base
-          value: ou=components,o=fint
-        - name: fint.ldap.contact-base
-          value: ou=contacts,o=fint
-        - name: fint.ldap.organisation-base
-          value: ou=organisations,o=fint
-        - name: fint.ldap.user
-          valueFrom:
-            secretKeyRef:
-              key: ldap.user
-              name: fint-portal-user
-        - name: fint.ldap.password
-          valueFrom:
-            secretKeyRef:
-              key: ldap.password
-              name: fint-portal-user
-        - name: fint.nam.oauth.idp-hostname
-          value: idp.felleskomponent.no
-        - name: fint.nam.oauth.clientId
-          valueFrom:
-            secretKeyRef:
-              key: nam.oauth.clientId
-              name: fint-portal-user
-        - name: fint.nam.oauth.clientSecret
-          valueFrom:
-            secretKeyRef:
-              key: nam.oauth.clientSecret
-              name: fint-portal-user
-        - name: fint.nam.oauth.username
-          valueFrom:
-            secretKeyRef:
-              key: nam.oauth.username
-              name: fint-portal-user
-        - name: fint.nam.oauth.password
-          valueFrom:
-            secretKeyRef:
-              key: nam.oauth.password
-              name: fint-portal-user
-        image: fintlabs.azurecr.io/kunde-portal:build.${BUILD_NUMBER}
-        name: kunde-portal-beta
-        ports:
-        - containerPort: 8080
-          protocol: TCP
+        - name: logging.level.no.fint.portal.security
+          value: debug
+        - name: logging.level.org.springframework.security
+          value: debug
         resources:
           limits:
             cpu: "2"
@@ -154,11 +121,14 @@ spec:
           httpGet:
             path: /actuator/health
             port: 8080
+            httpHeaders:
+              - name: x-nin
+                value: '0'
           initialDelaySeconds: 30
           timeoutSeconds: 5
       - name: nginx
         image: nginx:1.15.10
-#        image: fintlabs.azurecr.io/nginx:1.15.10-1
+#        image: fintlabsacr.azurecr.io/nginx:1.15.10-1
         resources:
           limits:
             cpu: "500m"
@@ -172,7 +142,7 @@ spec:
           - mountPath: /etc/nginx/conf.d
             name: nginx-kunde-portal
       - name: test-runner
-        image: fintlabs.azurecr.io/test-runner:PR-6.1
+        image: fintlabsacr.azurecr.io/test-runner:PR-6.1
         resources:
           limits:
             cpu: "2"
@@ -182,51 +152,14 @@ spec:
             memory: "1Gi"
         ports:
           - containerPort: 8082
+        envFrom:
+          - secretRef:
+              name: fint-portal-user
         env:
           - name: server.port
             value: "8082"
-          - name: fint.ldap.url
-            value: ldap://10.0.0.55
-          - name: fint.ldap.component-base
-            value: ou=components,o=fint
-          - name: fint.ldap.contact-base
-            value: ou=contacts,o=fint
-          - name: fint.ldap.organisation-base
-            value: ou=organisations,o=fint
-          - name: fint.ldap.user
-            valueFrom:
-              secretKeyRef:
-                key: ldap.user
-                name: fint-portal-user
-          - name: fint.ldap.password
-            valueFrom:
-              secretKeyRef:
-                key: ldap.password
-                name: fint-portal-user
-          - name: fint.nam.oauth.idp-hostname
-            value: idp.felleskomponent.no
-          - name: fint.nam.oauth.clientId
-            valueFrom:
-              secretKeyRef:
-                key: nam.oauth.clientId
-                name: fint-portal-user
-          - name: fint.nam.oauth.clientSecret
-            valueFrom:
-              secretKeyRef:
-                key: nam.oauth.clientSecret
-                name: fint-portal-user
-          - name: fint.nam.oauth.username
-            valueFrom:
-              secretKeyRef:
-                key: nam.oauth.username
-                name: fint-portal-user
-          - name: fint.nam.oauth.password
-            valueFrom:
-              secretKeyRef:
-                key: nam.oauth.password
-                name: fint-portal-user
       - name: link-walker
-        image: fintlabs.azurecr.io/link-walker:PR-16.5
+        image: fintlabsacr.azurecr.io/link-walker:PR-16.5
         resources:
           limits:
             cpu: "2"
@@ -236,6 +169,9 @@ spec:
             memory: "3Gi"
         ports:
           - containerPort: 8081
+        envFrom:
+          - secretRef:
+              name: fint-portal-user
         env:
           - name: TZ
             value: Europe/Oslo
@@ -245,48 +181,8 @@ spec:
             value: "8081"
           - name: fint.rest-template.provider
             value: portal-api
-          - name: fint.ldap.url
-            value: ldap://10.0.0.55
-          - name: fint.ldap.component-base
-            value: ou=components,o=fint
-          - name: fint.ldap.contact-base
-            value: ou=contacts,o=fint
-          - name: fint.ldap.organisation-base
-            value: ou=organisations,o=fint
-          - name: fint.ldap.user
-            valueFrom:
-              secretKeyRef:
-                key: ldap.user
-                name: fint-portal-user
-          - name: fint.ldap.password
-            valueFrom:
-              secretKeyRef:
-                key: ldap.password
-                name: fint-portal-user
-          - name: fint.nam.oauth.idp-hostname
-            value: idp.felleskomponent.no
-          - name: fint.nam.oauth.clientId
-            valueFrom:
-              secretKeyRef:
-                key: nam.oauth.clientId
-                name: fint-portal-user
-          - name: fint.nam.oauth.clientSecret
-            valueFrom:
-              secretKeyRef:
-                key: nam.oauth.clientSecret
-                name: fint-portal-user
-          - name: fint.nam.oauth.username
-            valueFrom:
-              secretKeyRef:
-                key: nam.oauth.username
-                name: fint-portal-user
-          - name: fint.nam.oauth.password
-            valueFrom:
-              secretKeyRef:
-                key: nam.oauth.password
-                name: fint-portal-user
       - name: zendesk-integration
-        image: fintlabs.azurecr.io/zendesk-integration:build.17
+        image: fintlabsacr.azurecr.io/zendesk-integration:build.17
         resources:
           limits:
             cpu: "2"
@@ -296,6 +192,9 @@ spec:
             memory: "1Gi"
         ports:
           - containerPort: 8083
+        envFrom:
+          - secretRef:
+              name: fint-portal-user
         env:
           - name: logging.level.no.fint.provisioning.TicketSynchronizingService
             value: debug
@@ -321,43 +220,3 @@ spec:
               secretKeyRef:
                 key: token
                 name: zendesk-integration
-          - name: fint.ldap.url
-            value: ldap://10.0.0.55
-          - name: fint.ldap.component-base
-            value: ou=components,o=fint
-          - name: fint.ldap.contact-base
-            value: ou=contacts,o=fint
-          - name: fint.ldap.organisation-base
-            value: ou=organisations,o=fint
-          - name: fint.ldap.user
-            valueFrom:
-              secretKeyRef:
-                key: ldap.user
-                name: fint-portal-user
-          - name: fint.ldap.password
-            valueFrom:
-              secretKeyRef:
-                key: ldap.password
-                name: fint-portal-user
-          - name: fint.nam.oauth.idp-hostname
-            value: idp.felleskomponent.no
-          - name: fint.nam.oauth.clientId
-            valueFrom:
-              secretKeyRef:
-                key: nam.oauth.clientId
-                name: fint-portal-user
-          - name: fint.nam.oauth.clientSecret
-            valueFrom:
-              secretKeyRef:
-                key: nam.oauth.clientSecret
-                name: fint-portal-user
-          - name: fint.nam.oauth.username
-            valueFrom:
-              secretKeyRef:
-                key: nam.oauth.username
-                name: fint-portal-user
-          - name: fint.nam.oauth.password
-            valueFrom:
-              secretKeyRef:
-                key: nam.oauth.password
-                name: fint-portal-user
