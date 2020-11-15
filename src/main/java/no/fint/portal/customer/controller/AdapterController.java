@@ -44,14 +44,14 @@ public class AdapterController {
             consumes = MediaType.APPLICATION_JSON_VALUE
     )
     public ResponseEntity addAdapter(@PathVariable("orgName") final String orgName,
+                                     @RequestHeader(name = "x-nin") final String nin,
                                      @RequestBody final Adapter adapter) {
 
         Organisation organisation = portalApiService.getOrganisation(orgName);
 
         Optional<Adapter> optionalAdapter = adapterService.getAdapter(adapter.getName(), orgName);
         if (!optionalAdapter.isPresent()) {
-            if (adapterService.addAdapter(adapter, organisation)) {
-                //return ResponseEntity.ok().body(adapter);
+            if (adapterService.addAdapter(adapter, organisation, nin)) {
                 return ResponseEntity.status(HttpStatus.CREATED).cacheControl(CacheControl.noStore()).body(adapter);
             }
         }
@@ -70,6 +70,7 @@ public class AdapterController {
     )
     public ResponseEntity updateAdapter(@PathVariable final String orgName,
                                         @PathVariable final String adapterName,
+                                        @RequestHeader(name = "x-nin") final String nin,
                                         @RequestBody final Adapter adapter) {
 
         Organisation organisation = portalApiService.getOrganisation(orgName);
@@ -88,7 +89,7 @@ public class AdapterController {
         if (adapter.getShortDescription() != null)
             original.setShortDescription(adapter.getShortDescription());
 
-        if (!adapterService.updateAdapter(original)) {
+        if (!adapterService.updateAdapter(original, nin)) {
             throw new EntityNotFoundException(String.format("Could not update adapter: %s", adapterName));
         }
 
@@ -103,12 +104,13 @@ public class AdapterController {
     )
     public ResponseEntity resetAdapterPassword(@PathVariable final String orgName,
                                                @PathVariable final String adapterName,
+                                               @RequestHeader(name = "x-nin") final String nin,
                                                @RequestBody String newPassword) {
 
         Organisation organisation = portalApiService.getOrganisation(orgName);
 
         Adapter adapter = portalApiService.getAdapter(organisation, adapterName);
-        adapterService.resetAdapterPassword(adapter, newPassword);
+        adapterService.resetAdapterPassword(adapter, newPassword, nin);
         return ResponseEntity.ok().cacheControl(CacheControl.noStore()).body(adapter);
     }
 
@@ -116,10 +118,12 @@ public class AdapterController {
     @RequestMapping(
             method = RequestMethod.GET
     )
-    public ResponseEntity getAllAdapters(@PathVariable("orgName") final String orgName) {
+    public ResponseEntity getAllAdapters(@PathVariable("orgName") final String orgName,
+                                         @RequestHeader(name = "x-nin") final String nin
+    ) {
         Organisation organisation = portalApiService.getOrganisation(orgName);
 
-        List<Adapter> adapters = portalApiService.getAdapters(organisation);
+        List<Adapter> adapters = portalApiService.getAdapters(organisation, nin);
 
         return ResponseEntity.ok().cacheControl(CacheControl.noStore()).body(adapters);
     }
@@ -130,6 +134,7 @@ public class AdapterController {
             value = "/{adapterName}"
     )
     public ResponseEntity getAdapter(@PathVariable("orgName") final String orgName,
+                                     @RequestHeader(name = "x-nin") final String nin,
                                      @PathVariable final String adapterName) {
         Organisation organisation = portalApiService.getOrganisation(orgName);
 
@@ -143,11 +148,12 @@ public class AdapterController {
             value = "/{adapterName}/secret"
     )
     public ResponseEntity getAdapterSecret(@PathVariable("orgName") final String orgName,
+                                           @RequestHeader(name = "x-nin") final String nin,
                                            @PathVariable final String adapterName) {
         Organisation organisation = portalApiService.getOrganisation(orgName);
         Adapter adapter = portalApiService.getAdapter(organisation, adapterName);
 
-        return ResponseEntity.ok().cacheControl(CacheControl.noStore()).body(adapterService.getAdapterSecret(adapter));
+        return ResponseEntity.ok().cacheControl(CacheControl.noStore()).body(adapterService.getAdapterSecret(adapter, nin));
     }
 
     @ApiOperation("Delete adapter")
@@ -155,11 +161,12 @@ public class AdapterController {
             value = "/{adapterName}"
     )
     public ResponseEntity deleteAdapter(@PathVariable("orgName") final String orgName,
+                                        @RequestHeader(name = "x-nin") final String nin,
                                         @PathVariable final String adapterName) {
         Organisation organisation = portalApiService.getOrganisation(orgName);
         Adapter adapter = portalApiService.getAdapter(organisation, adapterName);
 
-        adapterService.deleteAdapter(adapter);
+        adapterService.deleteAdapter(adapter, nin);
         return ResponseEntity.noContent().cacheControl(CacheControl.noStore()).build();
     }
 

@@ -143,7 +143,7 @@ public class PortalApiService {
             maxAttempts = 5
     )
     @Synchronized
-    public List<Adapter> getAdapters(Organisation organisation) {
+    public List<Adapter> getAdapters(Organisation organisation, String nin) {
         List<Adapter> adapters = adapterService.getAdapters(organisation.getName());
 
         if (adapters.size() == 0) return Collections.emptyList();

@@ -163,7 +163,10 @@ public class OrganisationController {
 
     @DeleteMapping("/components/{compName}")
     @ApiOperation("Unlink Component")
-    public ResponseEntity unLinkComponent(@PathVariable String orgName, @PathVariable String compName) {
+    public ResponseEntity unLinkComponent(@PathVariable String orgName,
+                                          @PathVariable String compName,
+                                          @RequestHeader(name = "x-nin") final String nin
+                                          ) {
         Organisation organisation = portalApiService.getOrganisation(orgName);
         Component component = portalApiService.getComponentByName(compName);
 
