@@ -4,7 +4,6 @@ pipeline {
         stage('Build') {
             steps {
                 withDockerRegistry([credentialsId: 'fintlabsacr.azurecr.io', url: 'https://fintlabsacr.azurecr.io']) {
-                    sh "docker pull fintlabsacr.azurecr.io/kunde-portal-frontend:latest"
                     sh "docker build --tag ${GIT_COMMIT} ."
                 }
             }
