@@ -3,6 +3,7 @@ package no.fint.portal.customer.controller;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
+import no.fint.portal.customer.service.IdentityMaskingService;
 import no.fint.portal.customer.service.PortalApiService;
 import no.fint.portal.exceptions.CreateEntityMismatchException;
 import no.fint.portal.exceptions.EntityFoundException;
@@ -41,6 +42,8 @@ public class ContactController {
     OrganisationService organisationService;
     @Autowired
     private ContactService contactService;
+    @Autowired
+    private IdentityMaskingService identityMaskingService;
 
     @ApiOperation("Create new contact")
     @RequestMapping(method = RequestMethod.POST,
@@ -86,7 +89,7 @@ public class ContactController {
     @ApiOperation("Get all contacts")
     @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity getContacts() {
-        List<Contact> contacts = portalApiService.getContacts();
+        List<Contact> contacts = identityMaskingService.getMaskedContacts();
 
         if (contacts != null) {
             return ResponseEntity.ok().cacheControl(CacheControl.noStore()).body(contacts);
