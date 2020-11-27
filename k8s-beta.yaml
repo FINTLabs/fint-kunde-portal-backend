@@ -151,7 +151,7 @@ spec:
           - mountPath: /etc/nginx/conf.d
             name: nginx-kunde-portal
       - name: frontend
-        image: fintlabsacr.azurecr.io/kunde-portal-frontend:PR-56.4
+        image: fintlabsacr.azurecr.io/kunde-portal-frontend:build.21
         resources:
           limits:
             cpu: 500m
