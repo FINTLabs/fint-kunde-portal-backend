@@ -57,7 +57,7 @@ public class IdentityMaskingService {
         }
     }
 
-    @Scheduled(initialDelay = 10000, fixedDelay = 3600000)
+    @Scheduled(cron = "${fint.identity.rotate.cron}")
     public void rotate() {
         log.info("Rotating keys ...");
         try {
