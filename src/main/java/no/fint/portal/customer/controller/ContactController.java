@@ -29,6 +29,8 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import static no.fint.portal.customer.service.IdentityMaskingService.BULLETS;
+
 @Slf4j
 @RestController
 @Api(tags = "Contacts")
@@ -69,14 +71,14 @@ public class ContactController {
         if (!nin.equals(contact.getNin())) {
             throw new UpdateEntityMismatchException("The contact to updateEntry is not the contact in endpoint.");
         }
-        Contact original = portalApiService.getContact(nin);
+        Contact original = portalApiService.getContact(identityMaskingService.unmask(nin));
         if (contact.getFirstName() != null)
             original.setFirstName(contact.getFirstName());
         if (contact.getLastName() != null)
             original.setLastName(contact.getLastName());
-        if (contact.getMail() != null)
+        if (contact.getMail() != null && !BULLETS.equals(contact.getMail()))
             original.setMail(contact.getMail());
-        if (contact.getMobile() != null)
+        if (contact.getMobile() != null && !BULLETS.equals(contact.getMobile()))
             original.setMobile(contact.getMobile());
 
         if (!contactService.updateContact(original)) {
@@ -98,12 +100,15 @@ public class ContactController {
         throw new EntityNotFoundException("No contacts found.");
     }
 
+    /* TODO Removed for identity masking reasons
     @ApiOperation("Get contact by nin")
     @RequestMapping(method = RequestMethod.GET, value = "/{nin}")
     public ResponseEntity getContact(@PathVariable final String nin) {
         Contact contact = portalApiService.getContact(nin);
         return ResponseEntity.ok().cacheControl(CacheControl.noStore()).body(contact);
     }
+
+     */
 
     /* TODO Removed for security reasons.
     @ApiOperation("Delete a contact")
@@ -124,6 +129,7 @@ public class ContactController {
                 .stream())
                 .map(organisationService::getOrganisationByDn)
                 .filter(Optional::isPresent).map(Optional::get)
+                .map(identityMaskingService::mask)
                 .distinct()
                 .collect(Collectors.toList());
         return ResponseEntity.ok().cacheControl(CacheControl.noStore()).body(contactOrganisations);

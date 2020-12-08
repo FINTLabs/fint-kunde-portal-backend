@@ -199,7 +199,7 @@ public class PortalApiService {
     @Synchronized
     public List<Contact> getContacts() {
         List<Contact> contacts = contactService.getContacts();
-
+        if (contacts == null) throw new InvalidResourceException("null Contacts");
         if (contacts.size() == 0) return Collections.emptyList();
         if (contacts.get(0).getFirstName() == null) throw new InvalidResourceException("Invalid contact");
         return contacts;
