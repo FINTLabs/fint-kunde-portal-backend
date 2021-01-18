@@ -52,7 +52,8 @@ dependencies {
     compile("com.github.springfox.loader:springfox-loader:${springfoxLoaderVersion}")
     compile('no.rogfk:spring-hateoas-hal-extension:0.0.6')
     compile('no.fint:fint-spring-secrets:0.1.0')
-    compile('no.fint:fint-portal-api:3.7.0-beta-8')
+    //compile('no.fint:fint-portal-api:3.7.0-beta-8')
+    compile('no.fint:fint-portal-api:3.8.2-alpha-1')
     //compile('no.fint:fint-portal-api:0-SNAPSHOT')
     compile('org.apache.commons:commons-lang3:3.7')
 
