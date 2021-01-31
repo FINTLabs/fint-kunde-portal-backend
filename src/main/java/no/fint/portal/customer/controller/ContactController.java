@@ -49,7 +49,7 @@ public class ContactController {
 
     @ApiOperation("Create new contact")
     @RequestMapping(method = RequestMethod.POST,
-            consumes = MediaType.APPLICATION_JSON_UTF8_VALUE
+            consumes = MediaType.APPLICATION_JSON_VALUE
     )
     public ResponseEntity createContact(@RequestBody final Contact contact) {
         if (!contactService.addContact(contact)) {
@@ -64,7 +64,7 @@ public class ContactController {
 
     @ApiOperation("Update contact")
     @RequestMapping(method = RequestMethod.PUT,
-            consumes = MediaType.APPLICATION_JSON_UTF8_VALUE,
+            consumes = MediaType.APPLICATION_JSON_VALUE,
             value = "/{nin}"
     )
     public ResponseEntity updateContact(@RequestBody final Contact contact, @PathVariable final String nin) {
