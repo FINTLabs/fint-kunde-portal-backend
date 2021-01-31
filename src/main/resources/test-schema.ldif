@@ -116,3 +116,8 @@ objectclass: organizationalUnit
 objectclass: top
 objectClass: fintAdapter
 ou: adapters
+
+dn: ou=access,ou=testing,ou=organisations,o=fint-test
+objectclass: organizationalUnit
+objectclass: top
+ou: access

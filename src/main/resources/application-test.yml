@@ -5,6 +5,8 @@ springfox:
 
 fint:
   ldap:
+    access:
+      template-base: "ou=access-packages,o=fint-test"
     url: "ldap://localhost:12345"
     user: "uid=user"
     password: "password"
@@ -18,6 +20,10 @@ fint:
       idp-hostname: "localhost"
       clientId: "dummy"
       clientSecret: "dummy"
+
+  portal:
+    admin:
+      uri: https://admin-beta.fintlabs.no
 
 spring:
   ldap:

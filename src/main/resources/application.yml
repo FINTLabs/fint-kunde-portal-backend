@@ -13,6 +13,9 @@ fint:
     component-base: "ou=apis,o=fint-test"
     organisation-base: "ou=organisations,o=fint-test"
     contact-base: "ou=contacts,o=fint-test"
+  portal:
+    admin:
+      uri: https://admin-beta.fintlabs.no
 
 
 info:

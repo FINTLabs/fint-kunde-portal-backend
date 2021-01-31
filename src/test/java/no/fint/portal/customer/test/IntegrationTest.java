@@ -13,10 +13,10 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
-import static org.hamcrest.Matchers.containsString;
-import static org.hamcrest.Matchers.equalTo;
-import static org.mockito.AdditionalAnswers.returnsFirstArg;
-import static org.mockito.Mockito.*;
+import java.util.Collections;
+
+import static org.hamcrest.Matchers.*;
+
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -118,5 +118,37 @@ public class IntegrationTest {
         //mockMvc.perform(get("/api/organisations/{org}/", org)).andExpect(status().is(403));
         mockMvc.perform(put("/api/organisations/{org}/contacts/legal/{contact}", org, contact1).header("x-nin", "23456789012")).andExpect(status().is(403));
         mockMvc.perform(post("/api/adapters/{org}", org).header("x-nin", "23456789012").content("{ \"name\": \"testadapter\", \"note\": \"Test Adapter\", \"secret\": \"Open Sesame!\", \"shortDescription\": \"This is a Test Adapter\" }").contentType(MediaType.APPLICATION_JSON)).andExpect(status().is(403));
+    }
+
+    @Test
+    public void access() throws Exception {
+        mockMvc.perform(get("/api/accesses/{org}/", org).header("x-nin", "12345678901")).andExpect(status().is(200)).andExpect(jsonPath("$", is(Collections.emptyList())));
+        mockMvc.perform(post("/api/accesses/{org}/", org).header("x-nin", "12345678901").content("{" +
+                "\"name\": \"personal\"," +
+                "\"collection\": [" +
+                "\"/administrasjon/personal/personalressurs\"" +
+                "]," +
+                "\"read\": [" +
+                "\"/administrasjon/personal/person\"," +
+                "\"/administrasjon/personal/personalressurs\"," +
+                "\"/administrasjon/personal/arbeidsforhold\"" +
+                "]," +
+                "\"modify\": [" +
+                "\"/administrasjon/personal/fravar\"" +
+                "]" +
+                "}").contentType(MediaType.APPLICATION_JSON)).andExpect(status().is2xxSuccessful());
+        mockMvc.perform(get("/api/accesses/{org}/{name}", org, "personal").header("x-nin", "12345678901")).andExpect(status().is2xxSuccessful()).andExpect(jsonPath("$.name", is("personal")));
+        mockMvc.perform(put("/api/accesses/{org}/{name}", org, "personal").header("x-nin", "12345678901").content("{" +
+                "\"name\": \"personal\"," +
+                "\"collection\":[" +
+                "]," +
+                "\"read\":[" +
+                "]," +
+                "\"modify\":[" +
+                "]," +
+                "\"clients\":[" +
+                "]" +
+                "}").contentType(MediaType.APPLICATION_JSON)).andExpect(status().is2xxSuccessful()).andExpect(jsonPath("$.collection", is(Collections.emptyList())));
+        mockMvc.perform(delete("/api/accesses/{org}/{name}", org, "personal").header("x-nin", "12345678901")).andExpect(status().is2xxSuccessful());
     }
 }
