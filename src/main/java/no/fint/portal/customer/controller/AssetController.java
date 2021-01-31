@@ -11,7 +11,6 @@ import no.fint.portal.model.asset.Asset;
 import no.fint.portal.model.asset.AssetService;
 import no.fint.portal.model.client.Client;
 import no.fint.portal.model.organisation.Organisation;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.CacheControl;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -26,15 +25,19 @@ import java.util.List;
 @RequestMapping(value = "/api/assets/{orgName}")
 public class AssetController {
 
-    @Autowired
+    final
     PortalApiService portalApiService;
 
-    @Autowired
-    private AssetService assetService;
+    private final AssetService assetService;
+
+    public AssetController(PortalApiService portalApiService, AssetService assetService) {
+        this.portalApiService = portalApiService;
+        this.assetService = assetService;
+    }
 
     @ApiOperation("Get all Assets")
     @GetMapping("/")
-    public ResponseEntity getAssets(@PathVariable("orgName") String orgName) {
+    public ResponseEntity<List<Asset>> getAssets(@PathVariable("orgName") String orgName) {
         Organisation organisation = portalApiService.getOrganisation(orgName);
         List<Asset> assets = portalApiService.getAssets(organisation);
         return ResponseEntity.ok().cacheControl(CacheControl.noStore()).body(assets);
@@ -52,8 +55,8 @@ public class AssetController {
 
     @ApiOperation("Create Asset")
     @PostMapping("/")
-    public ResponseEntity addAsset(@PathVariable String orgName,
-                                   @RequestBody Asset asset) {
+    public ResponseEntity<Asset> addAsset(@PathVariable String orgName,
+                                          @RequestBody Asset asset) {
         Organisation organisation = portalApiService.getOrganisation(orgName);
 
         Asset primaryAsset = assetService.getPrimaryAsset(organisation);
@@ -67,8 +70,8 @@ public class AssetController {
 
     @ApiOperation("Get Asset by Name")
     @GetMapping("/{assetId}")
-    public ResponseEntity getAssetByName(@PathVariable String orgName,
-                                         @PathVariable String assetId) {
+    public ResponseEntity<Asset> getAssetByName(@PathVariable String orgName,
+                                                @PathVariable String assetId) {
         Organisation organisation = portalApiService.getOrganisation(orgName);
         Asset asset = portalApiService.getAsset(organisation, assetId);
         return ResponseEntity.ok().cacheControl(CacheControl.noStore()).body(asset);
@@ -76,9 +79,9 @@ public class AssetController {
 
     @ApiOperation("Update Asset")
     @PutMapping("/{assetId}")
-    public ResponseEntity updateAsset(@PathVariable String orgName,
-                                      @PathVariable String assetId,
-                                      @RequestBody Asset asset) {
+    public ResponseEntity<Asset> updateAsset(@PathVariable String orgName,
+                                             @PathVariable String assetId,
+                                             @RequestBody Asset asset) {
         Organisation organisation = portalApiService.getOrganisation(orgName);
         Asset original = portalApiService.getAsset(organisation, assetId);
         if (!assetId.equals(asset.getName())) throw new UpdateEntityMismatchException(assetId);
@@ -93,8 +96,8 @@ public class AssetController {
 
     @ApiOperation("Delete Asset")
     @DeleteMapping("/{assetId}")
-    public ResponseEntity removeAsset(@PathVariable String orgName,
-                                      @PathVariable String assetId) {
+    public ResponseEntity<Void> removeAsset(@PathVariable String orgName,
+                                            @PathVariable String assetId) {
         Organisation organisation = portalApiService.getOrganisation(orgName);
         Asset asset = portalApiService.getAsset(organisation, assetId);
 
@@ -105,9 +108,9 @@ public class AssetController {
 
     @ApiOperation("Link Client to Asset")
     @PutMapping("/{assetId}/clients/{clientName}")
-    public ResponseEntity linkClientToAsset(@PathVariable String orgName,
-                                            @PathVariable String assetId,
-                                            @PathVariable String clientName) {
+    public ResponseEntity<Void> linkClientToAsset(@PathVariable String orgName,
+                                                  @PathVariable String assetId,
+                                                  @PathVariable String clientName) {
         Organisation organisation = portalApiService.getOrganisation(orgName);
         Asset asset = portalApiService.getAsset(organisation, assetId);
         Client client = portalApiService.getClient(organisation, clientName);
@@ -119,9 +122,9 @@ public class AssetController {
 
     @ApiOperation("Unlink Client from Asset")
     @DeleteMapping("/{assetId}/clients/{clientName}")
-    public ResponseEntity unlinkClientFromAsset(@PathVariable String orgName,
-                                                @PathVariable String assetId,
-                                                @PathVariable String clientName) {
+    public ResponseEntity<Void> unlinkClientFromAsset(@PathVariable String orgName,
+                                                      @PathVariable String assetId,
+                                                      @PathVariable String clientName) {
         Organisation organisation = portalApiService.getOrganisation(orgName);
         Asset asset = portalApiService.getAsset(organisation, assetId);
         Client client = portalApiService.getClient(organisation, clientName);
@@ -133,9 +136,9 @@ public class AssetController {
 
     @ApiOperation("Link Adapter to Asset")
     @PutMapping("/{assetId}/adapters/{adapterName}")
-    public ResponseEntity linkAdapterToAsset(@PathVariable String orgName,
-                                             @PathVariable String assetId,
-                                             @PathVariable String adapterName) {
+    public ResponseEntity<Void> linkAdapterToAsset(@PathVariable String orgName,
+                                                   @PathVariable String assetId,
+                                                   @PathVariable String adapterName) {
         Organisation organisation = portalApiService.getOrganisation(orgName);
         Asset asset = portalApiService.getAsset(organisation, assetId);
         Adapter adapter = portalApiService.getAdapter(organisation, adapterName);
@@ -147,9 +150,9 @@ public class AssetController {
 
     @ApiOperation("Unlink Adapter from Asset")
     @DeleteMapping("/{assetId}/adapters/{adapterName}")
-    public ResponseEntity unlinkAdapterFromAsset(@PathVariable String orgName,
-                                                 @PathVariable String assetId,
-                                                 @PathVariable String adapterName) {
+    public ResponseEntity<Void> unlinkAdapterFromAsset(@PathVariable String orgName,
+                                                       @PathVariable String assetId,
+                                                       @PathVariable String adapterName) {
         Organisation organisation = portalApiService.getOrganisation(orgName);
         Asset asset = portalApiService.getAsset(organisation, assetId);
         Adapter adapter = portalApiService.getAdapter(organisation, adapterName);

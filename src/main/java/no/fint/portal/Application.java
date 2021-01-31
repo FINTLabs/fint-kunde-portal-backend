@@ -15,12 +15,10 @@ public class Application {
     public static void main(String[] args) {
         SpringApplication app = new SpringApplication(Application.class);
 
-        // Modify default properties
         Properties properties = new Properties();
         properties.put("spring.mvc.throw-exception-if-no-handler-found", true);
         app.setDefaultProperties(properties);
 
-        // Run spring application
         app.run(args);
     }
 

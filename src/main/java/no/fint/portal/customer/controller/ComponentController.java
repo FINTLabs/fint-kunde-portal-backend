@@ -14,7 +14,6 @@ import no.fint.portal.model.client.Client;
 import no.fint.portal.model.component.Component;
 import no.fint.portal.model.component.ComponentService;
 import no.fint.portal.model.organisation.Organisation;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.CacheControl;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -33,15 +32,19 @@ import java.util.List;
 @RequestMapping(value = "/api/components")
 public class ComponentController {
 
-    @Autowired
+    final
     PortalApiService portalApiService;
 
-    @Autowired
-    private ComponentService componentService;
+    private final ComponentService componentService;
+
+    public ComponentController(PortalApiService portalApiService, ComponentService componentService) {
+        this.portalApiService = portalApiService;
+        this.componentService = componentService;
+    }
 
     @ApiOperation("Get all components")
     @RequestMapping(method = RequestMethod.GET)
-    public ResponseEntity getComponents() {
+    public ResponseEntity<List<Component>> getComponents() {
         List<Component> components = portalApiService.getComponents();
 
         return ResponseEntity.ok().cacheControl(CacheControl.noStore()).body(components);
@@ -49,7 +52,7 @@ public class ComponentController {
 
     @ApiOperation("Get component by name")
     @RequestMapping(method = RequestMethod.GET, value = "/{compName}")
-    public ResponseEntity getComponent(@PathVariable String compName) {
+    public ResponseEntity<Component> getComponent(@PathVariable String compName) {
         Component component = portalApiService.getComponentByName(compName);
 
         return ResponseEntity.ok().cacheControl(CacheControl.noStore()).body(component);
@@ -57,7 +60,7 @@ public class ComponentController {
 
     @ApiOperation(("Get components actived by an organisation"))
     @GetMapping(value = "organisation/{orgName}")
-    public ResponseEntity getOrganisationComponents(@PathVariable String orgName) {
+    public ResponseEntity<List<Component>> getOrganisationComponents(@PathVariable String orgName) {
         List<Component> components = new ArrayList<>();//portalApiService.getComponents();
         Organisation organisation = portalApiService.getOrganisation(orgName);
 
@@ -71,7 +74,7 @@ public class ComponentController {
             consumes = MediaType.APPLICATION_JSON_VALUE,
             value = "/{compName}/{orgName}/adapters/{adapterName}"
     )
-    public ResponseEntity addAdapterToComponent(@PathVariable final String adapterName, @PathVariable final String compName, @PathVariable("orgName") final String orgName) {
+    public ResponseEntity<Void> addAdapterToComponent(@PathVariable final String adapterName, @PathVariable final String compName, @PathVariable("orgName") final String orgName) {
 
         Organisation organisation = portalApiService.getOrganisation(orgName);
         Component component = portalApiService.getComponentByName(compName);
@@ -86,7 +89,7 @@ public class ComponentController {
     @RequestMapping(method = RequestMethod.DELETE,
             value = "/{compName}/{orgName}/adapters/{adapterName}"
     )
-    public ResponseEntity removeAdapterFromComponent(@PathVariable final String adapterName, @PathVariable final String compName, @PathVariable("orgName") final String orgName) {
+    public ResponseEntity<Void> removeAdapterFromComponent(@PathVariable final String adapterName, @PathVariable final String compName, @PathVariable("orgName") final String orgName) {
 
         Organisation organisation = portalApiService.getOrganisation(orgName);
         Component component = portalApiService.getComponentByName(compName);
@@ -103,7 +106,7 @@ public class ComponentController {
             consumes = MediaType.APPLICATION_JSON_VALUE,
             value = "/{compName}/{orgName}/clients/{clientName}"
     )
-    public ResponseEntity addClientToComponent(@PathVariable final String clientName, @PathVariable final String compName, @PathVariable("orgName") final String orgName) {
+    public ResponseEntity<Void> addClientToComponent(@PathVariable final String clientName, @PathVariable final String compName, @PathVariable("orgName") final String orgName) {
 
         Organisation organisation = portalApiService.getOrganisation(orgName);
         Component component = portalApiService.getComponentByName(compName);
@@ -118,7 +121,7 @@ public class ComponentController {
     @RequestMapping(method = RequestMethod.DELETE,
             value = "/{compName}/{orgName}/clients/{clientName}"
     )
-    public ResponseEntity removeClientFromComponent(@PathVariable final String clientName, @PathVariable final String compName, @PathVariable("orgName") final String orgName) {
+    public ResponseEntity<Void> removeClientFromComponent(@PathVariable final String clientName, @PathVariable final String compName, @PathVariable("orgName") final String orgName) {
 
         Organisation organisation = portalApiService.getOrganisation(orgName);
         Component component = portalApiService.getComponentByName(compName);
@@ -134,27 +137,27 @@ public class ComponentController {
     // Exception handlers
     //
     @ExceptionHandler(UpdateEntityMismatchException.class)
-    public ResponseEntity handleUpdateEntityMismatch(Exception e) {
+    public ResponseEntity<ErrorResponse> handleUpdateEntityMismatch(Exception e) {
         return ResponseEntity.badRequest().body(new ErrorResponse(e.getMessage()));
     }
 
     @ExceptionHandler(EntityNotFoundException.class)
-    public ResponseEntity handleEntityNotFound(Exception e) {
+    public ResponseEntity<ErrorResponse> handleEntityNotFound(Exception e) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponse(e.getMessage()));
     }
 
     @ExceptionHandler(EntityFoundException.class)
-    public ResponseEntity handleEntityFound(Exception e) {
+    public ResponseEntity<ErrorResponse> handleEntityFound(Exception e) {
         return ResponseEntity.status(HttpStatus.FOUND).body(new ErrorResponse(e.getMessage()));
     }
 
     @ExceptionHandler(NameNotFoundException.class)
-    public ResponseEntity handleNameNotFound(Exception e) {
+    public ResponseEntity<ErrorResponse> handleNameNotFound(Exception e) {
         return ResponseEntity.badRequest().body(new ErrorResponse(e.getMessage()));
     }
 
     @ExceptionHandler(UnknownHostException.class)
-    public ResponseEntity handleUnkownHost(Exception e) {
+    public ResponseEntity<ErrorResponse> handleUnkownHost(Exception e) {
         return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body(new ErrorResponse(e.getMessage()));
     }
 
