@@ -3,6 +3,7 @@ package no.fint.portal.customer.controller;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
+import no.fint.portal.customer.service.IdentityMaskingService;
 import no.fint.portal.customer.service.PortalApiService;
 import no.fint.portal.exceptions.EntityFoundException;
 import no.fint.portal.exceptions.EntityNotFoundException;
@@ -24,6 +25,7 @@ import org.springframework.web.bind.annotation.*;
 import java.net.UnknownHostException;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Slf4j
 @RestController
@@ -41,12 +43,14 @@ public class OrganisationController {
     @Autowired
     private AssetService assetService;
 
+    @Autowired
+    private IdentityMaskingService identityMaskingService;
+
     @GetMapping("/")
     @ApiOperation("Get Organisation")
     public ResponseEntity getOrganisationDetails(@PathVariable String orgName) {
         Organisation organisation = portalApiService.getOrganisation(orgName);
-
-        return ResponseEntity.ok().cacheControl(CacheControl.noStore()).body(organisation);
+        return ResponseEntity.ok().cacheControl(CacheControl.noStore()).body(identityMaskingService.mask(organisation));
     }
 
     @PutMapping("/")
@@ -93,14 +97,14 @@ public class OrganisationController {
         Contact legalContact = organisationService.getLegalContact(organisation);
         if (legalContact == null) throw new EntityNotFoundException("Legal Contact not found");
 
-        return ResponseEntity.ok().cacheControl(CacheControl.noStore()).body(legalContact);
+        return ResponseEntity.ok().cacheControl(CacheControl.noStore()).body(identityMaskingService.mask(legalContact));
     }
 
     @PutMapping("/contacts/legal/{nin}")
     @ApiOperation("Set Legal Contact")
     public ResponseEntity linkLegalContact(@PathVariable String orgName, @PathVariable String nin) {
         Organisation organisation = portalApiService.getOrganisation(orgName);
-        Contact contact = portalApiService.getContact(nin);
+        Contact contact = portalApiService.getContact(identityMaskingService.unmask(nin));
 
         organisationService.linkLegalContact(organisation, contact);
 
@@ -111,7 +115,7 @@ public class OrganisationController {
     @ApiOperation("Unset Legal Contact")
     public ResponseEntity unLinkLegalContact(@PathVariable String orgName, @PathVariable String nin) {
         Organisation organisation = portalApiService.getOrganisation(orgName);
-        Contact contact = portalApiService.getContact(nin);
+        Contact contact = portalApiService.getContact(identityMaskingService.unmask(nin));
 
         organisationService.unLinkLegalContact(organisation, contact);
 
@@ -122,7 +126,7 @@ public class OrganisationController {
     @ApiOperation("Get Technical Contacts")
     public ResponseEntity getTechnicalContacts(@PathVariable String orgName) {
         Organisation organisation = portalApiService.getOrganisation(orgName);
-        List<Contact> technicalContacts = organisationService.getTechnicalContacts(organisation);
+        List<Contact> technicalContacts = organisationService.getTechnicalContacts(organisation).stream().map(identityMaskingService::mask).collect(Collectors.toList());
 
         return ResponseEntity.ok().cacheControl(CacheControl.noStore()).body(technicalContacts);
     }
@@ -131,7 +135,7 @@ public class OrganisationController {
     @ApiOperation("Add Technical Contact")
     public ResponseEntity linkTechnicalContact(@PathVariable String orgName, @PathVariable String nin) {
         Organisation organisation = portalApiService.getOrganisation(orgName);
-        Contact contact = portalApiService.getContact(nin);
+        Contact contact = portalApiService.getContact(identityMaskingService.unmask(nin));
 
         organisationService.linkTechnicalContact(organisation, contact);
 
@@ -142,7 +146,7 @@ public class OrganisationController {
     @ApiOperation("Remove Technical Contact")
     public ResponseEntity unLinkTechnicalContact(@PathVariable String orgName, @PathVariable String nin) {
         Organisation organisation = portalApiService.getOrganisation(orgName);
-        Contact contact = portalApiService.getContact(nin);
+        Contact contact = portalApiService.getContact(identityMaskingService.unmask(nin));
 
         organisationService.unLinkTechnicalContact(organisation, contact);
 

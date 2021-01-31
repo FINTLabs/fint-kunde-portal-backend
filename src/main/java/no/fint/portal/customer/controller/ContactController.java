@@ -3,6 +3,7 @@ package no.fint.portal.customer.controller;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
+import no.fint.portal.customer.service.IdentityMaskingService;
 import no.fint.portal.customer.service.PortalApiService;
 import no.fint.portal.exceptions.CreateEntityMismatchException;
 import no.fint.portal.exceptions.EntityFoundException;
@@ -28,6 +29,8 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import static no.fint.portal.customer.service.IdentityMaskingService.BULLETS;
+
 @Slf4j
 @RestController
 @Api(tags = "Contacts")
@@ -41,6 +44,8 @@ public class ContactController {
     OrganisationService organisationService;
     @Autowired
     private ContactService contactService;
+    @Autowired
+    private IdentityMaskingService identityMaskingService;
 
     @ApiOperation("Create new contact")
     @RequestMapping(method = RequestMethod.POST,
@@ -66,14 +71,14 @@ public class ContactController {
         if (!nin.equals(contact.getNin())) {
             throw new UpdateEntityMismatchException("The contact to updateEntry is not the contact in endpoint.");
         }
-        Contact original = portalApiService.getContact(nin);
+        Contact original = portalApiService.getContact(identityMaskingService.unmask(nin));
         if (contact.getFirstName() != null)
             original.setFirstName(contact.getFirstName());
         if (contact.getLastName() != null)
             original.setLastName(contact.getLastName());
-        if (contact.getMail() != null)
+        if (contact.getMail() != null && !BULLETS.equals(contact.getMail()))
             original.setMail(contact.getMail());
-        if (contact.getMobile() != null)
+        if (contact.getMobile() != null && !BULLETS.equals(contact.getMobile()))
             original.setMobile(contact.getMobile());
 
         if (!contactService.updateContact(original)) {
@@ -86,7 +91,7 @@ public class ContactController {
     @ApiOperation("Get all contacts")
     @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity getContacts() {
-        List<Contact> contacts = portalApiService.getContacts();
+        List<Contact> contacts = identityMaskingService.getMaskedContacts();
 
         if (contacts != null) {
             return ResponseEntity.ok().cacheControl(CacheControl.noStore()).body(contacts);
@@ -95,12 +100,15 @@ public class ContactController {
         throw new EntityNotFoundException("No contacts found.");
     }
 
+    /* TODO Removed for identity masking reasons
     @ApiOperation("Get contact by nin")
     @RequestMapping(method = RequestMethod.GET, value = "/{nin}")
     public ResponseEntity getContact(@PathVariable final String nin) {
         Contact contact = portalApiService.getContact(nin);
         return ResponseEntity.ok().cacheControl(CacheControl.noStore()).body(contact);
     }
+
+     */
 
     /* TODO Removed for security reasons.
     @ApiOperation("Delete a contact")
@@ -121,6 +129,7 @@ public class ContactController {
                 .stream())
                 .map(organisationService::getOrganisationByDn)
                 .filter(Optional::isPresent).map(Optional::get)
+                .map(identityMaskingService::mask)
                 .distinct()
                 .collect(Collectors.toList());
         return ResponseEntity.ok().cacheControl(CacheControl.noStore()).body(contactOrganisations);
