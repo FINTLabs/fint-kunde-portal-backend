@@ -7,6 +7,7 @@ import org.springframework.security.access.AccessDecisionVoter;
 import org.springframework.security.access.ConfigAttribute;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.web.FilterInvocation;
 import org.springframework.stereotype.Service;
 
@@ -34,6 +35,10 @@ public class SecureUrlAccessDecisionVoter implements AccessDecisionVoter<FilterI
     @Override
     public int vote(Authentication authentication, FilterInvocation invocation, Collection<ConfigAttribute> attributes) {
         log.debug("VOTING FOR:\nAuthorities: {}\nURL: {}", authentication.getAuthorities(), invocation.getRequestUrl());
+        if (authentication.getAuthorities().isEmpty() || authentication.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_ANONYMOUS"))) {
+            log.warn("{} has no granted authorities!", authentication.getPrincipal());
+            return ACCESS_DENIED;
+        }
         if (!StringUtils.startsWithAny(invocation.getRequestUrl(), securePaths)) {
             log.debug("Unsecured URL {}", invocation.getRequestUrl());
             return ACCESS_GRANTED;

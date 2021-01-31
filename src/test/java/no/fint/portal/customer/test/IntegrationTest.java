@@ -1,16 +1,22 @@
 package no.fint.portal.customer.test;
 
+import no.fint.portal.customer.service.IdentityMaskingService;
+import no.fint.portal.model.contact.Contact;
+import no.fint.portal.model.organisation.Organisation;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.equalTo;
+import static org.mockito.AdditionalAnswers.returnsFirstArg;
+import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -21,6 +27,9 @@ public class IntegrationTest {
 
     @Autowired
     MockMvc mockMvc;
+
+    @MockBean
+    IdentityMaskingService identityMaskingService;
 
     String org = "testing";
     String component = "administrasjon_personal";
@@ -38,6 +47,7 @@ public class IntegrationTest {
 
     @Test
     public void assets() throws Exception {
+        when(identityMaskingService.mask(anyString())).thenAnswer(returnsFirstArg());
 
         mockMvc.perform(get("/api/assets/{org}/", org).header("x-nin", "12345678901")).andExpect(status().isOk());
         mockMvc.perform(post("/api/assets/{org}/", org).header("x-nin", "12345678901").content("{ \"assetId\": \"test\", \"description\": \"Test Norge AS\" }").contentType(MediaType.APPLICATION_JSON)).andExpect(status().is(201));
@@ -70,15 +80,23 @@ public class IntegrationTest {
 
     @Test
     public void contacts() throws Exception {
+        when(identityMaskingService.mask(anyString())).thenAnswer(returnsFirstArg());
+        when(identityMaskingService.unmask(anyString())).thenAnswer(returnsFirstArg());
+
         mockMvc.perform(get("/api/contacts").header("x-nin", "12345678901")).andExpect(status().is(200));
-        mockMvc.perform(get("/api/contacts/{contact}", contact1).header("x-nin", "12345678901")).andExpect(status().is(200)).andExpect(jsonPath("$.nin").value(containsString(contact1)));
+        // TODO Removed for privacy: mockMvc.perform(get("/api/contacts/{contact}", contact1).header("x-nin", "12345678901")).andExpect(status().is(200)).andExpect(jsonPath("$.nin").value(containsString(contact1)));
         mockMvc.perform(put("/api/contacts/{contact}", contact1).header("x-nin", "12345678901").content("{ \"nin\": \"12345678901\", \"firstName\": \"Tore Martin\", \"lastName\": \"Testesen\", \"mail\": \"test123@example.com\", \"mobile\": \"98765431\" }").contentType(MediaType.APPLICATION_JSON)).andExpect(status().is(200)).andExpect(jsonPath("$.mail").value(equalTo("test123@example.com")));
         mockMvc.perform(post("/api/contacts").header("x-nin", "12345678901").content("{ \"firstName\": \"John\", \"lastName\": \"Doe\", \"mail\": \"john.doe@example.com\", \"mobile\": \"1-800-555-1212\", \"nin\": \"00000000000\" }").contentType(MediaType.APPLICATION_JSON)).andExpect(status().is(201)).andExpect(jsonPath("$.nin").value(equalTo("00000000000")));
-        // TODO Removed for security mockMvc.perform(delete("/api/contacts/00000000000").header("x-nin", "12345678901")).andExpect(status().is(204));
+        // TODO Removed for security: mockMvc.perform(delete("/api/contacts/00000000000").header("x-nin", "12345678901")).andExpect(status().is(204));
     }
 
     @Test
     public void organisation() throws Exception {
+        when(identityMaskingService.mask(anyString())).thenAnswer(returnsFirstArg());
+        when(identityMaskingService.mask(any(Contact.class))).thenAnswer(returnsFirstArg());
+        when(identityMaskingService.mask(any(Organisation.class))).thenAnswer(returnsFirstArg());
+        when(identityMaskingService.unmask(anyString())).thenAnswer(returnsFirstArg());
+
         mockMvc.perform(get("/api/organisations/{org}/", org).header("x-nin", "12345678901")).andExpect(status().is(200));
         mockMvc.perform(put("/api/organisations/{org}/", org).header("x-nin", "12345678901").content("{ \"displayName\": \"Testing Unlimited\" }").contentType(MediaType.APPLICATION_JSON)).andExpect(status().is(200)).andExpect(jsonPath("$.displayName").value(containsString("Unlimited")));
         mockMvc.perform(put("/api/organisations/{org}/components/{component}", org, component).header("x-nin", "12345678901")).andExpect(status().is(204));
@@ -94,6 +112,9 @@ public class IntegrationTest {
 
     @Test
     public void security() throws Exception {
+        when(identityMaskingService.mask(anyString())).thenAnswer(returnsFirstArg());
+        when(identityMaskingService.unmask(anyString())).thenAnswer(returnsFirstArg());
+
         //mockMvc.perform(get("/api/organisations/{org}/", org)).andExpect(status().is(403));
         mockMvc.perform(put("/api/organisations/{org}/contacts/legal/{contact}", org, contact1).header("x-nin", "23456789012")).andExpect(status().is(403));
         mockMvc.perform(post("/api/adapters/{org}", org).header("x-nin", "23456789012").content("{ \"name\": \"testadapter\", \"note\": \"Test Adapter\", \"secret\": \"Open Sesame!\", \"shortDescription\": \"This is a Test Adapter\" }").contentType(MediaType.APPLICATION_JSON)).andExpect(status().is(403));

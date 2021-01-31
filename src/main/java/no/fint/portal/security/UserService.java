@@ -1,5 +1,6 @@
 package no.fint.portal.security;
 
+import no.fint.portal.customer.service.IdentityMaskingService;
 import no.fint.portal.customer.service.PortalApiService;
 import no.fint.portal.exceptions.EntityNotFoundException;
 import no.fint.portal.model.contact.Contact;
@@ -22,10 +23,12 @@ public class UserService implements UserDetailsService {
 
     private final PortalApiService portalApiService;
     private final OrganisationService organisationService;
+    private final IdentityMaskingService identityMaskingService;
 
-    public UserService(PortalApiService portalApiService, OrganisationService organisationService) {
+    public UserService(PortalApiService portalApiService, OrganisationService organisationService, IdentityMaskingService identityMaskingService) {
         this.portalApiService = portalApiService;
         this.organisationService = organisationService;
+        this.identityMaskingService = identityMaskingService;
     }
 
     @Override
@@ -36,7 +39,8 @@ public class UserService implements UserDetailsService {
         }
         try {
             final Contact contact = portalApiService.getContact(username);
-            return User.withDefaultPasswordEncoder()
+            return User.builder()
+                    .passwordEncoder(identityMaskingService::mask)
                     .username(contact.getMail())
                     .password(contact.getNin())
                     .authorities(Stream.concat(

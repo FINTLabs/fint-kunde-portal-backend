@@ -3,6 +3,9 @@ springfox:
  version: '@version@'
 
 fint:
+  identity:
+    rotate:
+      cron: '0 0 0 * * *' # every midnight
   ldap:
     url: "${url}"
     user: "${user}"
