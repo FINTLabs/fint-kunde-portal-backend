@@ -127,6 +127,8 @@ public class IntegrationTest {
 
     @Test
     public void access() throws Exception {
+        when(identityMaskingService.mask(anyString())).thenAnswer(returnsFirstArg());
+
         mockMvc.perform(get("/api/accesses/{org}/", org).header("x-nin", "12345678901")).andExpect(status().is(200)).andExpect(jsonPath("$", is(Collections.emptyList())));
         mockMvc.perform(post("/api/accesses/{org}/", org).header("x-nin", "12345678901").content("{" +
                 "\"name\": \"personal\"," +
