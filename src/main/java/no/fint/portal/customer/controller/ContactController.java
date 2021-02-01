@@ -75,7 +75,7 @@ public class ContactController {
         if (!nin.equals(contact.getNin())) {
             throw new UpdateEntityMismatchException("The contact to updateEntry is not the contact in endpoint.");
         }
-        Contact original = portalApiService.getContact(identityMaskingService.unmask(nin));
+        var original = portalApiService.getContact(identityMaskingService.unmask(nin));
         if (contact.getFirstName() != null)
             original.setFirstName(contact.getFirstName());
         if (contact.getLastName() != null)
@@ -95,7 +95,7 @@ public class ContactController {
     @ApiOperation("Get all contacts")
     @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity<List<Contact>> getContacts() {
-        List<Contact> contacts = identityMaskingService.getMaskedContacts();
+        var contacts = identityMaskingService.getMaskedContacts();
 
         if (contacts != null) {
             return ResponseEntity.ok().cacheControl(CacheControl.noStore()).body(contacts);
@@ -128,11 +128,11 @@ public class ContactController {
     @ApiOperation("Get contact's organisations")
     @GetMapping(value = "/organisations")
     public ResponseEntity<List<Organisation>> getContactOrganisations(@RequestHeader(value = "x-nin") final String nin) {
-        Contact contact = contactService.getContact(nin).orElseThrow(() -> new EntityNotFoundException("Contact not found"));
-        List<Organisation> contactOrganisations = Stream.concat(contact.getLegal().stream(), contact.getTechnical()
+        var contact = contactService.getContact(nin).orElseThrow(() -> new EntityNotFoundException("Contact not found"));
+        var contactOrganisations = Stream.concat(contact.getLegal().stream(), contact.getTechnical()
                 .stream())
                 .map(organisationService::getOrganisationByDn)
-                .filter(Optional::isPresent).map(Optional::get)
+                .flatMap(Optional::stream)
                 .map(identityMaskingService::mask)
                 .distinct()
                 .collect(Collectors.toList());
