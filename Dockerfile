@@ -1,4 +1,4 @@
-FROM gradle:6.7.1-jdk11-openj9 as java
+FROM gradle:6.7.1-jdk11 as java
 USER root
 COPY . .
 RUN gradle --no-daemon build
