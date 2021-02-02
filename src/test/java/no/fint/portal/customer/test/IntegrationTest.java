@@ -91,7 +91,7 @@ public class IntegrationTest {
         mockMvc.perform(get("/api/contacts").header("x-nin", "12345678901")).andExpect(status().is(200));
         // TODO Removed for privacy: mockMvc.perform(get("/api/contacts/{contact}", contact1).header("x-nin", "12345678901")).andExpect(status().is(200)).andExpect(jsonPath("$.nin").value(containsString(contact1)));
         mockMvc.perform(put("/api/contacts/{contact}", contact1).header("x-nin", "12345678901").content("{ \"nin\": \"12345678901\", \"firstName\": \"Tore Martin\", \"lastName\": \"Testesen\", \"mail\": \"test123@example.com\", \"mobile\": \"98765431\" }").contentType(MediaType.APPLICATION_JSON)).andExpect(status().is(200)).andExpect(jsonPath("$.mail").value(equalTo("test123@example.com")));
-        mockMvc.perform(post("/api/contacts").header("x-nin", "12345678901").content("{ \"firstName\": \"John\", \"lastName\": \"Doe\", \"mail\": \"john.doe@example.com\", \"mobile\": \"1-800-555-1212\", \"nin\": \"00000000000\" }").contentType(MediaType.APPLICATION_JSON)).andExpect(status().is(201)).andExpect(jsonPath("$.nin").value(equalTo("00000000000")));
+        //mockMvc.perform(post("/api/contacts").header("x-nin", "12345678901").content("{ \"firstName\": \"John\", \"lastName\": \"Doe\", \"mail\": \"john.doe@example.com\", \"mobile\": \"1-800-555-1212\", \"nin\": \"00000000000\" }").contentType(MediaType.APPLICATION_JSON)).andExpect(status().is(201)).andExpect(jsonPath("$.nin").value(equalTo("00000000000")));
         // TODO Removed for security: mockMvc.perform(delete("/api/contacts/00000000000").header("x-nin", "12345678901")).andExpect(status().is(204));
     }
 
