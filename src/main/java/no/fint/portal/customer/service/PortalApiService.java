@@ -17,7 +17,6 @@ import no.fint.portal.model.contact.Contact;
 import no.fint.portal.model.contact.ContactService;
 import no.fint.portal.model.organisation.Organisation;
 import no.fint.portal.model.organisation.OrganisationService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.retry.annotation.Backoff;
 import org.springframework.retry.annotation.Retryable;
 import org.springframework.stereotype.Service;
@@ -28,41 +27,29 @@ import java.util.List;
 
 @Service
 public class PortalApiService {
-    @Autowired
-    private ComponentService componentService;
+    private final ComponentService componentService;
 
-    @Autowired
-    private OrganisationService organisationService;
+    private final OrganisationService organisationService;
 
-    @Autowired
-    private AdapterService adapterService;
+    private final AdapterService adapterService;
 
-    @Autowired
-    private ClientService clientService;
+    private final ClientService clientService;
 
-    @Autowired
-    private AssetService assetService;
+    private final AssetService assetService;
 
-    @Autowired
-    private ContactService contactService;
+    private final ContactService contactService;
 
-    @Autowired
-    private AccessService accessService;
+    private final AccessService accessService;
 
-  /*
-  @Retryable(
-    backoff = @Backoff(delay = 200L),
-    value = {InvalidResourceException.class},
-    maxAttempts = 5
-  )
-  public List<Organisation> getOrganisations() {
-    List<Organisation> organisations = organisationService.getOrganisations();
-
-    if (organisations.size() == 0) return Collections.emptyList();
-    if (organisations.get(0).getName() == null) throw new InvalidResourceException("Invalid organisation");
-    return organisations;
-  }
-  */
+    public PortalApiService(ComponentService componentService, OrganisationService organisationService, AdapterService adapterService, ClientService clientService, AssetService assetService, ContactService contactService, AccessService accessService) {
+        this.componentService = componentService;
+        this.organisationService = organisationService;
+        this.adapterService = adapterService;
+        this.clientService = clientService;
+        this.assetService = assetService;
+        this.contactService = contactService;
+        this.accessService = accessService;
+    }
 
     @Retryable(
             backoff = @Backoff(delay = 200L),
@@ -74,7 +61,6 @@ public class PortalApiService {
         Organisation organisation = organisationService.getOrganisation(orgName).orElseThrow(() -> new EntityNotFoundException("Organisation " + orgName + " not found."));
         if (organisation.getName() == null) throw new InvalidResourceException("Invalid organisation");
         return organisation;
-        //return organisationService.getOrganisation(orgName).orElseThrow(() -> new EntityNotFoundException("Organisation " + orgName + " not found."));
     }
 
     @Retryable(
@@ -139,7 +125,6 @@ public class PortalApiService {
         Client client = clientService.getClient(clientName, organisation.getName()).orElseThrow(() -> new EntityNotFoundException("Client " + clientName + " not found."));
         if (client.getName() == null) throw new InvalidResourceException("Invalid client");
         return client;
-        //return clientService.getClient(clientName, organisation.getName()).orElseThrow(() -> new EntityNotFoundException("Client " + clientName + " not found."));
     }
 
     @Retryable(
@@ -166,7 +151,6 @@ public class PortalApiService {
         Adapter adapter = adapterService.getAdapter(adapterName, organisation.getName()).orElseThrow(() -> new EntityNotFoundException("Adapter " + adapterName + " not found"));
         if (adapter.getName() == null) throw new InvalidResourceException("Invalid adapter");
         return adapter;
-        //return adapterService.getAdapter(adapterName, organisation.getName()).orElseThrow(() -> new EntityNotFoundException("Adapter " + adapterName + " not found"));
     }
 
     @Retryable(
@@ -193,7 +177,6 @@ public class PortalApiService {
         Asset asset = assetService.getAssets(organisation).stream().filter(a -> assetId.equals(a.getName())).findAny().orElseThrow(() -> new EntityNotFoundException("Asset " + assetId + " not found."));
         if (asset.getName() == null) throw new InvalidResourceException("Invalid asset");
         return asset;
-        //return assetService.getAssets(organisation).stream().filter(a -> assetId.equals(a.getName())).findAny().orElseThrow(() -> new EntityNotFoundException("Asset " + assetId + " not found."));
     }
 
     @Retryable(
@@ -220,7 +203,6 @@ public class PortalApiService {
         Contact contact = contactService.getContact(nin).orElseThrow(() -> new EntityNotFoundException("Contact " + nin + " not found."));
         if (contact.getFirstName() == null) throw new InvalidResourceException("Invalid contact");
         return contact;
-        //return contactService.getContact(nin).orElseThrow(() -> new EntityNotFoundException("Contact " + nin + " not found."));
     }
 
     @Retryable(

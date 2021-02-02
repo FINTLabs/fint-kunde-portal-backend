@@ -12,7 +12,6 @@ import no.fint.portal.model.ErrorResponse;
 import no.fint.portal.model.adapter.Adapter;
 import no.fint.portal.model.adapter.AdapterService;
 import no.fint.portal.model.organisation.Organisation;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.CacheControl;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -32,19 +31,23 @@ import java.util.Optional;
 @RequestMapping(value = "/api/adapters/{orgName}")
 public class AdapterController {
 
-    @Autowired
+    final
     PortalApiService portalApiService;
 
-    @Autowired
-    private AdapterService adapterService;
+    private final AdapterService adapterService;
+
+    public AdapterController(PortalApiService portalApiService, AdapterService adapterService) {
+        this.portalApiService = portalApiService;
+        this.adapterService = adapterService;
+    }
 
     @ApiOperation("Add adapter")
     @RequestMapping(
             method = RequestMethod.POST,
             consumes = MediaType.APPLICATION_JSON_VALUE
     )
-    public ResponseEntity addAdapter(@PathVariable("orgName") final String orgName,
-                                     @RequestBody final Adapter adapter) {
+    public ResponseEntity<Adapter> addAdapter(@PathVariable("orgName") final String orgName,
+                                              @RequestBody final Adapter adapter) {
 
         Organisation organisation = portalApiService.getOrganisation(orgName);
 
@@ -68,9 +71,9 @@ public class AdapterController {
     @RequestMapping(method = RequestMethod.PUT,
             value = "/{adapterName}"
     )
-    public ResponseEntity updateAdapter(@PathVariable final String orgName,
-                                        @PathVariable final String adapterName,
-                                        @RequestBody final Adapter adapter) {
+    public ResponseEntity<Adapter> updateAdapter(@PathVariable final String orgName,
+                                                 @PathVariable final String adapterName,
+                                                 @RequestBody final Adapter adapter) {
 
         Organisation organisation = portalApiService.getOrganisation(orgName);
         Adapter original = portalApiService.getAdapter(organisation, adapterName);
@@ -101,9 +104,9 @@ public class AdapterController {
             value = "/{adapterName}/password",
             consumes = MediaType.TEXT_PLAIN_VALUE
     )
-    public ResponseEntity resetAdapterPassword(@PathVariable final String orgName,
-                                               @PathVariable final String adapterName,
-                                               @RequestBody String newPassword) {
+    public ResponseEntity<Adapter> resetAdapterPassword(@PathVariable final String orgName,
+                                                        @PathVariable final String adapterName,
+                                                        @RequestBody String newPassword) {
 
         Organisation organisation = portalApiService.getOrganisation(orgName);
 
@@ -116,7 +119,7 @@ public class AdapterController {
     @RequestMapping(
             method = RequestMethod.GET
     )
-    public ResponseEntity getAllAdapters(@PathVariable("orgName") final String orgName) {
+    public ResponseEntity<List<Adapter>> getAllAdapters(@PathVariable("orgName") final String orgName) {
         Organisation organisation = portalApiService.getOrganisation(orgName);
 
         List<Adapter> adapters = portalApiService.getAdapters(organisation);
@@ -129,8 +132,8 @@ public class AdapterController {
             method = RequestMethod.GET,
             value = "/{adapterName}"
     )
-    public ResponseEntity getAdapter(@PathVariable("orgName") final String orgName,
-                                     @PathVariable final String adapterName) {
+    public ResponseEntity<Adapter> getAdapter(@PathVariable("orgName") final String orgName,
+                                              @PathVariable final String adapterName) {
         Organisation organisation = portalApiService.getOrganisation(orgName);
 
         Adapter adapter = portalApiService.getAdapter(organisation, adapterName);
@@ -142,8 +145,8 @@ public class AdapterController {
             method = RequestMethod.GET,
             value = "/{adapterName}/secret"
     )
-    public ResponseEntity getAdapterSecret(@PathVariable("orgName") final String orgName,
-                                           @PathVariable final String adapterName) {
+    public ResponseEntity<String> getAdapterSecret(@PathVariable("orgName") final String orgName,
+                                                   @PathVariable final String adapterName) {
         Organisation organisation = portalApiService.getOrganisation(orgName);
         Adapter adapter = portalApiService.getAdapter(organisation, adapterName);
 
@@ -154,8 +157,8 @@ public class AdapterController {
     @RequestMapping(method = RequestMethod.DELETE,
             value = "/{adapterName}"
     )
-    public ResponseEntity deleteAdapter(@PathVariable("orgName") final String orgName,
-                                        @PathVariable final String adapterName) {
+    public ResponseEntity<Void> deleteAdapter(@PathVariable("orgName") final String orgName,
+                                              @PathVariable final String adapterName) {
         Organisation organisation = portalApiService.getOrganisation(orgName);
         Adapter adapter = portalApiService.getAdapter(organisation, adapterName);
 
@@ -168,27 +171,27 @@ public class AdapterController {
     // Exception handlers
     //
     @ExceptionHandler(UpdateEntityMismatchException.class)
-    public ResponseEntity handleUpdateEntityMismatch(Exception e) {
+    public ResponseEntity<ErrorResponse> handleUpdateEntityMismatch(Exception e) {
         return ResponseEntity.badRequest().body(new ErrorResponse(e.getMessage()));
     }
 
     @ExceptionHandler(EntityNotFoundException.class)
-    public ResponseEntity handleEntityNotFound(Exception e) {
+    public ResponseEntity<ErrorResponse> handleEntityNotFound(Exception e) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponse(e.getMessage()));
     }
 
     @ExceptionHandler(EntityFoundException.class)
-    public ResponseEntity handleEntityFound(Exception e) {
+    public ResponseEntity<ErrorResponse> handleEntityFound(Exception e) {
         return ResponseEntity.status(HttpStatus.FOUND).body(new ErrorResponse(e.getMessage()));
     }
 
     @ExceptionHandler(NameNotFoundException.class)
-    public ResponseEntity handleNameNotFound(Exception e) {
+    public ResponseEntity<ErrorResponse> handleNameNotFound(Exception e) {
         return ResponseEntity.badRequest().body(new ErrorResponse(e.getMessage()));
     }
 
     @ExceptionHandler(UnknownHostException.class)
-    public ResponseEntity handleUnkownHost(Exception e) {
+    public ResponseEntity<ErrorResponse> handleUnkownHost(Exception e) {
         return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body(new ErrorResponse(e.getMessage()));
     }
 

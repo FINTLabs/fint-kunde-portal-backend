@@ -43,7 +43,7 @@ public class SecureUrlAccessDecisionVoter implements AccessDecisionVoter<FilterI
             log.debug("Unsecured URL {}", invocation.getRequestUrl());
             return ACCESS_GRANTED;
         }
-        final String[] authorities = authentication.getAuthorities().stream().map(GrantedAuthority::getAuthority).toArray(String[]::new);
+        final var authorities = authentication.getAuthorities().stream().map(GrantedAuthority::getAuthority).toArray(String[]::new);
         log.debug("Authorities: {}", Arrays.toString(authorities));
         if (Arrays.stream(securePaths)
                 .peek(it -> log.debug("Considering {}", it))

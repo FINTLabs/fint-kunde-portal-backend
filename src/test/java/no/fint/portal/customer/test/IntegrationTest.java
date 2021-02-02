@@ -3,7 +3,7 @@ package no.fint.portal.customer.test;
 import no.fint.portal.customer.service.IdentityMaskingService;
 import no.fint.portal.model.contact.Contact;
 import no.fint.portal.model.organisation.Organisation;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -15,7 +15,12 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.Collections;
 
-import static org.hamcrest.Matchers.*;
+
+import static org.hamcrest.Matchers.containsString;
+import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.is;
+import static org.mockito.AdditionalAnswers.returnsFirstArg;
+import static org.mockito.Mockito.*;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -122,6 +127,8 @@ public class IntegrationTest {
 
     @Test
     public void access() throws Exception {
+        when(identityMaskingService.mask(anyString())).thenAnswer(returnsFirstArg());
+
         mockMvc.perform(get("/api/accesses/{org}/", org).header("x-nin", "12345678901")).andExpect(status().is(200)).andExpect(jsonPath("$", is(Collections.emptyList())));
         mockMvc.perform(post("/api/accesses/{org}/", org).header("x-nin", "12345678901").content("{" +
                 "\"name\": \"personal\"," +

@@ -26,6 +26,8 @@ fint:
       uri: https://admin-beta.fintlabs.no
 
 spring:
+  main:
+    allow-bean-definition-overriding: true
   ldap:
     embedded:
       base-dn: o=fint-test

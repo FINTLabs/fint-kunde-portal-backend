@@ -14,7 +14,6 @@ import no.fint.portal.model.contact.Contact;
 import no.fint.portal.model.contact.ContactService;
 import no.fint.portal.model.organisation.Organisation;
 import no.fint.portal.model.organisation.OrganisationService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.CacheControl;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -38,20 +37,25 @@ import static no.fint.portal.customer.service.IdentityMaskingService.BULLETS;
 @RequestMapping(value = "/api/contacts")
 public class ContactController {
 
-    @Autowired
+    final
     PortalApiService portalApiService;
-    @Autowired
+    final
     OrganisationService organisationService;
-    @Autowired
-    private ContactService contactService;
-    @Autowired
-    private IdentityMaskingService identityMaskingService;
+    private final ContactService contactService;
+    private final IdentityMaskingService identityMaskingService;
+
+    public ContactController(PortalApiService portalApiService, OrganisationService organisationService, ContactService contactService, IdentityMaskingService identityMaskingService) {
+        this.portalApiService = portalApiService;
+        this.organisationService = organisationService;
+        this.contactService = contactService;
+        this.identityMaskingService = identityMaskingService;
+    }
 
     @ApiOperation("Create new contact")
     @RequestMapping(method = RequestMethod.POST,
-            consumes = MediaType.APPLICATION_JSON_UTF8_VALUE
+            consumes = MediaType.APPLICATION_JSON_VALUE
     )
-    public ResponseEntity createContact(@RequestBody final Contact contact) {
+    public ResponseEntity<Contact> createContact(@RequestBody final Contact contact) {
         if (!contactService.addContact(contact)) {
             throw new EntityFoundException(
                     ServletUriComponentsBuilder
@@ -64,14 +68,14 @@ public class ContactController {
 
     @ApiOperation("Update contact")
     @RequestMapping(method = RequestMethod.PUT,
-            consumes = MediaType.APPLICATION_JSON_UTF8_VALUE,
+            consumes = MediaType.APPLICATION_JSON_VALUE,
             value = "/{nin}"
     )
-    public ResponseEntity updateContact(@RequestBody final Contact contact, @PathVariable final String nin) {
+    public ResponseEntity<Contact> updateContact(@RequestBody final Contact contact, @PathVariable final String nin) {
         if (!nin.equals(contact.getNin())) {
             throw new UpdateEntityMismatchException("The contact to updateEntry is not the contact in endpoint.");
         }
-        Contact original = portalApiService.getContact(identityMaskingService.unmask(nin));
+        var original = portalApiService.getContact(identityMaskingService.unmask(nin));
         if (contact.getFirstName() != null)
             original.setFirstName(contact.getFirstName());
         if (contact.getLastName() != null)
@@ -90,8 +94,8 @@ public class ContactController {
 
     @ApiOperation("Get all contacts")
     @RequestMapping(method = RequestMethod.GET)
-    public ResponseEntity getContacts() {
-        List<Contact> contacts = identityMaskingService.getMaskedContacts();
+    public ResponseEntity<List<Contact>> getContacts() {
+        var contacts = identityMaskingService.getMaskedContacts();
 
         if (contacts != null) {
             return ResponseEntity.ok().cacheControl(CacheControl.noStore()).body(contacts);
@@ -123,12 +127,12 @@ public class ContactController {
 
     @ApiOperation("Get contact's organisations")
     @GetMapping(value = "/organisations")
-    public ResponseEntity getContactOrganisations(@RequestHeader(value = "x-nin") final String nin) {
-        Contact contact = contactService.getContact(nin).orElseThrow(() -> new EntityNotFoundException("Contact not found"));
-        List<Organisation> contactOrganisations = Stream.concat(contact.getLegal().stream(), contact.getTechnical()
+    public ResponseEntity<List<Organisation>> getContactOrganisations(@RequestHeader(value = "x-nin") final String nin) {
+        var contact = contactService.getContact(nin).orElseThrow(() -> new EntityNotFoundException("Contact not found"));
+        var contactOrganisations = Stream.concat(contact.getLegal().stream(), contact.getTechnical()
                 .stream())
                 .map(organisationService::getOrganisationByDn)
-                .filter(Optional::isPresent).map(Optional::get)
+                .flatMap(Optional::stream)
                 .map(identityMaskingService::mask)
                 .distinct()
                 .collect(Collectors.toList());
@@ -139,32 +143,32 @@ public class ContactController {
     // Exception handlers
     //
     @ExceptionHandler(UpdateEntityMismatchException.class)
-    public ResponseEntity handleUpdateEntityMismatch(Exception e) {
+    public ResponseEntity<ErrorResponse> handleUpdateEntityMismatch(Exception e) {
         return ResponseEntity.badRequest().body(new ErrorResponse(e.getMessage()));
     }
 
     @ExceptionHandler(EntityNotFoundException.class)
-    public ResponseEntity handleEntityNotFound(Exception e) {
+    public ResponseEntity<ErrorResponse> handleEntityNotFound(Exception e) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponse(e.getMessage()));
     }
 
     @ExceptionHandler(CreateEntityMismatchException.class)
-    public ResponseEntity handleCreateEntityMismatch(Exception e) {
+    public ResponseEntity<ErrorResponse> handleCreateEntityMismatch(Exception e) {
         return ResponseEntity.badRequest().body(new ErrorResponse(e.getMessage()));
     }
 
     @ExceptionHandler(EntityFoundException.class)
-    public ResponseEntity handleEntityFound(Exception e) {
+    public ResponseEntity<ErrorResponse> handleEntityFound(Exception e) {
         return ResponseEntity.status(HttpStatus.FOUND).body(new ErrorResponse(e.getMessage()));
     }
 
     @ExceptionHandler(NameNotFoundException.class)
-    public ResponseEntity handleNameNotFound(Exception e) {
+    public ResponseEntity<ErrorResponse> handleNameNotFound(Exception e) {
         return ResponseEntity.badRequest().body(new ErrorResponse(e.getMessage()));
     }
 
     @ExceptionHandler(UnknownHostException.class)
-    public ResponseEntity handleUnkownHost(Exception e) {
+    public ResponseEntity<ErrorResponse> handleUnkownHost(Exception e) {
         return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body(new ErrorResponse(e.getMessage()));
     }
 

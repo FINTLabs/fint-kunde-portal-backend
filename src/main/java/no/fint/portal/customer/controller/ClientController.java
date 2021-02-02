@@ -9,8 +9,6 @@ import no.fint.portal.exceptions.EntityFoundException;
 import no.fint.portal.exceptions.EntityNotFoundException;
 import no.fint.portal.exceptions.UpdateEntityMismatchException;
 import no.fint.portal.model.ErrorResponse;
-import no.fint.portal.model.asset.Asset;
-import no.fint.portal.model.asset.AssetService;
 import no.fint.portal.model.client.Client;
 import no.fint.portal.model.client.ClientService;
 import no.fint.portal.model.organisation.Organisation;
@@ -45,14 +43,14 @@ public class ClientController {
     @RequestMapping(method = RequestMethod.POST,
             consumes = MediaType.APPLICATION_JSON_VALUE
     )
-    public ResponseEntity addClient(@PathVariable("orgName") final String orgName,
-                                    @RequestBody final Client client) {
+    public ResponseEntity<Client> addClient(@PathVariable("orgName") final String orgName,
+                                            @RequestBody final Client client) {
 
         Organisation organisation = portalApiService.getOrganisation(orgName);
         Optional<Client> optionalClient = clientService.getClient(client.getName(), orgName);
 
 
-        if (!optionalClient.isPresent()) {
+        if (optionalClient.isEmpty()) {
             if (clientService.addClient(client, organisation)) {
                 return ResponseEntity.status(HttpStatus.CREATED).cacheControl(CacheControl.noStore()).body(client);
 
@@ -70,9 +68,9 @@ public class ClientController {
     @RequestMapping(method = RequestMethod.PUT,
             value = "/{clientName}"
     )
-    public ResponseEntity updateClient(@PathVariable("orgName") final String orgName,
-                                       @PathVariable final String clientName,
-                                       @RequestBody final Client client) {
+    public ResponseEntity<Client> updateClient(@PathVariable("orgName") final String orgName,
+                                               @PathVariable final String clientName,
+                                               @RequestBody final Client client) {
 
         Organisation organisation = portalApiService.getOrganisation(orgName);
         Client original = portalApiService.getClient(organisation, clientName);
@@ -102,9 +100,9 @@ public class ClientController {
     @RequestMapping(method = RequestMethod.PUT,
             value = "/{clientName}/password"
     )
-    public ResponseEntity resetClientPassword(@PathVariable("orgName") final String orgName,
-                                              @PathVariable final String clientName,
-                                              @RequestBody String newPassword) {
+    public ResponseEntity<Client> resetClientPassword(@PathVariable("orgName") final String orgName,
+                                                      @PathVariable final String clientName,
+                                                      @RequestBody String newPassword) {
         Organisation organisation = portalApiService.getOrganisation(orgName);
         Client client = portalApiService.getClient(organisation, clientName);
 
@@ -114,7 +112,7 @@ public class ClientController {
 
     @ApiOperation("Get all clients")
     @RequestMapping(method = RequestMethod.GET)
-    public ResponseEntity getAllClients(@PathVariable("orgName") final String orgName) {
+    public ResponseEntity<List<Client>> getAllClients(@PathVariable("orgName") final String orgName) {
         Organisation organisation = portalApiService.getOrganisation(orgName);
 
         List<Client> list = portalApiService.getClients(organisation);
@@ -125,8 +123,8 @@ public class ClientController {
     @RequestMapping(method = RequestMethod.GET,
             value = "/{clientName}"
     )
-    public ResponseEntity getClient(@PathVariable("orgName") final String orgName,
-                                    @PathVariable final String clientName) {
+    public ResponseEntity<Client> getClient(@PathVariable("orgName") final String orgName,
+                                            @PathVariable final String clientName) {
         Organisation organisation = portalApiService.getOrganisation(orgName);
         Client client = portalApiService.getClient(organisation, clientName);
 
@@ -138,8 +136,8 @@ public class ClientController {
             method = RequestMethod.GET,
             value = "/{clientName}/secret"
     )
-    public ResponseEntity getClientSecret(@PathVariable("orgName") final String orgName,
-                                          @PathVariable final String clientName) {
+    public ResponseEntity<String> getClientSecret(@PathVariable("orgName") final String orgName,
+                                                  @PathVariable final String clientName) {
         Organisation organisation = portalApiService.getOrganisation(orgName);
         Client client = portalApiService.getClient(organisation, clientName);
 
@@ -151,8 +149,8 @@ public class ClientController {
     @RequestMapping(method = RequestMethod.DELETE,
             value = "/{clientName}"
     )
-    public ResponseEntity deleteClient(@PathVariable("orgName") final String orgName,
-                                       @PathVariable final String clientName) {
+    public ResponseEntity<Void> deleteClient(@PathVariable("orgName") final String orgName,
+                                             @PathVariable final String clientName) {
         Organisation organisation = portalApiService.getOrganisation(orgName);
         Client client = portalApiService.getClient(organisation, clientName);
 
@@ -165,27 +163,27 @@ public class ClientController {
     // Exception handlers
     //
     @ExceptionHandler(UpdateEntityMismatchException.class)
-    public ResponseEntity handleUpdateEntityMismatch(Exception e) {
+    public ResponseEntity<ErrorResponse> handleUpdateEntityMismatch(Exception e) {
         return ResponseEntity.badRequest().body(new ErrorResponse(e.getMessage()));
     }
 
     @ExceptionHandler(EntityNotFoundException.class)
-    public ResponseEntity handleEntityNotFound(Exception e) {
+    public ResponseEntity<ErrorResponse> handleEntityNotFound(Exception e) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponse(e.getMessage()));
     }
 
     @ExceptionHandler(EntityFoundException.class)
-    public ResponseEntity handleEntityFound(Exception e) {
+    public ResponseEntity<ErrorResponse> handleEntityFound(Exception e) {
         return ResponseEntity.status(HttpStatus.FOUND).body(new ErrorResponse(e.getMessage()));
     }
 
     @ExceptionHandler(NameNotFoundException.class)
-    public ResponseEntity handleNameNotFound(Exception e) {
+    public ResponseEntity<ErrorResponse> handleNameNotFound(Exception e) {
         return ResponseEntity.badRequest().body(new ErrorResponse(e.getMessage()));
     }
 
     @ExceptionHandler(UnknownHostException.class)
-    public ResponseEntity handleUnkownHost(Exception e) {
+    public ResponseEntity<ErrorResponse> handleUnkownHost(Exception e) {
         return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body(new ErrorResponse(e.getMessage()));
     }
 
