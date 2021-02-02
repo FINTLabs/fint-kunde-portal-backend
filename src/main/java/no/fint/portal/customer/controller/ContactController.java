@@ -20,7 +20,6 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.ldap.NameNotFoundException;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.UnknownHostException;
 import java.util.List;
@@ -37,10 +36,8 @@ import static no.fint.portal.customer.service.IdentityMaskingService.BULLETS;
 @RequestMapping(value = "/api/contacts")
 public class ContactController {
 
-    final
-    PortalApiService portalApiService;
-    final
-    OrganisationService organisationService;
+    final PortalApiService portalApiService;
+    final OrganisationService organisationService;
     private final ContactService contactService;
     private final IdentityMaskingService identityMaskingService;
 
@@ -49,21 +46,6 @@ public class ContactController {
         this.organisationService = organisationService;
         this.contactService = contactService;
         this.identityMaskingService = identityMaskingService;
-    }
-
-    @ApiOperation("Create new contact")
-    @RequestMapping(method = RequestMethod.POST,
-            consumes = MediaType.APPLICATION_JSON_VALUE
-    )
-    public ResponseEntity<Contact> createContact(@RequestBody final Contact contact) {
-        if (!contactService.addContact(contact)) {
-            throw new EntityFoundException(
-                    ServletUriComponentsBuilder
-                            .fromCurrentRequest().path("/{nin}")
-                            .buildAndExpand(contact.getNin()).toUri().toString()
-            );
-        }
-        return ResponseEntity.status(HttpStatus.CREATED).cacheControl(CacheControl.noStore()).body(contact);
     }
 
     @ApiOperation("Update contact")
@@ -103,27 +85,6 @@ public class ContactController {
 
         throw new EntityNotFoundException("No contacts found.");
     }
-
-    /* TODO Removed for identity masking reasons
-    @ApiOperation("Get contact by nin")
-    @RequestMapping(method = RequestMethod.GET, value = "/{nin}")
-    public ResponseEntity getContact(@PathVariable final String nin) {
-        Contact contact = portalApiService.getContact(nin);
-        return ResponseEntity.ok().cacheControl(CacheControl.noStore()).body(contact);
-    }
-
-     */
-
-    /* TODO Removed for security reasons.
-    @ApiOperation("Delete a contact")
-    @RequestMapping(method = RequestMethod.DELETE, value = "/{nin}")
-    public ResponseEntity deleteContacts(@PathVariable final String nin) {
-        Contact contact = portalApiService.getContact(nin);
-
-        contactService.deleteContact(contact);
-        return ResponseEntity.noContent().cacheControl(CacheControl.noStore()).build();
-    }
-    */
 
     @ApiOperation("Get contact's organisations")
     @GetMapping(value = "/organisations")
