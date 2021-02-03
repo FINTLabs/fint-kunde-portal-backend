@@ -139,7 +139,6 @@ spec:
           timeoutSeconds: 5
       - name: nginx
         image: nginx:1.15.10
-#        image: fintlabsacr.azurecr.io/nginx:1.15.10-1
         resources:
           limits:
             cpu: "500m"
