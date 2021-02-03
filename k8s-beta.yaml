@@ -119,6 +119,8 @@ spec:
           value: debug
         - name: logging.level.org.springframework.security
           value: debug
+        - name: fint.ldap.access.template-base
+          value: ou=access,o=fint
         resources:
           limits:
             cpu: "2"
