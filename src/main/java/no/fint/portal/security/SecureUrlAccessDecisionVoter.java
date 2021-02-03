@@ -35,13 +35,13 @@ public class SecureUrlAccessDecisionVoter implements AccessDecisionVoter<FilterI
     @Override
     public int vote(Authentication authentication, FilterInvocation invocation, Collection<ConfigAttribute> attributes) {
         log.debug("VOTING FOR:\nAuthorities: {}\nURL: {}", authentication.getAuthorities(), invocation.getRequestUrl());
-        if (authentication.getAuthorities().isEmpty() || authentication.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_ANONYMOUS"))) {
-            log.warn("{} has no granted authorities!", authentication.getPrincipal());
-            return ACCESS_DENIED;
-        }
         if (!StringUtils.startsWithAny(invocation.getRequestUrl(), securePaths)) {
             log.debug("Unsecured URL {}", invocation.getRequestUrl());
             return ACCESS_GRANTED;
+        }
+        if (authentication.getAuthorities().isEmpty() || authentication.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_ANONYMOUS"))) {
+            log.warn("{} has no granted authorities!", authentication.getPrincipal());
+            return ACCESS_DENIED;
         }
         final var authorities = authentication.getAuthorities().stream().map(GrantedAuthority::getAuthority).toArray(String[]::new);
         log.debug("Authorities: {}", Arrays.toString(authorities));
