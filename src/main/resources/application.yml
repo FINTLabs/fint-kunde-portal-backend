@@ -44,4 +44,6 @@ spring:
     type: caffeine
     caffeine:
       spec: expireAfterWrite=5m
+  application:
+    name: "fint-kunde-portal"
 
