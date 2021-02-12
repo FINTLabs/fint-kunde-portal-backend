@@ -46,6 +46,8 @@ dependencies {
     implementation 'no.fint:fint-portal-api:3.9.0'
     //compile('no.fint:fint-portal-api:0-SNAPSHOT')
     implementation 'org.apache.commons:commons-lang3:3.7'
+    implementation 'no.finn.unleash:unleash-client-java:3.3.4'
+    implementation 'no.fint:fint-feature-toggle-service:1.0.0'
 
     runtime 'org.springframework.boot:spring-boot-devtools'
 
