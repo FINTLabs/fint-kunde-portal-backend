@@ -1,5 +1,6 @@
-package no.fint.portal;
+package no.fint;
 
+import no.fint.portal.CustomContainer;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cache.annotation.EnableCaching;
