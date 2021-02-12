@@ -101,7 +101,7 @@ spec:
             name: nginx-kunde-portal
       containers:
       - name: kunde-portal-beta
-        image: fintlabsacr.azurecr.io/kunde-portal:build.${BUILD_NUMBER}
+        image: fintlabsacr.azurecr.io/kunde-portal:build.${BUILD_NUMBER}_${GIT_COMMIT}
         ports:
         - containerPort: 8080
           protocol: TCP
@@ -152,7 +152,7 @@ spec:
           - mountPath: /etc/nginx/conf.d
             name: nginx-kunde-portal
       - name: frontend
-        image: fintlabsacr.azurecr.io/kunde-portal-frontend:build.29
+        image: fintlabsacr.azurecr.io/kunde-portal-frontend:latest
         resources:
           limits:
             cpu: 500m
