@@ -1,6 +1,6 @@
 springfox:
- title: 'FINT Kunde Portal API'
- version: '@version@'
+  title: 'FINT Kunde Portal API'
+  version: '@version@'
 
 fint:
   identity:
@@ -26,6 +26,8 @@ info:
 
 management:
   endpoint:
+    prometheus:
+      enabled: true
     shutdown:
       enabled: 'true'
     health:
@@ -37,6 +39,7 @@ management:
   info:
     git:
       mode: 'full'
+
 
 spring:
   cache:

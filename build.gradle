@@ -35,6 +35,8 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-cache'
     implementation 'org.springframework.boot:spring-boot-starter-aop'
 
+    implementation 'io.micrometer:micrometer-registry-prometheus'
+
     implementation 'com.github.ben-manes.caffeine:caffeine'
     implementation 'org.springframework.retry:spring-retry'
     implementation 'io.springfox:springfox-boot-starter:3.0.0'
