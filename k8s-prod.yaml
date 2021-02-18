@@ -121,6 +121,8 @@ spec:
               value: debug
             - name: fint.ldap.access.template-base
               value: ou=access,o=fint
+            - name: fint.unleash.api
+              value: http://unleash-server:4242/api/
           resources:
             limits:
               cpu: "2"
