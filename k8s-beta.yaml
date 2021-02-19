@@ -44,14 +44,14 @@ data:
           proxy_cache off;
       }
 
-      location /actuator/ {
+      location /actuator/prometheus {
           proxy_pass http://localhost:8080;
           proxy_set_header Connection '';
           proxy_http_version 1.1;
           chunked_transfer_encoding off;
           proxy_buffering off;
           proxy_cache off;
-          add_header x-nin 0;
+          proxy_set_header x-nin 0;
       }
 
       location /api/tests/links/ {
