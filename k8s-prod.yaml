@@ -44,6 +44,16 @@ data:
           proxy_cache off;
       }
 
+      location /actuator/prometheus {
+          proxy_pass http://localhost:8080;
+          proxy_set_header Connection '';
+          proxy_http_version 1.1;
+          chunked_transfer_encoding off;
+          proxy_buffering off;
+          proxy_cache off;
+          proxy_set_header x-nin 0;
+      }
+
       location /api/tests/links/ {
           proxy_pass http://localhost:8081;
           proxy_set_header Connection '';
@@ -93,6 +103,10 @@ spec:
     metadata:
       labels:
         io.kompose.service: kunde-portal-prod
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "80"
+        prometheus.io/path: "/actuator/prometheus"
     spec:
       restartPolicy: Always
       volumes:
