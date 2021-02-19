@@ -51,7 +51,7 @@ data:
           chunked_transfer_encoding off;
           proxy_buffering off;
           proxy_cache off;
-          add_header x-nin 0
+          add_header x-nin 0;
       }
 
       location /api/tests/links/ {
