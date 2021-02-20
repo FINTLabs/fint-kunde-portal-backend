@@ -55,7 +55,7 @@ public class ApplicationSecurity extends WebSecurityConfigurerAdapter {
                 .authenticationProvider(preAuthenticatedAuthenticationProvider())
                 .authorizeRequests()
                 .anyRequest()
-                .authenticated()
+                .fullyAuthenticated()
                 .accessDecisionManager(accessDecisionManager());
     }
 }

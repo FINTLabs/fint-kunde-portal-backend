@@ -1,8 +1,11 @@
 springfox:
- title: 'FINT Kunde Portal API'
- version: '@version@'
+  title: 'FINT Kunde Portal API'
+  version: '@version@'
 
 fint:
+  identity:
+    rotate:
+      cron: '0 0 0 * * *' # every midnight
   ldap:
     url: "${url}"
     user: "${user}"
@@ -10,6 +13,9 @@ fint:
     component-base: "ou=apis,o=fint-test"
     organisation-base: "ou=organisations,o=fint-test"
     contact-base: "ou=contacts,o=fint-test"
+  portal:
+    admin:
+      uri: https://admin-beta.fintlabs.no
 
 
 info:
@@ -20,6 +26,8 @@ info:
 
 management:
   endpoint:
+    prometheus:
+      enabled: true
     shutdown:
       enabled: 'true'
     health:
@@ -32,10 +40,13 @@ management:
     git:
       mode: 'full'
 
+
 spring:
   cache:
     cache-names: users
     type: caffeine
     caffeine:
       spec: expireAfterWrite=5m
+  application:
+    name: "fint-kunde-portal"
 

@@ -44,6 +44,16 @@ data:
           proxy_cache off;
       }
 
+      location /actuator/prometheus {
+          proxy_pass http://localhost:8080;
+          proxy_set_header Connection '';
+          proxy_http_version 1.1;
+          chunked_transfer_encoding off;
+          proxy_buffering off;
+          proxy_cache off;
+          proxy_set_header x-nin 0;
+      }
+
       location /api/tests/links/ {
           proxy_pass http://localhost:8081;
           proxy_set_header Connection '';
@@ -93,6 +103,10 @@ spec:
     metadata:
       labels:
         io.kompose.service: kunde-portal-beta
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "80"
+        prometheus.io/path: "/actuator/prometheus"
     spec:
       restartPolicy: Always
       volumes:
@@ -101,7 +115,7 @@ spec:
             name: nginx-kunde-portal
       containers:
       - name: kunde-portal-beta
-        image: fintlabsacr.azurecr.io/kunde-portal:build.${BUILD_NUMBER}
+        image: fintlabsacr.azurecr.io/kunde-portal:build.${BUILD_NUMBER}_${GIT_COMMIT}
         ports:
         - containerPort: 8080
           protocol: TCP
@@ -119,6 +133,10 @@ spec:
           value: debug
         - name: logging.level.org.springframework.security
           value: debug
+        - name: fint.ldap.access.template-base
+          value: ou=access,o=fint
+        - name: fint.unleash.api
+          value: http://unleash-server:4242/api/
         resources:
           limits:
             cpu: "2"
@@ -137,7 +155,6 @@ spec:
           timeoutSeconds: 5
       - name: nginx
         image: nginx:1.15.10
-#        image: fintlabsacr.azurecr.io/nginx:1.15.10-1
         resources:
           limits:
             cpu: "500m"
@@ -151,7 +168,7 @@ spec:
           - mountPath: /etc/nginx/conf.d
             name: nginx-kunde-portal
       - name: frontend
-        image: fintlabsacr.azurecr.io/kunde-portal-frontend:build.21
+        image: fintlabsacr.azurecr.io/kunde-portal-frontend:latest
         resources:
           limits:
             cpu: 500m

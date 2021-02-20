@@ -1,6 +1,5 @@
 package no.fint.portal.customer.controller;
 
-
 import io.swagger.annotations.Api;
 import lombok.extern.slf4j.Slf4j;
 import no.fint.portal.model.ComponentConfiguration;
@@ -15,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -45,8 +45,8 @@ public class ComponentConfigController {
                         }
                 ).getBody();
 
-        return ResponseEntity.ok(componentConfigurationList.stream()
-                .filter(c -> c.isCore())
+        return ResponseEntity.ok(Objects.requireNonNull(componentConfigurationList).stream()
+                .filter(ComponentConfiguration::isCore)
                 .collect(Collectors.toList()));
     }
 

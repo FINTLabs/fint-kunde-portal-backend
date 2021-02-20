@@ -11,6 +11,8 @@ fint:
     admin:
       uri: http://localhost:8080
   ldap:
+    access:
+      template-base: "ou=access-packages,o=fint-test"
     url: "ldap://localhost:12345"
     user: "uid=user"
     password: "password"
@@ -25,7 +27,13 @@ fint:
       clientId: "dummy"
       clientSecret: "dummy"
 
+  portal:
+    admin:
+      uri: https://admin-beta.fintlabs.no
+
 spring:
+  main:
+    allow-bean-definition-overriding: true
   ldap:
     embedded:
       base-dn: o=fint-test
