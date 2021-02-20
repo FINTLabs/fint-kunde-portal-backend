@@ -24,8 +24,7 @@ public class EventsController {
             @Value("${fint.events.password}") String password,
             RestTemplateBuilder builder
     ) {
-        restTemplate = builder
-                .basicAuthorization(username, password)
+        restTemplate = builder.basicAuthentication(username, password)
                 .additionalInterceptors((request, body, execution) -> {
                     log.debug("{} {}", request.getMethod(), request.getURI());
                     final ClientHttpResponse response = execution.execute(request, body);
