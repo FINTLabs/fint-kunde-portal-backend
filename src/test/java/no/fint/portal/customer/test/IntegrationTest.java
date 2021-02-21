@@ -1,5 +1,6 @@
 package no.fint.portal.customer.test;
 
+import no.finn.unleash.DefaultUnleash;
 import no.fint.portal.customer.service.IdentityMaskingService;
 import no.fint.portal.model.contact.Contact;
 import no.fint.portal.model.organisation.Organisation;

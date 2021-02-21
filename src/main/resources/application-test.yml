@@ -7,9 +7,6 @@ fint:
   events:
     username: dummy
     password: dummy
-  portal:
-    admin:
-      uri: http://localhost:8080
   ldap:
     access:
       template-base: "ou=access-packages,o=fint-test"
