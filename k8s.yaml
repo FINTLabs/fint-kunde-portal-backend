@@ -201,6 +201,12 @@ spec:
         env:
           - name: server.port
             value: "8082"
+          - name: fint.ldap.contact-base
+            value: ou=contacts,o=fint
+          - name: fint.ldap.component-base
+            value: ou=components,o=fint
+          - name: fint.ldap.organisation-base
+            value: ou=organisations,o=fint
       - name: link-walker
         image: fintlabsacr.azurecr.io/link-walker:PR-16.5
         resources:
@@ -222,6 +228,10 @@ spec:
             value: '-XX:+ExitOnOutOfMemoryError -Xmx3G -verbose:gc'
           - name: server.port
             value: "8081"
+          - name: fint.ldap.contact-base
+            value: ou=contacts,o=fint
+          - name: fint.ldap.component-base
+            value: ou=components,o=fint
           - name: fint.ldap.organisation-base
             value: ou=organisations,o=fint
           - name: fint.rest-template.provider
