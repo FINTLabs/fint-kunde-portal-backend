@@ -265,6 +265,12 @@ spec:
             value: "true"
           - name: server.port
             value: "8083"
+          - name: fint.ldap.contact-base
+            value: ou=contacts,o=fint
+          - name: fint.ldap.component-base
+            value: ou=components,o=fint
+          - name: fint.ldap.organisation-base
+            value: ou=organisations,o=fint
           - name: fint.zendesk.username
             valueFrom:
               secretKeyRef:
