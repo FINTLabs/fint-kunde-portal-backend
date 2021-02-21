@@ -133,6 +133,12 @@ spec:
           value: debug
         - name: logging.level.org.springframework.security
           value: debug
+        - name: fint.ldap.contact-base
+          value: ou=contacts,o=fint
+        - name: fint.ldap.component-base
+          value: ou=components,o=fint
+        - name: fint.ldap.organisation-base
+          value: ou=organisations,o=fint
         - name: fint.ldap.access.template-base
           value: ou=access,o=fint
         - name: fint.unleash.api
