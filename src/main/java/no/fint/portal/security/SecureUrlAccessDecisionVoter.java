@@ -1,6 +1,7 @@
 package no.fint.portal.security;
 
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.access.AccessDecisionVoter;
@@ -17,7 +18,7 @@ import java.util.Collection;
 @Service
 @Slf4j
 public class SecureUrlAccessDecisionVoter implements AccessDecisionVoter<FilterInvocation> {
-    @Value("${fint.portal.secure.paths:/api/adapters/,/api/assets/,/api/clients/,/api/components/organisation/,/api/organisations/}")
+    @Value("${fint.portal.secure.paths:/api/adapters/,/api/assets/,/api/clients/,/api/components/organisation/,/api/organisations/,/api/events/api/}")
     private String[] securePaths;
 
     @Override
@@ -43,7 +44,7 @@ public class SecureUrlAccessDecisionVoter implements AccessDecisionVoter<FilterI
             log.warn("{} has no granted authorities!", authentication.getPrincipal());
             return ACCESS_DENIED;
         }
-        final var authorities = authentication.getAuthorities().stream().map(GrantedAuthority::getAuthority).toArray(String[]::new);
+        final var authorities = getAuthorities(authentication);
         log.debug("Authorities: {}", Arrays.toString(authorities));
         if (Arrays.stream(securePaths)
                 .peek(it -> log.debug("Considering {}", it))
@@ -56,5 +57,21 @@ public class SecureUrlAccessDecisionVoter implements AccessDecisionVoter<FilterI
         }
         log.warn("Denied access to {} requested by {}", invocation, authentication);
         return ACCESS_DENIED;
+    }
+
+    private String[] getAuthorities(Authentication authentication) {
+        return ArrayUtils.addAll(
+                authentication
+                        .getAuthorities()
+                        .stream()
+                        .map(GrantedAuthority::getAuthority)
+                        .toArray(String[]::new),
+                authentication
+                        .getAuthorities()
+                        .stream()
+                        .map(GrantedAuthority::getAuthority)
+                        .map(it -> it.replace("_", "."))
+                        .toArray(String[]::new)
+        );
     }
 }
