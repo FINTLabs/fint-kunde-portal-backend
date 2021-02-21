@@ -4,14 +4,14 @@ metadata:
   annotations:
     service.beta.kubernetes.io/azure-load-balancer-internal: "true"
   labels:
-    io.kompose.service: kunde-portal-beta
-  name: kunde-portal-beta
+    io.kompose.service: kunde-portal
+  name: kunde-portal
 spec:
   ports:
   - name: "80"
     port: 80
   selector:
-    io.kompose.service: kunde-portal-beta
+    io.kompose.service: kunde-portal
   type: LoadBalancer
 ---
 apiVersion: v1
@@ -86,15 +86,15 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   labels:
-    io.kompose.service: kunde-portal-beta
-  name: kunde-portal-beta
+    io.kompose.service: kunde-portal
+  name: kunde-portal
 spec:
   progressDeadlineSeconds: 600
   replicas: 1
   revisionHistoryLimit: 10
   selector:
     matchLabels:
-      io.kompose.service: kunde-portal-beta
+      io.kompose.service: kunde-portal
   strategy:
     rollingUpdate:
       maxSurge: 1
@@ -102,7 +102,7 @@ spec:
   template:
     metadata:
       labels:
-        io.kompose.service: kunde-portal-beta
+        io.kompose.service: kunde-portal
       annotations:
         prometheus.io/scrape: "true"
         prometheus.io/port: "80"
@@ -114,7 +114,7 @@ spec:
           configMap:
             name: nginx-kunde-portal
       containers:
-      - name: kunde-portal-beta
+      - name: kunde-portal
         image: fintlabsacr.azurecr.io/kunde-portal:build.${BUILD_NUMBER}_${GIT_COMMIT}
         ports:
         - containerPort: 8080
