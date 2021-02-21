@@ -4,6 +4,9 @@ springfox:
  version: '@version@'
 
 fint:
+  events:
+    username: dummy
+    password: dummy
   ldap:
     access:
       template-base: "ou=access-packages,o=fint-test"
