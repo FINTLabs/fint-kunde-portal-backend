@@ -14,7 +14,9 @@ import org.springframework.stereotype.Service;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @Service
@@ -42,16 +44,26 @@ public class UserService implements UserDetailsService {
                     .passwordEncoder(identityMaskingService::mask)
                     .username(contact.getMail())
                     .password(contact.getNin())
-                    .authorities(Stream.concat(
-                            Optional.ofNullable(contact.getLegal()).stream().flatMap(Collection::stream),
-                            Optional.ofNullable(contact.getTechnical()).stream().flatMap(Collection::stream))
-                            .map(organisationService::getOrganisationByDn)
-                            .flatMap(Optional::stream)
-                            .map(Organisation::getName)
-                            .toArray(String[]::new))
+                    .authorities(getAuthorities(contact))
                     .build();
         } catch (EntityNotFoundException e) {
             throw new UsernameNotFoundException(username);
         }
+    }
+
+    private String[] getAuthorities(no.fint.portal.model.contact.Contact contact) {
+        List<String> authorities = Stream.concat(
+                Optional.ofNullable(contact.getLegal()).stream().flatMap(Collection::stream),
+                Optional.ofNullable(contact.getTechnical()).stream().flatMap(Collection::stream))
+                .map(organisationService::getOrganisationByDn)
+                .flatMap(Optional::stream)
+                .map(Organisation::getName)
+                .collect(Collectors.toList());
+
+        authorities.addAll(contact.getRoles());
+
+        return authorities.toArray(String[]::new);
+
+
     }
 }
