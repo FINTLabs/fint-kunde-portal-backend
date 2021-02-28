@@ -34,11 +34,11 @@ fint:
           id: ROLE_CLIENT
           description: Gir tilgang til å håndtere klienter
           uri: /api/clients/
-        -
-          name: Kontakter
-          id: ROLE_CONTACT
-          description: Gir tilgang til å håndtere kontakter
-          uri: /api/contacts/
+#        -
+#          name: Kontakter
+#          id: ROLE_CONTACT
+#          description: Gir tilgang til å håndtere kontakter
+#          uri: /api/contacts/
         -
           name: Komponenter
           id: ROLE_COMPONENT

@@ -3,12 +3,10 @@ package no.fint.portal.customer.controller;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
+import no.finn.unleash.DefaultUnleash;
 import no.fint.portal.customer.service.IdentityMaskingService;
 import no.fint.portal.customer.service.PortalApiService;
-import no.fint.portal.exceptions.CreateEntityMismatchException;
-import no.fint.portal.exceptions.EntityFoundException;
-import no.fint.portal.exceptions.EntityNotFoundException;
-import no.fint.portal.exceptions.UpdateEntityMismatchException;
+import no.fint.portal.exceptions.*;
 import no.fint.portal.model.ErrorResponse;
 import no.fint.portal.model.contact.Contact;
 import no.fint.portal.model.contact.ContactService;
@@ -22,6 +20,7 @@ import org.springframework.ldap.NameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.UnknownHostException;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -40,12 +39,14 @@ public class ContactController {
     final OrganisationService organisationService;
     private final ContactService contactService;
     private final IdentityMaskingService identityMaskingService;
+    private final DefaultUnleash unleashClient;
 
-    public ContactController(PortalApiService portalApiService, OrganisationService organisationService, ContactService contactService, IdentityMaskingService identityMaskingService) {
+    public ContactController(PortalApiService portalApiService, OrganisationService organisationService, ContactService contactService, IdentityMaskingService identityMaskingService, DefaultUnleash unleashClient) {
         this.portalApiService = portalApiService;
         this.organisationService = organisationService;
         this.contactService = contactService;
         this.identityMaskingService = identityMaskingService;
+        this.unleashClient = unleashClient;
     }
 
     @ApiOperation("Update contact")
@@ -86,6 +87,38 @@ public class ContactController {
         throw new EntityNotFoundException("No contacts found.");
     }
 
+    @ApiOperation("Add roles to contact")
+    @PutMapping("/{nin}/role/{roles}")
+    public ResponseEntity<Void> addRoles(@PathVariable final String nin, @PathVariable final String... roles) {
+
+        if (!unleashClient.isEnabled("fint-kunde-portal.roles")) {
+            return ResponseEntity.status(HttpStatus.NOT_IMPLEMENTED).build();
+        }
+
+        String unmaskedNin = identityMaskingService.unmask(nin);
+        contactService.addRoles(unmaskedNin, Arrays.asList(roles));
+
+        return ResponseEntity.noContent().build();
+
+    }
+
+    @ApiOperation("Remove roles from contact")
+    @DeleteMapping("/{nin}/role/{roles}")
+    public ResponseEntity<Void> removeRoles(@PathVariable final String nin, @PathVariable final String... roles) {
+
+        if (!unleashClient.isEnabled("fint-kunde-portal.roles")) {
+            return ResponseEntity.status(HttpStatus.NOT_IMPLEMENTED).build();
+        }
+
+        String unmaskedNin = identityMaskingService.unmask(nin);
+
+        if (contactService.removeRoles(unmaskedNin, Arrays.asList(roles))) {
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.badRequest().build();
+
+    }
+
     @ApiOperation("Get contact's organisations")
     @GetMapping(value = "/organisations")
     public ResponseEntity<List<Organisation>> getContactOrganisations(@RequestHeader(value = "x-nin") final String nin) {
@@ -105,6 +138,11 @@ public class ContactController {
     //
     @ExceptionHandler(UpdateEntityMismatchException.class)
     public ResponseEntity<ErrorResponse> handleUpdateEntityMismatch(Exception e) {
+        return ResponseEntity.badRequest().body(new ErrorResponse(e.getMessage()));
+    }
+
+    @ExceptionHandler(UpdateEntityException.class)
+    public ResponseEntity<ErrorResponse> handleUpdateEntity(Exception e) {
         return ResponseEntity.badRequest().body(new ErrorResponse(e.getMessage()));
     }
 
