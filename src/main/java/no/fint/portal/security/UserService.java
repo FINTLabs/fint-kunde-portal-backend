@@ -45,6 +45,7 @@ public class UserService implements UserDetailsService {
                     .username(contact.getMail())
                     .password(contact.getNin())
                     .authorities(getAuthorities(contact))
+                    //.roles(contact.getRoles().toArray(String[]::new))
                     .build();
         } catch (EntityNotFoundException e) {
             throw new UsernameNotFoundException(username);
