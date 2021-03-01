@@ -29,16 +29,14 @@ public class AuthorizationService {
         return authentication
                 .getAuthorities()
                 .stream()
-                .filter(it -> it.getAuthority().equals("ROLE_ADMIN"))
-                .count() == 1;
+                .anyMatch(it -> it.getAuthority().equals("ROLE_ADMIN"));
     }
 
     public boolean hasRole(Authentication authentication, RoleConfig.Role role) {
         return authentication
                 .getAuthorities()
                 .stream()
-                .filter(grantedAuthority -> grantedAuthority.getAuthority().equals(role.getId()))
-                .count() == 1;
+                .anyMatch(it -> it.getAuthority().equals(role.getId()));
     }
 
     public String[] getSecurePaths() {

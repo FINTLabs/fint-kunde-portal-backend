@@ -30,7 +30,6 @@ import java.util.Optional;
 @Api(tags = "Adapters")
 @CrossOrigin(origins = "*")
 @RequestMapping(value = "/api/adapters/{orgName}")
-@Secured("ROLE_ADAPTER")
 public class AdapterController {
 
     final

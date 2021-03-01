@@ -43,7 +43,7 @@ dependencies {
     implementation 'com.google.guava:guava:30.1-jre'
 
     implementation 'no.fint:fint-spring-secrets:0.1.0'
-    implementation 'no.fint:fint-portal-api:3.10.0-rc-1'
+    implementation 'no.fint:fint-portal-api:3.10.0'
     //implementation 'no.fint:fint-portal-api:0-SNAPSHOT'
     implementation 'no.fint:fint-audit-api:1.2.1'
 

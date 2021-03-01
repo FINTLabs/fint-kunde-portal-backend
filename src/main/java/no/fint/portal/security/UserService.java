@@ -3,6 +3,7 @@ package no.fint.portal.security;
 import no.fint.portal.customer.service.IdentityMaskingService;
 import no.fint.portal.customer.service.PortalApiService;
 import no.fint.portal.exceptions.EntityNotFoundException;
+import no.fint.portal.model.contact.Contact;
 import no.fint.portal.model.organisation.Organisation;
 import no.fint.portal.model.organisation.OrganisationService;
 import org.springframework.cache.annotation.Cacheable;
@@ -52,7 +53,7 @@ public class UserService implements UserDetailsService {
         }
     }
 
-    private String[] getAuthorities(no.fint.portal.model.contact.Contact contact) {
+    private String[] getAuthorities(Contact contact) {
         List<String> authorities = Stream.concat(
                 Optional.ofNullable(contact.getLegal()).stream().flatMap(Collection::stream),
                 Optional.ofNullable(contact.getTechnical()).stream().flatMap(Collection::stream))
@@ -64,7 +65,5 @@ public class UserService implements UserDetailsService {
         authorities.addAll(contact.getRoles());
 
         return authorities.toArray(String[]::new);
-
-
     }
 }

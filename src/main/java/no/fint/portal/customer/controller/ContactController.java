@@ -98,7 +98,7 @@ public class ContactController {
         String unmaskedNin = identityMaskingService.unmask(nin);
         contactService.addRoles(unmaskedNin, Arrays.asList(roles));
 
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.accepted().build();
 
     }
 
@@ -113,7 +113,7 @@ public class ContactController {
         String unmaskedNin = identityMaskingService.unmask(nin);
 
         if (contactService.removeRoles(unmaskedNin, Arrays.asList(roles))) {
-            return ResponseEntity.noContent().build();
+            return ResponseEntity.accepted().build();
         }
         return ResponseEntity.badRequest().build();
 
