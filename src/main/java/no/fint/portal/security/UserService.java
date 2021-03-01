@@ -3,6 +3,7 @@ package no.fint.portal.security;
 import no.fint.portal.customer.service.IdentityMaskingService;
 import no.fint.portal.customer.service.PortalApiService;
 import no.fint.portal.exceptions.EntityNotFoundException;
+import no.fint.portal.model.contact.Contact;
 import no.fint.portal.model.organisation.Organisation;
 import no.fint.portal.model.organisation.OrganisationService;
 import org.springframework.cache.annotation.Cacheable;
@@ -14,7 +15,9 @@ import org.springframework.stereotype.Service;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @Service
@@ -42,16 +45,25 @@ public class UserService implements UserDetailsService {
                     .passwordEncoder(identityMaskingService::mask)
                     .username(contact.getMail())
                     .password(contact.getNin())
-                    .authorities(Stream.concat(
-                            Optional.ofNullable(contact.getLegal()).stream().flatMap(Collection::stream),
-                            Optional.ofNullable(contact.getTechnical()).stream().flatMap(Collection::stream))
-                            .map(organisationService::getOrganisationByDn)
-                            .flatMap(Optional::stream)
-                            .map(Organisation::getName)
-                            .toArray(String[]::new))
+                    .authorities(getAuthorities(contact))
+                    //.roles(contact.getRoles().toArray(String[]::new))
                     .build();
         } catch (EntityNotFoundException e) {
             throw new UsernameNotFoundException(username);
         }
+    }
+
+    private String[] getAuthorities(Contact contact) {
+        List<String> authorities = Stream.concat(
+                Optional.ofNullable(contact.getLegal()).stream().flatMap(Collection::stream),
+                Optional.ofNullable(contact.getTechnical()).stream().flatMap(Collection::stream))
+                .map(organisationService::getOrganisationByDn)
+                .flatMap(Optional::stream)
+                .map(Organisation::getName)
+                .collect(Collectors.toList());
+
+        authorities.addAll(contact.getRoles());
+
+        return authorities.toArray(String[]::new);
     }
 }
