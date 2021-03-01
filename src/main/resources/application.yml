@@ -43,7 +43,7 @@ fint:
           name: Komponenter
           id: ROLE_COMPONENT
           description: Gir tilgang til å håndtere komponenter
-          uri: /api/components/
+          uri: /api/components/organisation/
         -
           name: Tilgangspakker
           id: ROLE_ACCESS_PACKAGE
