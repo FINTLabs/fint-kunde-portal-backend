@@ -80,7 +80,7 @@ fint:
         -
           name: Organisasjon
           id: ROLE_ORGANISATION
-          description: Gir tilgang til å håndtere assets
+          description: Gir tilgang til å håndtere organisasjonen
           uri: /api/organisations/
 
 spring:
