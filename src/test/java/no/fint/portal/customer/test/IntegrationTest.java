@@ -4,6 +4,7 @@ import no.finn.unleash.DefaultUnleash;
 import no.fint.portal.customer.service.IdentityMaskingService;
 import no.fint.portal.model.contact.Contact;
 import no.fint.portal.model.organisation.Organisation;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,13 +17,10 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.Collections;
 
-
-import static org.hamcrest.Matchers.containsString;
-import static org.hamcrest.Matchers.equalTo;
-import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.*;
 import static org.mockito.AdditionalAnswers.returnsFirstArg;
+import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.*;
-
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -37,6 +35,9 @@ public class IntegrationTest {
     @MockBean
     IdentityMaskingService identityMaskingService;
 
+    @MockBean
+    DefaultUnleash defaultUnleash;
+
     String org = "testing";
     String component = "administrasjon_personal";
     String asset = "test_test_no";
@@ -44,6 +45,11 @@ public class IntegrationTest {
     String client = "testclient@client.test.no";
     String contact1 = "12345678901";
     String contact2 = "23456789012";
+
+    @BeforeEach
+    void setUp() {
+        when(defaultUnleash.isEnabled("fint-kunde-portal.roles")).thenReturn(true);
+    }
 
     @Test
     public void components() throws Exception {
@@ -54,6 +60,7 @@ public class IntegrationTest {
     @Test
     public void assets() throws Exception {
         when(identityMaskingService.mask(anyString())).thenAnswer(returnsFirstArg());
+
 
         mockMvc.perform(get("/api/assets/{org}/", org).header("x-nin", "12345678901")).andExpect(status().isOk());
         mockMvc.perform(post("/api/assets/{org}/", org).header("x-nin", "12345678901").content("{ \"assetId\": \"test\", \"description\": \"Test Norge AS\" }").contentType(MediaType.APPLICATION_JSON)).andExpect(status().is(201));

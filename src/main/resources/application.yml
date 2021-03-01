@@ -64,9 +64,14 @@ fint:
           uri: /api/events/api/
         -
           name: Assets
-          id: ROLE_ASSETS
+          id: ROLE_ASSET
           description: Gir tilgang til å håndtere assets
           uri: /api/assets/
+        -
+          name: Organisasjon
+          id: ROLE_ORGANISATION
+          description: Gir tilgang til å håndtere assets
+          uri: /api/organisations/
 
 info:
   app:
