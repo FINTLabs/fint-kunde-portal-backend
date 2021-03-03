@@ -14,7 +14,6 @@ import no.fint.portal.model.organisation.Organisation;
 import no.fint.portal.model.organisation.OrganisationService;
 import org.springframework.http.CacheControl;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.ldap.NameNotFoundException;
 import org.springframework.web.bind.annotation.*;
@@ -25,8 +24,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-
-import static no.fint.portal.customer.service.IdentityMaskingService.BULLETS;
 
 @Slf4j
 @RestController
@@ -47,32 +44,6 @@ public class ContactController {
         this.contactService = contactService;
         this.identityMaskingService = identityMaskingService;
         this.unleashClient = unleashClient;
-    }
-
-    @ApiOperation("Update contact")
-    @RequestMapping(method = RequestMethod.PUT,
-            consumes = MediaType.APPLICATION_JSON_VALUE,
-            value = "/{nin}"
-    )
-    public ResponseEntity<Contact> updateContact(@RequestBody final Contact contact, @PathVariable final String nin) {
-        if (!nin.equals(contact.getNin())) {
-            throw new UpdateEntityMismatchException("The contact to updateEntry is not the contact in endpoint.");
-        }
-        var original = portalApiService.getContact(identityMaskingService.unmask(nin));
-        if (contact.getFirstName() != null)
-            original.setFirstName(contact.getFirstName());
-        if (contact.getLastName() != null)
-            original.setLastName(contact.getLastName());
-        if (contact.getMail() != null && !BULLETS.equals(contact.getMail()))
-            original.setMail(contact.getMail());
-        if (contact.getMobile() != null && !BULLETS.equals(contact.getMobile()))
-            original.setMobile(contact.getMobile());
-
-        if (!contactService.updateContact(original)) {
-            throw new EntityNotFoundException(String.format("Could not find contact: %s", nin));
-        }
-
-        return ResponseEntity.ok().cacheControl(CacheControl.noStore()).body(original);
     }
 
     @ApiOperation("Get all contacts")

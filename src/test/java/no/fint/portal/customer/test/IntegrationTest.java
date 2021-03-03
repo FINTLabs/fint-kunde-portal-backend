@@ -93,11 +93,7 @@ public class IntegrationTest {
 
     @Test
     public void contacts() throws Exception {
-        when(identityMaskingService.mask(anyString())).thenAnswer(returnsFirstArg());
-        when(identityMaskingService.unmask(anyString())).thenAnswer(returnsFirstArg());
-
         mockMvc.perform(get("/api/contacts").header("x-nin", "12345678901")).andExpect(status().is(200));
-        mockMvc.perform(put("/api/contacts/{contact}", contact1).header("x-nin", "12345678901").content("{ \"nin\": \"12345678901\", \"firstName\": \"Tore Martin\", \"lastName\": \"Testesen\", \"mail\": \"test123@example.com\", \"mobile\": \"98765431\" }").contentType(MediaType.APPLICATION_JSON)).andExpect(status().is(200)).andExpect(jsonPath("$.mail").value(equalTo("test123@example.com")));
     }
 
     @Test
