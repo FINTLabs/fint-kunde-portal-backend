@@ -225,7 +225,7 @@ spec:
             - name: fint.rest-template.provider
               value: portal-api
         - name: zendesk-integration
-          image: fintlabsacr.azurecr.io/zendesk-integration:build.17
+          image: fintlabsacr.azurecr.io/zendesk-integration:build.19
           resources:
             limits:
               cpu: "2"
@@ -243,6 +243,8 @@ spec:
               value: debug
             - name: fint.webclient.connection-provider.type
               value: NEW
+            - name: fint.zendesk.ticket.queue
+              value: "10"
             - name: fint.zendesk.timeout
               value: PT10S
             - name: TZ
