@@ -8,6 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import no.fint.portal.model.contact.Contact;
 import no.fint.portal.model.contact.ContactObjectService;
 import no.fint.portal.model.organisation.Organisation;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.client.RestTemplateBuilder;
@@ -118,7 +119,7 @@ public class IdentityMaskingService {
     }
 
     public List<Contact> getMaskedContacts() {
-        return portalApiService.getContacts().stream().map(this::mask).collect(Collectors.toList());
+        return portalApiService.getContacts().stream().filter(it -> StringUtils.isNotBlank(it.getDn())).map(this::mask).collect(Collectors.toList());
     }
 
 }
