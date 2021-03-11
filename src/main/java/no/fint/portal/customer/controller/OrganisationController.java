@@ -3,10 +3,13 @@ package no.fint.portal.customer.controller;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
+import no.finn.unleash.DefaultUnleash;
 import no.fint.portal.customer.service.IdentityMaskingService;
 import no.fint.portal.customer.service.PortalApiService;
+import no.fint.portal.customer.service.RoleConfig;
 import no.fint.portal.exceptions.EntityFoundException;
 import no.fint.portal.exceptions.EntityNotFoundException;
+import no.fint.portal.exceptions.UpdateEntityException;
 import no.fint.portal.exceptions.UpdateEntityMismatchException;
 import no.fint.portal.model.ErrorResponse;
 import no.fint.portal.model.asset.Asset;
@@ -15,6 +18,7 @@ import no.fint.portal.model.component.Component;
 import no.fint.portal.model.contact.Contact;
 import no.fint.portal.model.organisation.Organisation;
 import no.fint.portal.model.organisation.OrganisationService;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.http.CacheControl;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,9 +26,11 @@ import org.springframework.ldap.NameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.UnknownHostException;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Slf4j
 @RestController
@@ -42,11 +48,14 @@ public class OrganisationController {
 
     private final IdentityMaskingService identityMaskingService;
 
-    public OrganisationController(PortalApiService portalApiService, OrganisationService organisationService, AssetService assetService, IdentityMaskingService identityMaskingService) {
+    private final DefaultUnleash unleashClient;
+
+    public OrganisationController(PortalApiService portalApiService, OrganisationService organisationService, AssetService assetService, IdentityMaskingService identityMaskingService, DefaultUnleash unleashClient) {
         this.portalApiService = portalApiService;
         this.organisationService = organisationService;
         this.assetService = assetService;
         this.identityMaskingService = identityMaskingService;
+        this.unleashClient = unleashClient;
     }
 
     @GetMapping("/")
@@ -123,6 +132,49 @@ public class OrganisationController {
         return ResponseEntity.noContent().cacheControl(CacheControl.noStore()).build();
     }
 
+    @ApiOperation("Add roles to contact")
+    @PutMapping("/contacts/roles/{nin}/{roles}")
+    public ResponseEntity<Void> addRoles(@PathVariable String orgName, @PathVariable final String nin, @PathVariable final RoleConfig.RoleId... roles) {
+
+        if (!unleashClient.isEnabled("fint-kunde-portal.roles")) {
+            return ResponseEntity.status(HttpStatus.NOT_IMPLEMENTED).build();
+        }
+
+        Organisation organisation = portalApiService.getOrganisation(orgName);
+        String unmaskedNin = identityMaskingService.unmask(nin);
+        final Contact contact = Stream.concat(Stream.of(organisationService.getLegalContact(organisation)),
+                organisationService.getTechnicalContacts(organisation).stream())
+                .filter(con -> StringUtils.equals(unmaskedNin, con.getNin()))
+                .findFirst()
+                .orElseThrow(EntityNotFoundException::new);
+
+        organisationService.addRoles(organisation, contact, Arrays.stream(roles).map(Enum::name).collect(Collectors.toList()));
+
+        return ResponseEntity.accepted().build();
+
+    }
+
+    @ApiOperation("Remove roles from contact")
+    @DeleteMapping("/contacts/roles/{nin}/{roles}")
+    public ResponseEntity<Void> removeRoles(@PathVariable String orgName, @PathVariable final String nin, @PathVariable final RoleConfig.RoleId... roles) {
+
+        if (!unleashClient.isEnabled("fint-kunde-portal.roles")) {
+            return ResponseEntity.status(HttpStatus.NOT_IMPLEMENTED).build();
+        }
+
+        Organisation organisation = portalApiService.getOrganisation(orgName);
+        String unmaskedNin = identityMaskingService.unmask(nin);
+        final Contact contact = Stream.concat(Stream.of(organisationService.getLegalContact(organisation)),
+                organisationService.getTechnicalContacts(organisation).stream())
+                .filter(con -> StringUtils.equals(unmaskedNin, con.getNin()))
+                .findFirst()
+                .orElseThrow(EntityNotFoundException::new);
+
+        organisationService.removeRoles(organisation, contact, Arrays.stream(roles).map(Enum::name).collect(Collectors.toList()));
+
+        return ResponseEntity.accepted().build();
+    }
+
     @GetMapping("/contacts/technical")
     @ApiOperation("Get Technical Contacts")
     public ResponseEntity<List<Contact>> getTechnicalContacts(@PathVariable String orgName) {
@@ -182,6 +234,11 @@ public class OrganisationController {
     //
     @ExceptionHandler(UpdateEntityMismatchException.class)
     public ResponseEntity<ErrorResponse> handleUpdateEntityMismatch(Exception e) {
+        return ResponseEntity.badRequest().body(new ErrorResponse(e.getMessage()));
+    }
+
+    @ExceptionHandler(UpdateEntityException.class)
+    public ResponseEntity<ErrorResponse> handleUpdateEntityException(Exception e) {
         return ResponseEntity.badRequest().body(new ErrorResponse(e.getMessage()));
     }
 

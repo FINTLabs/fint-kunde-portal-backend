@@ -1,7 +1,6 @@
 package no.fint.portal.security;
 
 import lombok.extern.slf4j.Slf4j;
-import no.finn.unleash.DefaultUnleash;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.security.access.AccessDecisionVoter;
 import org.springframework.security.access.ConfigAttribute;
@@ -17,12 +16,12 @@ import java.util.Collection;
 @Slf4j
 public class SecureUrlAccessDecisionVoter implements AccessDecisionVoter<FilterInvocation> {
 
-    private final DefaultUnleash unleashClient;
     private final AuthorizationService authorizationService;
+    private final String[] securePaths;
 
-    public SecureUrlAccessDecisionVoter(DefaultUnleash unleashClient, AuthorizationService authorizationService) {
-        this.unleashClient = unleashClient;
+    public SecureUrlAccessDecisionVoter(AuthorizationService authorizationService) {
         this.authorizationService = authorizationService;
+        securePaths = this.authorizationService.getSecurePaths();
     }
 
     @Override
@@ -40,7 +39,6 @@ public class SecureUrlAccessDecisionVoter implements AccessDecisionVoter<FilterI
     @Override
     public int vote(Authentication authentication, FilterInvocation invocation, Collection<ConfigAttribute> attributes) {
         log.debug("VOTING FOR:\nAuthorities: {}\nURL: {}", authentication.getAuthorities(), invocation.getRequestUrl());
-        String[] securePaths = authorizationService.getSecurePaths();
 
         if (!StringUtils.startsWithAny(invocation.getRequestUrl(), securePaths)) {
             log.debug("Unsecured URL {}", invocation.getRequestUrl());
@@ -52,18 +50,6 @@ public class SecureUrlAccessDecisionVoter implements AccessDecisionVoter<FilterI
             return ACCESS_DENIED;
         }
 
-        if (unleashClient.isEnabled("fint-kunde-portal.roles")) {
-            log.debug("Roles feature enabled. Evaluating roles...");
-            if (authorizationService.isAuthorizedByRole(authentication, invocation)) {
-                return authorizationService.isAuthorizedToOrganisation(authentication, invocation, securePaths);
-            }
-        } else {
-            log.debug("Roles feature disabled.");
-            return authorizationService.isAuthorizedToOrganisation(authentication, invocation, securePaths);
-        }
-
-
-        log.warn("Denied access to {} requested by {}", invocation, authentication);
-        return ACCESS_DENIED;
+        return authorizationService.authorizeRequest(authentication, invocation);
     }
 }

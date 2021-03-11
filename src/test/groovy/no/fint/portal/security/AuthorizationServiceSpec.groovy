@@ -1,14 +1,12 @@
 package no.fint.portal.security
 
 import no.fint.portal.customer.service.RoleConfig
-import org.springframework.http.HttpMethod
 import org.springframework.security.core.userdetails.User
 import org.springframework.security.web.FilterInvocation
 import spock.lang.Specification
 
-
-import static org.springframework.security.access.AccessDecisionVoter.ACCESS_DENIED;
-import static org.springframework.security.access.AccessDecisionVoter.ACCESS_GRANTED;
+import static org.springframework.security.access.AccessDecisionVoter.ACCESS_DENIED
+import static org.springframework.security.access.AccessDecisionVoter.ACCESS_GRANTED
 
 class AuthorizationServiceSpec extends Specification {
 
@@ -16,8 +14,11 @@ class AuthorizationServiceSpec extends Specification {
     RoleConfig roleConfig
     TestAuthentication userAuthentication
     TestAuthentication adminAuthentication
+    TestAuthentication orgAuthentication
+    FilterInvocation filterInvocation
 
     void setup() {
+        filterInvocation = Mock()
         roleConfig = new RoleConfig(roles: [
                 new RoleConfig.Role(id: "ROLE_ADMIN"),
                 new RoleConfig.Role(id: "ROLE_ADAPTER", uri: "/api/adapters/"),
@@ -27,126 +28,52 @@ class AuthorizationServiceSpec extends Specification {
         adminAuthentication = new TestAuthentication(User
                 .withUsername("admin@test.com")
                 .password("")
-                .authorities("ROLE_ADMIN", "test_no")
+                .authorities(new FintPortalAdminAuthority("ROLE_ADMIN@test_no"))
                 .build())
         userAuthentication = new TestAuthentication(User
                 .withUsername("user@test.com")
                 .password("")
-                .authorities("ROLE_ADAPTER", "ROLE_LOG", "test_no")
+                .authorities(new FintPortalRoleAuthority("ROLE_ADAPTER@test_no"), new FintPortalRoleAuthority("ROLE_LOG@test_no"))
+                .build())
+
+        orgAuthentication = new TestAuthentication(User
+                .withUsername("user@test.com")
+                .password("")
+                .authorities(new FintPortalOrganizationAuthority("test_no"))
                 .build())
 
     }
 
-    def "Admin user is admin"() {
-        when:
-        def isAdmin = authorizationService.isAdmin(adminAuthentication)
+    def 'Admin authentication has access to all paths, but not for another org'() {
+        2 * filterInvocation.getRequestUrl() >> '/api/adapters/test_no/'
+        2 * filterInvocation.getRequestUrl() >> '/api/clients/test_no'
+        2 * filterInvocation.getRequestUrl() >> '/api/clients/another_org'
 
-        then:
-        isAdmin
+        expect:
+        authorizationService.authorizeRequest(adminAuthentication, filterInvocation) == ACCESS_GRANTED
+        authorizationService.authorizeRequest(adminAuthentication, filterInvocation) == ACCESS_GRANTED
+        authorizationService.authorizeRequest(adminAuthentication, filterInvocation) == ACCESS_DENIED
     }
 
-    def "Standard user is not admin"() {
-        when:
-        def isAdmin = authorizationService.isAdmin(userAuthentication)
+    def 'User authentication does not have access to client'() {
+        2 * filterInvocation.getRequestUrl() >> '/api/adapters/test_no'
+        2 * filterInvocation.getRequestUrl() >> '/api/clients/test_no/'
 
-        then:
-        !isAdmin
+        expect:
+        authorizationService.authorizeRequest(userAuthentication, filterInvocation) == ACCESS_GRANTED
+        authorizationService.authorizeRequest(userAuthentication, filterInvocation) == ACCESS_DENIED
+
     }
 
-    def "User has ROLE_LOG"() {
-        when:
-        def hasRole = authorizationService.hasRole(userAuthentication, new RoleConfig.Role(id: "ROLE_LOG"))
+    def 'Org authentication has access to all paths, but not for another org'() {
+        2 * filterInvocation.getRequestUrl() >> '/api/adapters/test_no'
+        2 * filterInvocation.getRequestUrl() >> '/api/clients/test_no/'
+        2 * filterInvocation.getRequestUrl() >> '/api/clients/another_org'
 
-        then:
-        hasRole
-    }
+        expect:
+        authorizationService.authorizeRequest(orgAuthentication, filterInvocation) == ACCESS_GRANTED
+        authorizationService.authorizeRequest(orgAuthentication, filterInvocation) == ACCESS_GRANTED
+        authorizationService.authorizeRequest(orgAuthentication, filterInvocation) == ACCESS_DENIED
 
-    def "User don't have ROLE_CLIENT"() {
-        when:
-        def hasRole = authorizationService.hasRole(userAuthentication, new RoleConfig.Role(id: "ROLE_CLIENT"))
-
-        then:
-        !hasRole
-    }
-
-    def "Admin user is authorized"() {
-        when:
-        def isAuthorizedByRole = authorizationService.isAuthorizedByRole(
-                adminAuthentication,
-                new FilterInvocation("/api/adapters", HttpMethod.GET.name())
-        )
-
-        then:
-        isAuthorizedByRole
-    }
-
-    def "User is authorized to /api/apapters"() {
-        when:
-        def isAuthorizedByRole = authorizationService.isAuthorizedByRole(
-                userAuthentication,
-                new FilterInvocation("/api/adapters/test_no", HttpMethod.GET.name())
-        )
-
-        then:
-        isAuthorizedByRole
-    }
-
-    def "User is not authorized to /api/clients"() {
-        when:
-        def isAuthorizedByRole = authorizationService.isAuthorizedByRole(
-                userAuthentication,
-                new FilterInvocation("/api/clients/test_no", HttpMethod.GET.name())
-        )
-
-        then:
-        !isAuthorizedByRole
-    }
-
-    def "User is authorized for test_no organisation"() {
-        when:
-        def isAuthorizedToOrganisation = authorizationService.isAuthorizedToOrganisation(
-                userAuthentication,
-                new FilterInvocation("/api/clients/test_no", HttpMethod.GET.name()),
-                authorizationService.getSecurePaths()
-        )
-
-        then:
-        isAuthorizedToOrganisation == ACCESS_GRANTED
-    }
-
-    def "User is not authorized for fintlabs_no organisation"() {
-        when:
-        def isAuthorizedToOrganisation = authorizationService.isAuthorizedToOrganisation(
-                userAuthentication,
-                new FilterInvocation("/api/clients/fintlabs_no", HttpMethod.GET.name()),
-                authorizationService.getSecurePaths()
-        )
-
-        then:
-        isAuthorizedToOrganisation == ACCESS_DENIED
-    }
-
-    def "Admin user is authorized for test_no organisation"() {
-        when:
-        def isAuthorizedToOrganisation = authorizationService.isAuthorizedToOrganisation(
-                adminAuthentication,
-                new FilterInvocation("/api/clients/test_no", HttpMethod.GET.name()),
-                authorizationService.getSecurePaths()
-        )
-
-        then:
-        isAuthorizedToOrganisation == ACCESS_GRANTED
-    }
-
-    def "Admin user is not authorized for fintlabs_no organisation"() {
-        when:
-        def isAuthorizedToOrganisation = authorizationService.isAuthorizedToOrganisation(
-                adminAuthentication,
-                new FilterInvocation("/api/clients/fintlabs_no", HttpMethod.GET.name()),
-                authorizationService.getSecurePaths()
-        )
-
-        then:
-        isAuthorizedToOrganisation == ACCESS_DENIED
     }
 }
