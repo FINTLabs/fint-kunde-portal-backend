@@ -24,6 +24,9 @@ fint:
       clientId: "dummy"
       clientSecret: "dummy"
   portal:
+    role:
+      admin:
+        cutoff: 01/01/00
     admin:
       uri: https://admin-beta.fintlabs.no
   customer:
