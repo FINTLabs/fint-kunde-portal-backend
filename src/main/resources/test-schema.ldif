@@ -64,11 +64,11 @@ sn: Test
 mail: test@example.com
 mobile: 98765432
 fintContactLegal: ou=testing,ou=organisations,o=fint-test
-fintContactRoles: ROLE_ASSET
-fintContactRoles: ROLE_ADAPTER
-fintContactRoles: ROLE_CLIENT
-fintContactRoles: ROLE_ORGANISATION
-fintContactRoles: ROLE_COMPONENT
+fintContactRoles: ROLE_ASSET@testing
+fintContactRoles: ROLE_ADAPTER@testing
+fintContactRoles: ROLE_CLIENT@testing
+fintContactRoles: ROLE_ORGANISATION@testing
+fintContactRoles: ROLE_COMPONENT@testing
 
 dn: cn=23456789012,ou=contacts,o=fint-test
 objectclass: inetOrgPerson
