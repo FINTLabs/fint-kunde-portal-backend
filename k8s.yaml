@@ -131,8 +131,6 @@ spec:
           value: ""
         - name: logging.level.no.fint.portal.security
           value: debug
-        - name: logging.level.org.springframework.security
-          value: debug
         - name: fint.ldap.contact-base
           value: ou=contacts,o=fint
         - name: fint.ldap.component-base
