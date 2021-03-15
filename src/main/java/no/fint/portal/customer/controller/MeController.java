@@ -44,6 +44,7 @@ public class MeController {
         this.organisationService = organisationService;
         this.unleashClient = unleashClient;
         this.cutoff = cutoff;
+        log.info("Cutoff for role migration set to {}", cutoff);
     }
 
 
