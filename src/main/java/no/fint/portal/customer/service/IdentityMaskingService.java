@@ -107,6 +107,7 @@ public class IdentityMaskingService {
         output.setNin(mask(input.getNin()));
         output.setMail(BULLETS);
         output.setMobile(BULLETS);
+        output.setRoles(input.getRoles());
         return output;
     }
 
@@ -120,6 +121,10 @@ public class IdentityMaskingService {
 
     public List<Contact> getMaskedContacts() {
         return portalApiService.getContacts().stream().filter(it -> StringUtils.isNotBlank(it.getDn())).map(this::mask).collect(Collectors.toList());
+    }
+
+    public Contact getMaskedContact(String nin) {
+        return mask(portalApiService.getContact(unmask(nin)));
     }
 
 }

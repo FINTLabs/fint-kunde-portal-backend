@@ -54,6 +54,12 @@ public class ContactController {
         throw new EntityNotFoundException("No contacts found.");
     }
 
+    @ApiOperation("Get contact by nin")
+    @GetMapping("/{nin}")
+    public ResponseEntity<Contact> getContact(@PathVariable String nin) {
+        return ResponseEntity.ok(identityMaskingService.getMaskedContact(nin));
+    }
+
     @ApiOperation("Get contact's organisations")
     @GetMapping(value = "/organisations")
     public ResponseEntity<List<Organisation>> getContactOrganisations(@RequestHeader(value = "x-nin") final String nin) {
