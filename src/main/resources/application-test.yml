@@ -26,7 +26,7 @@ fint:
   portal:
     role:
       admin:
-        cutoff: 01/01/2000
+        cutoff: 2000-01-01
     admin:
       uri: https://admin-beta.fintlabs.no
   customer:

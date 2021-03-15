@@ -125,8 +125,6 @@ spec:
           env:
             - name: TZ
               value: Europe/Oslo
-            - name: LANG
-              value: no_NO
             - name: fint.portal.role.admin.cutoff
               value: 2021-06-01
             - name: fint.client-config.test-service-base-url

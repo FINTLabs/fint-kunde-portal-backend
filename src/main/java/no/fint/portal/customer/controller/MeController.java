@@ -39,12 +39,12 @@ public class MeController {
     private final LocalDate cutoff;
 
     public MeController(PortalApiService portalApiService, OrganisationService organisationService, DefaultUnleash unleashClient,
-                        @Value("${fint.portal.role.admin.cutoff}") LocalDate cutoff) {
+                        @Value("${fint.portal.role.admin.cutoff}") String cutoff) {
         this.portalApiService = portalApiService;
         this.organisationService = organisationService;
         this.unleashClient = unleashClient;
-        this.cutoff = cutoff;
-        log.info("Cutoff for role migration set to {}", cutoff);
+        this.cutoff = LocalDate.parse(cutoff);
+        log.info("Cutoff for role migration set to {}", this.cutoff);
     }
 
 
