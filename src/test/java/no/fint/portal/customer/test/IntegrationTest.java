@@ -73,9 +73,9 @@ public class IntegrationTest {
         mockMvc.perform(put("/api/adapters/{org}/{adapter}/password", org, adapter).header("x-nin", "12345678901").content("This is the new password").contentType(MediaType.TEXT_PLAIN)).andExpect(status().isOk());
         mockMvc.perform(put("/api/adapters/{org}/{adapter}", org, adapter).header("x-nin", "12345678901").content("{ \"name\": \"" + adapter + "\", \"note\": \"Test Adapter With New Note\", \"shortDescription\": \"This is a Brand Spanking New Test Adapter\" }").contentType(MediaType.APPLICATION_JSON)).andExpect(status().isOk()).andExpect(jsonPath("$.shortDescription").value(containsString("Spanking")));
         mockMvc.perform(put("/api/assets/{org}/{asset}/adapters/{adapter}", org, asset, adapter).header("x-nin", "12345678901")).andExpect(status().is(204));
-        mockMvc.perform(put("/api/components/{component}/{org}/adapters/{adapter}", component, org, adapter).header("x-nin", "12345678901").contentType(MediaType.APPLICATION_JSON)).andExpect(status().is(204));
-        mockMvc.perform(delete("/api/components/{component}/{org}/adapters/{adapter}", component, org, adapter).header("x-nin", "12345678901")).andExpect(status().is(204));
-        mockMvc.perform(delete("/api/components/{component}/{org}/adapters/{adapter}", component, org, adapter).header("x-nin", "12345678901")).andExpect(status().is(204));
+        mockMvc.perform(put("/api/components/organisation/{org}/{component}/adapters/{adapter}", org, component, adapter).header("x-nin", "12345678901").contentType(MediaType.APPLICATION_JSON)).andExpect(status().is(204));
+        mockMvc.perform(delete("/api/components/organisation/{org}/{component}/adapters/{adapter}", org, component, adapter).header("x-nin", "12345678901")).andExpect(status().is(204));
+        mockMvc.perform(delete("/api/components/organisation/{org}/{component}/adapters/{adapter}", org, component, adapter).header("x-nin", "12345678901")).andExpect(status().is(204));
         mockMvc.perform(delete("/api/adapters/{org}/{adapter}", org, adapter).header("x-nin", "12345678901")).andExpect(status().is(204));
         mockMvc.perform(get("/api/clients/{org}", org).header("x-nin", "12345678901")).andExpect(status().is(200));
         mockMvc.perform(post("/api/clients/{org}", org).header("x-nin", "12345678901").content("{ \"name\": \"testclient\", \"note\": \"Test Client\", \"secret\": \"password\", \"shortDescription\": \"This is a Test Client.\" }").contentType(MediaType.APPLICATION_JSON)).andExpect(status().is(201)).andExpect(jsonPath("$.name").value(equalTo(client)));
@@ -84,9 +84,9 @@ public class IntegrationTest {
         mockMvc.perform(put("/api/clients/{org}/{client}", org, client).header("x-nin", "12345678901").content("{ \"name\": \"" + client + "\", \"note\": \"Testing Client\", \"shortDescription\": \"This is an updated Test Client.\" }").contentType(MediaType.APPLICATION_JSON)).andExpect(status().isOk()).andExpect(jsonPath("$.shortDescription").value(containsString("updated")));
         mockMvc.perform(put("/api/clients/{org}/{client}/password", org, client).header("x-nin", "12345678901").content("This is the new password").contentType(MediaType.TEXT_PLAIN)).andExpect(status().isOk());
         mockMvc.perform(put("/api/assets/{org}/{asset}/clients/{client}", org, asset, client).header("x-nin", "12345678901")).andExpect(status().is(204));
-        mockMvc.perform(put("/api/components/{component}/{org}/clients/{client}", component, org, client).header("x-nin", "12345678901").contentType(MediaType.APPLICATION_JSON)).andExpect(status().is(204));
+        mockMvc.perform(put("/api/components/organisation/{org}/{component}/clients/{client}", org, component, client).header("x-nin", "12345678901").contentType(MediaType.APPLICATION_JSON)).andExpect(status().is(204));
         mockMvc.perform(delete("/api/assets/{org}/{asset}/clients/{client}", org, asset, client).header("x-nin", "12345678901")).andExpect(status().is(204));
-        mockMvc.perform(delete("/api/components/{component}/{org}/clients/{client}", component, org, client).header("x-nin", "12345678901")).andExpect(status().is(204));
+        mockMvc.perform(delete("/api/components/organisation/{org}/{component}/clients/{client}", org, component, client).header("x-nin", "12345678901")).andExpect(status().is(204));
         mockMvc.perform(delete("/api/clients/{org}/{client}", org, client).header("x-nin", "12345678901")).andExpect(status().is(204));
         mockMvc.perform(delete("/api/assets/{org}/{asset}", org, asset).header("x-nin", "12345678901")).andExpect(status().is(204));
     }

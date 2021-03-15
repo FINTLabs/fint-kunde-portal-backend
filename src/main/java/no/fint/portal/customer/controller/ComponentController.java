@@ -72,7 +72,7 @@ public class ComponentController {
     @ApiOperation("Add adapter to component")
     @RequestMapping(method = RequestMethod.PUT,
             consumes = MediaType.APPLICATION_JSON_VALUE,
-            value = "/{compName}/{orgName}/adapters/{adapterName}"
+            value = "/organisation/{orgName}/{compName}/adapters/{adapterName}"
     )
     public ResponseEntity<Void> addAdapterToComponent(@PathVariable final String adapterName, @PathVariable final String compName, @PathVariable("orgName") final String orgName) {
 
@@ -87,7 +87,7 @@ public class ComponentController {
 
     @ApiOperation("Remove adapter from component")
     @RequestMapping(method = RequestMethod.DELETE,
-            value = "/{compName}/{orgName}/adapters/{adapterName}"
+            value = "/organisation/{orgName}/{compName}/adapters/{adapterName}"
     )
     public ResponseEntity<Void> removeAdapterFromComponent(@PathVariable final String adapterName, @PathVariable final String compName, @PathVariable("orgName") final String orgName) {
 
@@ -104,7 +104,7 @@ public class ComponentController {
     @ApiOperation("Add client to component")
     @RequestMapping(method = RequestMethod.PUT,
             consumes = MediaType.APPLICATION_JSON_VALUE,
-            value = "/{compName}/{orgName}/clients/{clientName}"
+            value = "/organisation/{orgName}/{compName}/clients/{clientName}"
     )
     public ResponseEntity<Void> addClientToComponent(@PathVariable final String clientName, @PathVariable final String compName, @PathVariable("orgName") final String orgName) {
 
@@ -119,7 +119,7 @@ public class ComponentController {
 
     @ApiOperation("Remove client from component")
     @RequestMapping(method = RequestMethod.DELETE,
-            value = "/{compName}/{orgName}/clients/{clientName}"
+            value = "/organisation/{orgName}/{compName}/clients/{clientName}"
     )
     public ResponseEntity<Void> removeClientFromComponent(@PathVariable final String clientName, @PathVariable final String compName, @PathVariable("orgName") final String orgName) {
 

@@ -8,7 +8,6 @@ import lombok.extern.slf4j.Slf4j;
 import no.fint.portal.model.contact.Contact;
 import no.fint.portal.model.contact.ContactObjectService;
 import no.fint.portal.model.organisation.Organisation;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.client.RestTemplateBuilder;
@@ -20,6 +19,7 @@ import org.springframework.web.client.RestTemplate;
 import java.security.SecureRandom;
 import java.util.Base64;
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 import java.util.stream.Collectors;
@@ -101,7 +101,7 @@ public class IdentityMaskingService {
 
     public Contact mask(Contact input) {
         Contact output = new Contact();
-        output.setDn(mask(input.getDn()));
+        Optional.ofNullable(mask(input.getDn())).ifPresent(output::setDn);
         output.setFirstName(input.getFirstName());
         output.setLastName(input.getLastName());
         output.setNin(mask(input.getNin()));
@@ -120,7 +120,7 @@ public class IdentityMaskingService {
     }
 
     public List<Contact> getMaskedContacts() {
-        return portalApiService.getContacts().stream().filter(it -> StringUtils.isNotBlank(it.getDn())).map(this::mask).collect(Collectors.toList());
+        return portalApiService.getContacts().stream().map(this::mask).collect(Collectors.toList());
     }
 
     public Contact getMaskedContact(String nin) {

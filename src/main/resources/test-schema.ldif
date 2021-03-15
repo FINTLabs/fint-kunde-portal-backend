@@ -68,6 +68,7 @@ fintContactRoles: ROLE_ASSET@testing
 fintContactRoles: ROLE_ADAPTER@testing
 fintContactRoles: ROLE_CLIENT@testing
 fintContactRoles: ROLE_ORGANISATION@testing
+fintContactRoles: ROLE_COMPONENT@testing
 
 dn: cn=23456789012,ou=contacts,o=fint-test
 objectclass: inetOrgPerson
