@@ -93,7 +93,10 @@ public class IntegrationTest {
 
     @Test
     public void contacts() throws Exception {
+        when(identityMaskingService.mask(anyString())).thenAnswer(returnsFirstArg());
+
         mockMvc.perform(get("/api/contacts").header("x-nin", "12345678901")).andExpect(status().is(200));
+        mockMvc.perform(get("/api/contacts/{nin}", contact2).header("x-nin", "12345678901")).andExpect(status().is(200));
     }
 
     @Test
