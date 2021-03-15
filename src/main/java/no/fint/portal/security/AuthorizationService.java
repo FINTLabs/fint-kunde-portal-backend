@@ -32,9 +32,9 @@ public class AuthorizationService {
     public int authorizeRequest(Authentication authentication, FilterInvocation invocation) {
         return roleConfig.getRoles().stream()
                 .filter(requestUri(invocation))
-                .peek(it -> log.debug("Role: {}", it))
+                .peek(it -> log.trace("Role: {}", it))
                 .mapToInt(authorize(authentication, invocation))
-                .peek(it -> log.debug("Result: {}", it))
+                .peek(it -> log.trace("Result: {}", it))
                 .findFirst()
                 .orElse(ACCESS_ABSTAIN);
     }
@@ -45,9 +45,9 @@ public class AuthorizationService {
             return authentication.getAuthorities().stream()
                     .filter(FintPortalAuthority.class::isInstance)
                     .map(FintPortalAuthority.class::cast)
-                    .peek(it -> log.debug("Evaluating {}", it))
+                    .peek(it -> log.trace("Evaluating {}", it))
                     .filter(auth -> auth.isAccessGranted(role.getId(), requestUrl))
-                    .peek(it -> log.info("Granted: {} for role {}", it, role))
+                    .peek(it -> log.debug("Granted: {} for role {}", it, role))
                     .map(it -> ACCESS_GRANTED)
                     .findFirst()
                     .orElse(ACCESS_DENIED);
