@@ -61,7 +61,7 @@ fint:
           name: Log
           id: ROLE_LOG
           description: Gir tilgang til å se logger
-          uri: /api/events/api/
+          uri: /api/events/
         -
           name: Assets
           id: ROLE_ASSET
