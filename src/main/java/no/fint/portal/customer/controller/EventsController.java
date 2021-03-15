@@ -2,7 +2,7 @@ package no.fint.portal.customer.controller;
 
 import io.swagger.annotations.Api;
 import lombok.extern.slf4j.Slf4j;
-import no.finn.unleash.DefaultUnleash;
+import no.finn.unleash.Unleash;
 import no.fint.audit.model.AuditEvent;
 import no.fint.portal.customer.service.PortalApiService;
 import no.fint.portal.model.asset.Asset;
@@ -10,6 +10,7 @@ import no.fint.portal.model.asset.AssetService;
 import no.fint.portal.model.organisation.Organisation;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.client.RestTemplateBuilder;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -27,7 +28,7 @@ import java.util.List;
 public class EventsController {
 
     private final RestTemplate restTemplate;
-    private final DefaultUnleash unleashClient;
+    private final Unleash unleashClient;
     private final PortalApiService portalApiService;
     private final AssetService assetService;
 
@@ -36,7 +37,7 @@ public class EventsController {
             @Value("${fint.events.username}") String username,
             @Value("${fint.events.password}") String password,
             RestTemplateBuilder builder,
-            DefaultUnleash unleashClient, PortalApiService portalApiService, AssetService assetService) {
+            Unleash unleashClient, PortalApiService portalApiService, AssetService assetService) {
         this.unleashClient = unleashClient;
         this.portalApiService = portalApiService;
         this.assetService = assetService;
@@ -87,7 +88,8 @@ public class EventsController {
         return ResponseEntity.status(HttpStatus.NOT_IMPLEMENTED).build();
     }
 
-    private String getPrimaryAssetId(String orgName) {
+    @Cacheable("assetIds")
+    public String getPrimaryAssetId(String orgName) {
         Organisation organisation = portalApiService.getOrganisation(orgName);
         Asset primaryAsset = assetService.getPrimaryAsset(organisation);
         return primaryAsset.getAssetId();

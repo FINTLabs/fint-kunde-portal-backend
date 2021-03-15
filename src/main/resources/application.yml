@@ -98,10 +98,11 @@ management:
 
 spring:
   cache:
-    cache-names: users
+    cache-names:
+      - users
+      - assetIds
     type: caffeine
     caffeine:
       spec: expireAfterWrite=5m
   application:
     name: "fint-kunde-portal"
-
