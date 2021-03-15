@@ -2,7 +2,7 @@ package no.fint.portal.customer.controller;
 
 import io.swagger.annotations.Api;
 import lombok.extern.slf4j.Slf4j;
-import no.finn.unleash.DefaultUnleash;
+import no.finn.unleash.Unleash;
 import no.fint.portal.customer.service.RoleConfig;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,9 +20,9 @@ import java.util.List;
 public class RoleController {
 
     private final RoleConfig roleConfig;
-    private final DefaultUnleash unleashClient;
+    private final Unleash unleashClient;
 
-    public RoleController(RoleConfig roleConfig, DefaultUnleash unleashClient) {
+    public RoleController(RoleConfig roleConfig, Unleash unleashClient) {
         this.roleConfig = roleConfig;
         this.unleashClient = unleashClient;
     }

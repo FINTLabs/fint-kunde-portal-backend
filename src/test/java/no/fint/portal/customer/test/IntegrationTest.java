@@ -1,6 +1,6 @@
 package no.fint.portal.customer.test;
 
-import no.finn.unleash.DefaultUnleash;
+import no.finn.unleash.Unleash;
 import no.fint.portal.customer.service.IdentityMaskingService;
 import no.fint.portal.model.contact.Contact;
 import no.fint.portal.model.organisation.Organisation;
@@ -36,7 +36,7 @@ public class IntegrationTest {
     IdentityMaskingService identityMaskingService;
 
     @MockBean
-    DefaultUnleash defaultUnleash;
+    Unleash unleash;
 
     String org = "testing";
     String component = "administrasjon_personal";
@@ -48,7 +48,7 @@ public class IntegrationTest {
 
     @BeforeEach
     void setUp() {
-        when(defaultUnleash.isEnabled("fint-kunde-portal.roles")).thenReturn(true);
+        when(unleash.isEnabled("fint-kunde-portal.roles")).thenReturn(true);
     }
 
     @Test
