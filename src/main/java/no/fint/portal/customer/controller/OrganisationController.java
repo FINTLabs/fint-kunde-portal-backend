@@ -3,7 +3,7 @@ package no.fint.portal.customer.controller;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
-import no.finn.unleash.Unleash;
+import no.finn.unleash.DefaultUnleash;
 import no.fint.portal.customer.service.IdentityMaskingService;
 import no.fint.portal.customer.service.PortalApiService;
 import no.fint.portal.customer.service.RoleConfig;
@@ -48,9 +48,9 @@ public class OrganisationController {
 
     private final IdentityMaskingService identityMaskingService;
 
-    private final Unleash unleashClient;
+    private final DefaultUnleash unleashClient;
 
-    public OrganisationController(PortalApiService portalApiService, OrganisationService organisationService, AssetService assetService, IdentityMaskingService identityMaskingService, Unleash unleashClient) {
+    public OrganisationController(PortalApiService portalApiService, OrganisationService organisationService, AssetService assetService, IdentityMaskingService identityMaskingService, DefaultUnleash unleashClient) {
         this.portalApiService = portalApiService;
         this.organisationService = organisationService;
         this.assetService = assetService;

@@ -1,6 +1,6 @@
 package no.fint.portal.security;
 
-import no.finn.unleash.Unleash;
+import no.finn.unleash.DefaultUnleash;
 import no.fint.portal.customer.service.IdentityMaskingService;
 import no.fint.portal.customer.service.PortalApiService;
 import no.fint.portal.exceptions.EntityNotFoundException;
@@ -25,9 +25,9 @@ public class UserService implements UserDetailsService {
     private final PortalApiService portalApiService;
     private final OrganisationService organisationService;
     private final IdentityMaskingService identityMaskingService;
-    private final Unleash unleashClient;
+    private final DefaultUnleash unleashClient;
 
-    public UserService(PortalApiService portalApiService, OrganisationService organisationService, IdentityMaskingService identityMaskingService, Unleash unleashClient) {
+    public UserService(PortalApiService portalApiService, OrganisationService organisationService, IdentityMaskingService identityMaskingService, DefaultUnleash unleashClient) {
         this.portalApiService = portalApiService;
         this.organisationService = organisationService;
         this.identityMaskingService = identityMaskingService;

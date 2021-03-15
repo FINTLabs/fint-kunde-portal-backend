@@ -2,7 +2,7 @@ package no.fint.portal.customer.controller;
 
 import io.swagger.annotations.Api;
 import lombok.extern.slf4j.Slf4j;
-import no.finn.unleash.Unleash;
+import no.finn.unleash.DefaultUnleash;
 import no.fint.audit.model.AuditEvent;
 import no.fint.portal.customer.service.PortalApiService;
 import no.fint.portal.model.asset.Asset;
@@ -28,7 +28,7 @@ import java.util.List;
 public class EventsController {
 
     private final RestTemplate restTemplate;
-    private final Unleash unleashClient;
+    private final DefaultUnleash unleashClient;
     private final PortalApiService portalApiService;
     private final AssetService assetService;
 
@@ -37,7 +37,7 @@ public class EventsController {
             @Value("${fint.events.username}") String username,
             @Value("${fint.events.password}") String password,
             RestTemplateBuilder builder,
-            Unleash unleashClient, PortalApiService portalApiService, AssetService assetService) {
+            DefaultUnleash unleashClient, PortalApiService portalApiService, AssetService assetService) {
         this.unleashClient = unleashClient;
         this.portalApiService = portalApiService;
         this.assetService = assetService;
