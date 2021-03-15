@@ -175,6 +175,7 @@ spec:
             name: nginx-kunde-portal
       - name: frontend
         image: fintlabsacr.azurecr.io/kunde-portal-frontend:latest
+        imagePullPolicy: Always
         resources:
           limits:
             cpu: 500m
