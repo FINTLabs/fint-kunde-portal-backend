@@ -38,7 +38,7 @@ public class SecureUrlAccessDecisionVoter implements AccessDecisionVoter<FilterI
 
     @Override
     public int vote(Authentication authentication, FilterInvocation invocation, Collection<ConfigAttribute> attributes) {
-        log.debug("VOTING FOR:\nAuthorities: {}\nURL: {}", authentication.getAuthorities(), invocation.getRequestUrl());
+        log.debug("Authorization: {}", invocation.getRequestUrl());
 
         if (!StringUtils.startsWithAny(invocation.getRequestUrl(), securePaths)) {
             log.debug("Unsecured URL {}", invocation.getRequestUrl());

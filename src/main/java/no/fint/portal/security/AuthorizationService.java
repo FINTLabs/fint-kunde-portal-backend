@@ -10,8 +10,7 @@ import org.springframework.stereotype.Service;
 import java.util.function.Predicate;
 import java.util.function.ToIntFunction;
 
-import static org.springframework.security.access.AccessDecisionVoter.ACCESS_DENIED;
-import static org.springframework.security.access.AccessDecisionVoter.ACCESS_GRANTED;
+import static org.springframework.security.access.AccessDecisionVoter.*;
 
 @Slf4j
 @Service
@@ -37,7 +36,7 @@ public class AuthorizationService {
                 .mapToInt(authorize(authentication, invocation))
                 .peek(it -> log.debug("Result: {}", it))
                 .findFirst()
-                .orElse(ACCESS_DENIED);
+                .orElse(ACCESS_ABSTAIN);
     }
 
     private ToIntFunction<RoleConfig.Role> authorize(Authentication authentication, FilterInvocation invocation) {
