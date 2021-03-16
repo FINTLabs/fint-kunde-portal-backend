@@ -27,45 +27,45 @@ fint:
         -
           name: Adapter
           id: ROLE_ADAPTER
-          description: Gir tilgang til å håndtere adapter
+          description: Kan håndtere adapter
           uri: /api/adapters/
         -
           name: Klient
           id: ROLE_CLIENT
-          description: Gir tilgang til å håndtere klienter
+          description: Kan håndtere klienter
           uri: /api/clients/
         -
           name: Komponenter
           id: ROLE_COMPONENT
-          description: Gir tilgang til å håndtere komponenter
+          description: Kan håndtere komponenter
           uri: /api/components/organisation/
         -
           name: Tilgangspakker
           id: ROLE_ACCESS_PACKAGE
-          description: Gir tilgang til å håndtere tilgangspakker
-          uri: /api/access/
+          description: Kan håndtere tilgangspakker
+          uri: /api/accesses/
         -
           name: Brukerhjelp
           id: ROLE_SUPPORT
-          description: Gir tilgang til å sende inn supportsaker
+          description: Kan sende inn supportsaker
         -
           name: Test
           id: ROLE_TEST
-          description: Gir tilgang til å kjøre tester
+          description: Kan kjøre tester
         -
           name: Log
           id: ROLE_LOG
-          description: Gir tilgang til å se logger
-          uri: /api/events/api/
+          description: Kan se logger
+          uri: /api/events/
         -
           name: Assets
           id: ROLE_ASSET
-          description: Gir tilgang til å håndtere assets
+          description: Kan håndtere assets
           uri: /api/assets/
         -
           name: Organisasjon
           id: ROLE_ORGANISATION
-          description: Gir tilgang til å håndtere organisasjonen
+          description: Kan håndtere organisasjonen
           uri: /api/organisations/
 
 info:
@@ -93,7 +93,9 @@ management:
 
 spring:
   cache:
-    cache-names: users
+    cache-names:
+      - users
+      - assetIds
     type: caffeine
     caffeine:
       spec: expireAfterWrite=5m

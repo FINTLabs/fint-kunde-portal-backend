@@ -131,8 +131,6 @@ spec:
           value: ""
         - name: logging.level.no.fint.portal.security
           value: debug
-        - name: logging.level.org.springframework.security
-          value: debug
         - name: fint.ldap.contact-base
           value: ou=contacts,o=fint
         - name: fint.ldap.component-base
@@ -175,6 +173,7 @@ spec:
             name: nginx-kunde-portal
       - name: frontend
         image: fintlabsacr.azurecr.io/kunde-portal-frontend:latest
+        imagePullPolicy: Always
         resources:
           limits:
             cpu: 500m
@@ -208,7 +207,8 @@ spec:
           - name: fint.ldap.organisation-base
             value: ou=organisations,o=fint
       - name: link-walker
-        image: fintlabsacr.azurecr.io/link-walker:PR-16.5
+        image: fintlabsacr.azurecr.io/link-walker:latest
+        imagePullPolicy: Always
         resources:
           limits:
             cpu: "2"

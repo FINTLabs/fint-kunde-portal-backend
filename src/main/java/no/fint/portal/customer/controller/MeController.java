@@ -13,7 +13,6 @@ import no.fint.portal.model.ErrorResponse;
 import no.fint.portal.model.contact.Contact;
 import no.fint.portal.model.organisation.OrganisationService;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.CacheControl;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,7 +20,6 @@ import org.springframework.ldap.NameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.UnknownHostException;
-import java.time.LocalDate;
 import java.util.Collections;
 import java.util.Optional;
 import java.util.stream.Stream;
@@ -36,14 +34,11 @@ public class MeController {
     private final PortalApiService portalApiService;
     private final OrganisationService organisationService;
     private final DefaultUnleash unleashClient;
-    private final LocalDate cutoff;
 
-    public MeController(PortalApiService portalApiService, OrganisationService organisationService, DefaultUnleash unleashClient,
-                        @Value("${fint.portal.role.admin.cutoff}") LocalDate cutoff) {
+    public MeController(PortalApiService portalApiService, OrganisationService organisationService, DefaultUnleash unleashClient) {
         this.portalApiService = portalApiService;
         this.organisationService = organisationService;
         this.unleashClient = unleashClient;
-        this.cutoff = cutoff;
     }
 
 
@@ -56,9 +51,8 @@ public class MeController {
 
         final Contact contact = portalApiService.getContact(nin);
 
-        if (unleashClient.isEnabled("fint-kunde-portal.roles")
-                && (contact.getRoles() == null || contact.getRoles().isEmpty())
-                && LocalDate.now().isBefore(cutoff)) {
+        if (unleashClient.isEnabled("fint-kunde-portal.roles-init")
+                && (contact.getRoles() == null || contact.getRoles().isEmpty())) {
             log.info("{} {} has no roles, adding ROLE_ADMIN for all organisations...", contact.getFirstName(), contact.getLastName());
             Stream.concat(contact.getLegal().stream(), contact.getTechnical().stream())
                     .map(organisationService::getOrganisationByDn)
@@ -73,6 +67,7 @@ public class MeController {
                 .ok()
                 .cacheControl(CacheControl.noStore())
                 .body(contact);
+
     }
 
 
