@@ -54,7 +54,7 @@ data:
           proxy_set_header x-nin 0;
       }
 
-      location ~ /api/tests/[^/]+/links/ {
+      location ~ /api/tests/[^/]+/links {
           proxy_pass http://localhost:8081;
           proxy_set_header Connection '';
           proxy_http_version 1.1;
