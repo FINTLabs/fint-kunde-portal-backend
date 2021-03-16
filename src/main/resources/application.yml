@@ -52,6 +52,7 @@ fint:
           name: Test
           id: ROLE_TEST
           description: Kan kjøre tester
+#          uri: /api/tests/
         -
           name: Log
           id: ROLE_LOG
@@ -101,4 +102,3 @@ spring:
       spec: expireAfterWrite=5m
   application:
     name: "fint-kunde-portal"
-
