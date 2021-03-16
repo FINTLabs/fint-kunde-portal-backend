@@ -207,7 +207,8 @@ spec:
           - name: fint.ldap.organisation-base
             value: ou=organisations,o=fint
       - name: link-walker
-        image: fintlabsacr.azurecr.io/link-walker:PR-16.5
+        image: fintlabsacr.azurecr.io/link-walker:latest
+        imagePullPolicy: Always
         resources:
           limits:
             cpu: "2"
