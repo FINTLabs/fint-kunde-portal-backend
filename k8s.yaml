@@ -184,7 +184,8 @@ spec:
           - name: TZ
             value: Europe/Oslo
       - name: test-runner
-        image: fintlabsacr.azurecr.io/test-runner:PR-6.1
+        image: fintlabsacr.azurecr.io/test-runner:latest
+        imagePullPolicy: Always
         resources:
           limits:
             cpu: "2"
