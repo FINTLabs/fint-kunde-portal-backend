@@ -48,10 +48,12 @@ fint:
           name: Brukerhjelp
           id: ROLE_SUPPORT
           description: Kan sende inn supportsaker
+          uri: /api/tickets/
         -
           name: Test
           id: ROLE_TEST
           description: Kan kjøre tester
+          uri: /api/tests/
         -
           name: Log
           id: ROLE_LOG
@@ -101,4 +103,3 @@ spring:
       spec: expireAfterWrite=5m
   application:
     name: "fint-kunde-portal"
-
