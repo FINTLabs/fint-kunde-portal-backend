@@ -22,11 +22,17 @@ import java.util.Collections;
 @RequestMapping("/api/tests/{orgName}")
 public class TestsController {
     private final RestTemplate restTemplate;
+    private final String linkWalkerUri;
+    private final String testRunnerUri;
 
     public TestsController(
             @Value("${fint.portal.tests.trace:false}") boolean trace,
+            @Value("${fint.portal.tests.link-walker:http://localhost:8081}") String linkWalkerUri,
+            @Value("${fint.portal.tests.test-runner:http://localhost:8083}") String testRunnerUri,
             RestTemplate restTemplate) {
         this.restTemplate = restTemplate;
+        this.linkWalkerUri = linkWalkerUri;
+        this.testRunnerUri = testRunnerUri;
         if (trace) {
             this.restTemplate.setInterceptors(Collections.singletonList((request, body, execution) -> {
                 final ClientHttpResponse response;
@@ -46,7 +52,7 @@ public class TestsController {
     public ResponseEntity<byte[]> linkWalker(HttpServletRequest request, @RequestHeader HttpHeaders headers, @RequestBody byte[] body) {
         final HttpMethod method = HttpMethod.valueOf(request.getMethod());
         final HttpEntity<Object> httpEntity = new HttpEntity<>(body, headers);
-        final ResponseEntity<byte[]> responseEntity = restTemplate.exchange("http://localhost:8081/{uri}", method, httpEntity, byte[].class, request.getRequestURI());
+        final ResponseEntity<byte[]> responseEntity = restTemplate.exchange(linkWalkerUri + request.getRequestURI(), method, httpEntity, byte[].class);
         return ResponseEntity.status(responseEntity.getStatusCode()).body(responseEntity.getBody());
     }
 
@@ -54,7 +60,7 @@ public class TestsController {
     public ResponseEntity<byte[]> testRunner(HttpServletRequest request, @RequestHeader HttpHeaders headers, @RequestBody byte[] body) {
         final HttpMethod method = HttpMethod.valueOf(request.getMethod());
         final HttpEntity<Object> httpEntity = new HttpEntity<>(body, headers);
-        final ResponseEntity<byte[]> responseEntity = restTemplate.exchange("http://localhost:8083" + request.getRequestURI(), method, httpEntity, byte[].class);
+        final ResponseEntity<byte[]> responseEntity = restTemplate.exchange(testRunnerUri + request.getRequestURI(), method, httpEntity, byte[].class);
         return ResponseEntity.status(responseEntity.getStatusCode()).body(responseEntity.getBody());
     }
 }
