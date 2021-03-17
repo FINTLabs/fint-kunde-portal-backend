@@ -2,6 +2,7 @@ package no.fint.portal.customer.controller;
 
 import io.swagger.annotations.Api;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -49,18 +50,28 @@ public class TestsController {
     }
 
     @RequestMapping("/links/**")
-    public ResponseEntity<byte[]> linkWalker(HttpServletRequest request, @RequestHeader HttpHeaders headers, @RequestBody byte[] body) {
+    public ResponseEntity<byte[]> linkWalker(HttpServletRequest request, @RequestHeader HttpHeaders headers, @RequestBody(required = false) byte[] body) {
         final HttpMethod method = HttpMethod.valueOf(request.getMethod());
         final HttpEntity<Object> httpEntity = new HttpEntity<>(body, headers);
         final ResponseEntity<byte[]> responseEntity = restTemplate.exchange(linkWalkerUri + request.getRequestURI(), method, httpEntity, byte[].class);
-        return ResponseEntity.status(responseEntity.getStatusCode()).body(responseEntity.getBody());
+        return ResponseEntity.status(responseEntity.getStatusCode()).headers(filter(responseEntity.getHeaders())).body(responseEntity.getBody());
     }
 
     @RequestMapping({"/health", "/basic", "/auth/**"})
-    public ResponseEntity<byte[]> testRunner(HttpServletRequest request, @RequestHeader HttpHeaders headers, @RequestBody byte[] body) {
+    public ResponseEntity<byte[]> testRunner(HttpServletRequest request, @RequestHeader HttpHeaders headers, @RequestBody(required = false) byte[] body) {
         final HttpMethod method = HttpMethod.valueOf(request.getMethod());
         final HttpEntity<Object> httpEntity = new HttpEntity<>(body, headers);
         final ResponseEntity<byte[]> responseEntity = restTemplate.exchange(testRunnerUri + request.getRequestURI(), method, httpEntity, byte[].class);
-        return ResponseEntity.status(responseEntity.getStatusCode()).body(responseEntity.getBody());
+        return ResponseEntity.status(responseEntity.getStatusCode()).headers(filter(responseEntity.getHeaders())).body(responseEntity.getBody());
+    }
+
+    private HttpHeaders filter(HttpHeaders headers) {
+        HttpHeaders result = new HttpHeaders();
+        headers.forEach((k, v) -> {
+            if (!StringUtils.equalsAny(k, HttpHeaders.TRANSFER_ENCODING)) {
+                result.put(k, v);
+            }
+        });
+        return result;
     }
 }
