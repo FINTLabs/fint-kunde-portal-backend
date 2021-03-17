@@ -29,7 +29,7 @@ public class TestsController {
     public TestsController(
             @Value("${fint.portal.tests.trace:false}") boolean trace,
             @Value("${fint.portal.tests.link-walker:http://localhost:8081}") String linkWalkerUri,
-            @Value("${fint.portal.tests.test-runner:http://localhost:8083}") String testRunnerUri,
+            @Value("${fint.portal.tests.test-runner:http://localhost:8082}") String testRunnerUri,
             RestTemplate restTemplate) {
         this.restTemplate = restTemplate;
         this.linkWalkerUri = linkWalkerUri;
