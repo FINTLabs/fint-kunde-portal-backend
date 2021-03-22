@@ -35,6 +35,11 @@ fint:
           description: Kan håndtere klienter
           uri: /api/clients/
         -
+          name: Dashboard
+          id: ROLE_DASHBOARD
+          description: Gir tilgang til dashboardet
+          uri: /dashboard
+        -
           name: Komponenter
           id: ROLE_COMPONENT
           description: Kan håndtere komponenter
