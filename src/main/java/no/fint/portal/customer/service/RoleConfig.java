@@ -24,7 +24,8 @@ public class RoleConfig {
         ROLE_TEST,
         ROLE_LOG,
         ROLE_ASSET,
-        ROLE_ORGANISATION
+        ROLE_ORGANISATION,
+        ROLE_DASHBOARD
     }
 
     @Data
