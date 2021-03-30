@@ -42,7 +42,9 @@ fint:
         -
           name: Komponenter
           id: ROLE_COMPONENT
-          description: Kan håndtere komponenter
+          description: >-
+            Kan håndtere komponenter...
+            Legge til og fjerne komponenter til en adapter eller klient
           uri: /api/components/organisation/
         -
           name: Tilgangspakker
@@ -67,12 +69,18 @@ fint:
         -
           name: Assets
           id: ROLE_ASSET
-          description: Kan håndtere assets
+          description: >-
+            Kan håndtere ressurser...
+            Opprette og fjerne ressurser, knytte klienter og adaptere til ressurs
           uri: /api/assets/
         -
           name: Organisasjon
           id: ROLE_ORGANISATION
-          description: Kan håndtere organisasjonen
+          description: >-
+            Kan håndtere organisasjonen...
+            - Endre informasjon om organisasjonen...
+            - Endre kontaktpersoner, endre roller for kontaktpersoner...
+            - Legge til og fjerne komponenter for organisasjonen
           uri: /api/organisations/
 
 info:

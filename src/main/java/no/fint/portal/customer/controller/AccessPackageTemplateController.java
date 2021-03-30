@@ -37,9 +37,9 @@ public class AccessPackageTemplateController {
     )
     @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity<List<AccessPackage>> getAccessPackageTemplates() {
-        List<AccessPackage> templates = accessPackageTemplateService.getAccessPackageTemplates();
-        if (templates.size() <= 0) {
-            templates = Collections.emptyList();
+        final List<AccessPackage> templates = accessPackageTemplateService.getAccessPackageTemplates();
+        if (templates == null) {
+            return ResponseEntity.ok(Collections.emptyList());
         }
         return ResponseEntity.ok(templates);
     }
