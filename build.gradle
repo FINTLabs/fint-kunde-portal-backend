@@ -20,6 +20,9 @@ repositories {
     mavenCentral()
     jcenter()
     maven {
+        url "https://reposilite.fintlabs.no/releases"
+    }
+    maven {
         url "http://dl.bintray.com/fint/maven"
     }
     mavenLocal()
@@ -44,7 +47,7 @@ dependencies {
     implementation 'com.google.guava:guava:30.1-jre'
 
     implementation 'no.fint:fint-spring-secrets:0.1.0'
-    implementation 'no.fint:fint-portal-api:3.12.0-rc-2'
+    implementation 'no.fint:fint-portal-api:3.12.0-rc-4'
     //implementation 'no.fint:fint-portal-api:0-SNAPSHOT'
     implementation 'no.fint:fint-audit-api:1.2.1'
 
