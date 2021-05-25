@@ -22,13 +22,13 @@ import java.util.List;
 @Api(tags = "Accesses")
 @CrossOrigin(origins = "*")
 @RequestMapping(value = "/api/accesses/{orgName}")
-public class AccessController {
+public class AccessPackageController {
 
     private final PortalApiService portalApiService;
 
     private final AccessService accessService;
 
-    public AccessController(PortalApiService portalApiService, AccessService accessService) {
+    public AccessPackageController(PortalApiService portalApiService, AccessService accessService) {
         this.portalApiService = portalApiService;
         this.accessService = accessService;
     }
