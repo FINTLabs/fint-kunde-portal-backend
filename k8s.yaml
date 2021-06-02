@@ -131,14 +131,6 @@ spec:
           value: ""
         - name: logging.level.no.fint.portal.security
           value: debug
-        - name: fint.ldap.contact-base
-          value: ou=contacts,o=fint
-        - name: fint.ldap.component-base
-          value: ou=components,o=fint
-        - name: fint.ldap.organisation-base
-          value: ou=organisations,o=fint
-        - name: fint.ldap.access.template-base
-          value: ou=access,o=fint
         - name: fint.unleash.api
           value: http://unleash-server:4242/api/
         resources:
@@ -201,12 +193,6 @@ spec:
         env:
           - name: server.port
             value: "8082"
-          - name: fint.ldap.contact-base
-            value: ou=contacts,o=fint
-          - name: fint.ldap.component-base
-            value: ou=components,o=fint
-          - name: fint.ldap.organisation-base
-            value: ou=organisations,o=fint
       - name: link-walker
         image: fintlabsacr.azurecr.io/link-walker:latest
         imagePullPolicy: Always
@@ -229,12 +215,6 @@ spec:
             value: '-XX:+ExitOnOutOfMemoryError -Xmx3G -verbose:gc'
           - name: server.port
             value: "8081"
-          - name: fint.ldap.contact-base
-            value: ou=contacts,o=fint
-          - name: fint.ldap.component-base
-            value: ou=components,o=fint
-          - name: fint.ldap.organisation-base
-            value: ou=organisations,o=fint
           - name: fint.rest-template.provider
             value: portal-api
       - name: zendesk-integration
@@ -266,9 +246,3 @@ spec:
             value: "600000"
           - name: server.port
             value: "8083"
-          - name: fint.ldap.contact-base
-            value: ou=contacts,o=fint
-          - name: fint.ldap.component-base
-            value: ou=components,o=fint
-          - name: fint.ldap.organisation-base
-            value: ou=organisations,o=fint
