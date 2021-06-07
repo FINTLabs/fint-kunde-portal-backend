@@ -63,6 +63,7 @@ public class AssetController {
         // TODO: 31/07/2018 This should be moved to the portal-api
         asset.setAssetId(String.format("%s.%s", asset.getAssetId(), primaryAsset.getAssetId()));
 
+        if (isIllegalAssetID(asset.getAssetId())) throw new IllegalArgumentException("The assetId contains illegal characters: " + asset.getAssetId());
         if (!assetService.addAsset(asset, organisation)) throw new CreateEntityMismatchException(asset.getAssetId());
 
         return ResponseEntity.created(ServletUriComponentsBuilder.fromCurrentRequestUri().scheme(null).pathSegment(asset.getName()).build().toUri()).cacheControl(CacheControl.noStore()).build();
@@ -162,5 +163,18 @@ public class AssetController {
         return ResponseEntity.noContent().cacheControl(CacheControl.noStore()).build();
     }
 
+    private boolean isIllegalAssetID(String assetId) {
+        for (char c: assetId.toCharArray())
+        {
+            boolean valid = ((c >= 'a') && (c <= 'z')) ||
+                    ((c >= 'A') && (c <= 'Z')) ||
+                    ((c >= '0') && (c <= '9')) ||
+                    (c == 'æ') || (c == 'ø') || (c == 'å') || (c == 'Æ') || (c == 'Ø') || (c == 'Å') ||
+                    (c == '-') || (c == '_') || (c == '.');
 
+            if (!valid) return true;
+        }
+
+        return false;
+    }
 }
