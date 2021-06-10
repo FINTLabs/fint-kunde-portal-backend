@@ -11,6 +11,7 @@ import no.fint.portal.model.asset.Asset;
 import no.fint.portal.model.asset.AssetService;
 import no.fint.portal.model.client.Client;
 import no.fint.portal.model.organisation.Organisation;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.http.CacheControl;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -164,17 +165,8 @@ public class AssetController {
     }
 
     private boolean isIllegalAssetID(String assetId) {
-        for (char c: assetId.toCharArray())
-        {
-            boolean valid = ((c >= 'a') && (c <= 'z')) ||
-                    ((c >= 'A') && (c <= 'Z')) ||
-                    ((c >= '0') && (c <= '9')) ||
-                    (c == 'æ') || (c == 'ø') || (c == 'å') || (c == 'Æ') || (c == 'Ø') || (c == 'Å') ||
-                    (c == '-') || (c == '_') || (c == '.');
-
-            if (!valid) return true;
-        }
-
-        return false;
+        return StringUtils.isBlank(assetId)
+                || !StringUtils.isAsciiPrintable(assetId)
+                || StringUtils.containsAny(assetId, " !\"#$%&'()*+,/:;<=>?@[\\]^`{}|~");
     }
 }
