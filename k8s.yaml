@@ -115,7 +115,7 @@ spec:
             name: nginx-kunde-portal
       containers:
       - name: kunde-portal
-        image: fintlabsacr.azurecr.io/kunde-portal:build.${BUILD_NUMBER}_${GIT_COMMIT}
+        image: fintlabsacr.azurecr.io/fint-kunde-portal:dummy
         ports:
         - containerPort: 8080
           protocol: TCP

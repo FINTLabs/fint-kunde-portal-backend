@@ -14,3 +14,4 @@ portal.env
 /bin/
 node_modules
 application-*.yml
+.DS_Store
