@@ -6,12 +6,12 @@ import lombok.extern.slf4j.Slf4j;
 import no.fint.portal.customer.service.PortalApiService;
 import no.fint.portal.exceptions.CreateEntityMismatchException;
 import no.fint.portal.exceptions.UpdateEntityMismatchException;
+import no.fint.portal.model.ErrorResponse;
 import no.fint.portal.model.adapter.Adapter;
 import no.fint.portal.model.asset.Asset;
 import no.fint.portal.model.asset.AssetService;
 import no.fint.portal.model.client.Client;
 import no.fint.portal.model.organisation.Organisation;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.http.CacheControl;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -59,14 +59,7 @@ public class AssetController {
     public ResponseEntity<Asset> addAsset(@PathVariable String orgName,
                                           @RequestBody Asset asset) {
         Organisation organisation = portalApiService.getOrganisation(orgName);
-
-        Asset primaryAsset = assetService.getPrimaryAsset(organisation);
-        // TODO: 31/07/2018 This should be moved to the portal-api
-        asset.setAssetId(String.format("%s.%s", asset.getAssetId(), primaryAsset.getAssetId()));
-
-        if (isIllegalAssetID(asset.getAssetId())) throw new IllegalArgumentException("The assetId contains illegal characters: " + asset.getAssetId());
-        if (!assetService.addAsset(asset, organisation)) throw new CreateEntityMismatchException(asset.getAssetId());
-
+        assetService.addSubAsset(asset, organisation);
         return ResponseEntity.created(ServletUriComponentsBuilder.fromCurrentRequestUri().scheme(null).pathSegment(asset.getName()).build().toUri()).cacheControl(CacheControl.noStore()).build();
     }
 
@@ -164,9 +157,8 @@ public class AssetController {
         return ResponseEntity.noContent().cacheControl(CacheControl.noStore()).build();
     }
 
-    private boolean isIllegalAssetID(String assetId) {
-        return StringUtils.isBlank(assetId)
-                || !StringUtils.isAsciiPrintable(assetId)
-                || StringUtils.containsAny(assetId, " !\"#$%&'()*+,/:;<=>?@[\\]^`{}|~");
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<ErrorResponse> handleIllegalArgumentException(Exception e) {
+        return ResponseEntity.badRequest().body(new ErrorResponse(e.getMessage()));
     }
 }
