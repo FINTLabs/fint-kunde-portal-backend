@@ -18,6 +18,7 @@ public class SecureUrlAccessDecisionVoter implements AccessDecisionVoter<FilterI
 
     private final AuthorizationService authorizationService;
     private final String[] securePaths;
+    private final String[] ignoredPaths = {"/actuator/health", "/actuator/prometheus"};
 
     public SecureUrlAccessDecisionVoter(AuthorizationService authorizationService) {
         this.authorizationService = authorizationService;
@@ -38,10 +39,11 @@ public class SecureUrlAccessDecisionVoter implements AccessDecisionVoter<FilterI
 
     @Override
     public int vote(Authentication authentication, FilterInvocation invocation, Collection<ConfigAttribute> attributes) {
-        log.debug("Authorization: {}", invocation.getRequestUrl());
+
+        logDebug("Authorization: {}", invocation.getRequestUrl());
 
         if (!StringUtils.startsWithAny(invocation.getRequestUrl(), securePaths)) {
-            log.debug("Unsecured URL {}", invocation.getRequestUrl());
+            logDebug("Unsecured URL {}", invocation.getRequestUrl());
             return ACCESS_GRANTED;
         }
 
@@ -51,5 +53,15 @@ public class SecureUrlAccessDecisionVoter implements AccessDecisionVoter<FilterI
         }
 
         return authorizationService.authorizeRequest(authentication, invocation);
+    }
+
+    private void logDebug(String message, String requestUrl) {
+        if (notIgnoredPath(requestUrl)) {
+            log.debug(message, requestUrl);
+        }
+    }
+
+    private boolean notIgnoredPath(String requestUrl) {
+        return !StringUtils.startsWithAny(requestUrl, ignoredPaths);
     }
 }
