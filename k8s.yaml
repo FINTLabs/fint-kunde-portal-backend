@@ -132,7 +132,7 @@ spec:
         - name: logging.level.no.fint.portal.security
           value: debug
         - name: fint.unleash.api
-          value: http://unleash-server:4242/api/
+          value: https://unleash-api.fintlabs.no/api/
         resources:
           limits:
             cpu: "2"
