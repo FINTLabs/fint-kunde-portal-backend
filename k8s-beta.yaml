@@ -218,7 +218,7 @@ spec:
           - name: fint.rest-template.provider
             value: portal-api
       - name: zendesk-integration
-        image: ghcr.io/fintlabs/fint-zendesk-integration:sha-bcf2f9a
+        image: ghcr.io/fintlabs/fint-zendesk-integration:sha-702a517
         resources:
           limits:
             cpu: "2"
