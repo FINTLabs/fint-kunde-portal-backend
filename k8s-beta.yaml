@@ -164,7 +164,7 @@ spec:
           - mountPath: /etc/nginx/conf.d
             name: nginx-kunde-portal
       - name: frontend
-        image: fintlabsacr.azurecr.io/kunde-portal-frontend:latest
+        image: ghcr.io/fintlabs/fint-kunde-portal-frontend:latest
         imagePullPolicy: Always
         resources:
           limits:
