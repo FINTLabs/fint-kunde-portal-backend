@@ -16,6 +16,9 @@ spec:
   imagePullPolicy: Always
   orgId: fintlabs.no
   image: ghcr.io/fintlabs/fint-kunde-portal-backend:latest
+  url:
+    hostname: kunde-beta.felleskomponent.no
+    basePath: /api
   envFrom:
     - secretRef:
         name: fint-portal-user

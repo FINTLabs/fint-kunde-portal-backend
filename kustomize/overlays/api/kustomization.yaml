@@ -17,6 +17,9 @@ patches:
       - op: replace
         path: "/spec/env/1/value"
         value: 'https://unleash-api.fintlabs.no/api/'
+      - op: replace
+        path: "/spec/url/hostname"
+        value: 'kunde.felleskomponent.no'
     target:
       kind: Application
       name: fint-kunde-portal-backend
