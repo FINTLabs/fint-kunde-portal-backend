@@ -19,17 +19,28 @@ jobs:
       tags: ${{ steps.meta.outputs.tags }}
     steps:
       - name: Checkout repository
+<<<<<<< HEAD
         uses: actions/checkout@v4
 
       - name: Login to Docker Hub
         uses: docker/login-action@v3
+=======
+        uses: actions/checkout@v3.3.0
+
+      - name: Login to Docker Hub
+        uses: docker/login-action@v2.1.0
+>>>>>>> efc2afc (add kustomize & add CI/CD)
         with:
           registry: ${{ env.REGISTRY }}
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Extract metadata (tags, labels) for Docker
+<<<<<<< HEAD
         uses: docker/metadata-action@v5
+=======
+        uses: docker/metadata-action@v4.3.0
+>>>>>>> efc2afc (add kustomize & add CI/CD)
         id: meta
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
@@ -38,7 +49,11 @@ jobs:
             latest
 
       - name: Build and push Docker image
+<<<<<<< HEAD
         uses: docker/build-push-action@v5
+=======
+        uses: docker/build-push-action@v4
+>>>>>>> efc2afc (add kustomize & add CI/CD)
         with:
           context: .
           push: true
@@ -64,7 +79,11 @@ jobs:
 
     steps:
       - name: Checkout repository
+<<<<<<< HEAD
         uses: actions/checkout@v4
+=======
+        uses: actions/checkout@v3.3.0
+>>>>>>> efc2afc (add kustomize & add CI/CD)
 
       - name: Get environment
         uses: actions/github-script@v6
@@ -82,11 +101,16 @@ jobs:
 
       - name: Bake manifests with Kustomize
         id: bake
+<<<<<<< HEAD
         uses: azure/k8s-bake@v2
+=======
+        uses: azure/k8s-bake@v2.4
+>>>>>>> efc2afc (add kustomize & add CI/CD)
         with:
           renderEngine: 'kustomize'
           kustomizationPath: 'kustomize/overlays/${{ steps.environment.outputs.result }}'
 
+<<<<<<< HEAD
       - uses: azure/login@v1
         with:
           creds: "${{ secrets[format('AKS_{0}_FINT_GITHUB', steps.environment.outputs.result)] }}"
@@ -102,6 +126,14 @@ jobs:
           resource-group: '${{ steps.resource-group.outputs.result }}'
           admin: 'true'
           use-kubelogin: 'true'
+=======
+      - name: Set the target cluster
+        uses: azure/aks-set-context@v1
+        with:
+          creds: "${{ secrets[format('AKS_{0}_FINT_GITHUB', steps.environment.outputs.result)] }}"
+          cluster-name: '${{ matrix.cluster }}'
+          resource-group: '${{ steps.resource-group.outputs.result }}'
+>>>>>>> efc2afc (add kustomize & add CI/CD)
 
       - name: Deploy
         uses: azure/k8s-deploy@v4.9
