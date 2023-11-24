@@ -1,8 +1,9 @@
 name: CD
 
 on:
-  workflow_dispatch:
-
+  push:
+    branches:
+      - CT-750-oppgradere-kunde-portalen
   repository_dispatch:
     types: [trigger-cd]
 
