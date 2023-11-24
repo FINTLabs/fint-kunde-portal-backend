@@ -1,8 +1,8 @@
 package no.fint.portal.customer.controller;
 
 
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import no.fint.portal.customer.service.PortalApiService;
 import no.fint.portal.exceptions.EntityFoundException;
@@ -17,7 +17,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.ldap.NameNotFoundException;
-import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -27,7 +26,7 @@ import java.util.Optional;
 
 @Slf4j
 @RestController
-@Api(tags = "Adapters")
+@Tag(name = "Adapters")
 @CrossOrigin(origins = "*")
 @RequestMapping(value = "/api/adapters/{orgName}")
 public class AdapterController {
@@ -42,7 +41,7 @@ public class AdapterController {
         this.adapterService = adapterService;
     }
 
-    @ApiOperation("Add adapter")
+    @Operation(summary = "Add adapter")
     @RequestMapping(
             method = RequestMethod.POST,
             consumes = MediaType.APPLICATION_JSON_VALUE
@@ -68,7 +67,7 @@ public class AdapterController {
 
     }
 
-    @ApiOperation("Update adapter")
+    @Operation(summary = "Update adapter")
     @RequestMapping(method = RequestMethod.PUT,
             value = "/{adapterName}"
     )
@@ -100,7 +99,7 @@ public class AdapterController {
 
     }
 
-    @ApiOperation("Reset adapter password")
+    @Operation(summary = "Reset adapter password")
     @RequestMapping(method = RequestMethod.PUT,
             value = "/{adapterName}/password",
             consumes = MediaType.TEXT_PLAIN_VALUE
@@ -116,7 +115,7 @@ public class AdapterController {
         return ResponseEntity.ok().cacheControl(CacheControl.noStore()).body(adapter);
     }
 
-    @ApiOperation("Get all adapters")
+    @Operation(summary = "Get all adapters")
     @RequestMapping(
             method = RequestMethod.GET
     )
@@ -128,7 +127,7 @@ public class AdapterController {
         return ResponseEntity.ok().cacheControl(CacheControl.noStore()).body(adapters);
     }
 
-    @ApiOperation("Get adapter")
+    @Operation(summary = "Get adapter")
     @RequestMapping(
             method = RequestMethod.GET,
             value = "/{adapterName}"
@@ -141,7 +140,7 @@ public class AdapterController {
         return ResponseEntity.ok().cacheControl(CacheControl.noStore()).body(adapter);
     }
 
-    @ApiOperation("Get Adapter OpenID Secret")
+    @Operation(summary = "Get Adapter OpenID Secret")
     @RequestMapping(
             method = RequestMethod.GET,
             value = "/{adapterName}/secret"
@@ -154,7 +153,7 @@ public class AdapterController {
         return ResponseEntity.ok().cacheControl(CacheControl.noStore()).body(adapterService.getAdapterSecret(adapter));
     }
 
-    @ApiOperation("Delete adapter")
+    @Operation(summary = "Delete adapter")
     @RequestMapping(method = RequestMethod.DELETE,
             value = "/{adapterName}"
     )

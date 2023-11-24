@@ -1,6 +1,6 @@
 package no.fint.portal.customer.controller;
 
-import io.swagger.annotations.Api;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import no.finn.unleash.DefaultUnleash;
 import no.fint.audit.model.AuditEvent;
@@ -22,7 +22,7 @@ import java.util.List;
 
 @Slf4j
 @RestController
-@Api(tags = "Events")
+@Tag(name = "Events")
 @CrossOrigin(origins = "*")
 @RequestMapping(path = "/api/events/{orgName}/{environment}", produces = MediaType.APPLICATION_JSON_VALUE)
 public class EventsController {

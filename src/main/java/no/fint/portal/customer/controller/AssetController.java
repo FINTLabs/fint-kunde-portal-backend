@@ -1,10 +1,10 @@
 package no.fint.portal.customer.controller;
 
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
+
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import no.fint.portal.customer.service.PortalApiService;
-import no.fint.portal.exceptions.CreateEntityMismatchException;
 import no.fint.portal.exceptions.UpdateEntityMismatchException;
 import no.fint.portal.model.ErrorResponse;
 import no.fint.portal.model.adapter.Adapter;
@@ -21,7 +21,7 @@ import java.util.List;
 
 @Slf4j
 @RestController
-@Api(tags = "Assets")
+@Tag(name = "Assets")
 @CrossOrigin(origins = "*")
 @RequestMapping(value = "/api/assets/{orgName}")
 public class AssetController {
@@ -36,7 +36,7 @@ public class AssetController {
         this.assetService = assetService;
     }
 
-    @ApiOperation("Get all Assets")
+    @Operation(summary = "Get all Assets")
     @GetMapping("/")
     public ResponseEntity<List<Asset>> getAssets(@PathVariable("orgName") String orgName) {
         Organisation organisation = portalApiService.getOrganisation(orgName);
@@ -44,7 +44,7 @@ public class AssetController {
         return ResponseEntity.ok().cacheControl(CacheControl.noStore()).body(assets);
     }
 
-    @ApiOperation("Get Primary Asset ID")
+    @Operation(summary = "Get Primary Asset ID")
     @GetMapping("/primary")
     public ResponseEntity<Asset> getPrimaryAsset(@PathVariable("orgName") String orgName) {
         Organisation organisation = portalApiService.getOrganisation(orgName);
@@ -54,7 +54,7 @@ public class AssetController {
 
     }
 
-    @ApiOperation("Create Asset")
+    @Operation(summary = "Create Asset")
     @PostMapping("/")
     public ResponseEntity<Asset> addAsset(@PathVariable String orgName,
                                           @RequestBody Asset asset) {
@@ -63,7 +63,7 @@ public class AssetController {
         return ResponseEntity.created(ServletUriComponentsBuilder.fromCurrentRequestUri().scheme(null).pathSegment(asset.getName()).build().toUri()).cacheControl(CacheControl.noStore()).build();
     }
 
-    @ApiOperation("Get Asset by Name")
+    @Operation(summary = "Get Asset by Name")
     @GetMapping("/{assetId}")
     public ResponseEntity<Asset> getAssetByName(@PathVariable String orgName,
                                                 @PathVariable String assetId) {
@@ -72,7 +72,7 @@ public class AssetController {
         return ResponseEntity.ok().cacheControl(CacheControl.noStore()).body(asset);
     }
 
-    @ApiOperation("Update Asset")
+    @Operation(summary = "Update Asset")
     @PutMapping("/{assetId}")
     public ResponseEntity<Asset> updateAsset(@PathVariable String orgName,
                                              @PathVariable String assetId,
@@ -89,7 +89,7 @@ public class AssetController {
         return ResponseEntity.ok().cacheControl(CacheControl.noStore()).body(original);
     }
 
-    @ApiOperation("Delete Asset")
+    @Operation(summary = "Delete Asset")
     @DeleteMapping("/{assetId}")
     public ResponseEntity<Void> removeAsset(@PathVariable String orgName,
                                             @PathVariable String assetId) {
@@ -101,7 +101,7 @@ public class AssetController {
         return ResponseEntity.noContent().cacheControl(CacheControl.noStore()).build();
     }
 
-    @ApiOperation("Link Client to Asset")
+    @Operation(summary = "Link Client to Asset")
     @PutMapping("/{assetId}/clients/{clientName}")
     public ResponseEntity<Void> linkClientToAsset(@PathVariable String orgName,
                                                   @PathVariable String assetId,
@@ -115,7 +115,7 @@ public class AssetController {
         return ResponseEntity.noContent().cacheControl(CacheControl.noStore()).build();
     }
 
-    @ApiOperation("Unlink Client from Asset")
+    @Operation(summary = "Unlink Client from Asset")
     @DeleteMapping("/{assetId}/clients/{clientName}")
     public ResponseEntity<Void> unlinkClientFromAsset(@PathVariable String orgName,
                                                       @PathVariable String assetId,
@@ -129,7 +129,7 @@ public class AssetController {
         return ResponseEntity.noContent().cacheControl(CacheControl.noStore()).build();
     }
 
-    @ApiOperation("Link Adapter to Asset")
+    @Operation(summary = "Link Adapter to Asset")
     @PutMapping("/{assetId}/adapters/{adapterName}")
     public ResponseEntity<Void> linkAdapterToAsset(@PathVariable String orgName,
                                                    @PathVariable String assetId,
@@ -143,7 +143,7 @@ public class AssetController {
         return ResponseEntity.noContent().cacheControl(CacheControl.noStore()).build();
     }
 
-    @ApiOperation("Unlink Adapter from Asset")
+    @Operation(summary = "Unlink Adapter from Asset")
     @DeleteMapping("/{assetId}/adapters/{adapterName}")
     public ResponseEntity<Void> unlinkAdapterFromAsset(@PathVariable String orgName,
                                                        @PathVariable String assetId,

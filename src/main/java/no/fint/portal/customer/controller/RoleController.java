@@ -1,6 +1,6 @@
 package no.fint.portal.customer.controller;
 
-import io.swagger.annotations.Api;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import no.finn.unleash.DefaultUnleash;
 import no.fint.portal.customer.service.RoleConfig;
@@ -14,7 +14,7 @@ import java.util.List;
 
 @Slf4j
 @RestController
-@Api(tags = "Roles")
+@Tag(name = "Roles")
 //@CrossOrigin(origins = "*")
 @RequestMapping(value = "/api/role")
 public class RoleController {
