@@ -1,8 +1,8 @@
 package no.fint.portal.customer.controller;
 
 
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import no.fint.portal.customer.service.PortalApiService;
 import no.fint.portal.exceptions.EntityFoundException;
@@ -27,7 +27,7 @@ import java.util.Optional;
 
 @Slf4j
 @RestController
-@Api(tags = "Clients")
+@Tag(name = "Clients")
 @CrossOrigin(origins = "*")
 @RequestMapping(value = "/api/clients/{orgName}")
 public class ClientController {
@@ -39,7 +39,7 @@ public class ClientController {
     private ClientService clientService;
 
 
-    @ApiOperation("Add client")
+    @Operation(summary = "Add client")
     @RequestMapping(method = RequestMethod.POST,
             consumes = MediaType.APPLICATION_JSON_VALUE
     )
@@ -64,7 +64,7 @@ public class ClientController {
         );
     }
 
-    @ApiOperation("Update client")
+    @Operation(summary = "Update client")
     @RequestMapping(method = RequestMethod.PUT,
             value = "/{clientName}"
     )
@@ -96,7 +96,7 @@ public class ClientController {
     }
 
 
-    @ApiOperation("Reset client password")
+    @Operation(summary = "Reset client password")
     @RequestMapping(method = RequestMethod.PUT,
             value = "/{clientName}/password"
     )
@@ -110,7 +110,7 @@ public class ClientController {
         return ResponseEntity.ok().cacheControl(CacheControl.noStore()).body(client);
     }
 
-    @ApiOperation("Get all clients")
+    @Operation(summary = "Get all clients")
     @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity<List<Client>> getAllClients(@PathVariable("orgName") final String orgName) {
         Organisation organisation = portalApiService.getOrganisation(orgName);
@@ -119,7 +119,7 @@ public class ClientController {
         return ResponseEntity.ok().cacheControl(CacheControl.noStore()).body(list);
     }
 
-    @ApiOperation("Get client")
+    @Operation(summary = "Get client")
     @RequestMapping(method = RequestMethod.GET,
             value = "/{clientName}"
     )
@@ -131,7 +131,7 @@ public class ClientController {
         return ResponseEntity.ok().cacheControl(CacheControl.noStore()).body(client);
     }
 
-    @ApiOperation("Get Client OpenID Secret")
+    @Operation(summary = "Get Client OpenID Secret")
     @RequestMapping(
             method = RequestMethod.GET,
             value = "/{clientName}/secret"
@@ -145,7 +145,7 @@ public class ClientController {
     }
 
 
-    @ApiOperation("Delete client")
+    @Operation(summary = "Delete client")
     @RequestMapping(method = RequestMethod.DELETE,
             value = "/{clientName}"
     )

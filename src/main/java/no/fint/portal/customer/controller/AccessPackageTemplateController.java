@@ -1,7 +1,8 @@
 package no.fint.portal.customer.controller;
 
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
+
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import no.fint.portal.customer.exception.InvalidResourceException;
 import no.fint.portal.model.access.AccessPackage;
@@ -19,7 +20,7 @@ import java.util.List;
 
 @Slf4j
 @RestController
-@Api(tags = "Access package template")
+@Tag(name = "Access package template")
 @CrossOrigin(origins = "*")
 @RequestMapping(value = "/api/accesspackage/template")
 public class AccessPackageTemplateController {
@@ -29,7 +30,7 @@ public class AccessPackageTemplateController {
         this.accessPackageTemplateService = accessPackageTemplateService;
     }
 
-    @ApiOperation("Get all access package template")
+    @Operation(summary = "Get all access package template")
     @Retryable(
             backoff = @Backoff(delay = 200L),
             value = {InvalidResourceException.class},

@@ -1,7 +1,8 @@
 package no.fint.portal.customer.controller;
 
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
+
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import no.fint.portal.customer.service.IdentityMaskingService;
 import no.fint.portal.customer.service.PortalApiService;
@@ -25,7 +26,7 @@ import java.util.stream.Stream;
 
 @Slf4j
 @RestController
-@Api(tags = "Contacts")
+@Tag(name = "Contacts")
 @CrossOrigin(origins = "*")
 @RequestMapping(value = "/api/contacts")
 public class ContactController {
@@ -42,7 +43,7 @@ public class ContactController {
         this.identityMaskingService = identityMaskingService;
     }
 
-    @ApiOperation("Get all contacts")
+    @Operation(summary = "Get all contacts")
     @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity<List<Contact>> getContacts() {
         var contacts = identityMaskingService.getMaskedContacts();
@@ -54,13 +55,13 @@ public class ContactController {
         throw new EntityNotFoundException("No contacts found.");
     }
 
-    @ApiOperation("Get contact by nin")
+    @Operation(summary = "Get contact by nin")
     @GetMapping("/{nin}")
     public ResponseEntity<Contact> getContact(@PathVariable String nin) {
         return ResponseEntity.ok(identityMaskingService.getMaskedContact(nin));
     }
 
-    @ApiOperation("Get contact's organisations")
+    @Operation(summary = "Get contact's organisations")
     @GetMapping(value = "/organisations")
     public ResponseEntity<List<Organisation>> getContactOrganisations(@RequestHeader(value = "x-nin") final String nin) {
         var contact = contactService.getContact(nin).orElseThrow(() -> new EntityNotFoundException("Contact not found"));

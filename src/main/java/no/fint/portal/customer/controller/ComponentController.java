@@ -1,8 +1,9 @@
 package no.fint.portal.customer.controller;
 
 
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
+
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import no.fint.portal.customer.service.PortalApiService;
 import no.fint.portal.exceptions.EntityFoundException;
@@ -27,7 +28,7 @@ import java.util.List;
 
 @Slf4j
 @RestController
-@Api(tags = "Components")
+@Tag(name = "Components")
 @CrossOrigin(origins = "*")
 @RequestMapping(value = "/api/components")
 public class ComponentController {
@@ -42,7 +43,7 @@ public class ComponentController {
         this.componentService = componentService;
     }
 
-    @ApiOperation("Get all components")
+    @Operation(summary = "Get all components")
     @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity<List<Component>> getComponents() {
         List<Component> components = portalApiService.getComponents();
@@ -50,7 +51,7 @@ public class ComponentController {
         return ResponseEntity.ok().cacheControl(CacheControl.noStore()).body(components);
     }
 
-    @ApiOperation("Get component by name")
+    @Operation(summary = "Get component by name")
     @RequestMapping(method = RequestMethod.GET, value = "/{compName}")
     public ResponseEntity<Component> getComponent(@PathVariable String compName) {
         Component component = portalApiService.getComponentByName(compName);
@@ -58,7 +59,7 @@ public class ComponentController {
         return ResponseEntity.ok().cacheControl(CacheControl.noStore()).body(component);
     }
 
-    @ApiOperation(("Get components actived by an organisation"))
+    @Operation(summary = "Get components actived by an organisation")
     @GetMapping(value = "organisation/{orgName}")
     public ResponseEntity<List<Component>> getOrganisationComponents(@PathVariable String orgName) {
         List<Component> components = new ArrayList<>();//portalApiService.getComponents();
@@ -69,7 +70,7 @@ public class ComponentController {
         return ResponseEntity.ok().cacheControl(CacheControl.noStore()).body(components);
     }
 
-    @ApiOperation("Add adapter to component")
+    @Operation(summary = "Add adapter to component")
     @RequestMapping(method = RequestMethod.PUT,
             consumes = MediaType.APPLICATION_JSON_VALUE,
             value = "/organisation/{orgName}/{compName}/adapters/{adapterName}"
@@ -85,7 +86,7 @@ public class ComponentController {
         return ResponseEntity.noContent().cacheControl(CacheControl.noStore()).build();
     }
 
-    @ApiOperation("Remove adapter from component")
+    @Operation(summary = "Remove adapter from component")
     @RequestMapping(method = RequestMethod.DELETE,
             value = "/organisation/{orgName}/{compName}/adapters/{adapterName}"
     )
@@ -101,7 +102,7 @@ public class ComponentController {
     }
 
 
-    @ApiOperation("Add client to component")
+    @Operation(summary = "Add client to component")
     @RequestMapping(method = RequestMethod.PUT,
             consumes = MediaType.APPLICATION_JSON_VALUE,
             value = "/organisation/{orgName}/{compName}/clients/{clientName}"
@@ -117,7 +118,7 @@ public class ComponentController {
         return ResponseEntity.noContent().cacheControl(CacheControl.noStore()).build();
     }
 
-    @ApiOperation("Remove client from component")
+    @Operation(summary = "Remove client from component")
     @RequestMapping(method = RequestMethod.DELETE,
             value = "/organisation/{orgName}/{compName}/clients/{clientName}"
     )

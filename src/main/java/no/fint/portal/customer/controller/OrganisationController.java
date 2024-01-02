@@ -1,7 +1,8 @@
 package no.fint.portal.customer.controller;
 
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
+
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import no.finn.unleash.DefaultUnleash;
 import no.fint.portal.customer.service.IdentityMaskingService;
@@ -34,7 +35,7 @@ import java.util.stream.Stream;
 
 @Slf4j
 @RestController
-@Api(tags = "Organisations")
+@Tag(name = "Organisations")
 @CrossOrigin(origins = "*")
 @RequestMapping(value = "/api/organisations/{orgName}")
 public class OrganisationController {
@@ -59,14 +60,14 @@ public class OrganisationController {
     }
 
     @GetMapping("/")
-    @ApiOperation("Get Organisation")
+    @Operation(summary = "Get Organisation")
     public ResponseEntity<Organisation> getOrganisationDetails(@PathVariable String orgName) {
         Organisation organisation = portalApiService.getOrganisation(orgName);
         return ResponseEntity.ok().cacheControl(CacheControl.noStore()).body(identityMaskingService.mask(organisation));
     }
 
     @PutMapping("/")
-    @ApiOperation("Update Organisation")
+    @Operation(summary = "Update Organisation")
     public ResponseEntity<Organisation> updateOrganisation(@PathVariable String orgName,
                                                            @RequestBody Organisation organisation) {
         Organisation original = portalApiService.getOrganisation(orgName);
@@ -81,7 +82,7 @@ public class OrganisationController {
     }
 
 
-    @ApiOperation("Get primary asset")
+    @Operation(summary = "Get primary asset")
     @GetMapping(value = "/asset/primary")
     public ResponseEntity<Asset> getOrganizationPrimaryAsset(@PathVariable String orgName) {
         Optional<Organisation> organisation = organisationService.getOrganisation(orgName);
@@ -100,7 +101,7 @@ public class OrganisationController {
     }
 
     @GetMapping("/contacts/legal")
-    @ApiOperation("Get Legal Contact")
+    @Operation(summary = "Get Legal Contact")
     public ResponseEntity<Contact> getLegalContact(@PathVariable String orgName) {
         Organisation organisation = portalApiService.getOrganisation(orgName);
 
@@ -111,7 +112,7 @@ public class OrganisationController {
     }
 
     @PutMapping("/contacts/legal/{nin}")
-    @ApiOperation("Set Legal Contact")
+    @Operation(summary = "Set Legal Contact")
     public ResponseEntity<Void> linkLegalContact(@PathVariable String orgName, @PathVariable String nin) {
         Organisation organisation = portalApiService.getOrganisation(orgName);
         Contact contact = portalApiService.getContact(identityMaskingService.unmask(nin));
@@ -122,7 +123,7 @@ public class OrganisationController {
     }
 
     @DeleteMapping("/contacts/legal/{nin}")
-    @ApiOperation("Unset Legal Contact")
+    @Operation(summary = "Unset Legal Contact")
     public ResponseEntity<Void> unLinkLegalContact(@PathVariable String orgName, @PathVariable String nin) {
         Organisation organisation = portalApiService.getOrganisation(orgName);
         Contact contact = portalApiService.getContact(identityMaskingService.unmask(nin));
@@ -132,7 +133,7 @@ public class OrganisationController {
         return ResponseEntity.noContent().cacheControl(CacheControl.noStore()).build();
     }
 
-    @ApiOperation("Add roles to contact")
+    @Operation(summary = "Add roles to contact")
     @PutMapping("/contacts/roles/{nin}/{roles}")
     public ResponseEntity<Void> addRoles(@PathVariable String orgName, @PathVariable final String nin, @PathVariable final RoleConfig.RoleId... roles) {
 
@@ -154,7 +155,7 @@ public class OrganisationController {
 
     }
 
-    @ApiOperation("Remove roles from contact")
+    @Operation(summary = "Remove roles from contact")
     @DeleteMapping("/contacts/roles/{nin}/{roles}")
     public ResponseEntity<Void> removeRoles(@PathVariable String orgName, @PathVariable final String nin, @PathVariable final RoleConfig.RoleId... roles) {
 
@@ -176,7 +177,7 @@ public class OrganisationController {
     }
 
     @GetMapping("/contacts/technical")
-    @ApiOperation("Get Technical Contacts")
+    @Operation(summary = "Get Technical Contacts")
     public ResponseEntity<List<Contact>> getTechnicalContacts(@PathVariable String orgName) {
         Organisation organisation = portalApiService.getOrganisation(orgName);
         List<Contact> technicalContacts = organisationService.getTechnicalContacts(organisation).stream().map(identityMaskingService::mask).collect(Collectors.toList());
@@ -185,7 +186,7 @@ public class OrganisationController {
     }
 
     @PutMapping("/contacts/technical/{nin}")
-    @ApiOperation("Add Technical Contact")
+    @Operation(summary = "Add Technical Contact")
     public ResponseEntity<Void> linkTechnicalContact(@PathVariable String orgName, @PathVariable String nin) {
         Organisation organisation = portalApiService.getOrganisation(orgName);
         Contact contact = portalApiService.getContact(identityMaskingService.unmask(nin));
@@ -196,7 +197,7 @@ public class OrganisationController {
     }
 
     @DeleteMapping("/contacts/technical/{nin}")
-    @ApiOperation("Remove Technical Contact")
+    @Operation(summary = "Remove Technical Contact")
     public ResponseEntity<Void> unLinkTechnicalContact(@PathVariable String orgName, @PathVariable String nin) {
         Organisation organisation = portalApiService.getOrganisation(orgName);
         Contact contact = portalApiService.getContact(identityMaskingService.unmask(nin));
@@ -207,7 +208,7 @@ public class OrganisationController {
     }
 
     @PutMapping("/components/{compName}")
-    @ApiOperation("Link Component")
+    @Operation(summary = "Link Component")
     public ResponseEntity<Void> linkComponent(@PathVariable String orgName, @PathVariable String compName) {
         Organisation organisation = portalApiService.getOrganisation(orgName);
         Component component = portalApiService.getComponentByName(compName);
@@ -219,7 +220,7 @@ public class OrganisationController {
 
 
     @DeleteMapping("/components/{compName}")
-    @ApiOperation("Unlink Component")
+    @Operation(summary = "Unlink Component")
     public ResponseEntity<Void> unLinkComponent(@PathVariable String orgName, @PathVariable String compName) {
         Organisation organisation = portalApiService.getOrganisation(orgName);
         Component component = portalApiService.getComponentByName(compName);

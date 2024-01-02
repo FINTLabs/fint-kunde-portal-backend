@@ -1,6 +1,7 @@
 package no.fint.portal.customer.controller;
 
-import io.swagger.annotations.Api;
+
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import no.fint.portal.model.ComponentConfiguration;
 import org.springframework.beans.factory.annotation.Value;
@@ -19,7 +20,7 @@ import java.util.stream.Collectors;
 
 @Slf4j
 @RestController
-@Api(tags = "Component Configurations")
+@Tag(name = "Component Configurations")
 @CrossOrigin(origins = "*")
 @RequestMapping(value = "/api/components/configurations")
 
