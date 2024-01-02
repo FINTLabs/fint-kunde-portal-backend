@@ -1,7 +1,8 @@
 package no.fint.portal.customer.controller;
 
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
+
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import no.fint.portal.customer.service.PortalApiService;
 import no.fint.portal.exceptions.CreateEntityMismatchException;
@@ -19,7 +20,7 @@ import java.util.List;
 
 @Slf4j
 @RestController
-@Api(tags = "Accesses")
+@Tag(name = "Accesses")
 @CrossOrigin(origins = "*")
 @RequestMapping(value = "/accesses/{orgName}")
 public class AccessPackageController {
@@ -33,7 +34,7 @@ public class AccessPackageController {
         this.accessService = accessService;
     }
 
-    @ApiOperation("Get all Accesses")
+    @Operation(summary = "Get all Accesses")
     @GetMapping("/")
     public ResponseEntity<List<AccessPackage>> getAccesses(@PathVariable("orgName") String orgName) {
         Organisation organisation = portalApiService.getOrganisation(orgName);
@@ -41,7 +42,7 @@ public class AccessPackageController {
         return ResponseEntity.ok().cacheControl(CacheControl.noStore()).body(accessPackages);
     }
 
-    @ApiOperation("Create Access")
+    @Operation(summary = "Create Access")
     @PostMapping("/")
     public ResponseEntity<AccessPackage> addAccess(@PathVariable String orgName,
                                                    @RequestBody AccessPackage accessPackage) {
@@ -53,7 +54,7 @@ public class AccessPackageController {
         return ResponseEntity.created(ServletUriComponentsBuilder.fromCurrentRequestUri().scheme(null).pathSegment(accessPackage.getName()).build().toUri()).cacheControl(CacheControl.noStore()).body(accessPackage);
     }
 
-    @ApiOperation("Get Access by Name")
+    @Operation(summary = "Get Access by Name")
     @GetMapping("/{accessId}")
     public ResponseEntity<AccessPackage> getAccessByName(@PathVariable String orgName,
                                                          @PathVariable String accessId) {
@@ -62,7 +63,7 @@ public class AccessPackageController {
         return ResponseEntity.ok().cacheControl(CacheControl.noStore()).body(accessPackage);
     }
 
-    @ApiOperation("Update Access")
+    @Operation(summary = "Update Access")
     @PutMapping("/{accessId}")
     public ResponseEntity<AccessPackage> updateAccess(@PathVariable String orgName,
                                                       @PathVariable String accessId,
@@ -92,7 +93,7 @@ public class AccessPackageController {
         return ResponseEntity.ok().cacheControl(CacheControl.noStore()).body(accessPackage);
     }
 
-    @ApiOperation("Delete Access")
+    @Operation(summary = "Delete Access")
     @DeleteMapping("/{accessId}")
     public ResponseEntity<Void> removeAccess(@PathVariable String orgName,
                                              @PathVariable String accessId) {
@@ -104,7 +105,7 @@ public class AccessPackageController {
         return ResponseEntity.noContent().cacheControl(CacheControl.noStore()).build();
     }
 
-    @ApiOperation("Link Client to Access")
+    @Operation(summary = "Link Client to Access")
     @PutMapping("/{accessId}/clients/{clientName}")
     public ResponseEntity<Void> linkClientToAccess(@PathVariable String orgName,
                                                    @PathVariable String accessId,
@@ -118,7 +119,7 @@ public class AccessPackageController {
         return ResponseEntity.noContent().cacheControl(CacheControl.noStore()).build();
     }
 
-    @ApiOperation("Unlink Client from Access")
+    @Operation(summary = "Unlink Client from Access")
     @DeleteMapping("/{accessId}/clients/{clientName}")
     public ResponseEntity<Void> unlinkClientFromAccess(@PathVariable String orgName,
                                                        @PathVariable String accessId,

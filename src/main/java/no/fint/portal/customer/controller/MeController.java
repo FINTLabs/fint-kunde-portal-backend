@@ -1,7 +1,8 @@
 package no.fint.portal.customer.controller;
 
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
+
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import no.finn.unleash.DefaultUnleash;
 import no.fint.portal.customer.service.PortalApiService;
@@ -26,7 +27,7 @@ import java.util.stream.Stream;
 
 @Slf4j
 @RestController
-@Api(tags = "Me")
+@Tag(name = "Me")
 @CrossOrigin(origins = "*")
 @RequestMapping(value = "/me")
 public class MeController {
@@ -42,7 +43,7 @@ public class MeController {
     }
 
 
-    @ApiOperation("Get Me")
+    @Operation(summary = "Get Me")
     @GetMapping
     public ResponseEntity<Contact> getMe(@RequestHeader(name = "x-nin") final String nin) {
         if (StringUtils.isEmpty(nin)) {
