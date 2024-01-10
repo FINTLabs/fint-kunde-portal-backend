@@ -21,7 +21,7 @@ import java.util.Collections;
 @RestController
 @Tag(name = "Tests")
 @CrossOrigin(origins = "*")
-@RequestMapping("/api/tests/{orgName}")
+@RequestMapping("/tests/{orgName}")
 public class TestsController {
     private final RestTemplate restTemplate;
     private final String linkWalkerUri;

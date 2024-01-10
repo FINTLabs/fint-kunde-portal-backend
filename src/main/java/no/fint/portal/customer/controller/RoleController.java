@@ -16,7 +16,7 @@ import java.util.List;
 @RestController
 @Tag(name = "Roles")
 //@CrossOrigin(origins = "*")
-@RequestMapping(value = "/api/role")
+@RequestMapping(value = "/role")
 public class RoleController {
 
     private final RoleConfig roleConfig;

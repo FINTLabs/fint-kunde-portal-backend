@@ -22,7 +22,7 @@ import java.util.stream.Collectors;
 @RestController
 @Tag(name = "Component Configurations")
 @CrossOrigin(origins = "*")
-@RequestMapping(value = "/api/components/configurations")
+@RequestMapping(value = "/components/configurations")
 
 public class ComponentConfigController {
     private final RestTemplate restTemplate;

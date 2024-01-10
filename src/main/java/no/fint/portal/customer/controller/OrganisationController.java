@@ -37,7 +37,7 @@ import java.util.stream.Stream;
 @RestController
 @Tag(name = "Organisations")
 @CrossOrigin(origins = "*")
-@RequestMapping(value = "/api/organisations/{orgName}")
+@RequestMapping(value = "/organisations/{orgName}")
 public class OrganisationController {
 
     final

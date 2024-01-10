@@ -22,7 +22,7 @@ import java.util.List;
 @RestController
 @Tag(name = "Access package template")
 @CrossOrigin(origins = "*")
-@RequestMapping(value = "/api/accesspackage/template")
+@RequestMapping(value = "/accesspackage/template")
 public class AccessPackageTemplateController {
     private final AccessPackageTemplateService accessPackageTemplateService;
 

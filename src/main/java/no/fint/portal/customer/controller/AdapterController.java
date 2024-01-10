@@ -28,7 +28,7 @@ import java.util.Optional;
 @RestController
 @Tag(name = "Adapters")
 @CrossOrigin(origins = "*")
-@RequestMapping(value = "/api/adapters/{orgName}")
+@RequestMapping(value = "/adapters/{orgName}")
 public class AdapterController {
 
     final

@@ -22,7 +22,7 @@ import java.util.List;
 @RestController
 @Tag(name = "Accesses")
 @CrossOrigin(origins = "*")
-@RequestMapping(value = "/api/accesses/{orgName}")
+@RequestMapping(value = "/accesses/{orgName}")
 public class AccessPackageController {
 
     private final PortalApiService portalApiService;
