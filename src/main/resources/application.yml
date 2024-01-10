@@ -2,6 +2,7 @@ springfox:
   title: 'FINT Kunde Portal API'
   version: '@version@'
 
+
 fint:
   identity:
     rotate:
@@ -107,6 +108,9 @@ management:
 
 
 spring:
+  mvc:
+    servlet:
+      path: /api
   cache:
     cache-names:
       - users

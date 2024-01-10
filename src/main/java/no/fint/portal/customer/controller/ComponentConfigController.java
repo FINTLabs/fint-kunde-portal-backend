@@ -21,7 +21,7 @@ import java.util.stream.Collectors;
 @RestController
 @Api(tags = "Component Configurations")
 @CrossOrigin(origins = "*")
-@RequestMapping(value = "/api/components/configurations")
+@RequestMapping(value = "/components/configurations")
 
 public class ComponentConfigController {
     private final RestTemplate restTemplate;

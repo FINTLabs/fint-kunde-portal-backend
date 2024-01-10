@@ -29,7 +29,7 @@ import java.util.List;
 @RestController
 @Api(tags = "Components")
 @CrossOrigin(origins = "*")
-@RequestMapping(value = "/api/components")
+@RequestMapping(value = "/components")
 public class ComponentController {
 
     final

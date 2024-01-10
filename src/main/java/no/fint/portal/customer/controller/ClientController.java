@@ -29,7 +29,7 @@ import java.util.Optional;
 @RestController
 @Api(tags = "Clients")
 @CrossOrigin(origins = "*")
-@RequestMapping(value = "/api/clients/{orgName}")
+@RequestMapping(value = "/clients/{orgName}")
 public class ClientController {
 
     @Autowired

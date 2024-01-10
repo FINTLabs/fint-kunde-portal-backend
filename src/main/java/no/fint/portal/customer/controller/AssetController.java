@@ -23,7 +23,7 @@ import java.util.List;
 @RestController
 @Api(tags = "Assets")
 @CrossOrigin(origins = "*")
-@RequestMapping(value = "/api/assets/{orgName}")
+@RequestMapping(value = "/assets/{orgName}")
 public class AssetController {
 
     final

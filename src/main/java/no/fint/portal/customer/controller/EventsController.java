@@ -24,7 +24,7 @@ import java.util.List;
 @RestController
 @Api(tags = "Events")
 @CrossOrigin(origins = "*")
-@RequestMapping(path = "/api/events/{orgName}/{environment}", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(path = "/events/{orgName}/{environment}", produces = MediaType.APPLICATION_JSON_VALUE)
 public class EventsController {
 
     private final RestTemplate restTemplate;

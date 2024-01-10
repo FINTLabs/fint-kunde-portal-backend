@@ -28,7 +28,7 @@ import java.util.stream.Stream;
 @RestController
 @Api(tags = "Me")
 @CrossOrigin(origins = "*")
-@RequestMapping(value = "/api/me")
+@RequestMapping(value = "/me")
 public class MeController {
 
     private final PortalApiService portalApiService;

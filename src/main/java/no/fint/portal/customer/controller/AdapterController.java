@@ -29,7 +29,7 @@ import java.util.Optional;
 @RestController
 @Api(tags = "Adapters")
 @CrossOrigin(origins = "*")
-@RequestMapping(value = "/api/adapters/{orgName}")
+@RequestMapping(value = "/adapters/{orgName}")
 public class AdapterController {
 
     final
