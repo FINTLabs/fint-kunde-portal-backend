@@ -120,3 +120,8 @@ spring:
       spec: expireAfterWrite=5m
   application:
     name: "fint-kunde-portal"
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: https://idp.felleskomponent.no/nidp/oauth/nam
