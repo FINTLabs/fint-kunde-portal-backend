@@ -49,7 +49,7 @@ jobs:
         with:
           package-name: 'fint-kunde-portal-backend'
           package-type: 'container'
-          min-versions-to-keep: 5
+          num-old-versions-to-delete: 3
           delete-only-untagged-versions: 'false'
 
   deploy-to-aks:
