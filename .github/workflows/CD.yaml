@@ -45,6 +45,13 @@ jobs:
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
 
+      - uses: actions/delete-package-versions@v4
+        with:
+          package-name: 'fint-kunde-portal-backend'
+          package-type: 'container'
+          min-versions-to-keep: 5
+          delete-only-untagged-versions: 'false'
+
   deploy-to-aks:
     name: deploy for ${{ matrix.org }} to ${{ matrix.cluster }}
     runs-on: ubuntu-latest
