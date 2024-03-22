@@ -52,7 +52,7 @@ dependencies {
 
     implementation 'org.apache.commons:commons-lang3:3.7'
     implementation 'no.finn.unleash:unleash-client-java:3.3.4'
-    implementation 'no.fintlabs:fint-feature-toggle-service:2.0.0-rc1'
+    implementation 'no.fint:fint-feature-toggle-service:1.0.1'
 
     runtimeOnly 'org.springframework.boot:spring-boot-devtools'
 
