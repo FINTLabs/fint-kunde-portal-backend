@@ -4,6 +4,7 @@ import io.getunleash.Unleash;
 import no.fint.portal.customer.service.IdentityMaskingService;
 import no.fint.portal.model.contact.Contact;
 import no.fint.portal.model.organisation.Organisation;
+import no.fintlabs.featuretoggle.UnleashProperties;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
@@ -34,6 +35,9 @@ public class IntegrationTest {
 
     @MockBean
     IdentityMaskingService identityMaskingService;
+
+    @MockBean
+    UnleashProperties unleashProperties;
 
     @MockBean
     Unleash unleash;
