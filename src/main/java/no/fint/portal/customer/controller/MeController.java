@@ -1,10 +1,10 @@
 package no.fint.portal.customer.controller;
 
 
+import io.getunleash.Unleash;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
-import no.finn.unleash.DefaultUnleash;
 import no.fint.portal.customer.service.PortalApiService;
 import no.fint.portal.exceptions.CreateEntityMismatchException;
 import no.fint.portal.exceptions.EntityFoundException;
@@ -34,9 +34,9 @@ public class MeController {
 
     private final PortalApiService portalApiService;
     private final OrganisationService organisationService;
-    private final DefaultUnleash unleashClient;
+    private final Unleash unleashClient;
 
-    public MeController(PortalApiService portalApiService, OrganisationService organisationService, DefaultUnleash unleashClient) {
+    public MeController(PortalApiService portalApiService, OrganisationService organisationService, Unleash unleashClient) {
         this.portalApiService = portalApiService;
         this.organisationService = organisationService;
         this.unleashClient = unleashClient;

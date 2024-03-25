@@ -1,10 +1,9 @@
 package no.fint.portal.customer.test;
 
-import no.finn.unleash.DefaultUnleash;
+import io.getunleash.Unleash;
 import no.fint.portal.customer.service.IdentityMaskingService;
 import no.fint.portal.model.contact.Contact;
 import no.fint.portal.model.organisation.Organisation;
-import org.junit.Ignore;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
@@ -37,7 +36,7 @@ public class IntegrationTest {
     IdentityMaskingService identityMaskingService;
 
     @MockBean
-    DefaultUnleash defaultUnleash;
+    Unleash unleash;
 
     String org = "testing";
     String component = "administrasjon_personal";
@@ -49,7 +48,7 @@ public class IntegrationTest {
 
     @BeforeEach
     void setUp() {
-        when(defaultUnleash.isEnabled("fint-kunde-portal.roles")).thenReturn(true);
+        when(unleash.isEnabled("fint-kunde-portal.roles")).thenReturn(true);
     }
 
     @Test
