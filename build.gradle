@@ -30,10 +30,6 @@ repositories {
     mavenLocal()
 }
 
-configurations {
-    all*.exclude module : 'spring-boot-starter-logging'
-}
-
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-actuator'
@@ -48,14 +44,14 @@ dependencies {
 
     implementation 'org.springdoc:springdoc-openapi-webflux-ui:1.7.0'
 
-    implementation 'com.google.guava:guava:30.1-jre'
+    implementation 'com.google.guava:guava:33.1.0-jre'
 
     implementation 'no.fintlabs:fint-portal-api:3.19.0'
     implementation 'no.fint:fint-audit-api:1.2.2'
 
     implementation 'org.apache.commons:commons-lang3:3.7'
     implementation 'no.finn.unleash:unleash-client-java:3.3.4'
-    implementation 'no.fintlabs:fint-feature-toggle-service:2.0.0-rc2'
+    implementation 'no.fintlabs:fint-feature-toggle-service:2.0.0-rc3'
     implementation 'io.getunleash:unleash-client-java:9.2.0'
 
     runtimeOnly 'org.springframework.boot:spring-boot-devtools'
