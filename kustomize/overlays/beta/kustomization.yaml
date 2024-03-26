@@ -20,6 +20,9 @@ patches:
       - op: replace
         path: "/spec/url/hostname"
         value: 'kunde-beta.felleskomponent.no'
+      - op: replace
+        path: "/spec/onePassword/item-path"
+        value: 'vaults/aks-beta-vault/items/kunde-portal'
     target:
       kind: Application
       name: fint-kunde-portal-backend

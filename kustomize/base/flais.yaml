@@ -21,14 +21,14 @@ spec:
     basePath: /api
   ingress:
     enabled: true
+  onePassword:
+    item-path: vaults/aks-beta-vault/items/kunde-portal
   envFrom:
     - secretRef:
         name: fint-portal-user
   env:
     - name: JAVA_TOOL_OPTIONS
       value: '-XX:+ExitOnOutOfMemoryError -Xmx1800M'
-    - name: fint.unleash.api
-      value: 'https://unleash-beta.fintlabs.no/api/'
   resources:
     limits:
       memory: "2Gi"
