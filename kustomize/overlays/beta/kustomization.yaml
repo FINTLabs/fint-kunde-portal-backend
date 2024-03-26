@@ -15,9 +15,6 @@ commonLabels:
 patches:
   - patch: |-
       - op: replace
-        path: "/spec/env/1/value"
-        value: 'https://unleash-beta.fintlabs.no/api/'
-      - op: replace
         path: "/spec/url/hostname"
         value: 'kunde-beta.felleskomponent.no'
       - op: replace
