@@ -22,7 +22,7 @@ spec:
   ingress:
     enabled: true
   onePassword:
-    item-path: vaults/aks-beta-vault/items/kunde-portal
+    itemPath: vaults/aks-beta-vault/items/kunde-portal
   envFrom:
     - secretRef:
         name: fint-portal-user

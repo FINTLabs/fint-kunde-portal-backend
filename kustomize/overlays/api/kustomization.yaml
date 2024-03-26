@@ -18,7 +18,7 @@ patches:
         path: "/spec/url/hostname"
         value: 'kunde.felleskomponent.no'
       - op: replace
-        path: "/spec/onePassword/item-path"
+        path: "/spec/onePassword/itemPath"
         value: 'vaults/aks-api-vault/items/kunde-portal'
     target:
       kind: Application
