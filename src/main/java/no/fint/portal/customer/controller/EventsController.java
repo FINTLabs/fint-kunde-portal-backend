@@ -15,6 +15,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.client.ClientHttpResponse;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
@@ -60,12 +61,17 @@ public class EventsController {
 			@PathVariable String action
 	) {
 		String orgId = getPrimaryAssetId(orgName);
-		return ResponseEntity.ok(
-				List.of(restTemplate
-						.getForObject("https://{environment}.felleskomponent.no/events/api/{orgId}/{component}/{action}",
-								AuditEvent[].class,
-								environment, orgId, component, action))
-		);
+		try {
+			return ResponseEntity.ok(
+					List.of(restTemplate
+							.getForObject("https://{environment}.felleskomponent.no/events/api/{orgId}/{component}/{action}",
+									AuditEvent[].class,
+									environment, orgId, component, action))
+			);
+		} catch (HttpClientErrorException.NotFound ex) {
+			log.info("Not found, {}", ex);
+			return ResponseEntity.notFound().build();
+		}
 	}
 
 	@GetMapping(path = "/id/{id}")
