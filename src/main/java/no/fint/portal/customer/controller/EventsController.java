@@ -11,6 +11,7 @@ import no.fint.portal.model.organisation.Organisation;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.client.ClientHttpResponse;
@@ -68,9 +69,10 @@ public class EventsController {
 									AuditEvent[].class,
 									environment, orgId, component, action))
 			);
-		} catch (HttpClientErrorException.NotFound ex) {
-			log.info("Not found, {}", ex);
-			return ResponseEntity.notFound().build();
+		} catch (HttpClientErrorException ex) {
+			if(ex.getStatusCode().equals(HttpStatus.NOT_FOUND)){
+				return ResponseEntity.notFound().build();
+			} else throw ex;
 		}
 	}
 
