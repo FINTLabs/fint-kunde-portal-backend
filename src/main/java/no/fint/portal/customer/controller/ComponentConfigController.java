@@ -37,6 +37,7 @@ public class ComponentConfigController {
 
     @GetMapping
     public ResponseEntity<List<ComponentConfiguration>> getComponentConfigurations() {
+		log.info(rootUri + "/api/components/configurations");
         List<ComponentConfiguration> componentConfigurationList = restTemplate
                 .exchange(
                         rootUri + "/api/components/configurations",
