@@ -16,7 +16,7 @@ fint:
     contact-base: "ou=contacts,o=fint-test"
   portal:
     admin:
-      uri: https://admin-beta.fintlabs.no
+      uri: https://admin.fintlabs.no
   customer:
     portal:
       roles:
