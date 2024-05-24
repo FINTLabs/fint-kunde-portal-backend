@@ -4,13 +4,14 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import no.fint.portal.security.SecureUrlAccessDecisionVoter;
 import no.fint.portal.security.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.access.AccessDecisionManager;
 import org.springframework.security.access.vote.UnanimousBased;
 import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.config.annotation.web.configurers.oauth2.server.resource.OAuth2ResourceServerConfigurer;
 import org.springframework.security.core.userdetails.UserDetailsByNameServiceWrapper;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationProvider;
@@ -49,14 +50,15 @@ public class ApplicationSecurity {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-                .csrf().disable()
-                .sessionManagement().disable()
+                .csrf(AbstractHttpConfigurer::disable)
+                .sessionManagement(AbstractHttpConfigurer::disable)
                 .addFilter(requestHeaderAuthenticationFilter(preAuthenticatedAuthenticationProvider()))
                 .authenticationProvider(preAuthenticatedAuthenticationProvider())
-                .authorizeRequests()
-                .anyRequest()
-                .fullyAuthenticated()
-                .accessDecisionManager(accessDecisionManager());
+                .oauth2ResourceServer(OAuth2ResourceServerConfigurer::jwt)
+                .authorizeRequests(registry -> {
+                    registry.anyRequest().fullyAuthenticated();
+                    registry.accessDecisionManager(accessDecisionManager());
+                });
         return http.build();
     }
 }
