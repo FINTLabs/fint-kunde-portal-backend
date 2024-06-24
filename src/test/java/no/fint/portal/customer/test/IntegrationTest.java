@@ -52,7 +52,7 @@ public class IntegrationTest {
 
     @BeforeEach
     void setUp() {
-        when(unleash.isEnabled("fint-kunde-portal.roles")).thenReturn(true);
+        when(unleash.isEnabled("fint-kunde-portal.roles-new")).thenReturn(true);
     }
 
     @Test

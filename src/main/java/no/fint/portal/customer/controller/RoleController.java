@@ -29,7 +29,7 @@ public class RoleController {
 
     @GetMapping
     public ResponseEntity<List<RoleConfig.Role>> getRoles() {
-        if (unleashClient.isEnabled("fint-kunde-portal.roles")) {
+        if (unleashClient.isEnabled("fint-kunde-portal.roles-new")) {
             return ResponseEntity.ok(roleConfig.getRoles());
         }
         return ResponseEntity.status(HttpStatus.NOT_IMPLEMENTED).build();

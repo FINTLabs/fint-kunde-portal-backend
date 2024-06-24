@@ -137,7 +137,7 @@ public class OrganisationController {
     @PutMapping("/contacts/roles/{nin}/{roles}")
     public ResponseEntity<Void> addRoles(@PathVariable String orgName, @PathVariable final String nin, @PathVariable final RoleConfig.RoleId... roles) {
 
-        if (!unleashClient.isEnabled("fint-kunde-portal.roles")) {
+        if (!unleashClient.isEnabled("fint-kunde-portal.roles-new")) {
             return ResponseEntity.status(HttpStatus.NOT_IMPLEMENTED).build();
         }
 
@@ -159,7 +159,7 @@ public class OrganisationController {
     @DeleteMapping("/contacts/roles/{nin}/{roles}")
     public ResponseEntity<Void> removeRoles(@PathVariable String orgName, @PathVariable final String nin, @PathVariable final RoleConfig.RoleId... roles) {
 
-        if (!unleashClient.isEnabled("fint-kunde-portal.roles")) {
+        if (!unleashClient.isEnabled("fint-kunde-portal.roles-new")) {
             return ResponseEntity.status(HttpStatus.NOT_IMPLEMENTED).build();
         }
 

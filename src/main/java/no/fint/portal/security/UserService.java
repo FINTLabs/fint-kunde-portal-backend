@@ -57,7 +57,7 @@ public class UserService implements UserDetailsService {
         if (contact == null) {
             return Collections.emptyList();
         }
-        if (unleashClient.isEnabled("fint-kunde-portal.roles")) {
+        if (unleashClient.isEnabled("fint-kunde-portal.roles-new")) {
             if (contact.getRoles() == null) {
                 return Collections.emptyList();
             }
