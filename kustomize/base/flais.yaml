@@ -21,6 +21,8 @@ spec:
     basePath: /api
   ingress:
     enabled: true
+    middlewares:
+      - fint-kunde-portal-sso
   onePassword:
     itemPath: vaults/aks-beta-vault/items/kunde-portal
   envFrom:
