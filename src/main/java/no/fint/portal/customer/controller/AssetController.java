@@ -60,7 +60,9 @@ public class AssetController {
                                           @RequestBody Asset asset) {
         Organisation organisation = portalApiService.getOrganisation(orgName);
         assetService.addSubAsset(asset, organisation);
-        return ResponseEntity.created(ServletUriComponentsBuilder.fromCurrentRequestUri().scheme(null).pathSegment(asset.getName()).build().toUri()).cacheControl(CacheControl.noStore()).build();
+        return ResponseEntity.created(
+                ServletUriComponentsBuilder.fromCurrentRequestUri().scheme(null).pathSegment(asset.getName()).build().toUri()
+        ).cacheControl(CacheControl.noStore()).body(asset);
     }
 
     @Operation(summary = "Get Asset by Name")
