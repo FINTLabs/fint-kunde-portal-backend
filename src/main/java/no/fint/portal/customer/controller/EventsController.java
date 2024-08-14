@@ -62,6 +62,9 @@ public class EventsController {
 			@PathVariable String action
 	) {
 		String orgId = getPrimaryAssetId(orgName);
+        if (component.contains("_")){
+            component = component.replace("_", "-");
+        }
 		try {
 			return ResponseEntity.ok(
 					List.of(restTemplate
