@@ -16,6 +16,7 @@ fint:
     contact-base: "ou=contacts,o=fint-test"
   portal:
     admin:
+      test-runner: "http://fint-test-runner.fintlabs-no.svc.cluster.local:8080/basic"
       uri: https://admin.fintlabs.no
   customer:
     portal:
