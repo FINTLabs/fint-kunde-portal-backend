@@ -54,6 +54,7 @@ public class TestsController {
     public ResponseEntity<byte[]> linkWalker(HttpServletRequest request, @RequestHeader HttpHeaders headers, @RequestBody(required = false) byte[] body) {
         final HttpMethod method = HttpMethod.valueOf(request.getMethod());
         final HttpEntity<Object> httpEntity = new HttpEntity<>(body, headers);
+        log.info("Link-walker uri: {}", linkWalkerUri + request.getRequestURI());
         final ResponseEntity<byte[]> responseEntity = restTemplate.exchange(linkWalkerUri + request.getRequestURI(), method, httpEntity, byte[].class);
         return ResponseEntity.status(responseEntity.getStatusCode()).headers(filter(responseEntity.getHeaders())).body(responseEntity.getBody());
     }
@@ -62,8 +63,9 @@ public class TestsController {
     public ResponseEntity<byte[]> testRunner(HttpServletRequest request, @RequestHeader HttpHeaders headers, @RequestBody(required = false) byte[] body) {
         final HttpMethod method = HttpMethod.valueOf(request.getMethod());
         final HttpEntity<Object> httpEntity = new HttpEntity<>(body, headers);
-        log.info("TestRunneruri: {}", testRunnerUri + request.getRequestURI());
-        final ResponseEntity<byte[]> responseEntity = restTemplate.exchange(testRunnerUri + request.getRequestURI(), method, httpEntity, byte[].class);
+        String modifiedUri = testRunnerUri + request.getRequestURI().replace("api/tests", "test-runner");
+        log.info("TestRunneruri: {}", modifiedUri);
+        final ResponseEntity<byte[]> responseEntity = restTemplate.exchange(modifiedUri, method, httpEntity, byte[].class);
         return ResponseEntity.status(responseEntity.getStatusCode()).headers(filter(responseEntity.getHeaders())).body(responseEntity.getBody());
     }
 
