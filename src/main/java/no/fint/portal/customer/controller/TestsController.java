@@ -62,6 +62,7 @@ public class TestsController {
     public ResponseEntity<byte[]> testRunner(HttpServletRequest request, @RequestHeader HttpHeaders headers, @RequestBody(required = false) byte[] body) {
         final HttpMethod method = HttpMethod.valueOf(request.getMethod());
         final HttpEntity<Object> httpEntity = new HttpEntity<>(body, headers);
+        log.info("TestRunneruri: {}", testRunnerUri + request.getRequestURI());
         final ResponseEntity<byte[]> responseEntity = restTemplate.exchange(testRunnerUri + request.getRequestURI(), method, httpEntity, byte[].class);
         return ResponseEntity.status(responseEntity.getStatusCode()).headers(filter(responseEntity.getHeaders())).body(responseEntity.getBody());
     }
