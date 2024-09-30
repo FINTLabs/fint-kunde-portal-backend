@@ -55,7 +55,6 @@ public class ApplicationSecurity {
                 .sessionManagement(AbstractHttpConfigurer::disable)
                 .addFilter(requestHeaderAuthenticationFilter(preAuthenticatedAuthenticationProvider()))
                 .authenticationProvider(preAuthenticatedAuthenticationProvider())
-                .oauth2ResourceServer(OAuth2ResourceServerConfigurer::jwt)
                 .authorizeRequests(registry -> {
                     registry.anyRequest().fullyAuthenticated();
                     registry.accessDecisionManager(accessDecisionManager());
