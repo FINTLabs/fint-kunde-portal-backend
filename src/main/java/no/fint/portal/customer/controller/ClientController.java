@@ -110,8 +110,7 @@ public class ClientController {
         return ResponseEntity.ok().cacheControl(CacheControl.noStore()).body(client);
     }
 
-    @Operation(summary = "Get all clients")
-    @RequestMapping(method = RequestMethod.GET)
+    @GetMapping
     public ResponseEntity<List<Client>> getAllClients(@PathVariable("orgName") final String orgName) {
         Organisation organisation = portalApiService.getOrganisation(orgName);
 
@@ -179,6 +178,7 @@ public class ClientController {
 
     @ExceptionHandler(NameNotFoundException.class)
     public ResponseEntity<ErrorResponse> handleNameNotFound(Exception e) {
+        log.error("Exception NameNotFoundException: {}", e.getMessage());
         return ResponseEntity.badRequest().body(new ErrorResponse(e.getMessage()));
     }
 
