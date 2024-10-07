@@ -1,0 +1,16 @@
+apiVersion: fintlabs.no/v1alpha1
+kind: FLAISSso
+metadata:
+  name: fint-test-runner-sso
+  labels:
+    app.kubernetes.io/name: fint-test-runner-sso
+    app.kubernetes.io/instance: fint-test-runner-sso_fintlabs_no
+    app.kubernetes.io/version: latest
+    app.kubernetes.io/component: sso
+    app.kubernetes.io/part-of: fint-core
+    fintlabs.no/team: core
+    fintlabs.no/org-id: fintlabs.no
+spec:
+  basePath: /test-runner
+  upnClaim: sub
+  loggingLevel: debug
