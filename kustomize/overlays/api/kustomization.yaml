@@ -3,23 +3,6 @@ kind: Kustomization
 namespace: fintlabs-no
 resources:
   - ../../base
-commonLabels:
-  app.kubernetes.io/name: fint-kunde-portal-backend
-  app.kubernetes.io/instance: fint-kunde-portal-backend_fintlabs_no
-  app.kubernetes.io/version: latest
-  app.kubernetes.io/component: backend
-  app.kubernetes.io/part-of: fint-core
-  fintlabs.no/team: core
-  fintlabs.no/org-id: fintlabs.no
 
 patches:
-  - patch: |-
-      - op: replace
-        path: "/spec/url/hostname"
-        value: 'kunde.felleskomponent.no'
-      - op: replace
-        path: "/spec/onePassword/itemPath"
-        value: 'vaults/aks-api-vault/items/kunde-portal'
-    target:
-      kind: Application
-      name: fint-kunde-portal-backend
+  - path: flais.yaml

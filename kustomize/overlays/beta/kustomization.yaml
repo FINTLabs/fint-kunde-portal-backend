@@ -3,14 +3,6 @@ kind: Kustomization
 namespace: fintlabs-no
 resources:
   - ../../base
-commonLabels:
-  app.kubernetes.io/name: fint-kunde-portal-backend
-  app.kubernetes.io/instance: fint-kunde-portal-backend_fintlabs_no
-  app.kubernetes.io/version: latest
-  app.kubernetes.io/component: backend
-  app.kubernetes.io/part-of: fint-core
-  fintlabs.no/team: core
-  fintlabs.no/org-id: fintlabs.no
 
 patches:
   - path: flais.yaml
