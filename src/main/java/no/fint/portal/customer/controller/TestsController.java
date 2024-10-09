@@ -61,6 +61,7 @@ public class TestsController {
 
     @RequestMapping({"/health", "/basic", "/auth/**"})
     public ResponseEntity<byte[]> testRunner(HttpServletRequest request, @RequestHeader HttpHeaders headers, @RequestBody(required = false) byte[] body) {
+        log.info("Headers: {}", headers.toString());
         final HttpMethod method = HttpMethod.valueOf(request.getMethod());
         final HttpEntity<Object> httpEntity = new HttpEntity<>(body, headers);
         String modifiedUri = testRunnerUri + request.getRequestURI().replace("api/tests", "test-runner");
