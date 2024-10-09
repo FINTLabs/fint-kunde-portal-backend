@@ -6,4 +6,3 @@ resources:
 
 patches:
   - path: flais.yaml
-  - path: sso.yaml

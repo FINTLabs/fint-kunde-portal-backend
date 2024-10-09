@@ -1,6 +1,0 @@
-apiVersion: fintlabs.no/v1alpha1
-kind: FLAISSso
-metadata:
-  name: fint-test-runner-sso
-spec:
-  hostname: kunde-beta.felleskomponent.no
