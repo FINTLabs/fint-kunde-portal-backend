@@ -44,7 +44,7 @@ dependencies {
     implementation 'org.springdoc:springdoc-openapi-webflux-ui:1.7.0'
     implementation 'com.google.guava:guava:33.1.0-jre'
 
-    implementation 'no.fintlabs:fint-portal-api:3.19.0'
+    implementation 'no.fintlabs:fint-portal-api:3.19.1-rc-1'
     implementation 'no.fintlabs:fint-feature-toggle-service:2.0.0'
     implementation 'no.fint:fint-audit-api:1.2.2'
 
