@@ -106,8 +106,11 @@ public class ClientController {
         Organisation organisation = portalApiService.getOrganisation(orgName);
         Client client = portalApiService.getClient(organisation, clientName);
 
-        clientService.resetClientPassword(client, newPassword);
-        return ResponseEntity.ok().cacheControl(CacheControl.noStore()).body(client);
+        if (clientService.resetClientPassword(client, newPassword)) {
+            return ResponseEntity.ok().cacheControl(CacheControl.noStore()).body(client);
+        } else {
+            return ResponseEntity.status(HttpStatus.UNPROCESSABLE_ENTITY).cacheControl(CacheControl.noStore()).build();
+        }
     }
 
     @GetMapping
