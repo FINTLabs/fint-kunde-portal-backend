@@ -15,11 +15,6 @@ spec:
   port: 8080
   orgId: fintlabs.no
   image: ghcr.io/fintlabs/fint-kunde-portal-backend:latest
-  url:
-    hostname: kunde-beta.felleskomponent.no
-    basePath: /api
-  ingress:
-    enabled: true
   onePassword:
     itemPath: vaults/aks-beta-vault/items/kunde-portal
   envFrom:

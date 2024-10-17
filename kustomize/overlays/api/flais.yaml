@@ -6,6 +6,3 @@ metadata:
 spec:
   onePassword:
     itemPath: vaults/aks-api-vault/items/kunde-portal
-  url:
-    hostname: kunde.felleskomponent.no
-    basePath: /api
