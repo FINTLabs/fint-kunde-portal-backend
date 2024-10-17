@@ -103,6 +103,7 @@ public class ClientController {
     public ResponseEntity<Client> resetClientPassword(@PathVariable("orgName") final String orgName,
                                                       @PathVariable final String clientName,
                                                       @RequestBody String newPassword) {
+        log.info("Resetting password for: {}", clientName);
         Organisation organisation = portalApiService.getOrganisation(orgName);
         Client client = portalApiService.getClient(organisation, clientName);
 
