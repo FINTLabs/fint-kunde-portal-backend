@@ -52,7 +52,7 @@ public class MeController {
 
         final Contact contact = portalApiService.getContact(nin);
 
-        if (unleashClient.isEnabled("fint-kunde-portal.roles-init")
+        if (unleashClient.isEnabled("fint-kunde-portal.roles-init-new")
                 && (contact.getRoles() == null || contact.getRoles().isEmpty())) {
             log.info("{} {} has no roles, adding ROLE_ADMIN for all organisations...", contact.getFirstName(), contact.getLastName());
             Stream.concat(contact.getLegal().stream(), contact.getTechnical().stream())
