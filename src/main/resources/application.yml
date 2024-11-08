@@ -23,50 +23,44 @@ fint:
         -
           name: Admin
           id: ROLE_ADMIN
-          description: Full administrator
+          description: Full tilgang til alle funksjoner
           #uri:
         -
           name: Organisasjon
           id: ROLE_ORGANISATION
           description: >-
-            Kan håndtere organisasjonen...
-            - Endre informasjon om organisasjonen...
-            - Endre kontaktpersoner, endre roller for kontaktpersoner...
-            - Legge til og fjerne komponenter for organisasjonen
+            Kan administrere organisasjonsinformasjon, kontaktpersoner og deres roller
           uri: /api/organisations/
         -
           name: Komponenter
           id: ROLE_COMPONENT
           description: >-
-            Kan håndtere komponenter...
-            Legge til og fjerne komponenter til en adapter eller klient
+            Kan administrere organisasjonens komponenter
           uri: /api/components/organisation/
         -
           name: Adapter
           id: ROLE_ADAPTER
-          description: Kan håndtere adapter
+          description: Kan administrere adaptere
           uri: /api/adapters/
         -
           name: Klient
           id: ROLE_CLIENT
-          description: Kan håndtere klienter
+          description: Kan administrere klienter
           uri: /api/clients/
         -
           name: Ressurser
           id: ROLE_ASSET
-          description: >-
-            Kan håndtere ressurser...
-            Opprette og fjerne ressurser, knytte klienter og adaptere til ressurs
+          description: Kan administrere ressurser og knytte dem til adaptere og klienter
           uri: /api/assets/
         -
           name: Tester
           id: ROLE_TEST
-          description: Kan kjøre basistester og relasjonstester.
+          description: Kan kjøre basistester og relasjonstester
           uri: /api/tests/
         -
           name: Logg
           id: ROLE_LOG
-          description: Kan se hendelseslogg
+          description: Kan se hendelsesloggen
           uri: /api/events/
 
 info:
