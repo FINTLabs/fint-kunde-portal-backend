@@ -5,6 +5,7 @@ import io.getunleash.Unleash;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
+import no.fint.portal.customer.exception.MissingNinException;
 import no.fint.portal.customer.service.PortalApiService;
 import no.fint.portal.exceptions.CreateEntityMismatchException;
 import no.fint.portal.exceptions.EntityFoundException;
@@ -47,7 +48,8 @@ public class MeController {
     @GetMapping
     public ResponseEntity<Contact> getMe(@RequestHeader(name = "x-nin") final String nin) {
         if (StringUtils.isEmpty(nin)) {
-            throw new EntityNotFoundException("Nin is empty");
+            log.error("x-nin is empty on calling getMe");
+            throw new MissingNinException();
         }
 
         final Contact contact = portalApiService.getContact(nin);
@@ -103,6 +105,11 @@ public class MeController {
     @ExceptionHandler(UnknownHostException.class)
     public ResponseEntity<ErrorResponse> handleUnkownHost(Exception e) {
         return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body(new ErrorResponse(e.getMessage()));
+    }
+
+    @ExceptionHandler(MissingNinException.class)
+    public ResponseEntity<ErrorResponse> handleMissingNinException(Exception e) {
+        return ResponseEntity.badRequest().body(new ErrorResponse("Nin is empty"));
     }
 
 }

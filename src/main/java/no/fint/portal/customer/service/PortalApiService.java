@@ -1,6 +1,7 @@
 package no.fint.portal.customer.service;
 
 import lombok.Synchronized;
+import lombok.extern.slf4j.Slf4j;
 import no.fint.portal.customer.exception.InvalidResourceException;
 import no.fint.portal.exceptions.EntityNotFoundException;
 import no.fint.portal.model.access.AccessPackage;
@@ -24,7 +25,7 @@ import org.springframework.stereotype.Service;
 import java.util.Collections;
 import java.util.List;
 
-
+@Slf4j
 @Service
 public class PortalApiService {
     private final ComponentService componentService;
@@ -200,8 +201,16 @@ public class PortalApiService {
     )
     @Synchronized
     public Contact getContact(String nin) {
-        Contact contact = contactService.getContact(nin).orElseThrow(() -> new EntityNotFoundException("Contact " + nin + " not found."));
-        if (contact.getFirstName() == null) throw new InvalidResourceException("Invalid contact");
+        Contact contact = contactService.getContact(nin).orElseThrow(() -> {
+            log.error("Couldn't find contact with nin " + nin);
+            return new EntityNotFoundException("Contact " + nin + " not found.");
+        });
+
+        if (contact.getFirstName() == null) {
+            log.error("Invalid contact with nin " + nin);
+            throw new InvalidResourceException("Invalid contact");
+        }
+
         return contact;
     }
 
