@@ -4,6 +4,7 @@ package no.fint.portal.customer.controller;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
+import no.fint.portal.customer.exception.MissingNinException;
 import no.fint.portal.customer.service.IdentityMaskingService;
 import no.fint.portal.customer.service.PortalApiService;
 import no.fint.portal.exceptions.*;
@@ -12,6 +13,7 @@ import no.fint.portal.model.contact.Contact;
 import no.fint.portal.model.contact.ContactService;
 import no.fint.portal.model.organisation.Organisation;
 import no.fint.portal.model.organisation.OrganisationService;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.http.CacheControl;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -64,7 +66,17 @@ public class ContactController {
     @Operation(summary = "Get contact's organisations")
     @GetMapping(value = "/organisations")
     public ResponseEntity<List<Organisation>> getContactOrganisations(@RequestHeader(value = "x-nin") final String nin) {
-        var contact = contactService.getContact(nin).orElseThrow(() -> new EntityNotFoundException("Contact not found"));
+
+        if (StringUtils.isEmpty(nin)) {
+            log.error("x-nin is empty on calling getMe");
+            throw new MissingNinException();
+        }
+
+        var contact = contactService.getContact(nin).orElseThrow(() -> {
+            log.error("Couldn't find contact with nin {}", nin);
+            return new EntityNotFoundException("Contact not found");
+        });
+
         var contactOrganisations = Stream.concat(contact.getLegal().stream(), contact.getTechnical()
                 .stream())
                 .map(organisationService::getOrganisationByDn)
@@ -111,6 +123,11 @@ public class ContactController {
     @ExceptionHandler(UnknownHostException.class)
     public ResponseEntity<ErrorResponse> handleUnkownHost(Exception e) {
         return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body(new ErrorResponse(e.getMessage()));
+    }
+
+    @ExceptionHandler(MissingNinException.class)
+    public ResponseEntity<ErrorResponse> handleMissingNinException(Exception e) {
+        return ResponseEntity.badRequest().body(new ErrorResponse("Nin is empty"));
     }
 
 }

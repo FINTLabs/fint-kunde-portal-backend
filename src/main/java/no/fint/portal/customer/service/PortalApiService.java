@@ -202,7 +202,7 @@ public class PortalApiService {
     @Synchronized
     public Contact getContact(String nin) {
         Contact contact = contactService.getContact(nin).orElseThrow(() -> {
-            log.error("Couldn't find contact with nin " + nin);
+            log.error("Couldn't find contact with nin {}", nin);
             return new EntityNotFoundException("Contact " + nin + " not found.");
         });
 
