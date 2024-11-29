@@ -1,21 +1,26 @@
 package no.fint.portal.customer.controller;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
+import no.fint.portal.model.ErrorResponse;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.servlet.NoHandlerFoundException;
+import org.springframework.web.context.request.WebRequest;
 
-/**
- * Maps every request spring cannot handle to deliver index.html
- */
+import javax.servlet.http.HttpServletRequest;
+
+@Slf4j
 @ControllerAdvice
-class GlobalExceptionHandler {
-    private static final Logger logger = LoggerFactory.getLogger(GlobalExceptionHandler.class);
+public class GlobalExceptionHandler {
 
-    @ExceptionHandler(NoHandlerFoundException.class)
-    public String handle(Exception ex) {
-        logger.error("Exception caught: NoHandlerFoundException - " + ex.getMessage());
-        return "forward:/index.html";
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<ErrorResponse> handleGlobalException(Exception ex, WebRequest request, HttpServletRequest httpRequest) {
+
+        log.error("Unhandled exception on call to: {}", httpRequest.getRequestURL());
+        log.error("Unhandled exception", ex);
+
+        ErrorResponse errorResponse = new ErrorResponse("Internal Server Error! An unexpected error occurred. Please try again later.");
+        return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }
