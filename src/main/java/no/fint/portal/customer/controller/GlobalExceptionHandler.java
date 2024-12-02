@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
+import org.springframework.web.servlet.NoHandlerFoundException;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -21,6 +22,14 @@ public class GlobalExceptionHandler {
         log.error("Unhandled exception", ex);
 
         ErrorResponse errorResponse = new ErrorResponse("Internal Server Error! An unexpected error occurred. Please try again later.");
+        return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @ExceptionHandler(NoHandlerFoundException.class)
+    public ResponseEntity<ErrorResponse> handleNoHandlerFoundException(NoHandlerFoundException ex) {
+        log.error("No handler found", ex);
+
+        ErrorResponse errorResponse = new ErrorResponse("Internal Server Error! An unexpected error occurred. Please try again later. (2)");
         return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }

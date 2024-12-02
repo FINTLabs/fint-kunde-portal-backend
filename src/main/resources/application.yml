@@ -85,6 +85,7 @@ spring:
   mvc:
     servlet:
       path: /api
+    throw-exception-if-no-handler-found: true
   cache:
     cache-names:
       - users
