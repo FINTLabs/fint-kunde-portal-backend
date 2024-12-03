@@ -56,8 +56,9 @@ public class ApplicationSecurity {
                 .addFilter(requestHeaderAuthenticationFilter(preAuthenticatedAuthenticationProvider()))
                 .authenticationProvider(preAuthenticatedAuthenticationProvider())
                 .authorizeRequests(registry -> {
-                    registry.anyRequest().fullyAuthenticated();
-                    registry.accessDecisionManager(accessDecisionManager());
+                    registry.antMatchers("/actuator/**").permitAll()
+                    .anyRequest().fullyAuthenticated()
+                    .accessDecisionManager(accessDecisionManager());
                 });
         return http.build();
     }
