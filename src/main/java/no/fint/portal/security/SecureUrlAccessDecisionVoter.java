@@ -18,7 +18,7 @@ public class SecureUrlAccessDecisionVoter implements AccessDecisionVoter<FilterI
 
     private final AuthorizationService authorizationService;
     private final String[] securePaths;
-    private final String[] ignoredPaths = {"/api/actuator/health", "/api/actuator/prometheus", "/api/error"};
+    private final String[] ignoredPaths = {"/api/actuator/health", "/api/actuator/prometheus"};
 
     public SecureUrlAccessDecisionVoter(AuthorizationService authorizationService) {
         this.authorizationService = authorizationService;
