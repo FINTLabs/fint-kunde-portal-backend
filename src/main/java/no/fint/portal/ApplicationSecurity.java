@@ -56,6 +56,7 @@ public class ApplicationSecurity {
                 .addFilter(requestHeaderAuthenticationFilter(preAuthenticatedAuthenticationProvider()))
                 .authenticationProvider(preAuthenticatedAuthenticationProvider())
                 .authorizeRequests(registry -> {
+                    registry.antMatchers("/*/actuator/prometheus").permitAll();
                     registry.anyRequest().fullyAuthenticated();
                     registry.accessDecisionManager(accessDecisionManager());
                 });
