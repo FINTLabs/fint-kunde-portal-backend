@@ -105,3 +105,6 @@ server:
   error:
     whitelabel:
       enabled: false
+logging:
+  level:
+    no.fint.portal.customer.controller: DEBUG
