@@ -14,7 +14,7 @@ metadata:
 spec:
   port: 8080
   orgId: fintlabs.no
-  image: ghcr.io/fintlabs/fint-kunde-portal-backend:latest
+  image: ghcr.io/fintlabs/fint-kunde-portal-backend:sha-0000000
   onePassword:
     itemPath: vaults/aks-beta-vault/items/kunde-portal
   envFrom:

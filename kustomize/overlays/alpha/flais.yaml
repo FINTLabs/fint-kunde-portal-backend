@@ -1,0 +1,8 @@
+apiVersion: fintlabs.no/v1alpha1
+kind: Application
+metadata:
+  name: fint-kunde-portal-backend
+  namespace: fintlabs-no
+spec:
+  onePassword:
+    itemPath: vaults/aks-alpha-vault/items/kunde-portal
