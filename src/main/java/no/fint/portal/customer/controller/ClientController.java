@@ -21,6 +21,8 @@ import org.springframework.ldap.NameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import org.springframework.http.converter.HttpMessageNotReadableException;
+
 import java.net.UnknownHostException;
 import java.util.List;
 import java.util.Optional;
@@ -87,6 +89,8 @@ public class ClientController {
             original.setNote(client.getNote());
         if (client.getShortDescription() != null)
             original.setShortDescription(client.getShortDescription());
+        if (client.getModelVersion() != null)
+            original.setModelVersion(client.getModelVersion());
 
         if (!clientService.updateClient(original)) {
             throw new EntityNotFoundException(String.format("Could not update client: %s", clientName));
@@ -189,6 +193,11 @@ public class ClientController {
     @ExceptionHandler(UnknownHostException.class)
     public ResponseEntity<ErrorResponse> handleUnkownHost(Exception e) {
         return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body(new ErrorResponse(e.getMessage()));
+    }
+
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+    public ResponseEntity<ErrorResponse> handleHttpMessageNotReadable(HttpMessageNotReadableException e) {
+        return ResponseEntity.badRequest().body(new ErrorResponse("Invalid value for modelVersion. Allowed values are: V3, V4"));
     }
 
 
