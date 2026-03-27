@@ -136,6 +136,8 @@ public class IntegrationTest {
 
     @Test
     public void clientModelVersion() throws Exception {
+        when(identityMaskingService.mask(anyString())).thenAnswer(returnsFirstArg());
+
         mockMvc.perform(post("/clients/{org}", org).header("x-nin", "12345678901")
                 .content("{ \"name\": \"testclient\", \"note\": \"Test Client\", \"shortDescription\": \"This is a Test Client.\" }")
                 .contentType(MediaType.APPLICATION_JSON)).andExpect(status().is(201));
@@ -156,6 +158,20 @@ public class IntegrationTest {
                 .content("{ \"name\": \"" + client + "\", \"modelVersion\": \"INVALID\" }")
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isBadRequest());
+
+        mockMvc.perform(delete("/clients/{org}/{client}", org, client).header("x-nin", "12345678901"))
+                .andExpect(status().is(204));
+    }
+
+    @Test
+    public void clientModelVersionOnCreate() throws Exception {
+        when(identityMaskingService.mask(anyString())).thenAnswer(returnsFirstArg());
+
+        mockMvc.perform(post("/clients/{org}", org).header("x-nin", "12345678901")
+                .content("{ \"name\": \"testclient\", \"note\": \"Test Client\", \"shortDescription\": \"This is a Test Client.\", \"modelVersion\": \"V4\" }")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().is(201))
+                .andExpect(jsonPath("$.modelVersion").value(equalTo("V4")));
 
         mockMvc.perform(delete("/clients/{org}/{client}", org, client).header("x-nin", "12345678901"))
                 .andExpect(status().is(204));
