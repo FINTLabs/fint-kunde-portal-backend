@@ -32,3 +32,8 @@ spec:
     requests:
       memory: "1Gi"
       cpu: "250m"
+  observability:
+    metrics:
+      enabled: true
+      port: "8080"
+      path: /api/actuator/prometheus
