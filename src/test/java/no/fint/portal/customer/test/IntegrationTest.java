@@ -177,6 +177,27 @@ public class IntegrationTest {
                 .andExpect(status().is(204));
     }
 
+    // `SecureUrlAccessDecisionVoter` only enforces auth on URLs starting with role URIs
+    // (e.g. /api/organisations/). Paths outside that set stay publicly reachable.
+    @Test
+    public void missingXNinOnSecuredPathReturns400() throws Exception {
+        mockMvc.perform(get("/api/organisations/{org}/", org))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.message").value(containsString("x-nin")));
+    }
+
+    @Test
+    public void unknownXNinOnSecuredPathReturns400() throws Exception {
+        mockMvc.perform(get("/api/organisations/{org}/", org).header("x-nin", "00000000000"))
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    public void missingXNinOnUnsecuredPathStillServed() throws Exception {
+        mockMvc.perform(get("/components"))
+                .andExpect(status().isOk());
+    }
+
     @Test
     public void access() throws Exception {
         when(identityMaskingService.mask(anyString())).thenAnswer(returnsFirstArg());

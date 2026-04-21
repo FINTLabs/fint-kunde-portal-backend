@@ -4,7 +4,6 @@ import lombok.extern.slf4j.Slf4j;
 import no.fint.portal.model.ErrorResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.web.authentication.preauth.PreAuthenticatedCredentialsNotFoundException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
@@ -15,12 +14,6 @@ import javax.servlet.http.HttpServletRequest;
 @Slf4j
 @ControllerAdvice
 public class GlobalExceptionHandler {
-
-    @ExceptionHandler(PreAuthenticatedCredentialsNotFoundException.class)
-    public ResponseEntity<ErrorResponse> handlePreAuthenticatedCredentialsNotFoundException(PreAuthenticatedCredentialsNotFoundException ex, HttpServletRequest httpRequest) {
-        log.error("Missing pre-authenticated credentials: {} on request to: {}", ex.getMessage(), httpRequest.getRequestURL());
-        return new ResponseEntity<>(new ErrorResponse("Authentication credentials were not found."), HttpStatus.UNAUTHORIZED);
-    }
 
     @ExceptionHandler(NoHandlerFoundException.class)
     public ResponseEntity<ErrorResponse> handleNoHandlerFoundException(NoHandlerFoundException ex) {
