@@ -59,9 +59,8 @@ public class ApplicationSecurity {
                 .authenticationProvider(preAuthenticatedAuthenticationProvider())
                 .exceptionHandling(e -> e.authenticationEntryPoint(authenticationEntryPoint))
                 .authorizeRequests(registry -> {
-                    registry.antMatchers("/actuator/**").permitAll()
-                    .anyRequest().fullyAuthenticated()
-                    .accessDecisionManager(accessDecisionManager());
+                    registry.anyRequest().fullyAuthenticated()
+                            .accessDecisionManager(accessDecisionManager());
                 });
         return http.build();
     }
