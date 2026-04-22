@@ -135,6 +135,70 @@ public class IntegrationTest {
 //    }
 
     @Test
+    public void clientModelVersion() throws Exception {
+        when(identityMaskingService.mask(anyString())).thenAnswer(returnsFirstArg());
+
+        mockMvc.perform(post("/clients/{org}", org).header("x-nin", "12345678901")
+                .content("{ \"name\": \"testclient\", \"note\": \"Test Client\", \"shortDescription\": \"This is a Test Client.\" }")
+                .contentType(MediaType.APPLICATION_JSON)).andExpect(status().is(201));
+
+        mockMvc.perform(put("/clients/{org}/{client}", org, client).header("x-nin", "12345678901")
+                .content("{ \"name\": \"" + client + "\", \"modelVersion\": \"V3\" }")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.modelVersion").value(equalTo("V3")));
+
+        mockMvc.perform(put("/clients/{org}/{client}", org, client).header("x-nin", "12345678901")
+                .content("{ \"name\": \"" + client + "\", \"modelVersion\": \"V4\" }")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.modelVersion").value(equalTo("V4")));
+
+        mockMvc.perform(put("/clients/{org}/{client}", org, client).header("x-nin", "12345678901")
+                .content("{ \"name\": \"" + client + "\", \"modelVersion\": \"INVALID\" }")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isBadRequest());
+
+        mockMvc.perform(delete("/clients/{org}/{client}", org, client).header("x-nin", "12345678901"))
+                .andExpect(status().is(204));
+    }
+
+    @Test
+    public void clientModelVersionOnCreate() throws Exception {
+        when(identityMaskingService.mask(anyString())).thenAnswer(returnsFirstArg());
+
+        mockMvc.perform(post("/clients/{org}", org).header("x-nin", "12345678901")
+                .content("{ \"name\": \"testclient\", \"note\": \"Test Client\", \"shortDescription\": \"This is a Test Client.\", \"modelVersion\": \"V4\" }")
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().is(201))
+                .andExpect(jsonPath("$.modelVersion").value(equalTo("V4")));
+
+        mockMvc.perform(delete("/clients/{org}/{client}", org, client).header("x-nin", "12345678901"))
+                .andExpect(status().is(204));
+    }
+
+    // `SecureUrlAccessDecisionVoter` only enforces auth on URLs starting with role URIs
+    // (e.g. /api/organisations/). Paths outside that set stay publicly reachable.
+    @Test
+    public void missingXNinOnSecuredPathReturns400() throws Exception {
+        mockMvc.perform(get("/api/organisations/{org}/", org))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.message").value(containsString("x-nin")));
+    }
+
+    @Test
+    public void unknownXNinOnSecuredPathReturns400() throws Exception {
+        mockMvc.perform(get("/api/organisations/{org}/", org).header("x-nin", "00000000000"))
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    public void missingXNinOnUnsecuredPathStillServed() throws Exception {
+        mockMvc.perform(get("/components"))
+                .andExpect(status().isOk());
+    }
+
+    @Test
     public void access() throws Exception {
         when(identityMaskingService.mask(anyString())).thenAnswer(returnsFirstArg());
 

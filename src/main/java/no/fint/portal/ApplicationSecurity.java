@@ -2,6 +2,7 @@ package no.fint.portal;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import no.fint.portal.security.MissingCredentialsAuthenticationEntryPoint;
 import no.fint.portal.security.SecureUrlAccessDecisionVoter;
 import no.fint.portal.security.UserService;
 import org.springframework.context.annotation.Bean;
@@ -11,7 +12,6 @@ import org.springframework.security.access.vote.UnanimousBased;
 import org.springframework.security.authentication.ProviderManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
-import org.springframework.security.config.annotation.web.configurers.oauth2.server.resource.OAuth2ResourceServerConfigurer;
 import org.springframework.security.core.userdetails.UserDetailsByNameServiceWrapper;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.preauth.PreAuthenticatedAuthenticationProvider;
@@ -26,11 +26,13 @@ public class ApplicationSecurity {
 
     private final SecureUrlAccessDecisionVoter voter;
     private final UserService userService;
+    private final MissingCredentialsAuthenticationEntryPoint authenticationEntryPoint;
 
     @Bean
     public RequestHeaderAuthenticationFilter requestHeaderAuthenticationFilter(PreAuthenticatedAuthenticationProvider preAuthenticatedAuthenticationProvider) {
         RequestHeaderAuthenticationFilter requestHeaderAuthenticationFilter = new RequestHeaderAuthenticationFilter();
         requestHeaderAuthenticationFilter.setPrincipalRequestHeader("x-nin");
+        requestHeaderAuthenticationFilter.setExceptionIfHeaderMissing(false);
         requestHeaderAuthenticationFilter.setAuthenticationManager(new ProviderManager(Collections.singletonList(preAuthenticatedAuthenticationProvider)));
         return requestHeaderAuthenticationFilter;
     }
@@ -55,6 +57,7 @@ public class ApplicationSecurity {
                 .sessionManagement(AbstractHttpConfigurer::disable)
                 .addFilter(requestHeaderAuthenticationFilter(preAuthenticatedAuthenticationProvider()))
                 .authenticationProvider(preAuthenticatedAuthenticationProvider())
+                .exceptionHandling(e -> e.authenticationEntryPoint(authenticationEntryPoint))
                 .authorizeRequests(registry -> {
                     registry.anyRequest().fullyAuthenticated();
                     registry.accessDecisionManager(accessDecisionManager());
