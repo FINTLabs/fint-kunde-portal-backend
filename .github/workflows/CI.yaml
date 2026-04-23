@@ -3,7 +3,7 @@ name: CI
 on:
   pull_request:
   push:
-    branches: [conflict-on-duplicate-client]
+    branches: [main]
 
 jobs:
   build:
