@@ -4,7 +4,9 @@ package no.fint.portal.customer.controller;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
+import no.fint.portal.customer.exception.CreateClientException;
 import no.fint.portal.customer.service.PortalApiService;
+import no.fint.portal.exceptions.CreateEntityMismatchException;
 import no.fint.portal.exceptions.EntityFoundException;
 import no.fint.portal.exceptions.EntityNotFoundException;
 import no.fint.portal.exceptions.UpdateEntityMismatchException;
@@ -53,13 +55,16 @@ public class ClientController {
 
 
         if (optionalClient.isEmpty()) {
-            if (clientService.addClient(client, organisation)) {
-                return ResponseEntity.status(HttpStatus.CREATED).cacheControl(CacheControl.noStore()).body(client);
-
+            try{
+                if (clientService.addClient(client, organisation)) {
+                    return ResponseEntity.status(HttpStatus.CREATED).cacheControl(CacheControl.noStore()).body(client);
+                }
+            } catch (Exception e) {
+                throw new CreateClientException(e.getMessage());
             }
         }
 
-        throw new EntityFoundException(
+        throw new CreateEntityMismatchException(
                 ServletUriComponentsBuilder
                         .fromCurrentRequest().path("/{name}")
                         .buildAndExpand(client.getName()).toUri().toString()
@@ -172,6 +177,18 @@ public class ClientController {
     @ExceptionHandler(UpdateEntityMismatchException.class)
     public ResponseEntity<ErrorResponse> handleUpdateEntityMismatch(Exception e) {
         return ResponseEntity.badRequest().body(new ErrorResponse(e.getMessage()));
+    }
+
+    @ExceptionHandler(CreateEntityMismatchException.class)
+    public ResponseEntity<ErrorResponse> clientAlreadyExists(Exception e) {
+        return ResponseEntity.status(HttpStatus.CONFLICT)
+                .body(new ErrorResponse("Client with this name already exists."));
+    }
+
+    @ExceptionHandler(CreateClientException.class)
+    public ResponseEntity<ErrorResponse> createClientException(Exception e) {
+        return ResponseEntity.status(HttpStatus.CONFLICT)
+                .body(new ErrorResponse("Error creating client: " + e.getMessage()));
     }
 
     @ExceptionHandler(EntityNotFoundException.class)
