@@ -4,6 +4,7 @@ package no.fint.portal.customer.controller;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
+import no.fint.portal.customer.exception.CreateClientException;
 import no.fint.portal.customer.service.PortalApiService;
 import no.fint.portal.exceptions.CreateEntityMismatchException;
 import no.fint.portal.exceptions.EntityFoundException;
@@ -54,9 +55,12 @@ public class ClientController {
 
 
         if (optionalClient.isEmpty()) {
-            if (clientService.addClient(client, organisation)) {
-                return ResponseEntity.status(HttpStatus.CREATED).cacheControl(CacheControl.noStore()).body(client);
-
+            try{
+                if (clientService.addClient(client, organisation)) {
+                    return ResponseEntity.status(HttpStatus.CREATED).cacheControl(CacheControl.noStore()).body(client);
+                }
+            } catch (Exception e) {
+                throw new CreateClientException(e.getMessage());
             }
         }
 
@@ -179,6 +183,12 @@ public class ClientController {
     public ResponseEntity<ErrorResponse> clientAlreadyExists(Exception e) {
         return ResponseEntity.status(HttpStatus.CONFLICT)
                 .body(new ErrorResponse("Client with this name already exists."));
+    }
+
+    @ExceptionHandler(CreateClientException.class)
+    public ResponseEntity<ErrorResponse> createClientException(Exception e) {
+        return ResponseEntity.status(HttpStatus.CONFLICT)
+                .body(new ErrorResponse("Error creating client: " + e.getMessage()));
     }
 
     @ExceptionHandler(EntityNotFoundException.class)
