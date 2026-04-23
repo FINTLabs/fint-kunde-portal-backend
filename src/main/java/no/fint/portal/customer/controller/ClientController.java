@@ -5,6 +5,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
 import no.fint.portal.customer.service.PortalApiService;
+import no.fint.portal.exceptions.CreateEntityMismatchException;
 import no.fint.portal.exceptions.EntityFoundException;
 import no.fint.portal.exceptions.EntityNotFoundException;
 import no.fint.portal.exceptions.UpdateEntityMismatchException;
@@ -59,7 +60,7 @@ public class ClientController {
             }
         }
 
-        throw new EntityFoundException(
+        throw new CreateEntityMismatchException(
                 ServletUriComponentsBuilder
                         .fromCurrentRequest().path("/{name}")
                         .buildAndExpand(client.getName()).toUri().toString()
@@ -172,6 +173,12 @@ public class ClientController {
     @ExceptionHandler(UpdateEntityMismatchException.class)
     public ResponseEntity<ErrorResponse> handleUpdateEntityMismatch(Exception e) {
         return ResponseEntity.badRequest().body(new ErrorResponse(e.getMessage()));
+    }
+
+    @ExceptionHandler(CreateEntityMismatchException.class)
+    public ResponseEntity<ErrorResponse> clientAlreadyExists(Exception e) {
+        return ResponseEntity.status(HttpStatus.CONFLICT)
+                .body(new ErrorResponse("Client with this name already exists."));
     }
 
     @ExceptionHandler(EntityNotFoundException.class)
