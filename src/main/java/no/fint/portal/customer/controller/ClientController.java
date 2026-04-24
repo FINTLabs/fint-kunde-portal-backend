@@ -17,15 +17,12 @@ import org.springframework.http.CacheControl;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.ldap.NameNotFoundException;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-
-import org.springframework.http.converter.HttpMessageNotReadableException;
 
 import java.net.UnknownHostException;
 import java.util.List;
-import java.util.Optional;
 
 @Slf4j
 @RestController
@@ -49,21 +46,9 @@ public class ClientController {
                                             @RequestBody final Client client) {
 
         Organisation organisation = portalApiService.getOrganisation(orgName);
-        Optional<Client> optionalClient = clientService.getClient(client.getName(), orgName);
+        clientService.addClient(client, organisation);
 
-
-        if (optionalClient.isEmpty()) {
-            if (clientService.addClient(client, organisation)) {
-                return ResponseEntity.status(HttpStatus.CREATED).cacheControl(CacheControl.noStore()).body(client);
-
-            }
-        }
-
-        throw new EntityFoundException(
-                ServletUriComponentsBuilder
-                        .fromCurrentRequest().path("/{name}")
-                        .buildAndExpand(client.getName()).toUri().toString()
-        );
+        return ResponseEntity.status(HttpStatus.CREATED).cacheControl(CacheControl.noStore()).body(client);
     }
 
     @Operation(summary = "Update client")
@@ -181,7 +166,7 @@ public class ClientController {
 
     @ExceptionHandler(EntityFoundException.class)
     public ResponseEntity<ErrorResponse> handleEntityFound(Exception e) {
-        return ResponseEntity.status(HttpStatus.FOUND).body(new ErrorResponse(e.getMessage()));
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(new ErrorResponse(e.getMessage()));
     }
 
     @ExceptionHandler(NameNotFoundException.class)
