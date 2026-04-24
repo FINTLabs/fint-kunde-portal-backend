@@ -4,9 +4,7 @@ package no.fint.portal.customer.controller;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.extern.slf4j.Slf4j;
-import no.fint.portal.customer.exception.CreateClientException;
 import no.fint.portal.customer.service.PortalApiService;
-import no.fint.portal.exceptions.CreateEntityMismatchException;
 import no.fint.portal.exceptions.EntityFoundException;
 import no.fint.portal.exceptions.EntityNotFoundException;
 import no.fint.portal.exceptions.UpdateEntityMismatchException;
@@ -19,15 +17,12 @@ import org.springframework.http.CacheControl;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.ldap.NameNotFoundException;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-
-import org.springframework.http.converter.HttpMessageNotReadableException;
 
 import java.net.UnknownHostException;
 import java.util.List;
-import java.util.Optional;
 
 @Slf4j
 @RestController
@@ -51,24 +46,9 @@ public class ClientController {
                                             @RequestBody final Client client) {
 
         Organisation organisation = portalApiService.getOrganisation(orgName);
-        Optional<Client> optionalClient = clientService.getClient(client.getName(), orgName);
+        clientService.addClient(client, organisation);
 
-
-        if (optionalClient.isEmpty()) {
-            try{
-                if (clientService.addClient(client, organisation)) {
-                    return ResponseEntity.status(HttpStatus.CREATED).cacheControl(CacheControl.noStore()).body(client);
-                }
-            } catch (Exception e) {
-                throw new CreateClientException(e.getMessage());
-            }
-        }
-
-        throw new CreateEntityMismatchException(
-                ServletUriComponentsBuilder
-                        .fromCurrentRequest().path("/{name}")
-                        .buildAndExpand(client.getName()).toUri().toString()
-        );
+        return ResponseEntity.status(HttpStatus.CREATED).cacheControl(CacheControl.noStore()).body(client);
     }
 
     @Operation(summary = "Update client")
@@ -179,18 +159,6 @@ public class ClientController {
         return ResponseEntity.badRequest().body(new ErrorResponse(e.getMessage()));
     }
 
-    @ExceptionHandler(CreateEntityMismatchException.class)
-    public ResponseEntity<ErrorResponse> clientAlreadyExists(Exception e) {
-        return ResponseEntity.status(HttpStatus.CONFLICT)
-                .body(new ErrorResponse("Client with this name already exists."));
-    }
-
-    @ExceptionHandler(CreateClientException.class)
-    public ResponseEntity<ErrorResponse> createClientException(Exception e) {
-        return ResponseEntity.status(HttpStatus.CONFLICT)
-                .body(new ErrorResponse("Error creating client: " + e.getMessage()));
-    }
-
     @ExceptionHandler(EntityNotFoundException.class)
     public ResponseEntity<ErrorResponse> handleEntityNotFound(Exception e) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new ErrorResponse(e.getMessage()));
@@ -198,7 +166,7 @@ public class ClientController {
 
     @ExceptionHandler(EntityFoundException.class)
     public ResponseEntity<ErrorResponse> handleEntityFound(Exception e) {
-        return ResponseEntity.status(HttpStatus.FOUND).body(new ErrorResponse(e.getMessage()));
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(new ErrorResponse(e.getMessage()));
     }
 
     @ExceptionHandler(NameNotFoundException.class)

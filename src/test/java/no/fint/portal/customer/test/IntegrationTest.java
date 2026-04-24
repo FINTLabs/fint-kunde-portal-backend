@@ -177,6 +177,25 @@ public class IntegrationTest {
                 .andExpect(status().is(204));
     }
 
+    @Test
+    public void duplicateClientReturnsConflict() throws Exception {
+        when(identityMaskingService.mask(anyString())).thenAnswer(returnsFirstArg());
+
+        String body = "{ \"name\": \"testclient\", \"note\": \"Test Client\", \"shortDescription\": \"This is a Test Client.\" }";
+
+        mockMvc.perform(post("/clients/{org}", org).header("x-nin", "12345678901")
+                .content(body).contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().is(201));
+
+        mockMvc.perform(post("/clients/{org}", org).header("x-nin", "12345678901")
+                .content(body).contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isConflict())
+                .andExpect(jsonPath("$.message").value(containsString("already exists")));
+
+        mockMvc.perform(delete("/clients/{org}/{client}", org, client).header("x-nin", "12345678901"))
+                .andExpect(status().is(204));
+    }
+
     // `SecureUrlAccessDecisionVoter` only enforces auth on URLs starting with role URIs
     // (e.g. /api/organisations/). Paths outside that set stay publicly reachable.
     @Test
