@@ -19,42 +19,43 @@ class ClientMetricControllerTest {
     private val objectMapper = jacksonObjectMapper()
 
     @Test
-    fun `getV4Percentage returns all orgs with correct JSON keys`() {
+    fun `getModelVersions returns counts for the organisation`() {
         every { clientMetricService.getStats() } returns ClientModelVersionStats.from(
-            mapOf(
-                OrgName("org1") to listOf(clientWith(ModelVersion.V3), clientWith(ModelVersion.V4)),
-                OrgName("org2") to listOf(clientWith(ModelVersion.V4))
-            )
+            mapOf(OrgName("org1") to listOf(
+                clientWith(ModelVersion.V3),
+                clientWith(ModelVersion.V4),
+                clientWith(ModelVersion.V4)
+            ))
         )
 
-        val response = controller.getV4Percentage()
+        val response = controller.getModelVersions("org1")
 
         assertEquals(HttpStatus.OK, response.statusCode)
-        val json = objectMapper.writeValueAsString(response.body)
-        assertTrue(json.contains("\"org1\""), "OrgName should serialize as plain string key, got: $json")
-        assertTrue(json.contains("\"org2\""), "OrgName should serialize as plain string key, got: $json")
+        assertEquals(1L, response.body!![ModelVersion.V3])
+        assertEquals(2L, response.body!![ModelVersion.V4])
     }
 
     @Test
-    fun `getV4Percentage for specific org returns value`() {
+    fun `getModelVersions serializes ModelVersion as enum name`() {
         every { clientMetricService.getStats() } returns ClientModelVersionStats.from(
             mapOf(OrgName("org1") to listOf(clientWith(ModelVersion.V3), clientWith(ModelVersion.V4)))
         )
 
-        val response = controller.getV4Percentage("org1")
+        val response = controller.getModelVersions("org1")
 
-        assertEquals(HttpStatus.OK, response.statusCode)
-        assertEquals(50.0, response.body)
+        val json = objectMapper.writeValueAsString(response.body)
+        assertTrue(json.contains("\"V3\""), "ModelVersion should serialize as enum name, got: $json")
+        assertTrue(json.contains("\"V4\""), "ModelVersion should serialize as enum name, got: $json")
     }
 
     @Test
-    fun `getV4Percentage for unknown org returns zero`() {
+    fun `getModelVersions returns empty map for unknown org`() {
         every { clientMetricService.getStats() } returns ClientModelVersionStats.empty()
 
-        val response = controller.getV4Percentage("nonexistent")
+        val response = controller.getModelVersions("nonexistent")
 
         assertEquals(HttpStatus.OK, response.statusCode)
-        assertEquals(0.0, response.body)
+        assertTrue(response.body!!.isEmpty())
     }
 
     private fun clientWith(version: ModelVersion) = no.fint.portal.model.client.Client().apply {

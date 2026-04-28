@@ -67,54 +67,24 @@ class ClientModelVersionStatsTest {
         val stats = ClientModelVersionStats.empty()
 
         assertTrue(stats.countsByOrg().isEmpty())
-        assertTrue(stats.getV4Percentage().isEmpty())
     }
 
     @Test
-    fun `getV4Percentage all orgs`() {
+    fun `countsFor returns counts for the given org`() {
         val stats = ClientModelVersionStats.from(
-            mapOf(
-                org1 to listOf(createClient(ModelVersion.V3), createClient(ModelVersion.V4)),
-                org2 to listOf(createClient(ModelVersion.V4), createClient(ModelVersion.V4))
-            )
+            mapOf(org1 to listOf(createClient(ModelVersion.V3), createClient(ModelVersion.V4)))
         )
 
-        val result = stats.getV4Percentage()
-        assertEquals(50.0, result[org1])
-        assertEquals(100.0, result[org2])
+        val counts = stats.countsFor(org1)
+        assertEquals(1L, counts[ModelVersion.V3])
+        assertEquals(1L, counts[ModelVersion.V4])
     }
 
     @Test
-    fun `getV4Percentage specific org`() {
-        val stats = ClientModelVersionStats.from(
-            mapOf(org1 to listOf(
-                createClient(ModelVersion.V3),
-                createClient(ModelVersion.V3),
-                createClient(ModelVersion.V4)
-            ))
-        )
-
-        assertEquals(100.0 / 3.0, stats.getV4Percentage(org1), 0.01)
-    }
-
-    @Test
-    fun `getV4Percentage returns zero for unknown org`() {
+    fun `countsFor returns empty map for unknown org`() {
         val stats = ClientModelVersionStats.empty()
-        assertEquals(0.0, stats.getV4Percentage(OrgName("nonexistent")))
-    }
 
-    @Test
-    fun `getV4Percentage returns zero for org with no clients`() {
-        val stats = ClientModelVersionStats.from(mapOf(emptyOrg to emptyList()))
-        assertEquals(0.0, stats.getV4Percentage(emptyOrg))
-    }
-
-    @Test
-    fun `getV4Percentage returns zero when all clients are V3`() {
-        val stats = ClientModelVersionStats.from(
-            mapOf(org1 to listOf(createClient(ModelVersion.V3), createClient(null)))
-        )
-        assertEquals(0.0, stats.getV4Percentage(org1))
+        assertTrue(stats.countsFor(OrgName("nonexistent")).isEmpty())
     }
 
     private fun createClient(version: ModelVersion?) = Client().apply {

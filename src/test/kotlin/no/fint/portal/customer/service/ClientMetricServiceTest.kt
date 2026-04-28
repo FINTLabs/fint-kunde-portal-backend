@@ -3,6 +3,7 @@ package no.fint.portal.customer.service
 import io.micrometer.core.instrument.simple.SimpleMeterRegistry
 import io.mockk.every
 import io.mockk.mockk
+import io.mockk.verify
 import no.fint.portal.customer.model.OrgName
 import no.fint.portal.model.client.Client
 import no.fint.portal.model.client.ClientService
@@ -93,6 +94,17 @@ class ClientMetricServiceTest {
     @Test
     fun `getStats returns empty stats before first refresh`() {
         assertTrue(service.getStats().countsByOrg().isEmpty())
+    }
+
+    @Test
+    fun `reading gauge does not trigger LDAP fetch`() {
+        setupOrgs("org1" to listOf(createClient(ModelVersion.V4)))
+        service.refreshCache()
+
+        repeat(10) { findGauge("org1", "V4") }
+
+        verify(exactly = 1) { organisationService.organisations }
+        verify(exactly = 1) { clientService.getClients("org1") }
     }
 
     private fun setupOrgs(vararg orgs: Pair<String, List<Client>>) {
