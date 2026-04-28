@@ -1,6 +1,6 @@
 plugins {
     id 'org.springframework.boot' version '2.7.18'
-    id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+    id 'io.spring.dependency-management' version '1.1.7'
     id 'java'
     id 'groovy'
     id 'org.jetbrains.kotlin.jvm' version '2.0.21'
@@ -16,9 +16,26 @@ java{
     }
 }
 
+compileKotlin {
+    kotlinOptions {
+        freeCompilerArgs = ['-Xjsr305=strict']
+        jvmTarget = '17'
+    }
+}
+
+compileTestKotlin {
+    kotlinOptions {
+        freeCompilerArgs = ['-Xjsr305=strict']
+        jvmTarget = '17'
+    }
+}
+
 jar{
     enabled = false
 }
+
+//
+ext['spring-ldap.version'] = '2.4.4'
 
 configurations {
     compileOnly {
@@ -35,6 +52,9 @@ repositories {
 }
 
 dependencies {
+    implementation 'org.jetbrains.kotlin:kotlin-reflect'
+    implementation 'org.jetbrains.kotlin:kotlin-stdlib-jdk8'
+
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-actuator'
     implementation 'org.springframework.boot:spring-boot-starter-cache'
@@ -48,7 +68,7 @@ dependencies {
     implementation 'org.springdoc:springdoc-openapi-webflux-ui:1.7.0'
     implementation 'com.google.guava:guava:33.1.0-jre'
 
-    implementation 'no.fintlabs:fint-portal-api:3.20.0'
+    implementation 'no.fintlabs:fint-portal-api:3.21.1'
     implementation 'no.fintlabs:fint-feature-toggle-service:2.0.0'
     implementation 'no.fint:fint-audit-api:1.2.2'
 

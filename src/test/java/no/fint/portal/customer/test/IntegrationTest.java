@@ -178,6 +178,46 @@ public class IntegrationTest {
     }
 
     @Test
+    public void duplicateClientReturnsConflict() throws Exception {
+        when(identityMaskingService.mask(anyString())).thenAnswer(returnsFirstArg());
+
+        String body = "{ \"name\": \"testclient\", \"note\": \"Test Client\", \"shortDescription\": \"This is a Test Client.\" }";
+
+        mockMvc.perform(post("/clients/{org}", org).header("x-nin", "12345678901")
+                .content(body).contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().is(201));
+
+        mockMvc.perform(post("/clients/{org}", org).header("x-nin", "12345678901")
+                .content(body).contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isConflict())
+                .andExpect(jsonPath("$.message").value(containsString("already exists")));
+
+        mockMvc.perform(delete("/clients/{org}/{client}", org, client).header("x-nin", "12345678901"))
+                .andExpect(status().is(204));
+    }
+
+    // `SecureUrlAccessDecisionVoter` only enforces auth on URLs starting with role URIs
+    // (e.g. /api/organisations/). Paths outside that set stay publicly reachable.
+    @Test
+    public void missingXNinOnSecuredPathReturns400() throws Exception {
+        mockMvc.perform(get("/api/organisations/{org}/", org))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.message").value(containsString("x-nin")));
+    }
+
+    @Test
+    public void unknownXNinOnSecuredPathReturns400() throws Exception {
+        mockMvc.perform(get("/api/organisations/{org}/", org).header("x-nin", "00000000000"))
+                .andExpect(status().isBadRequest());
+    }
+
+    @Test
+    public void missingXNinOnUnsecuredPathStillServed() throws Exception {
+        mockMvc.perform(get("/components"))
+                .andExpect(status().isOk());
+    }
+
+    @Test
     public void access() throws Exception {
         when(identityMaskingService.mask(anyString())).thenAnswer(returnsFirstArg());
 
