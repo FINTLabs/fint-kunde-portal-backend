@@ -92,6 +92,19 @@ class ClientMetricServiceTest {
     }
 
     @Test
+    fun `refreshCache excludes managed clients`() {
+        setupOrgs("org1" to listOf(
+            createClient(ModelVersion.V4, managed = false),
+            createClient(ModelVersion.V4, managed = true),
+            createClient(ModelVersion.V4, managed = true)
+        ))
+
+        service.refreshCache()
+
+        assertEquals(1L, service.getStats().countsByOrg()[OrgName("org1")]!![ModelVersion.V4])
+    }
+
+    @Test
     fun `getStats returns empty stats before first refresh`() {
         assertTrue(service.getStats().countsByOrg().isEmpty())
     }
@@ -116,8 +129,9 @@ class ClientMetricServiceTest {
         }
     }
 
-    private fun createClient(version: ModelVersion?) = Client().apply {
+    private fun createClient(version: ModelVersion?, managed: Boolean = false) = Client().apply {
         this.modelVersion = version
+        this.isManaged = managed
     }
 
     private fun findGauge(org: String, version: String) =
