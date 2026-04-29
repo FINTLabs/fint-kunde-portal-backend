@@ -32,7 +32,7 @@ class ClientMetricService(
     fun refreshCache() {
         try {
             val clientsByOrg = organisationService.organisations.associate { org ->
-                OrgName(org.name) to clientService.getClients(org.name)
+                OrgName(org.name) to clientService.getClients(org.name).filterNot { it.isManaged }
             }
 
             val newStats = ClientModelVersionStats.from(clientsByOrg)
