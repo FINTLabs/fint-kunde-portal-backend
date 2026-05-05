@@ -21,6 +21,8 @@ import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.ldap.NameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 
+import org.springframework.http.converter.HttpMessageNotReadableException;
+
 import java.net.UnknownHostException;
 import java.util.List;
 

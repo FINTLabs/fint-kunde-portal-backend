@@ -3,15 +3,17 @@ plugins {
     id 'io.spring.dependency-management' version '1.1.7'
     id 'java'
     id 'groovy'
-    id 'org.jetbrains.kotlin.jvm' version '1.9.22'
-    id 'org.jetbrains.kotlin.plugin.spring' version '1.9.22'
+    id 'org.jetbrains.kotlin.jvm' version '2.0.21'
+    id "org.jetbrains.kotlin.plugin.spring" version '2.0.21'
 }
 
 group = 'no.fint'
 version = '0.0.1-SNAPSHOT'
 
 java{
-    sourceCompatibility = '17'
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(17)
+    }
 }
 
 compileKotlin {
@@ -82,11 +84,18 @@ dependencies {
     testRuntimeOnly 'org.springframework.ldap:spring-ldap-test'
     runtimeOnly "com.unboundid:unboundid-ldapsdk:5.1.3"
 
+    implementation 'org.jetbrains.kotlin:kotlin-stdlib'
+    implementation 'com.fasterxml.jackson.module:jackson-module-kotlin'
+
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
-    //testImplementation "org.spockframework:spock-core:2.4-M1-groovy-4.0"
     testImplementation 'org.spockframework:spock-core:2.3-groovy-3.0'
     testImplementation "cglib:cglib-nodep:3.3.0"
-    testImplementation 'junit:junit:4.12'
+    testImplementation 'junit:junit:4.13.2'
+    testImplementation 'io.mockk:mockk:1.13.13'
+}
+
+kotlin {
+    jvmToolchain(17)
 }
 
 test {
