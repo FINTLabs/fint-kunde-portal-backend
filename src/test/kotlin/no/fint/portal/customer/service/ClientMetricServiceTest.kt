@@ -105,6 +105,19 @@ class ClientMetricServiceTest {
     }
 
     @Test
+    fun `refreshCache only counts clients with an utdanning component`() {
+        setupOrgs("org1" to listOf(
+            createClient(ModelVersion.V4, components = listOf("utdanning_elev")),
+            createClient(ModelVersion.V4, components = listOf("administrasjon_personal")),
+            createClient(ModelVersion.V4, components = emptyList())
+        ))
+
+        service.refreshCache()
+
+        assertEquals(1L, service.getStats().countsByOrg()[OrgName("org1")]!![ModelVersion.V4])
+    }
+
+    @Test
     fun `getStats returns empty stats before first refresh`() {
         assertTrue(service.getStats().countsByOrg().isEmpty())
     }
@@ -129,9 +142,14 @@ class ClientMetricServiceTest {
         }
     }
 
-    private fun createClient(version: ModelVersion?, managed: Boolean = false) = Client().apply {
+    private fun createClient(
+        version: ModelVersion?,
+        managed: Boolean = false,
+        components: List<String> = listOf("utdanning_elev")
+    ) = Client().apply {
         this.modelVersion = version
         this.isManaged = managed
+        components.forEach { addComponent(it) }
     }
 
     private fun findGauge(org: String, version: String) =

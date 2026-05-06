@@ -60,5 +60,6 @@ class ClientMetricControllerTest {
 
     private fun clientWith(version: ModelVersion) = no.fint.portal.model.client.Client().apply {
         modelVersion = version
+        addComponent("utdanning_elev")
     }
 }
