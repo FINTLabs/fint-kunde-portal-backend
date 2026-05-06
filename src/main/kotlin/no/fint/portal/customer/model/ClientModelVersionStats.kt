@@ -16,11 +16,15 @@ class ClientModelVersionStats(
 
         fun from(clientsByOrg: Map<OrgName, List<Client>>): ClientModelVersionStats {
             val countsByOrg = clientsByOrg.mapValues { (_, clients) ->
-                clients.groupingBy { it.modelVersion ?: ModelVersion.V3 }
+                clients.filter { it.hasUtdanningComponent() }
+                    .groupingBy { it.modelVersion ?: ModelVersion.V3 }
                     .eachCount()
                     .mapValues { it.value.toLong() }
             }
             return ClientModelVersionStats(countsByOrg)
         }
+
+        private fun Client.hasUtdanningComponent(): Boolean =
+            components?.any { it.contains("utdanning", ignoreCase = true) } == true
     }
 }
