@@ -56,6 +56,23 @@ class ClientModelVersionStatsTest {
     }
 
     @Test
+    fun `from only counts clients with at least one utdanning component`() {
+        val stats = ClientModelVersionStats.from(
+            mapOf(org1 to listOf(
+                createClient(ModelVersion.V3, listOf("utdanning_elev")),
+                createClient(ModelVersion.V4, listOf("administrasjon_personal")),
+                createClient(ModelVersion.V4, listOf("arkiv_noark", "utdanning_vurdering")),
+                createClient(ModelVersion.V4, emptyList()),
+                createClient(ModelVersion.V4, null)
+            ))
+        )
+
+        val counts = stats.countsByOrg()[org1]!!
+        assertEquals(1L, counts[ModelVersion.V3])
+        assertEquals(1L, counts[ModelVersion.V4])
+    }
+
+    @Test
     fun `from handles empty client list`() {
         val stats = ClientModelVersionStats.from(mapOf(emptyOrg to emptyList()))
 
@@ -87,7 +104,11 @@ class ClientModelVersionStatsTest {
         assertTrue(stats.countsFor(OrgName("nonexistent")).isEmpty())
     }
 
-    private fun createClient(version: ModelVersion?) = Client().apply {
+    private fun createClient(
+        version: ModelVersion?,
+        components: List<String>? = listOf("utdanning_elev")
+    ) = Client().apply {
         this.modelVersion = version
+        if (components != null) components.forEach { addComponent(it) }
     }
 }
