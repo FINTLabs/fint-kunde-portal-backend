@@ -50,13 +50,13 @@ class OAuthCredentialsFeatureFlagTest {
             post("/adapters/{orgName}", "orgName")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("""{"name":"test"}""")
-        ).andExpect(status().isServiceUnavailable)
+        ).andExpect(status().isMethodNotAllowed)
     }
 
     @Test
     fun `DELETE adapter returns 503 when delete feature is disabled`() {
         mockMvc.perform(delete("/adapters/{orgName}/{adapterName}", "orgName", "adapterName"))
-            .andExpect(status().isServiceUnavailable)
+            .andExpect(status().isMethodNotAllowed)
     }
 
     @Test
@@ -65,12 +65,12 @@ class OAuthCredentialsFeatureFlagTest {
             post("/clients/{orgName}", "orgName")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content("""{"name":"test"}""")
-        ).andExpect(status().isServiceUnavailable)
+        ).andExpect(status().isMethodNotAllowed)
     }
 
     @Test
     fun `DELETE client returns 503 when delete feature is disabled`() {
         mockMvc.perform(delete("/clients/{orgName}/{clientName}", "orgName", "clientName"))
-            .andExpect(status().isServiceUnavailable)
+            .andExpect(status().isMethodNotAllowed)
     }
 }

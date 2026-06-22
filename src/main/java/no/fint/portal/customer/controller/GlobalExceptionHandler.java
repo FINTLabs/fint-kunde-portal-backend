@@ -18,7 +18,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(FeatureDisabledException.class)
     public ResponseEntity<String> handleFeatureDisabled(FeatureDisabledException ex) {
-        return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body(ex.getMessage());
+        return ResponseEntity.status(HttpStatus.METHOD_NOT_ALLOWED).body(ex.getMessage());
     }
 
     @ExceptionHandler(NoHandlerFoundException.class)
