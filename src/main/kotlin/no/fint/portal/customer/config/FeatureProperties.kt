@@ -4,7 +4,7 @@ import org.springframework.boot.context.properties.ConfigurationProperties
 
 @ConfigurationProperties(prefix = "feature")
 data class FeatureProperties(
-    private val flags: Map<String, Boolean>
+    val flags: Map<String, Boolean>
 ) {
     fun isEnabled(feature: Feature): Boolean = flags[feature.key] ?: true
 }
