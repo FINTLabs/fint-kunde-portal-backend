@@ -3,7 +3,11 @@ package no.fint.portal.customer.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import no.fint.portal.customer.config.Feature;
+import no.fint.portal.customer.config.FeatureProperties;
+import no.fint.portal.customer.exception.FeatureDisabledException;
 import no.fint.portal.customer.service.PortalApiService;
 import no.fint.portal.exceptions.EntityFoundException;
 import no.fint.portal.exceptions.EntityNotFoundException;
@@ -26,20 +30,15 @@ import java.util.Optional;
 
 @Slf4j
 @RestController
+@RequiredArgsConstructor
 @Tag(name = "Adapters")
 @CrossOrigin(origins = "*")
 @RequestMapping(value = "/adapters/{orgName}")
 public class AdapterController {
 
-    final
-    PortalApiService portalApiService;
-
+    private final PortalApiService portalApiService;
     private final AdapterService adapterService;
-
-    public AdapterController(PortalApiService portalApiService, AdapterService adapterService) {
-        this.portalApiService = portalApiService;
-        this.adapterService = adapterService;
-    }
+    private final FeatureProperties featureProperties;
 
     @Operation(summary = "Add adapter")
     @RequestMapping(
@@ -48,6 +47,9 @@ public class AdapterController {
     )
     public ResponseEntity<Adapter> addAdapter(@PathVariable("orgName") final String orgName,
                                               @RequestBody final Adapter adapter) {
+        if (!featureProperties.isEnabled(Feature.OAUTH_CREDENTIALS_CREATE)) {
+            throw new FeatureDisabledException("Creation of new OAuth credentials is currently disabled.");
+        }
 
         Organisation organisation = portalApiService.getOrganisation(orgName);
 
@@ -159,6 +161,10 @@ public class AdapterController {
     )
     public ResponseEntity<Void> deleteAdapter(@PathVariable("orgName") final String orgName,
                                               @PathVariable final String adapterName) {
+        if (!featureProperties.isEnabled(Feature.OAUTH_CREDENTIALS_DELETE)) {
+            throw new FeatureDisabledException("Deletion of OAuth credentials is currently disabled.");
+        }
+
         Organisation organisation = portalApiService.getOrganisation(orgName);
         Adapter adapter = portalApiService.getAdapter(organisation, adapterName);
 

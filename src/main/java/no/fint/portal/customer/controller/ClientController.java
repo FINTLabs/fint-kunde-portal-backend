@@ -3,7 +3,12 @@ package no.fint.portal.customer.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import no.fint.portal.customer.config.Feature;
+import no.fint.portal.customer.config.FeatureProperties;
+import no.fint.portal.customer.exception.FeatureDisabledException;
 import no.fint.portal.customer.service.PortalApiService;
 import no.fint.portal.exceptions.EntityFoundException;
 import no.fint.portal.exceptions.EntityNotFoundException;
@@ -27,17 +32,16 @@ import java.net.UnknownHostException;
 import java.util.List;
 
 @Slf4j
+@RequiredArgsConstructor
 @RestController
 @Tag(name = "Clients")
 @CrossOrigin(origins = "*")
 @RequestMapping(value = "/clients/{orgName}")
 public class ClientController {
 
-    @Autowired
-    PortalApiService portalApiService;
-
-    @Autowired
-    private ClientService clientService;
+    private final PortalApiService portalApiService;
+    private final ClientService clientService;
+    private final FeatureProperties featureProperties;
 
 
     @Operation(summary = "Add client")
@@ -46,6 +50,10 @@ public class ClientController {
     )
     public ResponseEntity<Client> addClient(@PathVariable("orgName") final String orgName,
                                             @RequestBody final Client client) {
+
+        if (!featureProperties.isEnabled(Feature.OAUTH_CREDENTIALS_CREATE)) {
+            throw new FeatureDisabledException("Creation of new OAuth credentials is currently disabled.");
+        }
 
         Organisation organisation = portalApiService.getOrganisation(orgName);
         clientService.addClient(client, organisation);
@@ -145,6 +153,10 @@ public class ClientController {
     )
     public ResponseEntity<Void> deleteClient(@PathVariable("orgName") final String orgName,
                                              @PathVariable final String clientName) {
+        if (!featureProperties.isEnabled(Feature.OAUTH_CREDENTIALS_DELETE)) {
+            throw new FeatureDisabledException("Deletion of OAuth credentials is currently disabled.");
+        }
+
         Organisation organisation = portalApiService.getOrganisation(orgName);
         Client client = portalApiService.getClient(organisation, clientName);
 
