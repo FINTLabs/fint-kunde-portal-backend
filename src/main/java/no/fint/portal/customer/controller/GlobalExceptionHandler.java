@@ -1,6 +1,7 @@
 package no.fint.portal.customer.controller;
 
 import lombok.extern.slf4j.Slf4j;
+import no.fint.portal.customer.exception.FeatureDisabledException;
 import no.fint.portal.model.ErrorResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,6 +15,11 @@ import javax.servlet.http.HttpServletRequest;
 @Slf4j
 @ControllerAdvice
 public class GlobalExceptionHandler {
+
+    @ExceptionHandler(FeatureDisabledException.class)
+    public ResponseEntity<String> handleFeatureDisabled(FeatureDisabledException ex) {
+        return ResponseEntity.status(HttpStatus.SERVICE_UNAVAILABLE).body(ex.getMessage());
+    }
 
     @ExceptionHandler(NoHandlerFoundException.class)
     public ResponseEntity<ErrorResponse> handleNoHandlerFoundException(NoHandlerFoundException ex) {
