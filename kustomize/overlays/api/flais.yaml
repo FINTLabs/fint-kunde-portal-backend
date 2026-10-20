@@ -6,3 +6,6 @@ metadata:
 spec:
   onePassword:
     itemPath: vaults/aks-api-vault/items/kunde-portal
+  envFrom:
+    - secretRef:
+        name: fint-portal-user

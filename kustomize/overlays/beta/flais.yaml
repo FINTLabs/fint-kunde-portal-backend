@@ -5,4 +5,4 @@ metadata:
   namespace: fintlabs-no
 spec:
   onePassword:
-    itemPath: vaults/aks-beta-vault/items/kunde-portal
+    itemPath: vaults/aks-beta-vault/items/fint-kunde-portal

@@ -1,55 +1,151 @@
 name: CD
 
+# main deploys to api (production), develop deploys to beta.
+#
+# The image is tagged sha-<last commit that touched the application> (see
+# .github/scripts/paths.sh). A push that only changes kustomize, workflows or
+# docs resolves to an image that is already in GHCR, so the build is skipped and
+# the push goes straight to deploy.
 on:
   push:
-    tags:
-      - 'v*'
+    branches: [main, develop]
+
+concurrency:
+  group: deploy-${{ github.ref_name }}
+  cancel-in-progress: false
 
 env:
-  REGISTRY: ghcr.io
-  IMAGE_NAME: ${{ github.repository }}
+  IMAGE_REPOSITORY: ghcr.io/fintlabs/fint-kunde-portal-backend
+  NAMESPACE: fintlabs-no
 
 jobs:
-  build-and-push:
-    name: Build and push Docker image
+  setup:
+    runs-on: ubuntu-latest
+    outputs:
+      environment: ${{ steps.env.outputs.environment }}
+      sha: ${{ steps.version.outputs.sha }}
+      image: ${{ steps.version.outputs.image }}
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+
+      - name: Map branch to environment
+        id: env
+        run: |
+          case "$GITHUB_REF_NAME" in
+            main)    echo "environment=api"  >> "$GITHUB_OUTPUT" ;;
+            develop) echo "environment=beta" >> "$GITHUB_OUTPUT" ;;
+            *) echo "no environment for branch $GITHUB_REF_NAME"; exit 1 ;;
+          esac
+
+      - name: Resolve app version
+        id: version
+        run: |
+          eval "$(.github/scripts/app-version.sh)"
+          echo "app=$app"
+          echo "sha=$app" >> "$GITHUB_OUTPUT"
+          echo "image=$IMAGE_REPOSITORY:sha-$app" >> "$GITHUB_OUTPUT"
+
+  build:
+    needs: setup
     runs-on: ubuntu-latest
     permissions:
       contents: read
       packages: write
-
+    env:
+      IMAGE: ${{ needs.setup.outputs.image }}
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
-
-      - name: Login to GitHub Container Registry
-        uses: docker/login-action@v3
+      - uses: docker/login-action@v4
         with:
-          registry: ${{ env.REGISTRY }}
+          registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Extract metadata (tags, labels) for Docker
-        id: meta
-        uses: docker/metadata-action@v5
-        with:
-          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
-          tags: |
-            # Tag from git tag, without the "v" prefix
-            type=match,pattern=v(.*),group=1
-            # Short SHA tag
-            type=sha,format=short
-            # 'latest' tag only on default branch
-            type=raw,value=latest,enable={{is_default_branch}}
+      - name: Check whether ${{ env.IMAGE }} already exists
+        id: exists
+        run: |
+          if docker manifest inspect "$IMAGE" > /dev/null 2>&1; then
+            echo "exists=true" >> "$GITHUB_OUTPUT"
+            echo "$IMAGE already in registry, skipping build"
+          else
+            echo "exists=false" >> "$GITHUB_OUTPUT"
+          fi
 
-      - name: Build and push Docker image
+      - uses: actions/checkout@v7
+        if: steps.exists.outputs.exists == 'false'
+
+      - name: Build and push
+        if: steps.exists.outputs.exists == 'false'
         uses: docker/build-push-action@v6
         with:
           context: .
           push: true
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
+          tags: ${{ env.IMAGE }}
+          labels: |
+            org.opencontainers.image.source=${{ github.server_url }}/${{ github.repository }}
+            org.opencontainers.image.revision=${{ needs.setup.outputs.sha }}
+
+  deploy:
+    needs: [setup, build]
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    environment: ${{ needs.setup.outputs.environment }}
+    env:
+      ENVIRONMENT: ${{ needs.setup.outputs.environment }}
+      IMAGE: ${{ needs.setup.outputs.image }}
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Resolve cluster + resource group
+        id: aks
+        run: |
+          case "$ENVIRONMENT" in
+            beta) echo "cluster=aks-beta-fint-2021-11-23" >> "$GITHUB_OUTPUT" ;;
+            api)  echo "cluster=aks-api-fint-2022-02-08"  >> "$GITHUB_OUTPUT" ;;
+            *) echo "unknown environment $ENVIRONMENT"; exit 1 ;;
+          esac
+          echo "resource-group=rg-aks-$ENVIRONMENT" >> "$GITHUB_OUTPUT"
+
+      - name: Bake manifests with Kustomize
+        id: bake
+        uses: azure/k8s-bake@v4.0.0
+        with:
+          renderEngine: "kustomize"
+          kustomizationPath: "kustomize/overlays/${{ env.ENVIRONMENT }}"
+
+      - name: Substitute image into baked YAML
+        id: substitute
+        uses: azure/k8s-artifact-substitute@v2.0.0
+        with:
+          manifests: ${{ steps.bake.outputs.manifestsBundle }}
+          images: ${{ env.IMAGE }}
+
+      - uses: azure/login@v3.0.0
+        with:
+          creds: "${{ secrets[format('AKS_{0}_FINT_GITHUB', needs.setup.outputs.environment)] }}"
+
+      - uses: azure/use-kubelogin@v1
+        with:
+          kubelogin-version: "v0.0.26"
+
+      - name: Set the target cluster
+        uses: azure/aks-set-context@v5.0.0
+        with:
+          cluster-name: "${{ steps.aks.outputs.cluster }}"
+          resource-group: "${{ steps.aks.outputs.resource-group }}"
+          admin: "true"
+          use-kubelogin: "true"
+
+      - name: Ensure namespace ${{ env.NAMESPACE }}
+        run: kubectl create namespace "$NAMESPACE" --dry-run=client -o yaml | kubectl apply -f -
+
+      - name: Deploy
+        uses: azure/k8s-deploy@v6.0.0
+        with:
+          action: deploy
+          manifests: ${{ steps.substitute.outputs.manifests }}
+          images: ${{ env.IMAGE }}
+          pull-images: false
+          namespace: ${{ env.NAMESPACE }}
