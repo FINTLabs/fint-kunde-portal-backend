@@ -3,23 +3,49 @@ name: CI
 on:
   pull_request:
   push:
-    branches: [main]
+    branches: [main, develop]
 
 jobs:
-  build:
+  changes:
+    runs-on: ubuntu-latest
+    outputs:
+      app: ${{ steps.filter.outputs.app }}
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+      - id: filter
+        run: |
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            base=$(git merge-base "origin/${{ github.base_ref }}" HEAD)
+          else
+            base="${{ github.event.before }}"
+          fi
+          .github/scripts/changed-app.sh "$base" HEAD | tee -a "$GITHUB_OUTPUT"
+
+  check:
+    needs: changes
+    if: ${{ needs.changes.outputs.app == 'true' }}
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Setup Java 17
-        uses: actions/setup-java@v4
+      - uses: actions/checkout@v7
+      - uses: actions/setup-java@v6
         with:
+          distribution: temurin
           java-version: '17'
-          distribution: 'temurin'
+      - uses: gradle/actions/setup-gradle@v6
+      - run: ./gradlew check
 
-      - name: Setup Gradle
-        uses: gradle/actions/setup-gradle@v4
-
-      - name: Check with Gradle
-        run: ./gradlew check
+  # Single gate for branch protection: green when nothing failed, including
+  # when check was skipped because the application did not change.
+  ci-ok:
+    needs: [check]
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - run: |
+          if [ "${{ needs.check.result }}" = "failure" ]; then
+            echo "check failed"
+            exit 1
+          fi
+          echo "ok"

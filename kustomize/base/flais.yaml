@@ -14,21 +14,33 @@ metadata:
 spec:
   port: 8080
   orgId: fintlabs.no
+  # The tag is replaced by CD with sha-<commit>, see .github/workflows/CD.yaml.
   image: ghcr.io/fintlabs/fint-kunde-portal-backend:latest
   onePassword:
     itemPath: vaults/aks-beta-vault/items/kunde-portal
-  envFrom:
-    - secretRef:
-        name: fint-portal-user
   env:
     - name: JAVA_TOOL_OPTIONS
       value: '-XX:+ExitOnOutOfMemoryError -Xmx1800M'
     - name: 'fint.portal.tests.test-runner'
       value: 'http://fint-test-runner:8080'
+    - name: LOGGING_LEVEL_ROOT
+      value: 'INFO'
+    # Feature flags, see FeatureProperties.kt. A flag that is not set is enabled.
+    - name: 'feature.flags.oauth-credentials-create'
+      value: 'false'
+    - name: 'feature.flags.oauth-credentials-delete'
+      value: 'false'
+  probes:
+    startup:
+      path: /api/actuator/health
+      port: 8080
+      initialDelaySeconds: 15
+      periodSeconds: 5
+      timeoutSeconds: 3
+      failureThreshold: 10
   resources:
     limits:
       memory: "2Gi"
-      cpu: "1"
     requests:
       memory: "1Gi"
       cpu: "250m"
