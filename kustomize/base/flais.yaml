@@ -29,7 +29,7 @@ spec:
     - name: 'feature.flags.oauth-credentials-create'
       value: 'true'
     - name: 'feature.flags.oauth-credentials-delete'
-      value: 'false'
+      value: 'true'
   probes:
     startup:
       path: /api/actuator/health
