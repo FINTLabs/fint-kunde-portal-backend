@@ -9,6 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 import no.fint.portal.customer.config.Feature;
 import no.fint.portal.customer.config.FeatureProperties;
 import no.fint.portal.customer.exception.FeatureDisabledException;
+import no.fint.portal.customer.model.CommonName;
 import no.fint.portal.customer.service.PortalApiService;
 import no.fint.portal.exceptions.EntityFoundException;
 import no.fint.portal.exceptions.EntityNotFoundException;
@@ -56,6 +57,8 @@ public class ClientController {
         }
 
         Organisation organisation = portalApiService.getOrganisation(orgName);
+        CommonName.CLIENT.validate(client.getName(), organisation.getPrimaryAssetId());
+
         clientService.addClient(client, organisation);
 
         return ResponseEntity.status(HttpStatus.CREATED).cacheControl(CacheControl.noStore()).body(client);

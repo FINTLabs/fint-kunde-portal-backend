@@ -2,6 +2,7 @@ package no.fint.portal.customer.controller;
 
 import lombok.extern.slf4j.Slf4j;
 import no.fint.portal.customer.exception.FeatureDisabledException;
+import no.fint.portal.customer.exception.NameTooLongException;
 import no.fint.portal.model.ErrorResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,6 +20,11 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(FeatureDisabledException.class)
     public ResponseEntity<String> handleFeatureDisabled(FeatureDisabledException ex) {
         return ResponseEntity.status(HttpStatus.METHOD_NOT_ALLOWED).body(ex.getMessage());
+    }
+
+    @ExceptionHandler(NameTooLongException.class)
+    public ResponseEntity<ErrorResponse> handleNameTooLong(NameTooLongException ex) {
+        return ResponseEntity.badRequest().body(new ErrorResponse(ex.getMessage()));
     }
 
     @ExceptionHandler(NoHandlerFoundException.class)
