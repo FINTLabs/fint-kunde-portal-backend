@@ -3,7 +3,7 @@ WORKDIR /home/gradle/src
 COPY . .
 RUN ./gradlew --no-daemon build
 
-FROM gcr.io/distroless/java17
+FROM eclipse-temurin:17-jre
 ENV JAVA_TOOL_OPTIONS="-XX:+ExitOnOutOfMemoryError"
 COPY --from=java /home/gradle/src/build/libs/fint-kunde-portal-*.jar /data/fint-kunde-portal.jar
-CMD ["/data/fint-kunde-portal.jar"]
+ENTRYPOINT ["java", "-jar", "/data/fint-kunde-portal.jar"]
