@@ -30,6 +30,9 @@ spec:
       value: 'true'
     - name: 'feature.flags.oauth-credentials-delete'
       value: 'true'
+    # Java4Shell (CVE-2026-114938): turn off the Base64 intrinsic until the JDK has a fix.
+    - name: JDK_JAVA_OPTIONS
+      value: -XX:-UseBASE64Intrinsics
   probes:
     startup:
       path: /api/actuator/health
